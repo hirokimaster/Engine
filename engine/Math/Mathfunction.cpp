@@ -41,6 +41,50 @@ Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
 	return result;
 }
 
+// 1. 行列の加法
+Matrix4x4 Add(const Matrix4x4& m1, const Matrix4x4& m2) {
+	Matrix4x4 result;
+	result.m[0][0] = m1.m[0][0] + m2.m[0][0];
+	result.m[0][1] = m1.m[0][1] + m2.m[0][1];
+	result.m[0][2] = m1.m[0][2] + m2.m[0][2];
+	result.m[0][3] = m1.m[0][3] + m2.m[0][3];
+	result.m[1][0] = m1.m[1][0] + m2.m[1][0];
+	result.m[1][1] = m1.m[1][1] + m2.m[1][1];
+	result.m[1][2] = m1.m[1][2] + m2.m[1][2];
+	result.m[1][3] = m1.m[1][3] + m2.m[1][3];
+	result.m[2][0] = m1.m[2][0] + m2.m[2][0];
+	result.m[2][1] = m1.m[2][1] + m2.m[2][1];
+	result.m[2][2] = m1.m[2][2] + m2.m[2][2];
+	result.m[2][3] = m1.m[2][3] + m2.m[2][3];
+	result.m[3][0] = m1.m[3][0] + m2.m[3][0];
+	result.m[3][1] = m1.m[3][1] + m2.m[3][1];
+	result.m[3][2] = m1.m[3][2] + m2.m[3][2];
+	result.m[3][3] = m1.m[3][3] + m2.m[3][3];
+	return result;
+}
+
+// 2. 行列の減法
+Matrix4x4 Subtract(const Matrix4x4& m1, const Matrix4x4& m2) {
+	Matrix4x4 result;
+	result.m[0][0] = m1.m[0][0] - m2.m[0][0];
+	result.m[0][1] = m1.m[0][1] - m2.m[0][1];
+	result.m[0][2] = m1.m[0][2] - m2.m[0][2];
+	result.m[0][3] = m1.m[0][3] - m2.m[0][3];
+	result.m[1][0] = m1.m[1][0] - m2.m[1][0];
+	result.m[1][1] = m1.m[1][1] - m2.m[1][1];
+	result.m[1][2] = m1.m[1][2] - m2.m[1][2];
+	result.m[1][3] = m1.m[1][3] - m2.m[1][3];
+	result.m[2][0] = m1.m[2][0] - m2.m[2][0];
+	result.m[2][1] = m1.m[2][1] - m2.m[2][1];
+	result.m[2][2] = m1.m[2][2] - m2.m[2][2];
+	result.m[2][3] = m1.m[2][3] - m2.m[2][3];
+	result.m[3][0] = m1.m[3][0] - m2.m[3][0];
+	result.m[3][1] = m1.m[3][1] - m2.m[3][1];
+	result.m[3][2] = m1.m[3][2] - m2.m[3][2];
+	result.m[3][3] = m1.m[3][3] - m2.m[3][3];
+	return result;
+}
+
 // 拡大縮小行列
 Matrix4x4 MakeScaleMatrix(const Vector3& scale) {
 	Matrix4x4 result;
@@ -622,7 +666,9 @@ Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
 	float q0W = q0.w;
 	float dot = Dot(q0Vec, q1Vec) + q0.w * q1.w;
 	if (dot < 0) {
-		q0Vec = -1.0f * q0Vec;
+		q0Vec.x = -1.0f * q0Vec.x;
+		q0Vec.y = -1.0f * q0Vec.y;
+		q0Vec.z = -1.0f * q0Vec.z;
 		q0W = -1.0f * q0W;
 		dot = -1.0f * dot;
 	}
@@ -646,52 +692,4 @@ Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
 	}
 
 	return 	result;
-}
-
-Vector3 operator+(const Vector3& a, const Vector3& b) {
-	Vector3 c = { a.x + b.x,a.y + b.y ,a.z + b.z };
-
-	return c;
-}
-
-Vector3 operator+(const Vector3& a, const float& b) {
-	Vector3 c = { a.x + b,a.y + b,a.z + b };
-
-	return c;
-}
-
-Vector3 operator-(const Vector3& a, const Vector3& b) {
-	Vector3 c = { a.x - b.x,a.y - b.y,a.z - b.z };
-
-	return c;
-}
-
-Vector3 operator-(const Vector3& a, const float& b) {
-	Vector3 c = { a.x - b,a.y - b,a.z - b };
-
-	return c;
-}
-
-Vector3 operator*(const float& a, const Vector3& b) {
-	Vector3 c = { a * b.x,a * b.y,a * b.z };
-
-	return c;
-}
-
-Vector3 operator/(const Vector3& a, const float& b)
-{
-	Vector3 c = { a.x / b , a.y / b, a.z / b };
-
-	return c;
-}
-
-Vector3 operator*(const Vector3& vec, const Matrix4x4& mat) {
-	Vector4 result = {
-		vec.x * mat.m[0][0] + vec.y * mat.m[1][0] + vec.z * mat.m[2][0] + mat.m[3][0],
-		vec.x * mat.m[0][1] + vec.y * mat.m[1][1] + vec.z * mat.m[2][1] + mat.m[3][1],
-		vec.x * mat.m[0][2] + vec.y * mat.m[1][2] + vec.z * mat.m[2][2] + mat.m[3][2],
-		vec.x * mat.m[0][3] + vec.y * mat.m[1][3] + vec.z * mat.m[2][3] + mat.m[3][3]
-	};
-
-	return { result.x / result.w, result.y / result.w, result.z / result.w };
 }
