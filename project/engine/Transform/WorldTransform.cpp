@@ -26,6 +26,15 @@ void WorldTransform::STransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvp
 	wvp->World = worldMatrix;
 }
 
+void WorldTransform::AssimpTransferMatrix(Microsoft::WRL::ComPtr<ID3D12Resource>& wvpResource, Matrix4x4 localMatrix, Camera& camera)
+{
+	TransformationMatrix* wvp = {};
+	matWorld = Multiply(matWorld, Multiply(camera.matView, camera.matProjection));
+	wvpResource->Map(0, nullptr, reinterpret_cast<void**>(&wvp));
+	wvp->WVP = Multiply(localMatrix, matWorld);
+	wvp->World = Multiply(localMatrix, worldMatrix);
+}
+
 void WorldTransform::UpdateMatrix(){
 
 	matWorld = MakeAffineMatrix(scale, rotate, translate);

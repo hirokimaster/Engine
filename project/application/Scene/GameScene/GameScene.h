@@ -4,6 +4,7 @@
 #include "engine/Model/Model.h"
 #include "engine/Input/Input.h"
 #include "engine/PostProcess/PostProcess.h"
+#include "engine/Model/Animation/ModelAnimation.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -38,4 +39,8 @@ public: // メンバ関数
 	void PostProcessDraw()override;
 
 private:
+	std::unique_ptr<ModelAnimation>	anim_;
+	WorldTransform worldTransform_{};
+	Camera camera_{};
+	uint32_t texHandle_ = 0;
 };
