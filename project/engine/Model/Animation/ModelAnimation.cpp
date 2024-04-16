@@ -41,6 +41,20 @@ void ModelAnimation::Initialize(const std::string& fileName)
 	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
 }
 
+void ModelAnimation::Update(Skeleton& skeleton)
+{
+	// すべてのjointを更新。
+	for (Joint& joint : skeleton.joints) {
+		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
+		if (joint.parent) {
+			joint.skeletonSpaceMatrix = Multiply(joint.localMatrix, skeleton.joints[*joint.parent].skeletonSpaceMatrix);
+		}
+		else {
+			joint.skeletonSpaceMatrix = joint.localMatrix;
+		}
+	}
+}
+
 void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
 {
 	PlayAnimation();
@@ -155,4 +169,35 @@ Quaternion ModelAnimation::CalculateValue(const std::vector<KeyframeQuaternion>&
 
 	return (*keyframes.rbegin()).value;
 	
+}
+
+int32_t ModelAnimation::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints)
+{
+	Joint joint;
+	joint.name = node.name;
+	joint.localMatrix = node.localMatrix;
+	joint.skeletonSpaceMatrix = MakeIdentityMatrix();
+	joint.transform = node.transform;
+	joint.index = int32_t(joints.size());
+	joint.parent = parent;
+	joints.push_back(joint);
+	for (const Node& child : node.children) {
+		int32_t childIndex = CreateJoint(child, joint.index, joints);
+		joints[joint.index].children.push_back(childIndex);
+	}
+	// 自身のindexを返す
+	return joint.index;
+}
+
+Skeleton ModelAnimation::CreateSkeleton(const Node& rootNode)
+{
+	Skeleton skeleton;
+	skeleton.root = CreateJoint(rootNode, {}, skeleton.joints);
+
+	// 名前とindexのマッピングを行いアクセスしやすくする
+	for (const Joint& joint : skeleton.joints) {
+		skeleton.jointMap.emplace(joint.name, joint.index);
+	}
+
+	return skeleton;
 }
