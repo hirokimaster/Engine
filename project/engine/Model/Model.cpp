@@ -125,6 +125,7 @@ ModelData Model::LoadGLTFFile(const std::string& directoryPath, const std::strin
 	Assimp::Importer importer;
 	std::string filePath = directoryPath + "/" + filename;
 	const aiScene* scene = importer.ReadFile(filePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
+	modelData.rootNode = ReadNode(scene->mRootNode);
 	assert(scene->HasMeshes());
 
 	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
@@ -160,8 +161,6 @@ ModelData Model::LoadGLTFFile(const std::string& directoryPath, const std::strin
 			modelData.material.textureFilePath = directoryPath + "/" + textureFilePath.C_Str();
 		}
 	}
-
-	modelData.rootNode = ReadNode(scene->mRootNode);
 
 	return modelData;
 }

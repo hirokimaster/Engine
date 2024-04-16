@@ -91,6 +91,7 @@ Animation ModelAnimation::LoadAnimationFile(const std::string& directoryPath, co
 		for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumRotationKeys; ++keyIndex) {
 			aiQuatKey& KeyAssimp = nodeAnimationAssimp->mRotationKeys[keyIndex];
 			KeyframeQuaternion keyframe;
+			keyframe.time = float(KeyAssimp.mTime / animationAssimp->mTicksPerSecond);
 			keyframe.value = { KeyAssimp.mValue.x, -KeyAssimp.mValue.y, -KeyAssimp.mValue.z, KeyAssimp.mValue.w };
 			nodeAnimation.rotate.keyframes.push_back(keyframe);
 		}
@@ -98,6 +99,7 @@ Animation ModelAnimation::LoadAnimationFile(const std::string& directoryPath, co
 		for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumScalingKeys; ++keyIndex) {
 			aiVectorKey& KeyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
 			KeyframeVector3 keyframe;
+			keyframe.time = float(KeyAssimp.mTime / animationAssimp->mTicksPerSecond);
 			keyframe.value = { KeyAssimp.mValue.x, -KeyAssimp.mValue.y, -KeyAssimp.mValue.z };
 			nodeAnimation.scale.keyframes.push_back(keyframe);
 		}
@@ -108,7 +110,7 @@ Animation ModelAnimation::LoadAnimationFile(const std::string& directoryPath, co
 
 void ModelAnimation::PlayAnimation()
 {
-	
+		
 	animationTime_ += 1.0f / 60.0f;
 	animationTime_ = std::fmod(animationTime_, animation_.duration);
 	NodeAnimation& rootNodeAnimation = animation_.nodeAnimations[modelData_.rootNode.name];
