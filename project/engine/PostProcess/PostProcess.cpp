@@ -31,7 +31,7 @@ void PostProcess::Initialize()
 	scissorRect.top = 0;
 	scissorRect.bottom = 720;
 
-	bloom_ = CreateResource::CreateBufferResource(sizeof(Bloom));
+	bloom_ = CreateResource::CreateBufferResource(sizeof(BloomParam));
 	bloom_->Map(0, nullptr, reinterpret_cast<void**>(&bloomData_));
 	bloomData_->stepWeight = 0.001f;
 	bloomData_->sigma = 0.005f;
@@ -170,15 +170,23 @@ void PostProcess::PostDraw()
 
 void PostProcess::Draw()	
 {
-	Property property = GraphicsPipeline::GetInstance()->GetPSO().PostEffectBloom;
+	if (type_ == Bloom) {
+		property_ = GraphicsPipeline::GetInstance()->GetPSO().Bloom;
+	}
+	else if (type_ == Grayscale) {
+		property_ = GraphicsPipeline::GetInstance()->GetPSO().Grayscale;
+	}
+	
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
-	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property.rootSignature_.Get());
-	DirectXCommon::GetCommandList()->SetPipelineState(property.graphicsPipelineState_.Get()); // PSOを設定
+	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
+	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, bloom_->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(1, SrvManager::GetInstance()->GetGPUHandle(index_));
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(0, SrvManager::GetInstance()->GetGPUHandle(index_));
+	if (type_ == Bloom) {
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, bloom_->GetGPUVirtualAddress());
+	}
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawInstanced(3, 1, 0, 0);
 }

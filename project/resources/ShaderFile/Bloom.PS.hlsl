@@ -6,7 +6,7 @@ struct PixelShaderOutput
 	
 };
 
-struct Bloom
+struct BloomParam
 {
     float32_t stepWidth;
     float32_t sigma;
@@ -14,7 +14,7 @@ struct Bloom
     float32_t bloomThreshold;
 };
 
-ConstantBuffer<Bloom> gBloom : register(b0);
+ConstantBuffer<BloomParam> gBloom : register(b0);
 
 Texture2D<float32_t4> gTexture : register(t0);
 

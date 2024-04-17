@@ -66,7 +66,7 @@ struct CameraData {
 	Vector3 worldPosition;
 };
 
-struct Bloom {
+struct BloomParam {
 	float stepWeight;
 	float sigma;
 	float lightStrength;

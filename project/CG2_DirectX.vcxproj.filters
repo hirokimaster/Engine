@@ -424,6 +424,7 @@
       <Filter>Engine\Shader</Filter>
     </FxCompile>
     <FxCompile Include="resources\ShaderFile\PostProcess.VS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Grayscale.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">

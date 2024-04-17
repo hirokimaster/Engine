@@ -12,8 +12,9 @@ GameScene::~GameScene()
 void GameScene::Initialize()
 {
 	postProcess_ = std::make_unique<PostProcess>();
+	postProcess_->SetEffect(Bloom);
 	postProcess_->Initialize();
-	texHandle_ = TextureManager::Load("resources/taiyou.jpg");
+	texHandle_ = TextureManager::Load("resources/pathways.jpg");
 	sprite_.reset(Sprite::Create(texHandle_));
 
 }
