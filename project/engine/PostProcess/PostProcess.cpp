@@ -10,15 +10,12 @@ PostProcess::~PostProcess()
 
 void PostProcess::Initialize()
 {
-	worldTransform_.Initialize();
-	camera_.Initialize();
 	// srvを作るところを今使ってるところの隣にずらす
 	SrvManager::GetInstance()->ShiftIndex();
 	index_ = SrvManager::GetInstance()->GetIndex();
 	CreateSRV();
 	CreateRTV();
 	CreateDSV();
-	CreateVertex();
 
 	// クライアント領域のサイズと一緒にして画面全体に表示
 	viewport.Width = 1280;
@@ -40,39 +37,6 @@ void PostProcess::Initialize()
 	bloomData_->sigma = 0.005f;
 	bloomData_->lightStrength = 1.0;
 	bloomData_->bloomThreshold = 0.5f;
-
-}
-
-void PostProcess::CreateVertex()
-{
-#pragma region // 頂点データ
-
-	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * 6);
-
-	VBV_ = CreateResource::CreateVertexBufferView(resource_.vertexResource, sizeof(VertexData) * 6, 6);
-
-	// 頂点データの設定
-	VertexData* vertexDataSprite = nullptr;
-	resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexDataSprite));
-
-	// 1枚目の三角形
-	vertexDataSprite[0].position = { 0.0f, 720.0f,0.0f, 1.0f }; // 左下
-	vertexDataSprite[0].texcoord = { 0.0f, 1.0f };
-	vertexDataSprite[1].position = { 0.0f, 0.0f, 0.0f, 1.0f }; // 左上
-	vertexDataSprite[1].texcoord = { 0.0f, 0.0f };
-	vertexDataSprite[2].position = { 1280.0f, 720.0f, 0.0f,1.0f }; // 右下
-	vertexDataSprite[2].texcoord = { 1.0f,1.0f };
-	// 2枚目の三角形
-	vertexDataSprite[3].position = { 0.0f, 0.0f, 0.0f, 1.0f }; // 左上
-	vertexDataSprite[3].texcoord = { 0.0f, 0.0f };
-	vertexDataSprite[4].position = { 1280.0f, 0.0f, 0.0f, 1.0f }; // 右上
-	vertexDataSprite[4].texcoord = { 1.0f, 0.0f };
-	vertexDataSprite[5].position = { 1280.0f, 720.0f, 0.0f,1.0f }; // 右下
-	vertexDataSprite[5].texcoord = { 1.0f,1.0f };
-
-#pragma endregion
-
-	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
 
 }
 
@@ -206,21 +170,15 @@ void PostProcess::PostDraw()
 
 void PostProcess::Draw()	
 {
-	camera_.UpdateMatrix();
-	worldTransform_.STransferMatrix(resource_.wvpResource, camera_);
-
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().PostEffectBloom;
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property.rootSignature_.Get());
 	DirectXCommon::GetCommandList()->SetPipelineState(property.graphicsPipelineState_.Get()); // PSOを設定
-	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &VBV_); // VBVを設定
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	// wvp用のCBufferの場所を設定
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.wvpResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, bloom_->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(index_));
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, bloom_->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(1, SrvManager::GetInstance()->GetGPUHandle(index_));
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
-	DirectXCommon::GetCommandList()->DrawInstanced(6, 1, 0, 0);
+	DirectXCommon::GetCommandList()->DrawInstanced(3, 1, 0, 0);
 }

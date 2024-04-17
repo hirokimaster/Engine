@@ -11,6 +11,11 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
+	postProcess_ = std::make_unique<PostProcess>();
+	postProcess_->Initialize();
+	texHandle_ = TextureManager::Load("resources/taiyou.jpg");
+	sprite_.reset(Sprite::Create(texHandle_));
+
 }
 
 void GameScene::Update()
@@ -19,8 +24,15 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
+
+	postProcess_->Draw();
 }
 
 void GameScene::PostProcessDraw()
 {
+	postProcess_->PreDraw();
+
+	sprite_->Draw();
+
+	postProcess_->PostDraw();
 }

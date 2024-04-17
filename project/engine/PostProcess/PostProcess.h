@@ -16,8 +16,6 @@ public:
 
 	void Initialize();
 
-	void CreateVertex();
-
 	void CreateRTV();
 
 	void CreateDSV();
@@ -33,10 +31,7 @@ public:
 	Bloom SetBloomProperty(Bloom bloom) { return *bloomData_ = bloom; }
 
 private:
-	Camera camera_{};
-	WorldTransform worldTransform_{};
 	Resource resource_{};
-	D3D12_VERTEX_BUFFER_VIEW VBV_{};
 	Vector4* materialData_ = nullptr;
 	uint32_t texHandle_ = 0;
 	Microsoft::WRL::ComPtr<ID3D12Resource> texBuff_;

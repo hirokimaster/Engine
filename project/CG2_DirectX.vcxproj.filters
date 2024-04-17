@@ -420,12 +420,10 @@
     <FxCompile Include="resources\ShaderFile\SpotLight.VS.hlsl">
       <Filter>Engine\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="resources\ShaderFile\Bloom.VS.hlsl">
-      <Filter>Engine\Shader</Filter>
-    </FxCompile>
     <FxCompile Include="resources\ShaderFile\Bloom.PS.hlsl">
       <Filter>Engine\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="resources\ShaderFile\PostProcess.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">
@@ -434,6 +432,7 @@
     <None Include="resources\ShaderFile\Particle.hlsli">
       <Filter>Engine\Shader</Filter>
     </None>
+    <None Include="resources\ShaderFile\PostProcess.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">
