@@ -24,6 +24,14 @@ void ModelAnimation::Initialize(const std::string& fileName)
 	resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
 	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size()); // 頂点データをリソースにコピー
 
+	/*resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
+	IBV_.BufferLocation = resource_.indexResource->GetGPUVirtualAddress();
+	IBV_.SizeInBytes = UINT(sizeof(uint32_t) * modelData_.indices.size());
+	IBV_.Format = DXGI_FORMAT_R32_UINT;
+
+	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&modelData_.indices));
+	std::memcpy(&modelData_.indices, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());*/
+
 	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
@@ -47,20 +55,19 @@ void ModelAnimation::Update(Skeleton& skeleton)
 	for (Joint& joint : skeleton.joints) {
 		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
 		if (joint.parent) {
-			joint.skeletonSpaceMatrix = Multiply(joint.localMatrix, skeleton.joints[*joint.parent].skeletonSpaceMatrix);
+			joint_.skeletonSpaceMatrix = Multiply(joint.localMatrix, skeleton.joints[*joint.parent].skeletonSpaceMatrix);
 		}
 		else {
-			joint.skeletonSpaceMatrix = joint.localMatrix;
+			joint_.skeletonSpaceMatrix = joint.localMatrix;
 		}
 	}
 }
 
 void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
 {
-	PlayAnimation();
 	property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 	// wvp用のCBufferの場所を設定
-	worldTransform.AssimpTransferMatrix(resource_.wvpResource, localMatrix_, camera);
+	worldTransform.AssimpTransferMatrix(resource_.wvpResource, joint_.skeletonSpaceMatrix, camera);
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
@@ -68,15 +75,18 @@ void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
 
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &objVertexBufferView_); // VBVを設定
+	//DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
+
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 	// 平行光源
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &objVertexBufferView_); // VBVを設定
-
+	
 	// 描画。(DrawCall/ドローコール)。
+	//DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
 	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
 
@@ -189,10 +199,10 @@ int32_t ModelAnimation::CreateJoint(const Node& node, const std::optional<int32_
 	return joint.index;
 }
 
-Skeleton ModelAnimation::CreateSkeleton(const Node& rootNode)
+Skeleton ModelAnimation::CreateSkeleton()
 {
 	Skeleton skeleton;
-	skeleton.root = CreateJoint(rootNode, {}, skeleton.joints);
+	skeleton.root = CreateJoint(modelData_.rootNode, {}, skeleton.joints);
 
 	// 名前とindexのマッピングを行いアクセスしやすくする
 	for (const Joint& joint : skeleton.joints) {
@@ -200,4 +210,18 @@ Skeleton ModelAnimation::CreateSkeleton(const Node& rootNode)
 	}
 
 	return skeleton;
+}
+
+void ModelAnimation::ApplyAnimation(Skeleton& skeleton, float animationTime)
+{
+	for (Joint& joint : skeleton.joints) {
+		// 対象のjointのanimationがあれば、値の適用を行う。
+		if (auto it = animation_.nodeAnimations.find(joint.name); it != animation_.nodeAnimations.end()) {
+			const NodeAnimation& rootNodeAnimation = (*it).second;
+			joint.transform.translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
+			joint.transform.rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
+			joint.transform.scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime);
+
+		}
+	}
 }

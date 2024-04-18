@@ -73,7 +73,10 @@ public:
 	// nodeからjointを作る
 	int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);
 	// skeletonを作る
-	Skeleton CreateSkeleton(const Node& rootNode);
+	Skeleton CreateSkeleton();
+
+	// アニメーションを適用する
+	void ApplyAnimation(Skeleton& skeleton, float animationTime);
 
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 	void SetColor(const Vector4& color) { color_ = color; }
@@ -90,4 +93,6 @@ private:
 	uint32_t texHandle_ = 0;
 	Vector4 color_ = {};
 	Property property_{};
+	Joint joint_;
+	D3D12_INDEX_BUFFER_VIEW IBV_{};
 };
