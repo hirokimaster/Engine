@@ -2,6 +2,7 @@
 #include "engine/Math/Mathfunction.h"
 #include "engine/Model/Model.h"
 #include "engine/Transform/WorldTransform.h"
+#include "engine/Model/State/ModelSphere.h"
 #include <vector>
 #include <string>
 #include <map>
@@ -62,7 +63,7 @@ public:
 	// 描画
 	void Draw(WorldTransform& worldTransform, Camera& camera);
 	// bornのデバッグ描画
-	void DebugDraw(Joint joint, WorldTransform& worldTransform, Camera& camera);
+	void DebugDraw(Joint joint, Camera& camera);
 
 	// animation読み込み
 	Animation LoadAnimationFile(const std::string& directoryPath, const std::string& fileName);
@@ -96,4 +97,5 @@ private:
 	Vector4 color_ = {};
 	Property property_{};
 	D3D12_INDEX_BUFFER_VIEW IBV_{};
+	std::unique_ptr<ModelSphere> sphere_ = nullptr;
 };

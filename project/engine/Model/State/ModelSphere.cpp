@@ -4,7 +4,7 @@
 /// 初期化
 /// </summary>
 /// <param name="state"></param>
-void ModelSphere::Initialize(Model* state)
+void ModelSphere::Initialize()
 {
 
 	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * (kSubdivision * kSubdivision * 6));
@@ -115,8 +115,6 @@ void ModelSphere::Initialize(Model* state)
 	directionalLightData->color = { 1.0f,1.0f,1.0f,1.0f };
 	directionalLightData->direction = Normalize({ 0.0f, -1.0f, 0.0f });
 	directionalLightData->intensity = 1.0f;
-
-	state;
 }
 
 /// <summary>

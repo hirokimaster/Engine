@@ -93,7 +93,7 @@ void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
 	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
 
-void ModelAnimation::DebugDraw(Joint joint, WorldTransform& worldTransform, Camera& camera)
+void ModelAnimation::DebugDraw(Joint joint, Camera& camera)
 {
 
 	property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;

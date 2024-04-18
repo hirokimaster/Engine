@@ -1,14 +1,17 @@
 #pragma once
 #include <math.h>
 #define _USE_MATH_DEFINES
-#include "IModelState.h"
+#include "engine/Camera/Camera.h"
+#include "engine/Transform/WorldTransform.h"
+#include "engine/GraphicsPipeline/GraphicsPipeline.h"
+#include "engine/DescriptorManager/SRVManager/SrvManager.h"
 
-class ModelSphere : public IModelState{
+class ModelSphere{
 public:
 
-	void Initialize(Model* state)override;
+	void Initialize();
 
-	void Draw(WorldTransform worldTransform, Camera camera, uint32_t texHandle)override;
+	void Draw(WorldTransform worldTransform, Camera camera, uint32_t texHandle);
 
 private:
 
