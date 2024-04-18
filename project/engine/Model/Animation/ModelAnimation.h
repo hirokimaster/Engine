@@ -61,6 +61,8 @@ public:
 	void Update(Skeleton& skeleton);
 	// 描画
 	void Draw(WorldTransform& worldTransform, Camera& camera);
+	// bornのデバッグ描画
+	void DebugDraw(Joint joint, WorldTransform& worldTransform, Camera& camera);
 
 	// animation読み込み
 	Animation LoadAnimationFile(const std::string& directoryPath, const std::string& fileName);
@@ -93,6 +95,5 @@ private:
 	uint32_t texHandle_ = 0;
 	Vector4 color_ = {};
 	Property property_{};
-	Joint joint_;
 	D3D12_INDEX_BUFFER_VIEW IBV_{};
 };

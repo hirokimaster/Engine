@@ -13,7 +13,8 @@ void GameScene::Initialize()
 {
 	worldTransform_.Initialize();
 	worldTransform_.scale = { 5.0f,5.0f,5.0f };
-	//worldTransform_.translate.y = -5.0f;
+	worldTransform_.translate.y = -5.0f;
+	worldTransform_.rotate.y = -3.142f;
 	camera_.Initialize();
 	texHandle_ = TextureManager::Load("resources/uvChecker.png");
 	anim_ = std::make_unique<ModelAnimation>();

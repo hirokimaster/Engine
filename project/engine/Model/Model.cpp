@@ -185,7 +185,7 @@ ModelData Model::LoadGLTFFile(const std::string& directoryPath, const std::strin
 				VertexData vertex;
 				vertex.position = { position.x, position.y,position.z,1.0f };
 				vertex.normal = { normal.x,normal.y,normal.z };
-				vertex.texcoord = { -texcoord.x, -texcoord.y };
+				vertex.texcoord = { texcoord.x, texcoord.y };
 				vertex.position.x *= -1.0f;
 				vertex.normal.x *= -1.0f;
 				modelData.vertices.push_back(vertex);
