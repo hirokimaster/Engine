@@ -40,6 +40,8 @@ public:
 
 	BloomParam SetBloomProperty(BloomParam bloom) { return *bloomData_ = bloom; }
 
+	GaussianParam SetGaussianParam(GaussianParam gaussian) { return *gaussianData_ = gaussian; }
+
 #pragma endregion
 
 private: // このクラス内でしか使わない関数
@@ -57,6 +59,11 @@ private: // このクラス内でしか使わない関数
 	/// srv作成
 	/// </summary>
 	void CreateSRV();
+
+	/// <summary>
+	/// buffer作成
+	/// </summary>
+	void CreateBuffer();
 
 private:
 	Resource resource_{};
@@ -76,6 +83,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> bloom_;
 	VignetteParam* vignetteData_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> vignette_;
+	GaussianParam* gaussianData_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> gaussian_;
 	PostEffectType type_;
 	Property property_;
 };

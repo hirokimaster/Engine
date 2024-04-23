@@ -31,21 +31,9 @@ void PostProcess::Initialize()
 	scissorRect.top = 0;
 	scissorRect.bottom = 720;
 
-	// effectの種類で区別する
-	if (type_ = Bloom) {
-		bloom_ = CreateResource::CreateBufferResource(sizeof(BloomParam));
-		bloom_->Map(0, nullptr, reinterpret_cast<void**>(&bloomData_));
-		bloomData_->stepWeight = 0.001f;
-		bloomData_->sigma = 0.005f;
-		bloomData_->lightStrength = 1.0;
-		bloomData_->bloomThreshold = 0.5f;
-	}
-	else if (type_ = Vignette) {
-		vignette_ = CreateResource::CreateBufferResource(sizeof(VignetteParam));
-		vignette_->Map(0, nullptr, reinterpret_cast<void**>(&vignetteData_));
-		vignetteData_->scale = 16.0f;
-		vignetteData_->exponent = 0.8f;
-	}
+	// 定数バッファ作成
+	CreateBuffer();
+	
 }
 
 void PostProcess::CreateRTV()
@@ -141,6 +129,31 @@ void PostProcess::CreateSRV()
 
 }
 
+void PostProcess::CreateBuffer()
+{
+	// effectの種類で区別する
+	if (type_ == Bloom) {
+		bloom_ = CreateResource::CreateBufferResource(sizeof(BloomParam));
+		bloom_->Map(0, nullptr, reinterpret_cast<void**>(&bloomData_));
+		bloomData_->stepWidth = 0.001f;
+		bloomData_->sigma = 0.005f;
+		bloomData_->lightStrength = 1.0;
+		bloomData_->bloomThreshold = 0.5f;
+	}
+	else if (type_ == Vignette) {
+		vignette_ = CreateResource::CreateBufferResource(sizeof(VignetteParam));
+		vignette_->Map(0, nullptr, reinterpret_cast<void**>(&vignetteData_));
+		vignetteData_->scale = 16.0f;
+		vignetteData_->exponent = 0.8f;
+	}
+	else if (type_ == GaussianBlur) {
+		gaussian_ = CreateResource::CreateBufferResource(sizeof(GaussianParam));
+		gaussian_->Map(0, nullptr, reinterpret_cast<void**>(&gaussianData_));
+		gaussianData_->sigma = 0.001f;
+		gaussianData_->stepWidth = 0.005f;
+	}
+}
+
 void PostProcess::PreDraw()
 {
 	barrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
@@ -187,7 +200,9 @@ void PostProcess::Draw()
 	else if (type_ == Vignette) {
 		property_ = GraphicsPipeline::GetInstance()->GetPSO().Vignette;
 	}
-	
+	else if (type_ == GaussianBlur) {
+		property_ = GraphicsPipeline::GetInstance()->GetPSO().GaussianBlur;
+	}
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
@@ -200,6 +215,9 @@ void PostProcess::Draw()
 	}
 	else if (type_ == Vignette) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, vignette_->GetGPUVirtualAddress());
+	}
+	else if (type_ == GaussianBlur) {
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, gaussian_->GetGPUVirtualAddress());
 	}
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawInstanced(3, 1, 0, 0);

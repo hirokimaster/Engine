@@ -67,7 +67,7 @@ struct CameraData {
 };
 
 struct BloomParam {
-	float stepWeight;
+	float stepWidth;
 	float sigma;
 	float lightStrength;
 	float bloomThreshold;
@@ -76,6 +76,11 @@ struct BloomParam {
 struct VignetteParam {
 	float scale;
 	float exponent;
+};
+
+struct GaussianParam {
+	float sigma;
+	float stepWidth;
 };
 
 class CreateResource {

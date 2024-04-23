@@ -25,6 +25,7 @@ struct PipelineState {
 	Property Bloom;
 	Property Grayscale;
 	Property Vignette;
+	Property GaussianBlur;
 };
 
 enum Light {
@@ -106,6 +107,8 @@ private:
 	static Property CreateGrayscale(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	static Property CreateVignette(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateGaussianBlur(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	PipelineState pso = {};
 

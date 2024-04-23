@@ -426,6 +426,7 @@
     <FxCompile Include="resources\ShaderFile\PostProcess.VS.hlsl" />
     <FxCompile Include="resources\ShaderFile\Grayscale.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\Vignette.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\GaussianBlur.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">

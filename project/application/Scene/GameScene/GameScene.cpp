@@ -12,9 +12,9 @@ GameScene::~GameScene()
 void GameScene::Initialize()
 {
 	postProcess_ = std::make_unique<PostProcess>();
-	postProcess_->SetEffect(Vignette);
+	postProcess_->SetEffect(GaussianBlur);
 	postProcess_->Initialize();
-	texHandle_ = TextureManager::Load("resources/pathways.jpg");
+	texHandle_ = TextureManager::Load("resources/taiyou.jpg");
 	sprite_.reset(Sprite::Create(texHandle_));
 
 }
@@ -25,7 +25,6 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-
 	postProcess_->Draw();
 }
 
