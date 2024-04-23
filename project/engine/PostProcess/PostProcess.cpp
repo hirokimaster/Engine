@@ -31,13 +31,21 @@ void PostProcess::Initialize()
 	scissorRect.top = 0;
 	scissorRect.bottom = 720;
 
-	bloom_ = CreateResource::CreateBufferResource(sizeof(BloomParam));
-	bloom_->Map(0, nullptr, reinterpret_cast<void**>(&bloomData_));
-	bloomData_->stepWeight = 0.001f;
-	bloomData_->sigma = 0.005f;
-	bloomData_->lightStrength = 1.0;
-	bloomData_->bloomThreshold = 0.5f;
-
+	// effectの種類で区別する
+	if (type_ = Bloom) {
+		bloom_ = CreateResource::CreateBufferResource(sizeof(BloomParam));
+		bloom_->Map(0, nullptr, reinterpret_cast<void**>(&bloomData_));
+		bloomData_->stepWeight = 0.001f;
+		bloomData_->sigma = 0.005f;
+		bloomData_->lightStrength = 1.0;
+		bloomData_->bloomThreshold = 0.5f;
+	}
+	else if (type_ = Vignette) {
+		vignette_ = CreateResource::CreateBufferResource(sizeof(VignetteParam));
+		vignette_->Map(0, nullptr, reinterpret_cast<void**>(&vignetteData_));
+		vignetteData_->scale = 16.0f;
+		vignetteData_->exponent = 0.8f;
+	}
 }
 
 void PostProcess::CreateRTV()
@@ -176,6 +184,9 @@ void PostProcess::Draw()
 	else if (type_ == Grayscale) {
 		property_ = GraphicsPipeline::GetInstance()->GetPSO().Grayscale;
 	}
+	else if (type_ == Vignette) {
+		property_ = GraphicsPipeline::GetInstance()->GetPSO().Vignette;
+	}
 	
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
@@ -186,6 +197,9 @@ void PostProcess::Draw()
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(0, SrvManager::GetInstance()->GetGPUHandle(index_));
 	if (type_ == Bloom) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, bloom_->GetGPUVirtualAddress());
+	}
+	else if (type_ == Vignette) {
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, vignette_->GetGPUVirtualAddress());
 	}
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawInstanced(3, 1, 0, 0);

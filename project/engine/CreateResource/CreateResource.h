@@ -73,6 +73,11 @@ struct BloomParam {
 	float bloomThreshold;
 };
 
+struct VignetteParam {
+	float scale;
+	float exponent;
+};
+
 class CreateResource {
 public:
 	// Resource作成

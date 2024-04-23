@@ -74,6 +74,8 @@ private:
 	uint32_t index_;
 	BloomParam* bloomData_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> bloom_;
+	VignetteParam* vignetteData_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> vignette_;
 	PostEffectType type_;
 	Property property_;
 };
