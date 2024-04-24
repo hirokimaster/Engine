@@ -39,11 +39,11 @@ public: // メンバ関数
 	void PostProcessDraw()override;
 
 private:
-	std::unique_ptr<ModelAnimation>	anim_;
+	/*std::unique_ptr<ModelAnimation>	anim_;
 	Skeleton skeleton_{};
 	float animationTime_ = 0;
 	WorldTransform worldTransform_{};
 	Camera camera_{};
 	uint32_t texHandle_ = 0;
-	std::unique_ptr<Sprite> sprite_;
+	std::unique_ptr<Sprite> sprite_;*/
 };
