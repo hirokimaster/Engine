@@ -45,4 +45,5 @@ private:
 	WorldTransform worldTransform_{};
 	Camera camera_{};
 	uint32_t texHandle_ = 0;
+	std::unique_ptr<Sprite> sprite_;
 };

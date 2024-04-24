@@ -37,6 +37,6 @@ VertexShaderOutput main(VertexShaderInput input)
     output.normal = normalize(mul(input.normal, (float32_t3x3) gTransformationMatrix.world));
     // 非均一スケール用の法線変換
     //output.normal = normalize(mul(input.normal, (float32_t3x3) gTransformationMatrix.WorldInverseTranspose));
-    output.worldPosition = mul(input.position, gTransformationMatrix.World).xyz;
+    output.worldPosition = mul(input.position, gTransformationMatrix.world).xyz;
     return output;
 }

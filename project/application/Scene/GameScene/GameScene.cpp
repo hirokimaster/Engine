@@ -21,6 +21,8 @@ void GameScene::Initialize()
 	anim_->Initialize("simpleSkin.gltf");
 	anim_->SetTexHandle(texHandle_);
 	skeleton_ = anim_->CreateSkeleton();
+
+	sprite_.reset(Sprite::Create(texHandle_));
 	
 }
 
@@ -37,6 +39,7 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	anim_->Draw(worldTransform_, camera_);
+	sprite_->Draw();
 }
 
 void GameScene::PostProcessDraw()

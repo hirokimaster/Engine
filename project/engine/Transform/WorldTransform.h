@@ -4,12 +4,6 @@
 #include "engine/CreateResource/CreateResource.h"
 #include "engine/Camera/Camera.h"
 
-
-struct TransformationMatrix {
-	Matrix4x4 WVP;
-	Matrix4x4 World;
-};
-
 struct ConstBufferDataWorldTransform {
 	Matrix4x4 matWorld; // ローカル → ワールド変換行列
 	Matrix4x4 world; // world

@@ -97,5 +97,4 @@ private:
 	Vector4 color_ = {};
 	Property property_{};
 	D3D12_INDEX_BUFFER_VIEW IBV_{};
-	std::unique_ptr<ModelSphere> sphere_ = nullptr;
 };
