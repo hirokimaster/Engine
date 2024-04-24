@@ -12,6 +12,14 @@ void Model::InitializeObj(const std::string& filename)
 {
 	modelData_ = LoadObjFile("resources", filename);
 
+	/*resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
+	IBV_.BufferLocation = resource_.indexResource->GetGPUVirtualAddress();
+	IBV_.SizeInBytes = UINT(sizeof(uint32_t) * modelData_.indices.size());
+	IBV_.Format = DXGI_FORMAT_R32_UINT;
+
+	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&modelData_.indices));
+	std::memcpy(&modelData_.indices, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());*/
+
 	// VertexResource
 	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData_.vertices.size());
 	// VertexBufferView
@@ -39,6 +47,15 @@ void Model::InitializeObj(const std::string& filename)
 void Model::InitializeGLTF(const std::string& filename)
 {
 	modelData_ = LoadGLTFFile("resources", filename);
+
+	/*resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
+	IBV_.BufferLocation = resource_.indexResource->GetGPUVirtualAddress();
+	IBV_.SizeInBytes = UINT(sizeof(uint32_t) * modelData_.indices.size());
+	IBV_.Format = DXGI_FORMAT_R32_UINT;
+
+	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&modelData_.indices));
+	std::memcpy(&modelData_.indices, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());*/
+
 
 	// VertexResource
 	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData_.vertices.size());
@@ -68,8 +85,10 @@ void Model::InitializeGLTF(const std::string& filename)
 void Model::Draw()
 {
 	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &objVertexBufferView_); // VBVを設定
+	//DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
 
 	// 描画。(DrawCall/ドローコール)。
+	//DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
 	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
 
@@ -80,12 +99,22 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 	Assimp::Importer importer;
 	std::string filePath = directoryPath + "/" + filename;
 	const aiScene* scene = importer.ReadFile(filePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
+	modelData.rootNode = ReadNode(scene->mRootNode);
 	assert(scene->HasMeshes());
 
 	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
 		aiMesh* mesh = scene->mMeshes[meshIndex];
 		assert(mesh->HasNormals());
 		assert(mesh->HasTextureCoords(0));
+		//modelData.vertices.resize(mesh->mNumVertices);
+		/*for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
+			aiVector3D& position = mesh->mVertices[vertexIndex];
+			aiVector3D& normal = mesh->mNormals[vertexIndex];
+			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
+			modelData.vertices[vertexIndex].position = { -position.x, position.y, position.z, 1.0f };
+			modelData.vertices[vertexIndex].normal = { -normal.x, normal.y, normal.z };
+			modelData.vertices[vertexIndex].texcoord = { texcoord.x, texcoord.y };
+		}*/
 
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
 			aiFace& face = mesh->mFaces[faceIndex];
@@ -93,6 +122,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 
 			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
 				uint32_t vertexIndex = face.mIndices[element];
+				//modelData.indices.push_back(vertexIndex);
 				aiVector3D& position = mesh->mVertices[vertexIndex];
 				aiVector3D& normal = mesh->mNormals[vertexIndex];
 				aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
@@ -125,12 +155,22 @@ ModelData Model::LoadGLTFFile(const std::string& directoryPath, const std::strin
 	Assimp::Importer importer;
 	std::string filePath = directoryPath + "/" + filename;
 	const aiScene* scene = importer.ReadFile(filePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
+	modelData.rootNode = ReadNode(scene->mRootNode);
 	assert(scene->HasMeshes());
 
 	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
 		aiMesh* mesh = scene->mMeshes[meshIndex];
 		assert(mesh->HasNormals());
 		assert(mesh->HasTextureCoords(0));
+		//modelData.vertices.resize(mesh->mNumVertices);
+	/*	for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
+			aiVector3D& position = mesh->mVertices[vertexIndex];
+			aiVector3D& normal = mesh->mNormals[vertexIndex];
+			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
+			modelData.vertices[vertexIndex].position = { -position.x, position.y, position.z, 1.0f };
+			modelData.vertices[vertexIndex].normal = { -normal.x, normal.y, normal.z };
+			modelData.vertices[vertexIndex].texcoord = { texcoord.x, texcoord.y };	
+		}*/
 
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
 			aiFace& face = mesh->mFaces[faceIndex];
@@ -138,6 +178,7 @@ ModelData Model::LoadGLTFFile(const std::string& directoryPath, const std::strin
 
 			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
 				uint32_t vertexIndex = face.mIndices[element];
+				//modelData.indices.push_back(vertexIndex);
 				aiVector3D& position = mesh->mVertices[vertexIndex];
 				aiVector3D& normal = mesh->mNormals[vertexIndex];
 				aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
@@ -160,8 +201,6 @@ ModelData Model::LoadGLTFFile(const std::string& directoryPath, const std::strin
 			modelData.material.textureFilePath = directoryPath + "/" + textureFilePath.C_Str();
 		}
 	}
-
-	modelData.rootNode = ReadNode(scene->mRootNode);
 
 	return modelData;
 }
@@ -194,9 +233,16 @@ MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, c
 Node Model::ReadNode(aiNode* node)
 {
 	Node result;
-	aiMatrix4x4 aiLocalMatrix = node->mTransformation; // nodeのlocalMatrixを取得
-	aiLocalMatrix.Transpose();
-	result.localMatrix.m[0][0] = aiLocalMatrix[0][0];
+	aiVector3D scale, translate;
+	aiQuaternion rotate;
+	node->mTransformation.Decompose(scale, rotate, translate);
+	result.transform.scale = { scale.x,scale.y,scale.y };
+	result.transform.rotate = { rotate.x,-rotate.y,-rotate.z,rotate.w };
+	result.transform.translate = { -translate.x, translate.y,translate.z };
+	result.localMatrix = MakeAffineMatrix(result.transform.scale, result.transform.rotate, result.transform.translate);
+	//aiMatrix4x4 aiLocalMatrix = node->mTransformation; // nodeのlocalMatrixを取得
+	//aiLocalMatrix.Transpose();
+	//result.localMatrix.m[0][0] = aiLocalMatrix[0][0];
 	result.name = node->mName.C_Str(); // nodeの名前を格納
 	result.children.resize(node->mNumChildren); // 子供の数だけ確保
 	for (uint32_t childIndex = 0; childIndex < node->mNumChildren; ++childIndex) {

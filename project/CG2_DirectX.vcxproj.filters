@@ -235,7 +235,7 @@
     <ClCompile Include="engine\Object3DPlacer\Object3DPlacer.cpp">
       <Filter>Engine\Object3DPlacer</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Animation\Animation.cpp">
+    <ClCompile Include="engine\Model\Animation\ModelAnimation.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -387,7 +387,7 @@
     <ClInclude Include="engine\Object3DPlacer\Object3DPlacer.h">
       <Filter>Engine\Object3DPlacer</Filter>
     </ClInclude>
-    <ClInclude Include="engine\Animation\Animation.h" />
+    <ClInclude Include="engine\Model\Animation\ModelAnimation.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">
