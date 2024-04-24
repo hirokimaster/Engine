@@ -66,11 +66,21 @@ struct CameraData {
 	Vector3 worldPosition;
 };
 
-struct Bloom {
-	float stepWeight;
+struct BloomParam {
+	float stepWidth;
 	float sigma;
 	float lightStrength;
 	float bloomThreshold;
+};
+
+struct VignetteParam {
+	float scale;
+	float exponent;
+};
+
+struct GaussianParam {
+	float sigma;
+	float stepWidth;
 };
 
 class CreateResource {
