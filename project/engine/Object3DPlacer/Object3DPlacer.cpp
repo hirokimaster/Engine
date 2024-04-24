@@ -15,8 +15,6 @@ void Object3DPlacer::Initialize()
 	directionalLightData_->color = { color_ };
 	directionalLightData_->direction = Normalize({ 0.0f, -1.0f, 0.0f });
 	directionalLightData_->intensity = 1.0f;
-
-	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
 }
 
 void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera)
@@ -48,10 +46,11 @@ void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera)
 
 	// wvp用のCBufferの場所を設定
 	//worldTransform.TransferMatrix(resource_.wvpResource, camera);
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 	// 平行光源
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, resource_.directionalLightResource->GetGPUVirtualAddress());
 
 	if (lighting_) {
 		lighting_->CreateCommand();
