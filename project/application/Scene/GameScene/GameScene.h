@@ -38,4 +38,7 @@ public: // メンバ関数
 	void PostProcessDraw()override;
 
 private:
+	/*uint32_t texHandle_ = 0;
+	std::unique_ptr<PostProcess> postProcess_ = nullptr;
+	std::unique_ptr<Sprite> sprite_ = nullptr;*/
 };

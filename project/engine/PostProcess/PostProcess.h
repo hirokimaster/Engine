@@ -14,29 +14,59 @@ public:
 	/// </summary>
 	~PostProcess();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
 
-	void CreateVertex();
-
-	void CreateRTV();
-
-	void CreateDSV();
-
-	void CreateSRV();
-
+	/// <summary>
+	/// 描画前処理
+	/// </summary>
 	void PreDraw();
 
+	/// <summary>
+	/// 描画後処理
+	/// </summary>
 	void PostDraw();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
-	Bloom SetBloomProperty(Bloom bloom) { return *bloomData_ = bloom; }
+#pragma region setter
+
+	void SetEffect(PostEffectType type) { type_ = type; }
+
+	BloomParam SetBloomProperty(BloomParam bloom) { return *bloomData_ = bloom; }
+
+	GaussianParam SetGaussianParam(GaussianParam gaussian) { return *gaussianData_ = gaussian; }
+
+#pragma endregion
+
+private: // このクラス内でしか使わない関数
+	/// <summary>
+	/// rtv作成
+	/// </summary>
+	void CreateRTV();
+
+	/// <summary>
+	/// dsv作成
+	/// </summary>
+	void CreateDSV();
+
+	/// <summary>
+	/// srv作成
+	/// </summary>
+	void CreateSRV();
+
+	/// <summary>
+	/// buffer作成
+	/// </summary>
+	void CreateBuffer();
 
 private:
-	Camera camera_{};
-	WorldTransform worldTransform_{};
 	Resource resource_{};
-	D3D12_VERTEX_BUFFER_VIEW VBV_{};
 	Vector4* materialData_ = nullptr;
 	uint32_t texHandle_ = 0;
 	Microsoft::WRL::ComPtr<ID3D12Resource> texBuff_;
@@ -49,6 +79,12 @@ private:
 	D3D12_VIEWPORT viewport{};
 	D3D12_RECT scissorRect{};
 	uint32_t index_;
-	Bloom* bloomData_ = nullptr;
+	BloomParam* bloomData_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> bloom_;
+	VignetteParam* vignetteData_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> vignette_;
+	GaussianParam* gaussianData_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> gaussian_;
+	PostEffectType type_;
+	Property property_;
 };

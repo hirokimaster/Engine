@@ -22,13 +22,23 @@ struct PipelineState {
 	Property PointLight;
 	Property SpotLight;
 	Property BlinnPhongObject3D;
-	Property PostEffectBloom;
+	Property Bloom;
+	Property Grayscale;
+	Property Vignette;
+	Property GaussianBlur;
 };
 
 enum Light {
 	None,
 	Point,
 	Spot
+};
+
+enum PostEffectType {
+	Bloom,
+	Grayscale,
+	Vignette,
+	GaussianBlur
 };
 
 // BlendMode
@@ -93,6 +103,12 @@ private:
 	static Property CreateSpotLight(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	static Property CreateBloom(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateGrayscale(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateVignette(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateGaussianBlur(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	PipelineState pso = {};
 
