@@ -207,7 +207,7 @@ void PostProcess::PostDraw()
 void PostProcess::Draw()	
 {
 	camera_.UpdateMatrix();
-	worldTransform_.STransferMatrix(resource_.wvpResource, camera_);
+	//worldTransform_.STransferMatrix(resource_.wvpResource, camera_);
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().PostEffectBloom;
 

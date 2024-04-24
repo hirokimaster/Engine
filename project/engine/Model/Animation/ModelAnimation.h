@@ -63,7 +63,7 @@ public:
 	// 描画
 	void Draw(WorldTransform& worldTransform, Camera& camera);
 	// bornのデバッグ描画
-	void DebugDraw(Joint joint, Camera& camera);
+	//void DebugDraw(Joint joint, Camera& camera);
 
 	// animation読み込み
 	Animation LoadAnimationFile(const std::string& directoryPath, const std::string& fileName);

@@ -12,7 +12,7 @@ GameScene::~GameScene()
 void GameScene::Initialize()
 {
 	worldTransform_.Initialize();
-	worldTransform_.scale = { 5.0f,5.0f,5.0f };
+	worldTransform_.scale = { 2.0f,2.0f,2.0f };
 	worldTransform_.translate.y = -5.0f;
 	worldTransform_.rotate.y = -3.142f;
 	camera_.Initialize();

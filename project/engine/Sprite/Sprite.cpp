@@ -127,7 +127,7 @@ void Sprite::Draw()
 {
 	
 	CreateVertex();
-	worldTransform_.STransferMatrix(resource_.wvpResource, camera_);
+	//worldTransform_.STransferMatrix(resource_.wvpResource, camera_);
 	worldTransform_.translate.x = GetPosition().x;
 	worldTransform_.translate.y = GetPosition().y;
 	worldTransform_.UpdateMatrix();

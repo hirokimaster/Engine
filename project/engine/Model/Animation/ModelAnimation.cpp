@@ -71,7 +71,7 @@ void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
 	property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 	// wvp用のCBufferの場所を設定
 	//worldTransform.AssimpTransferMatrix(resource_.wvpResource, localMatrix_, camera);
-	worldTransform.TransferMatrix(resource_.wvpResource, camera);
+	//worldTransform.TransferMatrix(resource_.wvpResource, camera);
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
 	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
@@ -83,43 +83,44 @@ void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
 
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 	// 平行光源
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, resource_.directionalLightResource->GetGPUVirtualAddress());
 	
 	// 描画。(DrawCall/ドローコール)。
 	//DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
 	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
 
-void ModelAnimation::DebugDraw(Joint joint, Camera& camera)
-{
-
-	property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
-	// wvp用のCBufferの場所を設定
-	//worldTransform.AssimpTransferMatrix(resource_.wvpResource, localMatrix_, camera);
-	worldTransform.TransferMatrix(resource_.wvpResource, camera);
-	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
-	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
-	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
-
-	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
-	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &objVertexBufferView_); // VBVを設定
-	//DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
-
-	// マテリアルCBufferの場所を設定
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
-	// 平行光源
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
-
-	// 描画。(DrawCall/ドローコール)。
-	//DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
-	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
-}
+//void ModelAnimation::DebugDraw(Joint joint, Camera& camera)
+//{
+//
+//	property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
+//	// wvp用のCBufferの場所を設定
+//	//worldTransform.AssimpTransferMatrix(resource_.wvpResource, localMatrix_, camera);
+//	//worldTransform.TransferMatrix(resource_.wvpResource, camera);
+//	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
+//	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
+//	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
+//
+//	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
+//	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+//	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &objVertexBufferView_); // VBVを設定
+//	//DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
+//
+//	// マテリアルCBufferの場所を設定
+//	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
+//	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, );
+//	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
+//	// 平行光源
+//	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
+//
+//	// 描画。(DrawCall/ドローコール)。
+//	//DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
+//	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
+//}
 
 Animation ModelAnimation::LoadAnimationFile(const std::string& directoryPath, const std::string& fileName)
 {

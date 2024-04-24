@@ -50,7 +50,7 @@ void Triangle::Initialize()
 void Triangle::Draw(WorldTransform worldTransform, Camera camera, uint32_t texHandle)
 {
 
-	worldTransform.TransferMatrix(resource_.wvpResource, camera);
+	//worldTransform.TransferMatrix(resource_.wvpResource, camera);
 
 	Property property = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 
