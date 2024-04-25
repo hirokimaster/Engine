@@ -11,12 +11,6 @@
 #include "externals/assimp/include/assimp/postprocess.h"
 #include <numbers>
 
-struct QuaternionTransform {
-	Vector3 scale;
-	Quaternion rotate;
-	Vector3 translate;
-};
-
 struct Node {
 	QuaternionTransform transform;
 	Matrix4x4 localMatrix;

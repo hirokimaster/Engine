@@ -36,7 +36,7 @@ struct Animation {
 };
 
 struct Joint {
-	QuaternionTransform transform;
+	WorldTransform transform;
 	Matrix4x4 localMatrix;
 	Matrix4x4 skeletonSpaceMatrix;
 	std::string name;

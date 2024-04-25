@@ -51,7 +51,7 @@ void ModelAnimation::Update(Skeleton& skeleton)
 {
 	// すべてのjointを更新。
 	for (Joint& joint : skeleton.joints) {
-		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
+		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.quaternion, joint.transform.translate);
 		//localMatrix_ = joint.localMatrix;
 		if (joint.parent) {
 			joint.skeletonSpaceMatrix = Multiply(joint.localMatrix, skeleton.joints[*joint.parent].skeletonSpaceMatrix);
@@ -249,7 +249,7 @@ void ModelAnimation::ApplyAnimation(Skeleton& skeleton, float animationTime)
 		if (auto it = animation_.nodeAnimations.find(joint.name); it != animation_.nodeAnimations.end()) {
 			const NodeAnimation& rootNodeAnimation = (*it).second;
 			joint.transform.translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
-			joint.transform.rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
+			joint.transform.quaternion = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
 			joint.transform.scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime);
 
 		}
