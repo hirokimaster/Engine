@@ -62,8 +62,6 @@ public:
 	void Update(Skeleton& skeleton);
 	// 描画
 	void Draw(WorldTransform& worldTransform, Camera& camera);
-	// bornのデバッグ描画
-	//void DebugDraw(Joint joint, Camera& camera);
 
 	// animation読み込み
 	Animation LoadAnimationFile(const std::string& directoryPath, const std::string& fileName);
@@ -90,7 +88,7 @@ private:
 	Matrix4x4 localMatrix_{};
 	ModelData modelData_;
 	Resource resource_ = {};
-	D3D12_VERTEX_BUFFER_VIEW objVertexBufferView_{};
+	D3D12_VERTEX_BUFFER_VIEW VBV_{};
 	Material* materialData_ = nullptr;
 	DirectionalLight* directionalLightData_ = nullptr;
 	uint32_t texHandle_ = 0;
