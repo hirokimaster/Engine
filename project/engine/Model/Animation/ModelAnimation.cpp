@@ -9,14 +9,11 @@ void ModelAnimation::Initialize(const std::string& fileName)
 	// VertexResource
 	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData_.vertices.size());
 	// VertexBufferView
-	// 頂点バッファビューを作成する
-
-	// リソースの先頭のアドレスから使う
-	objVertexBufferView_.BufferLocation = resource_.vertexResource->GetGPUVirtualAddress();
+	VBV_.BufferLocation = resource_.vertexResource->GetGPUVirtualAddress();
 	// 使用するリソースのサイズは頂点サイズ
-	objVertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
+	VBV_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
 	// 1頂点あたりのサイズ
-	objVertexBufferView_.StrideInBytes = sizeof(VertexData);
+	VBV_.StrideInBytes = sizeof(VertexData);
 
 	// 頂点リソースにデータを書き込む
 	VertexData* vertexData = nullptr;
@@ -24,13 +21,16 @@ void ModelAnimation::Initialize(const std::string& fileName)
 	resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
 	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size()); // 頂点データをリソースにコピー
 
-	/*resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
+	// indexResource作成
+	resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
+
 	IBV_.BufferLocation = resource_.indexResource->GetGPUVirtualAddress();
-	IBV_.SizeInBytes = UINT(sizeof(uint32_t) * modelData_.indices.size());
+	IBV_.SizeInBytes = sizeof(uint32_t) * UINT(modelData_.indices.size());
 	IBV_.Format = DXGI_FORMAT_R32_UINT;
 
-	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&modelData_.indices));
-	std::memcpy(&modelData_.indices, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());*/
+	uint32_t* index = nullptr;
+	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&index));
+	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
 
 	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
@@ -51,7 +51,7 @@ void ModelAnimation::Update(Skeleton& skeleton)
 {
 	// すべてのjointを更新。
 	for (Joint& joint : skeleton.joints) {
-		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
+		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.quaternion, joint.transform.translate);
 		//localMatrix_ = joint.localMatrix;
 		if (joint.parent) {
 			joint.skeletonSpaceMatrix = Multiply(joint.localMatrix, skeleton.joints[*joint.parent].skeletonSpaceMatrix);
@@ -67,17 +67,15 @@ void ModelAnimation::Update(Skeleton& skeleton)
 void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
 {
 	property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
-	// wvp用のCBufferの場所を設定
-	//worldTransform.AssimpTransferMatrix(resource_.wvpResource, localMatrix_, camera);
-	//worldTransform.TransferMatrix(resource_.wvpResource, camera);
+	
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
 	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
 
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &objVertexBufferView_); // VBVを設定
-	//DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
+	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &VBV_); // VBVを設定
+	DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
 
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
@@ -88,37 +86,8 @@ void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, resource_.directionalLightResource->GetGPUVirtualAddress());
 	
 	// 描画。(DrawCall/ドローコール)。
-	//DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
-	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
+	DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
 }
-
-//void ModelAnimation::DebugDraw(Joint joint, Camera& camera)
-//{
-//
-//	property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
-//	// wvp用のCBufferの場所を設定
-//	//worldTransform.AssimpTransferMatrix(resource_.wvpResource, localMatrix_, camera);
-//	//worldTransform.TransferMatrix(resource_.wvpResource, camera);
-//	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
-//	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
-//	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
-//
-//	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
-//	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-//	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &objVertexBufferView_); // VBVを設定
-//	//DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
-//
-//	// マテリアルCBufferの場所を設定
-//	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
-//	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, );
-//	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
-//	// 平行光源
-//	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(3, resource_.directionalLightResource->GetGPUVirtualAddress());
-//
-//	// 描画。(DrawCall/ドローコール)。
-//	//DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
-//	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
-//}
 
 Animation ModelAnimation::LoadAnimationFile(const std::string& directoryPath, const std::string& fileName)
 {
@@ -249,7 +218,7 @@ void ModelAnimation::ApplyAnimation(Skeleton& skeleton, float animationTime)
 		if (auto it = animation_.nodeAnimations.find(joint.name); it != animation_.nodeAnimations.end()) {
 			const NodeAnimation& rootNodeAnimation = (*it).second;
 			joint.transform.translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
-			joint.transform.rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
+			joint.transform.quaternion = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
 			joint.transform.scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime);
 
 		}
