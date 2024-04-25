@@ -52,8 +52,6 @@ void ParticleSystem::CreateResource(ModelData modelData) {
 	// アドレスを取得
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
 	materialData->color = { 1.0f,1.0f,1.0f,1.0f };
-
-	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
 }
 
 /// <summary>

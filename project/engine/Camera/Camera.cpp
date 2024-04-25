@@ -12,11 +12,13 @@ void Camera::Initialize() {
 void Camera::CreateConstBuffer()
 {
 	constBuff_ = CreateResource::CreateBufferResource(sizeof(ConstBufferDataViewProjection));
+	sConstBuff = CreateResource::CreateBufferResource(sizeof(ConstBufferDataViewProjectionSprite));
 }
 
 void Camera::Map()
 {
 	constBuff_.Get()->Map(0, nullptr, reinterpret_cast<void**>(&constMap));
+	sConstBuff.Get()->Map(0, nullptr, reinterpret_cast<void**>(&sConstMap));
 }
 
 void Camera::UpdateMatrix() {
@@ -35,4 +37,9 @@ void Camera::TransferMatrix()
 	constMap->view = matView;
 	constMap->projection = matProjection;
 	constMap->cameraPos = { matView.m[3][0],matView.m[3][1],matView.m[3][2] };
+
+	sConstMap->view = sMatView;
+	sConstMap->projection = sMatProjection;
+	sConstMap->cameraPos = { matView.m[3][0],matView.m[3][1],matView.m[3][2] };
+
 }
