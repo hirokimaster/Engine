@@ -12,13 +12,14 @@ void Model::InitializeObj(const std::string& filename)
 {
 	modelData_ = LoadObjFile("resources", filename);
 
-	/*resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
+	resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
 	IBV_.BufferLocation = resource_.indexResource->GetGPUVirtualAddress();
-	IBV_.SizeInBytes = UINT(sizeof(uint32_t) * modelData_.indices.size());
+	IBV_.SizeInBytes = sizeof(uint32_t) * UINT(modelData_.indices.size());
 	IBV_.Format = DXGI_FORMAT_R32_UINT;
 
-	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&modelData_.indices));
-	std::memcpy(&modelData_.indices, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());*/
+	uint32_t* index = nullptr;
+	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&index));
+	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
 
 	// VertexResource
 	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData_.vertices.size());
@@ -26,11 +27,11 @@ void Model::InitializeObj(const std::string& filename)
 	// 頂点バッファビューを作成する
 
 	// リソースの先頭のアドレスから使う
-	objVertexBufferView_.BufferLocation = resource_.vertexResource->GetGPUVirtualAddress();
+	VBV_.BufferLocation = resource_.vertexResource->GetGPUVirtualAddress();
 	// 使用するリソースのサイズは頂点サイズ
-	objVertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
+	VBV_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
 	// 1頂点あたりのサイズ
-	objVertexBufferView_.StrideInBytes = sizeof(VertexData);
+	VBV_.StrideInBytes = sizeof(VertexData);
 
 	// 頂点リソースにデータを書き込む
 	VertexData* vertexData = nullptr;
