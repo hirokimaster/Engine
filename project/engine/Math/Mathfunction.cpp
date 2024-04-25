@@ -238,6 +238,22 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 	return Transform;
 }
 
+Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const Vector3& translate)
+{
+	// スケーリング行列
+	Matrix4x4 Scale = MakeScaleMatrix(scale);
+
+	Matrix4x4 Rotate = MakeRotateMatrix(rotate);
+
+	// 平行移動行列
+	Matrix4x4 Translate = MakeTranslateMatrix(translate);
+
+	// スケール、回転、平行移動の合成
+	Matrix4x4 Transform = Multiply(Multiply(Scale, Rotate), Translate);
+
+	return Transform;
+}
+
 // ビルボード用のワールド行列
 Matrix4x4 MakeBiilboardWorldMatrix(const Vector3& scale, const Matrix4x4& billboard, const Vector3& translate) {
 	// スケーリング行列
@@ -455,6 +471,43 @@ float Dot(const Vector3& v1, const Vector3& v2) {
 	result = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 	return result;
 }
+
+Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 p;
+	p.x = v1.x + t * (v2.x - v1.x);
+	p.y = v1.y + t * (v2.y - v1.y);
+	p.z = v1.z + t * (v2.z - v1.z);
+	return p;
+};
+
+
+
+
+Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t) {
+	Vector3 p;
+
+	Vector3 s;
+	Vector3 e;
+
+	s = Normalize(v1);
+	e = Normalize(v2);
+	float angle = acos(Dot(s, e));
+	// SinΘ
+	float SinTh = sin(angle);
+
+	// 補間係数
+	float Ps = sin(angle * (1 - t));
+	float Pe = sin(angle * t);
+
+	p.x = (Ps * s.x + Pe * e.x) / SinTh;
+	p.y = (Ps * s.y + Pe * e.y) / SinTh;
+	p.z = (Ps * s.z + Pe * e.z) / SinTh;
+
+	p = Normalize(p);
+
+
+	return p;
+};
 
 Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
 {

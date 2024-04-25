@@ -46,15 +46,15 @@ void Lighting::CreateCommand()
 
 	if (light_ == Point) {
 		// カメラ用
-		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, resource_.cameraResource->GetGPUVirtualAddress());
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.cameraResource->GetGPUVirtualAddress());
 		// ポイントライト用
-		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.pointLightResource->GetGPUVirtualAddress());
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(6, resource_.pointLightResource->GetGPUVirtualAddress());
 	}
 	else if (light_ == Spot) {
 		// カメラ用
-		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, resource_.cameraResource->GetGPUVirtualAddress());
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.cameraResource->GetGPUVirtualAddress());
 		// ポイントライト用
-		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.spotLightResource->GetGPUVirtualAddress());
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(6, resource_.spotLightResource->GetGPUVirtualAddress());
 	}
 
 }

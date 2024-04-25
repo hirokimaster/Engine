@@ -23,6 +23,8 @@ void Sprite::StaticUpdate()
 /// </summary>
 void Sprite::Initialize(uint32_t texHandle) {
 
+	worldTransform_.Initialize();
+
 	texHandle_ = texHandle;
 
 	// indexResourceSprite
@@ -47,8 +49,6 @@ void Sprite::Initialize(uint32_t texHandle) {
 	// 赤
 	*materialData_ = Vector4(1.0f,1.0f,1.0f,1.0f);
 
-	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
-
 	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * 4);
 
 	VBV_ = CreateResource::CreateVertexBufferView(resource_.vertexResource, sizeof(VertexData) * 4, 4);
@@ -60,6 +60,8 @@ void Sprite::Initialize(uint32_t texHandle) {
 	AdjustTextureSize(texHandle_);
 
 	textureSize_ = size_;
+
+	worldTransform_.Initialize();
 
 }
 
@@ -127,7 +129,6 @@ void Sprite::Draw()
 {
 	
 	CreateVertex();
-	worldTransform_.STransferMatrix(resource_.wvpResource, camera_);
 	worldTransform_.translate.x = GetPosition().x;
 	worldTransform_.translate.y = GetPosition().y;
 	worldTransform_.UpdateMatrix();
@@ -144,8 +145,9 @@ void Sprite::Draw()
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 	// wvp用のCBufferの場所を設定
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, resource_.wvpResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera_.sConstBuff->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawIndexedInstanced(6, 1, 0, 0, 0);
 

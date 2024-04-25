@@ -12,6 +12,7 @@
 #include <numbers>
 
 struct Node {
+	WorldTransform transform;
 	Matrix4x4 localMatrix;
 	std::string name;
 	std::vector<Node> children;
@@ -23,6 +24,7 @@ struct MaterialData {
 
 struct ModelData {
 	std::vector<VertexData> vertices;
+	std::vector<uint32_t> indices;
 	MaterialData material;
 	Node rootNode;
 };
@@ -90,7 +92,8 @@ private: // メンバ変数
 
 	ModelData modelData_;
 	Resource resource_ = {};
-	D3D12_VERTEX_BUFFER_VIEW objVertexBufferView_{};
+	D3D12_VERTEX_BUFFER_VIEW VBV_{};
+	D3D12_INDEX_BUFFER_VIEW IBV_{};
 };
 
 

@@ -203,7 +203,7 @@ void PostProcess::Draw()
 	else if (type_ == GaussianBlur) {
 		property_ = GraphicsPipeline::GetInstance()->GetPSO().GaussianBlur;
 	}
-
+  
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
 	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
