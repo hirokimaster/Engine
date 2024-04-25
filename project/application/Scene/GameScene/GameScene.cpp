@@ -10,50 +10,29 @@ GameScene::~GameScene()
 }
 
 void GameScene::Initialize()
-{
-	/*worldTransform_.Initialize();
-	worldTransform_.scale = { 2.0f,2.0f,2.0f };
-	worldTransform_.translate.y = -5.0f;
-	worldTransform_.rotate.y = -3.142f;
-	camera_.Initialize();
-	texHandle_ = TextureManager::Load("resources/uvChecker.png");
-	anim_ = std::make_unique<ModelAnimation>();
-	anim_->Initialize("simpleSkin.gltf");
-	anim_->SetTexHandle(texHandle_);
-	skeleton_ = anim_->CreateSkeleton();
-
-	sprite_.reset(Sprite::Create(texHandle_));*/
-	
-	/*postProcess_ = std::make_unique<PostProcess>();
-	postProcess_->SetEffect(GaussianBlur);
+{	
+	postProcess_ = std::make_unique<PostProcess>();
+	postProcess_->SetEffect(Grayscale);
 	postProcess_->Initialize();
 	texHandle_ = TextureManager::Load("resources/taiyou.jpg");
-	sprite_.reset(Sprite::Create(texHandle_));*/
+	sprite_.reset(Sprite::Create(texHandle_));
 
 }
 
 void GameScene::Update()
 {
-	//animationTime_ += 1.0f / 60.0f;
-	//anim_->ApplyAnimation(skeleton_, animationTime_);
-	//anim_->Update(skeleton_);
-	////anim_->PlayAnimation();
-	//camera_.UpdateMatrix();
-	//worldTransform_.UpdateMatrix();
 }
 
 void GameScene::Draw()
 {
-	/*anim_->Draw(worldTransform_, camera_);
-	sprite_->Draw();*/
-	//postProcess_->Draw();
+	postProcess_->Draw();
 }
 
 void GameScene::PostProcessDraw()
 {
-	/*postProcess_->PreDraw();
+	postProcess_->PreDraw();
 
 	sprite_->Draw();
 
-	postProcess_->PostDraw();*/
+	postProcess_->PostDraw();
 }
