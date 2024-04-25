@@ -11,10 +11,19 @@ struct Camera {
 		Vector3 cameraPos;    // カメラ座標（ワールド座標）
 	};
 
+	// 定数バッファ用データ構造体 (sprite用)
+	struct ConstBufferDataViewProjectionSprite {
+		Matrix4x4 view;       // ワールド → ビュー変換行列
+		Matrix4x4 projection; // ビュー → プロジェクション変換行列
+		Vector3 cameraPos;    // カメラ座標（ワールド座標）
+	};
+
 	// 定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> sConstBuff;
 	// マッピング済みアドレス
 	ConstBufferDataViewProjection* constMap = nullptr;
+	ConstBufferDataViewProjectionSprite* sConstMap = nullptr;
 
 
 #pragma region	ビュー行列の設定

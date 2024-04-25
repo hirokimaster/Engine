@@ -45,8 +45,6 @@ void ModelAnimation::Initialize(const std::string& fileName)
 	directionalLightData_->color = { color_ };
 	directionalLightData_->direction = Normalize({ 0.0f, -1.0f, 0.0f });
 	directionalLightData_->intensity = 1.0f;
-
-	resource_.wvpResource = CreateResource::CreateBufferResource(sizeof(TransformationMatrix));
 }
 
 void ModelAnimation::Update(Skeleton& skeleton)
