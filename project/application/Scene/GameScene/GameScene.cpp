@@ -11,7 +11,7 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	/*worldTransform_.Initialize();
+	worldTransform_.Initialize();
 	worldTransform_.scale = { 2.0f,2.0f,2.0f };
 	worldTransform_.translate.y = -5.0f;
 	worldTransform_.rotate.y = -3.142f;
@@ -21,8 +21,7 @@ void GameScene::Initialize()
 	anim_->Initialize("simpleSkin.gltf");
 	anim_->SetTexHandle(texHandle_);
 	skeleton_ = anim_->CreateSkeleton();
-
-	sprite_.reset(Sprite::Create(texHandle_));*/
+	skinCluster_ = anim_->CreateSkinCluster(skeleton_);
 	
 	/*postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->SetEffect(GaussianBlur);
@@ -34,18 +33,18 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	//animationTime_ += 1.0f / 60.0f;
-	//anim_->ApplyAnimation(skeleton_, animationTime_);
-	//anim_->Update(skeleton_);
-	////anim_->PlayAnimation();
-	//camera_.UpdateMatrix();
-	//worldTransform_.UpdateMatrix();
+	animationTime_ += 1.0f / 60.0f;
+	anim_->ApplyAnimation(skeleton_, animationTime_);
+	anim_->Update(skeleton_);
+	anim_->Update(skinCluster_, skeleton_);
+	//anim_->PlayAnimation();
+	camera_.UpdateMatrix();
+	worldTransform_.UpdateMatrix();
 }
 
 void GameScene::Draw()
 {
-	/*anim_->Draw(worldTransform_, camera_);
-	sprite_->Draw();*/
+	anim_->Draw(worldTransform_, camera_);
 	//postProcess_->Draw();
 }
 

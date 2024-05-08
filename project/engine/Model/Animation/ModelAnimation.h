@@ -3,10 +3,13 @@
 #include "engine/Model/Model.h"
 #include "engine/Transform/WorldTransform.h"
 #include "engine/Model/State/ModelSphere.h"
+#include "engine/DescriptorManager/DescriptorManager.h"
+#include "engine/DescriptorManager/SRVManager/SrvManager.h"
 #include <vector>
 #include <string>
 #include <map>
 #include <optional>
+#include <span>
 
 template<typename tValue>
 
@@ -51,7 +54,26 @@ struct Skeleton {
 	std::vector<Joint> joints;
 };
 
+const uint32_t kNumMaxInfluence = 4;
+struct VertexInfluence {
+	std::array<float, kNumMaxInfluence> weights;
+	std::array<int32_t, kNumMaxInfluence> jointIndices;
+};
 
+struct WellForGPU {
+	Matrix4x4 skeletonSpaceMatrix;
+	Matrix4x4 skeletonSpaceInverseTransposeMatrix;
+};
+
+struct SkinCluster {
+	std::vector<Matrix4x4> inverseBindPoseMatrices;
+	Microsoft::WRL::ComPtr<ID3D12Resource> influenceResource;
+	D3D12_VERTEX_BUFFER_VIEW influenceBufferView;
+	std::span<VertexInfluence> mappedInfluence;
+	Microsoft::WRL::ComPtr<ID3D12Resource> paletteResource;
+	std::span<WellForGPU> mappedPalette;
+	std::pair<D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE> paletteSrvHandle;
+};
 
 class ModelAnimation : public Model{
 public:
@@ -60,6 +82,8 @@ public:
 	void Initialize(const std::string& fileName);
 	// skeletonの更新
 	void Update(Skeleton& skeleton);
+	// skinClusterの更新
+	void Update(SkinCluster& skinCluster, const Skeleton& skeleton);
 	// 描画
 	void Draw(WorldTransform& worldTransform, Camera& camera);
 
@@ -75,6 +99,9 @@ public:
 	int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);
 	// skeletonを作る
 	Skeleton CreateSkeleton();
+
+	// skinClusterの生成
+	SkinCluster CreateSkinCluster(const Skeleton& skeleton);
 
 	// アニメーションを適用する
 	void ApplyAnimation(Skeleton& skeleton, float animationTime);
@@ -95,4 +122,5 @@ private:
 	Vector4 color_ = {};
 	Property property_{};
 	D3D12_INDEX_BUFFER_VIEW IBV_{};
+	uint32_t srvIndex_ = 0;
 };

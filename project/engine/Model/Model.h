@@ -10,6 +10,7 @@
 #include "externals/assimp/include/assimp/scene.h"
 #include "externals/assimp/include/assimp/postprocess.h"
 #include <numbers>
+#include <map>
 
 struct Node {
 	WorldTransform transform;
@@ -22,7 +23,18 @@ struct MaterialData {
 	std::string textureFilePath;
 };
 
+struct VertexWeightData {
+	float weight;
+	uint32_t vertexIndex;
+};
+
+struct JointWeightData {
+	Matrix4x4 inverseBindPoseMatrix;
+	std::vector<VertexWeightData> vertexWeights;
+};
+
 struct ModelData {
+	std::map<std::string, JointWeightData> skinClusterData;
 	std::vector<VertexData> vertices;
 	std::vector<uint32_t> indices;
 	MaterialData material;
