@@ -30,10 +30,6 @@ void PostProcess::Initialize()
 	scissorRect.right = 1280;
 	scissorRect.top = 0;
 	scissorRect.bottom = 720;
-
-	// 定数バッファ作成
-	CreateBuffer();
-	
 }
 
 void PostProcess::CreateRTV()
@@ -221,4 +217,10 @@ void PostProcess::Draw()
 	}
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawInstanced(3, 1, 0, 0);
+}
+
+void PostProcess::SetEffect(PostEffectType type)
+{
+	type_ = type;
+	CreateBuffer();
 }

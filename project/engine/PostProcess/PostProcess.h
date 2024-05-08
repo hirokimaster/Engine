@@ -36,7 +36,7 @@ public:
 
 #pragma region setter
 
-	void SetEffect(PostEffectType type) { type_ = type; }
+	void SetEffect(PostEffectType type);
 
 	BloomParam SetBloomProperty(BloomParam bloom) { return *bloomData_ = bloom; }
 
