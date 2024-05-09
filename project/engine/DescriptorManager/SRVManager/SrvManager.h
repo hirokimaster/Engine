@@ -1,7 +1,7 @@
 #pragma once
 #include "engine/DescriptorManager/DescriptorManager.h"
 #include "engine/CreateResource/CreateResource.h"
-#include "engine/Model/Animation/ModelAnimation.h"
+#include "engine/Model/Animation/Animation.h"
 #define MAX_SRV 128
 
 class SrvManager {
@@ -41,7 +41,7 @@ public:
 	/// </summary>
 	/// <param name="skinCluster"></param>
 	/// <param name="skeleton"></param>
-	void CreatePaletteSrv(SkinCluster& skinCluster, const Skeleton& skeleton);
+	//void CreatePaletteSrv(SkinCluster& skinCluster,Skeleton& skeleton, uint32_t index);
 
 	/// <summary>
 	/// srvのgpuhandleの位置をずらす

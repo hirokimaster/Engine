@@ -52,14 +52,14 @@ void ModelAnimation::Update(Skeleton& skeleton)
 	// すべてのjointを更新。
 	for (Joint& joint : skeleton.joints) {
 		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.quaternion, joint.transform.translate);
-		//localMatrix_ = joint.localMatrix;
+
 		if (joint.parent) {
 			joint.skeletonSpaceMatrix = Multiply(joint.localMatrix, skeleton.joints[*joint.parent].skeletonSpaceMatrix);
-			//localMatrix_ = joint.skeletonSpaceMatrix;
+			
 		}
 		else {
 			joint.skeletonSpaceMatrix = joint.localMatrix;
-			//localMatrix_ = joint.localMatrix;
+		
 		}
 	}
 }
@@ -75,9 +75,9 @@ void ModelAnimation::Update(SkinCluster& skinCluster, const Skeleton& skeleton)
     }
 }
 
-void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
+void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera, SkinCluster& skinCluster)
 {
-	property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
+	property_ = GraphicsPipeline::GetInstance()->GetPSO().SkinningObject3D;
 	
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
@@ -85,16 +85,23 @@ void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
 
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &VBV_); // VBVを設定
+
+	D3D12_VERTEX_BUFFER_VIEW vbvs[2] = {
+		VBV_,
+		skinCluster.influenceBufferView
+	};
+	
+	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 2, vbvs); // VBVを設定
 	DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
 
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, skinCluster.paletteSrvHandle.second);
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(4, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 	// 平行光源
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, resource_.directionalLightResource->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.directionalLightResource->GetGPUVirtualAddress());
 	
 	// 描画。(DrawCall/ドローコール)。
 	DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
@@ -236,7 +243,16 @@ SkinCluster ModelAnimation::CreateSkinCluster(const Skeleton& skeleton)
 	skinCluster.paletteSrvHandle.second = DescriptorManager::GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, srvIndex_);
 
 	// palette用のsrvを作成。structuredBufferでアクセスできるようにする
-	SrvManager::GetInstance()->CreatePaletteSrv(skinCluster, skeleton);
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	srvDesc.Format = DXGI_FORMAT_UNKNOWN;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
+	srvDesc.Buffer.FirstElement = 0;
+	srvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
+	srvDesc.Buffer.NumElements = UINT(skeleton.joints.size());
+	srvDesc.Buffer.StructureByteStride = sizeof(WellForGPU);
+	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(skinCluster.paletteResource.Get(), &srvDesc, skinCluster.paletteSrvHandle.first);
+
 	// influence用のResourceを確保。頂点ごとにinfluence情報を追加できるようにする
 	skinCluster.influenceResource = CreateResource::CreateBufferResource(sizeof(VertexInfluence) * modelData_.vertices.size());
 	VertexInfluence* mappedInfluence = nullptr;
@@ -244,8 +260,12 @@ SkinCluster ModelAnimation::CreateSkinCluster(const Skeleton& skeleton)
 	std::memset(mappedInfluence, 0, sizeof(VertexInfluence) * modelData_.vertices.size()); // 0埋め。weightを0にしておく
 	skinCluster.mappedInfluence = { mappedInfluence, modelData_.vertices.size() };
 
-	// influence用のVBVを作成
-	skinCluster.influenceBufferView = CreateResource::CreateVertexBufferView(skinCluster.influenceResource, sizeof(VertexInfluence) * modelData_.vertices.size(), modelData_.vertices.size());
+	// VertexBufferView
+	skinCluster.influenceBufferView.BufferLocation = skinCluster.influenceResource->GetGPUVirtualAddress();
+	// 使用するリソースのサイズは頂点サイズ
+	skinCluster.influenceBufferView.SizeInBytes = UINT(sizeof(VertexInfluence) * modelData_.vertices.size());
+	// 1頂点あたりのサイズ
+	skinCluster.influenceBufferView.StrideInBytes = sizeof(VertexInfluence);
 
 	// InverseBindPoseMatrixを格納する場所を作成して、単位行列で埋める。
 	skinCluster.inverseBindPoseMatrices.resize(skeleton.joints.size());
