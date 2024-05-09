@@ -6,45 +6,11 @@ void ModelAnimation::Initialize(const std::string& fileName)
 
 	animation_ = LoadAnimationFile("resources", fileName);
 
-	// VertexResource
-	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData_.vertices.size());
-	// VertexBufferView
-	VBV_.BufferLocation = resource_.vertexResource->GetGPUVirtualAddress();
-	// 使用するリソースのサイズは頂点サイズ
-	VBV_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
-	// 1頂点あたりのサイズ
-	VBV_.StrideInBytes = sizeof(VertexData);
+	CreateBuffer(); // bufferを作る
 
-	// 頂点リソースにデータを書き込む
-	VertexData* vertexData = nullptr;
-	// 書き込むためのアドレスを取得
-	resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
-	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size()); // 頂点データをリソースにコピー
+	skeleton_ = CreateSkeleton(); // skeleton
+	skinCluster_ = CreateSkinCluster(skeleton_); // skinCluster
 
-	// indexResource作成
-	resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
-
-	IBV_.BufferLocation = resource_.indexResource->GetGPUVirtualAddress();
-	IBV_.SizeInBytes = sizeof(uint32_t) * UINT(modelData_.indices.size());
-	IBV_.Format = DXGI_FORMAT_R32_UINT;
-
-	uint32_t* index = nullptr;
-	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&index));
-	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
-
-	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
-	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	materialData_->enableLighting = false;
-	materialData_->shininess = 70.0f;
-
-	// 平行光源用のリソース
-	resource_.directionalLightResource = CreateResource::CreateBufferResource(sizeof(DirectionalLight));
-	// 書き込むためのアドレスを取得
-	resource_.directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	directionalLightData_->color = { color_ };
-	directionalLightData_->direction = Normalize({ 0.0f, -1.0f, 0.0f });
-	directionalLightData_->intensity = 1.0f;
 }
 
 void ModelAnimation::Update(Skeleton& skeleton)
@@ -75,8 +41,11 @@ void ModelAnimation::Update(SkinCluster& skinCluster, const Skeleton& skeleton)
     }
 }
 
-void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera, SkinCluster& skinCluster)
+void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
 {
+	Update(skeleton_); // skeletonの更新
+	Update(skinCluster_, skeleton_); // skinClusterの更新
+
 	property_ = GraphicsPipeline::GetInstance()->GetPSO().SkinningObject3D;
 	
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
@@ -88,7 +57,7 @@ void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera, SkinCl
 
 	D3D12_VERTEX_BUFFER_VIEW vbvs[2] = {
 		VBV_,
-		skinCluster.influenceBufferView
+		skinCluster_.influenceBufferView
 	};
 	
 	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 2, vbvs); // VBVを設定
@@ -98,7 +67,7 @@ void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera, SkinCl
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, skinCluster.paletteSrvHandle.second);
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, skinCluster_.paletteSrvHandle.second);
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(4, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 	// 平行光源
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.directionalLightResource->GetGPUVirtualAddress());
@@ -293,9 +262,9 @@ SkinCluster ModelAnimation::CreateSkinCluster(const Skeleton& skeleton)
 	return skinCluster;
 }
 
-void ModelAnimation::ApplyAnimation(Skeleton& skeleton, float animationTime)
+void ModelAnimation::ApplyAnimation(float animationTime)
 {
-	for (Joint& joint : skeleton.joints) {
+	for (Joint& joint : skeleton_.joints) {
 		// 対象のjointのanimationがあれば、値の適用を行う。
 		if (auto it = animation_.nodeAnimations.find(joint.name); it != animation_.nodeAnimations.end()) {
 			const NodeAnimation& rootNodeAnimation = (*it).second;
@@ -305,4 +274,47 @@ void ModelAnimation::ApplyAnimation(Skeleton& skeleton, float animationTime)
 
 		}
 	}
+}
+
+void ModelAnimation::CreateBuffer()
+{
+	// VertexResource
+	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData_.vertices.size());
+	// VertexBufferView
+	VBV_.BufferLocation = resource_.vertexResource->GetGPUVirtualAddress();
+	// 使用するリソースのサイズは頂点サイズ
+	VBV_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
+	// 1頂点あたりのサイズ
+	VBV_.StrideInBytes = sizeof(VertexData);
+
+	// 頂点リソースにデータを書き込む
+	VertexData* vertexData = nullptr;
+	// 書き込むためのアドレスを取得
+	resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
+	std::memcpy(vertexData, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size()); // 頂点データをリソースにコピー
+
+	// indexResource作成
+	resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
+
+	IBV_.BufferLocation = resource_.indexResource->GetGPUVirtualAddress();
+	IBV_.SizeInBytes = sizeof(uint32_t) * UINT(modelData_.indices.size());
+	IBV_.Format = DXGI_FORMAT_R32_UINT;
+
+	uint32_t* index = nullptr;
+	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&index));
+	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
+
+	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
+	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
+	materialData_->enableLighting = false;
+	materialData_->shininess = 70.0f;
+
+	// 平行光源用のリソース
+	resource_.directionalLightResource = CreateResource::CreateBufferResource(sizeof(DirectionalLight));
+	// 書き込むためのアドレスを取得
+	resource_.directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
+	directionalLightData_->color = { color_ };
+	directionalLightData_->direction = Normalize({ 0.0f, -1.0f, 0.0f });
+	directionalLightData_->intensity = 1.0f;
 }

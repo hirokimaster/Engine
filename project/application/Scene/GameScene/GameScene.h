@@ -40,8 +40,6 @@ public: // メンバ関数
 
 private:
 	std::unique_ptr<ModelAnimation>	anim_;
-	Skeleton skeleton_{};
-	SkinCluster skinCluster_{};
 	float animationTime_ = 0;
 	WorldTransform worldTransform_{};
 	Camera camera_{};

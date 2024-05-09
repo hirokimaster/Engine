@@ -9,17 +9,28 @@ public:
 
 	// 初期化
 	void Initialize(const std::string& fileName);
+	// 描画
+	void Draw(WorldTransform& worldTransform, Camera& camera);
+
+	// アニメーションを適用する
+	void ApplyAnimation(float animationTime);
+
+	// animationの再生
+	void PlayAnimation();
+
+	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
+	void SetColor(const Vector4& color) { color_ = color; }
+
+private: // ここでしか使わない関数
+
 	// skeletonの更新
 	void Update(Skeleton& skeleton);
 	// skinClusterの更新
 	void Update(SkinCluster& skinCluster, const Skeleton& skeleton);
-	// 描画
-	void Draw(WorldTransform& worldTransform, Camera& camera, SkinCluster& skinCluster);
 
 	// animation読み込み
 	Animation LoadAnimationFile(const std::string& directoryPath, const std::string& fileName);
-	// animationの再生
-	void PlayAnimation();
+
 	// 任意の時刻の取得
 	Vector3 CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time);
 	Quaternion CalculateValue(const std::vector<KeyframeQuaternion>& keyframe, float time);
@@ -32,11 +43,8 @@ public:
 	// skinClusterの生成
 	SkinCluster CreateSkinCluster(const Skeleton& skeleton);
 
-	// アニメーションを適用する
-	void ApplyAnimation(Skeleton& skeleton, float animationTime);
-
-	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
-	void SetColor(const Vector4& color) { color_ = color; }
+	// bufferを作る場所
+	void CreateBuffer();
 
 private:
 	float animationTime_ = 0.0f;
@@ -52,4 +60,6 @@ private:
 	Property property_{};
 	D3D12_INDEX_BUFFER_VIEW IBV_{};
 	uint32_t srvIndex_ = 0;
+	Skeleton skeleton_{};
+	SkinCluster skinCluster_{};
 };
