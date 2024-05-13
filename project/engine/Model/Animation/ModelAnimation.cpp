@@ -6,11 +6,10 @@ void ModelAnimation::Initialize(const std::string& fileName)
 
 	animation_ = LoadAnimationFile("resources", fileName);
 
-	CreateBuffer(); // bufferを作る
-
 	skeleton_ = CreateSkeleton(); // skeleton
 	skinCluster_ = CreateSkinCluster(skeleton_); // skinCluster
 
+	CreateBuffer(); // bufferを作る
 }
 
 void ModelAnimation::Update(Skeleton& skeleton)
@@ -20,7 +19,7 @@ void ModelAnimation::Update(Skeleton& skeleton)
 		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.quaternion, joint.transform.translate);
 
 		if (joint.parent) {
-			joint.skeletonSpaceMatrix = Multiply(joint.localMatrix, skeleton.joints[*joint.parent].skeletonSpaceMatrix);
+			joint.skeletonSpaceMatrix = joint.localMatrix * skeleton.joints[*joint.parent].skeletonSpaceMatrix;
 			
 		}
 		else {
@@ -34,15 +33,20 @@ void ModelAnimation::Update(SkinCluster& skinCluster, const Skeleton& skeleton)
 {
 	for (size_t jointIndex = 0; jointIndex < skeleton.joints.size(); ++jointIndex) {
 		assert(jointIndex < skinCluster.inverseBindPoseMatrices.size());
-		skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix = Multiply(skinCluster.inverseBindPoseMatrices[jointIndex],
-			skeleton.joints[jointIndex].skeletonSpaceMatrix);
+		skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix = 
+			skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
 		skinCluster.mappedPalette[jointIndex].skeletonSpaceInverseTransposeMatrix =
 			Transpose(Inverse(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix));
     }
 }
 
-void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera)
+void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera, bool isAnimation)
 {
+	// animationの適用
+	if (isAnimation) {
+		ApplyAnimation(animationTime_);
+	}
+
 	Update(skeleton_); // skeletonの更新
 	Update(skinCluster_, skeleton_); // skinClusterの更新
 
@@ -118,17 +122,17 @@ Animation ModelAnimation::LoadAnimationFile(const std::string& directoryPath, co
 	return animation;
 }
 
-void ModelAnimation::PlayAnimation()
-{
-		
-	animationTime_ += 1.0f / 60.0f;
-	animationTime_ = std::fmod(animationTime_, animation_.duration);
-	NodeAnimation& rootNodeAnimation = animation_.nodeAnimations[modelData_.rootNode.name];
-	Vector3 translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime_);
-	Quaternion rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime_);
-	Vector3 scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime_);
-	localMatrix_ = MakeAffineMatrix(scale, rotate, translate);
-}
+//void ModelAnimation::PlayAnimation()
+//{
+//		
+//	animationTime_ += 1.0f / 60.0f;
+//	animationTime_ = std::fmod(animationTime_, animation_.duration);
+//	NodeAnimation& rootNodeAnimation = animation_.nodeAnimations[modelData_.rootNode.name];
+//	Vector3 translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime_);
+//	Quaternion rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime_);
+//	Vector3 scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime_);
+//	localMatrix_ = MakeAffineMatrix(scale, rotate, translate);
+//}
 
 Vector3 ModelAnimation::CalculateValue(const std::vector<KeyframeVector3>& keyframes, float time)
 {
@@ -198,7 +202,7 @@ Skeleton ModelAnimation::CreateSkeleton()
 	return skeleton;
 }
 
-SkinCluster ModelAnimation::CreateSkinCluster(const Skeleton& skeleton)
+SkinCluster ModelAnimation::CreateSkinCluster(const Skeleton& skeleton)	
 {
 	SkinCluster skinCluster;
 	// palette用のresouceを確保

@@ -78,7 +78,7 @@ VertexShaderOutput main(VertexShaderInput input)
     // Skinning結果を使って変換
     output.position = mul(skinned.position, wvp);
     output.texcoord = input.texcoord;
-    output.worldPosition = mul(skinned.position, gTransformationMatrix.world).xyz;
+    output.worldPosition = mul(skinned.position, gTransformationMatrix.matWorld).xyz;
     output.normal = normalize(mul(skinned.normal, (float32_t3x3) gTransformationMatrix.WorldInverseTranspose));
     return output;
 }

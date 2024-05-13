@@ -121,49 +121,12 @@ Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
 // 球面線形補間
 Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
 
-//Vector3 operator+(const Vector3& a, const Vector3& b) {
-//	Vector3 c = { a.x + b.x,a.y + b.y ,a.z + b.z };
-//
-//	return c;
-//}
-//
-//Vector3 operator+(const Vector3& a, const float& b) {
-//	Vector3 c = { a.x + b,a.y + b,a.z + b };
-//
-//	return c;
-//}
-//
-//Vector3 operator-(const Vector3& a, const Vector3& b) {
-//	Vector3 c = { a.x - b.x,a.y - b.y,a.z - b.z };
-//
-//	return c;
-//}
-//
-//Vector3 operator-(const Vector3& a, const float& b) {
-//	Vector3 c = { a.x - b,a.y - b,a.z - b };
-//
-//	return c;
-//}
-//
-//Vector3 operator*(const float& a, const Vector3& b) {
-//	Vector3 c = { a * b.x,a * b.y,a * b.z };
-//
-//	return c;
-//}
-//
-//Vector3 operator/(const Vector3& a, const float& b) {
-//	Vector3 c = { a.x / b , a.y / b, a.z / b };
-//
-//	return c;
-//}
-//
-//Vector3 operator*(const Vector3& vec, const Matrix4x4& mat) {
-//	Vector4 result = {
-//		vec.x * mat.m[0][0] + vec.y * mat.m[1][0] + vec.z * mat.m[2][0] + mat.m[3][0],
-//		vec.x * mat.m[0][1] + vec.y * mat.m[1][1] + vec.z * mat.m[2][1] + mat.m[3][1],
-//		vec.x * mat.m[0][2] + vec.y * mat.m[1][2] + vec.z * mat.m[2][2] + mat.m[3][2],
-//		vec.x * mat.m[0][3] + vec.y * mat.m[1][3] + vec.z * mat.m[2][3] + mat.m[3][3]
-//	};
-//
-//	return { result.x / result.w, result.y / result.w, result.z / result.w };
-//}
+// 演算子のオーバーロード
+Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b);
+Vector3 operator+(const Vector3& a, const Vector3& b);
+Vector3 operator+(const Vector3& a, const float& b);
+Vector3 operator-(const Vector3& a, const Vector3& b);
+Vector3 operator-(const Vector3& a, const float& b);
+Vector3 operator*(const float& a, const Vector3& b);
+Vector3 operator/(const Vector3& a, const float& b);
+Vector3 operator*(const Vector3& vec, const Matrix4x4& mat);

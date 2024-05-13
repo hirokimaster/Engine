@@ -10,15 +10,16 @@ public:
 	// 初期化
 	void Initialize(const std::string& fileName);
 	// 描画
-	void Draw(WorldTransform& worldTransform, Camera& camera);
+	void Draw(WorldTransform& worldTransform, Camera& camera, bool isAnimation = false);
 
 	// アニメーションを適用する
 	void ApplyAnimation(float animationTime);
 
 	// animationの再生
-	void PlayAnimation();
+	//void PlayAnimation();
 
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
+	void SetAnimationTime(float animationTime) { animationTime_ = animationTime; }
 	void SetColor(const Vector4& color) { color_ = color; }
 
 private: // ここでしか使わない関数
