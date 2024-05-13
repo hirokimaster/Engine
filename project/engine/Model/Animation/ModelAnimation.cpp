@@ -36,7 +36,7 @@ void ModelAnimation::Update(SkinCluster& skinCluster, const Skeleton& skeleton)
 		skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix = 
 			skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
 		skinCluster.mappedPalette[jointIndex].skeletonSpaceInverseTransposeMatrix =
-			Transpose(Inverse(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix));
+		InverseTranspose(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix);
     }
 }
 
