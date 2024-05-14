@@ -18,8 +18,8 @@ void PostProcess::Initialize()
 	CreateDSV();
 
 	// クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = 1280;
-	viewport.Height = 720;
+	viewport.Width = WinApp::kWindowWidth;
+	viewport.Height = WinApp::kWindowHeight;
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	viewport.MinDepth = 0.0f;
@@ -27,9 +27,9 @@ void PostProcess::Initialize()
 
 	// 基本的にビューポートと同じ矩形が構成されるようにする
 	scissorRect.left = 0;
-	scissorRect.right = 1280;
+	scissorRect.right = WinApp::kWindowWidth;
 	scissorRect.top = 0;
-	scissorRect.bottom = 720;
+	scissorRect.bottom = WinApp::kWindowHeight;
 }
 
 void PostProcess::CreateRTV()
@@ -46,8 +46,8 @@ void PostProcess::CreateDSV()
 {
 	// 生成するResourceの設定
 	D3D12_RESOURCE_DESC resourceDesc{};
-	resourceDesc.Width = 1280; // Textureの幅
-	resourceDesc.Height = 720; // Textureの高さ
+	resourceDesc.Width = WinApp::kWindowWidth; // Textureの幅
+	resourceDesc.Height = WinApp::kWindowHeight; // Textureの高さ
 	resourceDesc.MipLevels = 1; // mipmapの数
 	resourceDesc.DepthOrArraySize = 1; // 奥行 or 配列Textureの配列数
 	resourceDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // DepthStencilとして使う通知
@@ -91,8 +91,8 @@ void PostProcess::CreateSRV()
 
 	// metadataを基にResourceの設定
 	D3D12_RESOURCE_DESC resourceDesc{};
-	resourceDesc.Width = 1280; // Textureの幅
-	resourceDesc.Height = 720; // Textureの高さ
+	resourceDesc.Width = WinApp::kWindowWidth; // Textureの幅
+	resourceDesc.Height = WinApp::kWindowHeight; // Textureの高さ
 	resourceDesc.MipLevels = 1; // mipmapの数
 	resourceDesc.DepthOrArraySize = 1; // 奥行 or 配列Textureの配列数
 	resourceDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // TextureのFormat
@@ -150,42 +150,7 @@ void PostProcess::CreateBuffer()
 	}
 }
 
-void PostProcess::PreDraw()
-{
-	barrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	// Noneにしておく
-	barrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	// バリアを張る対象のリソース
-	barrier_.Transition.pResource = texBuff_.Get();
-	// 遷移前（現在）のResourceState
-	barrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
-	// 遷移後のResourceState
-	barrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	DirectXCommon::GetInstance()->GetCommandList()->ResourceBarrier(1, &barrier_);
-
-	// レンダーターゲットをセット
-	DirectXCommon::GetInstance()->GetCommandList()->OMSetRenderTargets(1, &rtvHandles_, false, &dsvHandles_);
-	// viewport
-	DirectXCommon::GetInstance()->GetCommandList()->RSSetViewports(1, &viewport);
-	// scissorRect
-	DirectXCommon::GetInstance()->GetCommandList()->RSSetScissorRects(1, &scissorRect);
-	// 全画面クリア
-	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
-	DirectXCommon::GetInstance()->GetCommandList()->ClearRenderTargetView(rtvHandles_, clearColor, 0, nullptr);
-	// 深度バッファのクリア
-	DirectXCommon::GetInstance()->GetCommandList()->ClearDepthStencilView(dsvHandles_, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-	ID3D12DescriptorHeap* heaps[] = { DescriptorManager::GetInstance()->GetSRV() };
-	DirectXCommon::GetCommandList()->SetDescriptorHeaps(_countof(heaps), heaps);
-}
-
-void PostProcess::PostDraw()
-{
-	barrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	barrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
-	DirectXCommon::GetInstance()->GetCommandList()->ResourceBarrier(1, &barrier_);
-}
-
-void PostProcess::Draw()	
+void PostProcess::CreatePipeLine()
 {
 	if (type_ == Bloom) {
 		property_ = GraphicsPipeline::GetInstance()->GetPSO().Bloom;
@@ -199,13 +164,10 @@ void PostProcess::Draw()
 	else if (type_ == GaussianBlur) {
 		property_ = GraphicsPipeline::GetInstance()->GetPSO().GaussianBlur;
 	}
-  
-	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
-	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
-	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
-	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
-	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(0, SrvManager::GetInstance()->GetGPUHandle(index_));
+}
+
+void PostProcess::SetConstantBuffer()
+{
 	if (type_ == Bloom) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, bloom_->GetGPUVirtualAddress());
 	}
@@ -215,6 +177,59 @@ void PostProcess::Draw()
 	else if (type_ == GaussianBlur) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, gaussian_->GetGPUVirtualAddress());
 	}
+}
+
+void PostProcess::PreDraw()
+{
+	barrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	// Noneにしておく
+	barrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	// バリアを張る対象のリソース
+	barrier_.Transition.pResource = texBuff_.Get();
+	// 遷移前（現在）のResourceState
+	barrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	// 遷移後のResourceState
+	barrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	DirectXCommon::GetCommandList()->ResourceBarrier(1, &barrier_);
+
+	// レンダーターゲットをセット
+	DirectXCommon::GetCommandList()->OMSetRenderTargets(1, &rtvHandles_, false, &dsvHandles_);
+	// viewport
+	DirectXCommon::GetCommandList()->RSSetViewports(1, &viewport);
+	// scissorRect
+	DirectXCommon::GetCommandList()->RSSetScissorRects(1, &scissorRect);
+	// 全画面クリア
+	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
+	DirectXCommon::GetCommandList()->ClearRenderTargetView(rtvHandles_, clearColor, 0, nullptr);
+	// 深度バッファのクリア
+	DirectXCommon::GetCommandList()->ClearDepthStencilView(dsvHandles_, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+	ID3D12DescriptorHeap* heaps[] = { DescriptorManager::GetInstance()->GetSRV() };
+	DirectXCommon::GetCommandList()->SetDescriptorHeaps(_countof(heaps), heaps);
+}
+
+void PostProcess::PostDraw()
+{
+	barrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+	barrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	DirectXCommon::GetCommandList()->ResourceBarrier(1, &barrier_);
+}
+
+void PostProcess::Draw()	
+{
+	// effectの種類によって変えてる
+	CreatePipeLine();
+  
+	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
+	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
+	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
+	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
+	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// srvの設定
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(0, SrvManager::GetInstance()->GetGPUHandle(index_));
+	
+	// effectの種類によって変えてる
+	SetConstantBuffer();
+
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawInstanced(3, 1, 0, 0);
 }

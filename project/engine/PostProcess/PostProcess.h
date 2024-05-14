@@ -65,6 +65,16 @@ private: // このクラス内でしか使わない関数
 	/// </summary>
 	void CreateBuffer();
 
+	/// <summary>
+	/// pipelineを作成
+	/// </summary>
+	void CreatePipeLine();
+
+	/// <summary>
+	/// constantBufferViewの設定
+	/// </summary>
+	void SetConstantBuffer();
+
 private:
 	Resource resource_{};
 	Vector4* materialData_ = nullptr;

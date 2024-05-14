@@ -24,7 +24,7 @@ void GameScene::Update()
 	static int currentItem_ = 0;
 	const char* item[4] = { "Bloom", "Vignette", "Grayscale","Gaussian" };
 	ImGui::Begin("effect");
-	if (ImGui::Combo("LightingType", &currentItem_, item, IM_ARRAYSIZE(item))) {
+	if (ImGui::Combo("EffectType", &currentItem_, item, IM_ARRAYSIZE(item))) {
 		if (currentItem_ == 0) {
 			postProcess_->SetEffect(Bloom);
 		}
