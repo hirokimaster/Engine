@@ -249,7 +249,7 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const
 	Matrix4x4 Translate = MakeTranslateMatrix(translate);
 
 	// スケール、回転、平行移動の合成
-	Matrix4x4 Transform = Multiply(Multiply(Scale, Rotate), Translate);
+	Matrix4x4 Transform = Scale * Rotate * Translate;
 
 	return Transform;
 }
@@ -501,9 +501,9 @@ float Dot(const Vector3& v1, const Vector3& v2) {
 
 Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) {
 	Vector3 p;
-	p.x = v1.x + t * (v2.x - v1.x);
-	p.y = v1.y + t * (v2.y - v1.y);
-	p.z = v1.z + t * (v2.z - v1.z);
+	p.x = (1.0f - t) * v1.x + t * v2.x;
+	p.y = (1.0f - t) * v1.y + t * v2.y;
+	p.z = (1.0f - t) * v1.z + t * v2.z;
 	return p;
 };
 

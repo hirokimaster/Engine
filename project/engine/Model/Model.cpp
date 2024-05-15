@@ -54,7 +54,7 @@ void Model::InitializeGLTF(const std::string& filename)
 	IBV_.SizeInBytes = sizeof(uint32_t) * UINT(modelData_.indices.size());
 	IBV_.Format = DXGI_FORMAT_R32_UINT;
 
-	uint32_t* index;
+	uint32_t* index = nullptr;
 	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&index));
 	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
 

@@ -7,12 +7,13 @@ void ModelAnimation::Initialize(const std::string& fileName)
 	animation_ = LoadAnimationFile("resources", fileName);
 
 	skeleton_ = CreateSkeleton(); // skeleton
+
 	skinCluster_ = CreateSkinCluster(skeleton_); // skinCluster
 
 	CreateBuffer(); // bufferを作る
 }
 
-void ModelAnimation::Update(Skeleton& skeleton)
+void ModelAnimation::SkeletonUpdate(Skeleton& skeleton)
 {
 	// すべてのjointを更新。
 	for (Joint& joint : skeleton.joints) {
@@ -29,14 +30,14 @@ void ModelAnimation::Update(Skeleton& skeleton)
 	}
 }
 
-void ModelAnimation::Update(SkinCluster& skinCluster, const Skeleton& skeleton)
+void ModelAnimation::SkinClusterUpdate(SkinCluster& skinCluster, const Skeleton& skeleton)
 {
 	for (size_t jointIndex = 0; jointIndex < skeleton.joints.size(); ++jointIndex) {
 		assert(jointIndex < skinCluster.inverseBindPoseMatrices.size());
 		skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix = 
 			skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
 		skinCluster.mappedPalette[jointIndex].skeletonSpaceInverseTransposeMatrix =
-		InverseTranspose(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix);
+			Transpose(Inverse(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix));
     }
 }
 
@@ -47,8 +48,8 @@ void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera, bool i
 		ApplyAnimation(animationTime_);
 	}
 
-	Update(skeleton_); // skeletonの更新
-	Update(skinCluster_, skeleton_); // skinClusterの更新
+	SkeletonUpdate(skeleton_); // skeletonの更新
+	SkinClusterUpdate(skinCluster_, skeleton_); // skinClusterの更新
 
 	property_ = GraphicsPipeline::GetInstance()->GetPSO().SkinningObject3D;
 	
@@ -65,7 +66,7 @@ void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera, bool i
 	};
 	
 	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 2, vbvs); // VBVを設定
-	DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
+	DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);	
 
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());

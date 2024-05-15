@@ -3,6 +3,7 @@
 #include "engine/Model/Model.h"
 #include "engine/DescriptorManager/DescriptorManager.h"
 #include "engine/DescriptorManager/SRVManager/SrvManager.h"
+#include  <numbers>
 
 class ModelAnimation : public Model{
 public:
@@ -25,9 +26,9 @@ public:
 private: // ここでしか使わない関数
 
 	// skeletonの更新
-	void Update(Skeleton& skeleton);
+	void SkeletonUpdate(Skeleton& skeleton);
 	// skinClusterの更新
-	void Update(SkinCluster& skinCluster, const Skeleton& skeleton);
+	void SkinClusterUpdate(SkinCluster& skinCluster, const Skeleton& skeleton);
 
 	// animation読み込み
 	Animation LoadAnimationFile(const std::string& directoryPath, const std::string& fileName);
