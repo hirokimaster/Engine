@@ -11,9 +11,10 @@
 #include "externals/assimp/include/assimp/postprocess.h"
 #include <numbers>
 #include <map>
+#include "engine/Math/Mathfunction.h"
 
 struct Node {
-	WorldTransform transform;
+	QuaternionTransform transform;
 	Matrix4x4 localMatrix;
 	std::string name;
 	std::vector<Node> children;

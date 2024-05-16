@@ -6,9 +6,9 @@ void ModelAnimation::Initialize(const std::string& fileName)
 
 	animation_ = LoadAnimationFile("resources", fileName);
 
-	skeleton_ = CreateSkeleton(); // skeleton
+	skeleton_ = CreateSkeleton(modelData_.rootNode); // skeleton
 
-	skinCluster_ = CreateSkinCluster(skeleton_); // skinCluster
+	skinCluster_ = CreateSkinCluster(modelData_, skeleton_); // skinCluster
 
 	CreateBuffer(); // bufferを作る
 }
@@ -17,7 +17,7 @@ void ModelAnimation::SkeletonUpdate(Skeleton& skeleton)
 {
 	// すべてのjointを更新。
 	for (Joint& joint : skeleton.joints) {
-		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.quaternion, joint.transform.translate);
+		joint.localMatrix = MakeAffineMatrix(joint.transform.scale, joint.transform.rotate, joint.transform.translate);
 
 		if (joint.parent) {
 			joint.skeletonSpaceMatrix = joint.localMatrix * skeleton.joints[*joint.parent].skeletonSpaceMatrix;
@@ -45,7 +45,7 @@ void ModelAnimation::Draw(WorldTransform& worldTransform, Camera& camera, bool i
 {
 	// animationの適用
 	if (isAnimation) {
-		ApplyAnimation(animationTime_);
+		ApplyAnimation(skeleton_, animation_, animationTime_);
 	}
 
 	SkeletonUpdate(skeleton_); // skeletonの更新
@@ -115,7 +115,7 @@ Animation ModelAnimation::LoadAnimationFile(const std::string& directoryPath, co
 			aiVectorKey& KeyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
 			KeyframeVector3 keyframe;
 			keyframe.time = float(KeyAssimp.mTime / animationAssimp->mTicksPerSecond);
-			keyframe.value = { KeyAssimp.mValue.x, -KeyAssimp.mValue.y, -KeyAssimp.mValue.z };
+			keyframe.value = { KeyAssimp.mValue.x, KeyAssimp.mValue.y, KeyAssimp.mValue.z };
 			nodeAnimation.scale.keyframes.push_back(keyframe);
 		}
 	}
@@ -190,10 +190,10 @@ int32_t ModelAnimation::CreateJoint(const Node& node, const std::optional<int32_
 	return joint.index;
 }
 
-Skeleton ModelAnimation::CreateSkeleton()
+Skeleton ModelAnimation::CreateSkeleton(const Node& rootNode)
 {
 	Skeleton skeleton;
-	skeleton.root = CreateJoint(modelData_.rootNode, {}, skeleton.joints);
+	skeleton.root = CreateJoint(rootNode, {}, skeleton.joints);
 
 	// 名前とindexのマッピングを行いアクセスしやすくする
 	for (const Joint& joint : skeleton.joints) {
@@ -203,7 +203,7 @@ Skeleton ModelAnimation::CreateSkeleton()
 	return skeleton;
 }
 
-SkinCluster ModelAnimation::CreateSkinCluster(const Skeleton& skeleton)	
+SkinCluster ModelAnimation::CreateSkinCluster(const ModelData& modelData, const Skeleton& skeleton)
 {
 	SkinCluster skinCluster;
 	// palette用のresouceを確保
@@ -228,16 +228,16 @@ SkinCluster ModelAnimation::CreateSkinCluster(const Skeleton& skeleton)
 	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(skinCluster.paletteResource.Get(), &srvDesc, skinCluster.paletteSrvHandle.first);
 
 	// influence用のResourceを確保。頂点ごとにinfluence情報を追加できるようにする
-	skinCluster.influenceResource = CreateResource::CreateBufferResource(sizeof(VertexInfluence) * modelData_.vertices.size());
+	skinCluster.influenceResource = CreateResource::CreateBufferResource(sizeof(VertexInfluence) * modelData.vertices.size());
 	VertexInfluence* mappedInfluence = nullptr;
 	skinCluster.influenceResource->Map(0, nullptr, reinterpret_cast<void**>(&mappedInfluence));
-	std::memset(mappedInfluence, 0, sizeof(VertexInfluence) * modelData_.vertices.size()); // 0埋め。weightを0にしておく
-	skinCluster.mappedInfluence = { mappedInfluence, modelData_.vertices.size() };
+	std::memset(mappedInfluence, 0, sizeof(VertexInfluence) * modelData.vertices.size()); // 0埋め。weightを0にしておく
+	skinCluster.mappedInfluence = { mappedInfluence, modelData.vertices.size() };
 
 	// VertexBufferView
 	skinCluster.influenceBufferView.BufferLocation = skinCluster.influenceResource->GetGPUVirtualAddress();
 	// 使用するリソースのサイズは頂点サイズ
-	skinCluster.influenceBufferView.SizeInBytes = UINT(sizeof(VertexInfluence) * modelData_.vertices.size());
+	skinCluster.influenceBufferView.SizeInBytes = UINT(sizeof(VertexInfluence) * modelData.vertices.size());
 	// 1頂点あたりのサイズ
 	skinCluster.influenceBufferView.StrideInBytes = sizeof(VertexInfluence);
 
@@ -245,7 +245,7 @@ SkinCluster ModelAnimation::CreateSkinCluster(const Skeleton& skeleton)
 	skinCluster.inverseBindPoseMatrices.resize(skeleton.joints.size());
 	std::generate(skinCluster.inverseBindPoseMatrices.begin(), skinCluster.inverseBindPoseMatrices.end(), MakeIdentityMatrix);
 
-	for (const auto& jointWeight : modelData_.skinClusterData) {
+	for (const auto& jointWeight : modelData.skinClusterData) {
 		auto it = skeleton.jointMap.find(jointWeight.first);
 		if (it == skeleton.jointMap.end()) {
 			continue;
@@ -267,14 +267,14 @@ SkinCluster ModelAnimation::CreateSkinCluster(const Skeleton& skeleton)
 	return skinCluster;
 }
 
-void ModelAnimation::ApplyAnimation(float animationTime)
+void ModelAnimation::ApplyAnimation(Skeleton& skeleton, const Animation& animation, float animationTime)
 {
-	for (Joint& joint : skeleton_.joints) {
+	for (Joint& joint : skeleton.joints) {
 		// 対象のjointのanimationがあれば、値の適用を行う。
-		if (auto it = animation_.nodeAnimations.find(joint.name); it != animation_.nodeAnimations.end()) {
+		if (auto it = animation.nodeAnimations.find(joint.name); it != animation.nodeAnimations.end()) {
 			const NodeAnimation& rootNodeAnimation = (*it).second;
 			joint.transform.translate = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
-			joint.transform.quaternion = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
+			joint.transform.rotate = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
 			joint.transform.scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime);
 
 		}

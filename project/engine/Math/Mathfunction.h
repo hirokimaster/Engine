@@ -16,6 +16,12 @@ struct Quaternion {
 	float w;
 };
 
+struct QuaternionTransform {
+	Vector3 scale;
+	Quaternion rotate;
+	Vector3 translate;
+};
+
 // 積
 Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2);
 // 和

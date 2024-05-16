@@ -41,11 +41,15 @@ public: // メンバ関数
 
 private:
 	std::unique_ptr<ModelAnimation>	anim_;
+	std::unique_ptr<ModelAnimation> anim_2;
+	std::unique_ptr<ModelAnimation> anim_3;
 	float animationTime_ = 0;
+	float animationTime_2 = 0;
 	WorldTransform worldTransform_{};
+	WorldTransform worldTransform_3{};
 	Camera camera_{};
 	uint32_t texHandle_ = 0;
-	std::unique_ptr<Object3DPlacer> object_;
+
 	WorldTransform worldTransform_2{};
 	/*uint32_t texHandle_ = 0;
 	std::unique_ptr<PostProcess> postProcess_ = nullptr;

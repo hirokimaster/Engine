@@ -12,23 +12,33 @@ GameScene::~GameScene()
 void GameScene::Initialize()
 {
 	worldTransform_.Initialize();
+	worldTransform_.translate = { 2.0f,-0.5f,0 };
 	worldTransform_.rotate.y = std::numbers::pi_v<float>;
+
+	worldTransform_3.Initialize();
+	worldTransform_3.translate = { -2.0f,-0.5f,0 };
+	worldTransform_3.rotate.y = std::numbers::pi_v<float>;
+
 	worldTransform_2.Initialize();
+	worldTransform_2.translate = { 0,-0.5f,0 };
 	worldTransform_2.rotate.y = std::numbers::pi_v<float>;
 	camera_.Initialize();
 	camera_.translate = { 0,0,-10.0f };
 
-	ModelManager::LoadGLTFModel("walk.gltf");
-
 	anim_ = std::make_unique<ModelAnimation>();
 	anim_->Initialize("walk.gltf");
-	texHandle_ = TextureManager::Load("resources/white.png");
+	anim_2 = std::make_unique<ModelAnimation>();
+	anim_2->Initialize("sneakWalk.gltf");
+	anim_3 = std::make_unique<ModelAnimation>();
+	anim_3->Initialize("simpleSkin.gltf");
+
+	texHandle_ = TextureManager::Load("resources/uvChecker.png");
 	anim_->SetTexHandle(texHandle_);
 
-	object_ = std::make_unique<Object3DPlacer>();
-	object_->Initialize();
-	object_->SetModel("walk.gltf");
-	object_->SetTexHandle(texHandle_);
+	anim_2->SetTexHandle(texHandle_);
+
+	anim_3->SetTexHandle(texHandle_);
+
 	/*postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->SetEffect(GaussianBlur);
 	postProcess_->Initialize();
@@ -39,9 +49,12 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	animationTime_ += 1.0f / 60.0f;
+    animationTime_ += 1.0f / 60.0f;
+	animationTime_2 += 1.0f / 60.0f;
 	animationTime_ = fmod(animationTime_, 1.0f);
-	ImGui::Begin("camera");
+	animationTime_2 = fmod(animationTime_2, 6.0f);
+
+	/*ImGui::Begin("camera");
 	ImGui::SliderAngle("rotateX", &camera_.rotate.x, 1.0f);
 	ImGui::SliderAngle("rotateY", &camera_.rotate.y, 1.0f);
 	ImGui::SliderAngle("rotateZ", &camera_.rotate.z, 1.0f);
@@ -63,18 +76,22 @@ void GameScene::Update()
 	ImGui::SliderAngle("rotateZ", &worldTransform_2.rotate.z, 1.0f);
 	ImGui::DragFloat3("trans", &worldTransform_2.translate.x, 0.1f, -100.0f, 100.0f);
 	ImGui::DragFloat3("scale", &worldTransform_2.scale.x, 0.1f, -100.0f, 100.0f);
-	ImGui::End();
+	ImGui::End();*/
 
 	camera_.UpdateMatrix();
 	worldTransform_.UpdateMatrix();
 	worldTransform_2.UpdateMatrix();
+	worldTransform_3.UpdateMatrix();
 }
 
 void GameScene::Draw()
 {
 	anim_->SetAnimationTime(animationTime_);
-	anim_->Draw(worldTransform_, camera_);
-	object_->Draw(worldTransform_2, camera_);
+	anim_->Draw(worldTransform_, camera_, true);
+	anim_2->SetAnimationTime(animationTime_);
+	anim_2->Draw(worldTransform_3, camera_, true);
+	anim_3->SetAnimationTime(animationTime_2);
+	anim_3->Draw(worldTransform_2, camera_, true);
 	//postProcess_->Draw();
 }
 

@@ -14,7 +14,7 @@ public:
 	void Draw(WorldTransform& worldTransform, Camera& camera, bool isAnimation = false);
 
 	// アニメーションを適用する
-	void ApplyAnimation(float animationTime);
+	void ApplyAnimation(Skeleton& skeleton, const Animation& animation, float animationTime);
 
 	// animationの再生
 	//void PlayAnimation();
@@ -40,10 +40,10 @@ private: // ここでしか使わない関数
 	// nodeからjointを作る
 	int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);
 	// skeletonを作る
-	Skeleton CreateSkeleton();
+	Skeleton CreateSkeleton(const Node& rootNode);
 
 	// skinClusterの生成
-	SkinCluster CreateSkinCluster(const Skeleton& skeleton);
+	SkinCluster CreateSkinCluster(const ModelData& modelData, const Skeleton& skeleton);
 
 	// bufferを作る場所
 	void CreateBuffer();
