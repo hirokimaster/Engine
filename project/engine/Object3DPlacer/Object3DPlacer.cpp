@@ -60,3 +60,27 @@ void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera)
 		model_->Draw();
 	}
 }
+
+void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera, bool isAnimation)
+{
+	property_ = GraphicsPipeline::GetInstance()->GetPSO().SkinningObject3D;
+
+	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
+	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
+	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
+
+	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
+	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	// マテリアルCBufferの場所を設定
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(4, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
+	// 平行光源
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.directionalLightResource->GetGPUVirtualAddress());
+
+	if (modelAnimation_) {
+		modelAnimation_->Draw(isAnimation);
+	}
+}

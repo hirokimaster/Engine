@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/DescriptorManager/DescriptorManager.h"
 #include "engine/CreateResource/CreateResource.h"
+#include "engine/Model/Animation/Animation.h"
 #define MAX_SRV 128
 
 class SrvManager {
@@ -34,6 +35,13 @@ public:
 	/// <param name="resource"></param>
 	/// <param name="index"></param>
 	void CreatePostProcessSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resource, uint32_t index);
+
+	/// <summary>
+	///  animationのpalette用のsrv
+	/// </summary>
+	/// <param name="skinCluster"></param>
+	/// <param name="skeleton"></param>
+	//void CreatePaletteSrv(SkinCluster& skinCluster,Skeleton& skeleton, uint32_t index);
 
 	/// <summary>
 	/// srvのgpuhandleの位置をずらす

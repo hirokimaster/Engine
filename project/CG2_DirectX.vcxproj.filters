@@ -388,6 +388,7 @@
       <Filter>Engine\Object3DPlacer</Filter>
     </ClInclude>
     <ClInclude Include="engine\Model\Animation\ModelAnimation.h" />
+    <ClInclude Include="engine\Model\Animation\Animation.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">
@@ -427,6 +428,7 @@
     <FxCompile Include="resources\ShaderFile\Grayscale.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\Vignette.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\GaussianBlur.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\SkinningObject3d.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">

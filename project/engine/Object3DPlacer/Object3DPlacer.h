@@ -1,16 +1,34 @@
 #pragma once
 #include "engine/ModelManager/ModelManager.h"
 #include "engine/Lighting/Lighting.h"
+#include "engine/Model/Animation/ModelAnimation.h"
 
 class Object3DPlacer {
 public:
-
+	/// <summary>
+	/// 普通のモデルの初期化
+	/// </summary>
 	void Initialize();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="worldTransform"></param>
+	/// <param name="camera"></param>
 	void Draw(WorldTransform worldTransform, Camera& camera);
+
+	/// <summary>
+	/// animation描画
+	/// </summary>
+	/// <param name="worldTransform"></param>
+	/// <param name="camera"></param>
+	/// <param name="isAnimation"></param>
+	void Draw(WorldTransform worldTransform, Camera& camera, bool isAnimation = false);
 
 	// setter
 	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
+	void SetAnimModel(const std::string& fileName) { modelAnimation_ = ModelManager::Create(fileName); }
+	void SetAnimationTime(float animationTime) { modelAnimation_->SetAnimationTime(animationTime); }
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 	void SetColor(const Vector4& color) { color_ = color; }
 	void SetLight(Lighting* lighting) { lighting_ = lighting; }
@@ -21,6 +39,7 @@ public:
 
 private:
 	Model* model_ = nullptr;
+	ModelAnimation* modelAnimation_ = nullptr;
 	Resource resource_ = {};
 	Material* materialData_ = nullptr;
 	DirectionalLight* directionalLightData_ = nullptr;

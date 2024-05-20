@@ -5,6 +5,7 @@
 #include "engine/Input/Input.h"
 #include "engine/PostProcess/PostProcess.h"
 #include "engine/Model/Animation/ModelAnimation.h"
+#include "engine/Object3DPlacer/Object3DPlacer.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -39,7 +40,16 @@ public: // メンバ関数
 	void PostProcessDraw()override;
 
 private:
+	/*std::unique_ptr<Object3DPlacer>	anim_;
+	std::unique_ptr<Object3DPlacer> anim_2;
+	std::unique_ptr<Object3DPlacer> anim_3;
+	float animationTime_ = 0;
+	float animationTime_2 = 0;
+	WorldTransform worldTransform_{};
+	WorldTransform worldTransform_3{};
+	Camera camera_{};
 	uint32_t texHandle_ = 0;
-	std::unique_ptr<PostProcess> postProcess_ = nullptr;
-	std::unique_ptr<Sprite> sprite_ = nullptr;
+
+	WorldTransform worldTransform_2{};*/
+	/*uint32_t texHandle_ = 0;
 };
