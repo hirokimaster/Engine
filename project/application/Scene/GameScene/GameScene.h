@@ -52,6 +52,4 @@ private:
 
 	WorldTransform worldTransform_2{};*/
 	/*uint32_t texHandle_ = 0;
-	std::unique_ptr<PostProcess> postProcess_ = nullptr;
-	std::unique_ptr<Sprite> sprite_ = nullptr;*/
 };

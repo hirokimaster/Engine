@@ -36,7 +36,7 @@ public:
 
 #pragma region setter
 
-	void SetEffect(PostEffectType type) { type_ = type; }
+	void SetEffect(PostEffectType type);
 
 	BloomParam SetBloomProperty(BloomParam bloom) { return *bloomData_ = bloom; }
 
@@ -64,6 +64,16 @@ private: // このクラス内でしか使わない関数
 	/// buffer作成
 	/// </summary>
 	void CreateBuffer();
+
+	/// <summary>
+	/// pipelineを作成
+	/// </summary>
+	void CreatePipeLine();
+
+	/// <summary>
+	/// constantBufferViewの設定
+	/// </summary>
+	void SetConstantBuffer();
 
 private:
 	Resource resource_{};
