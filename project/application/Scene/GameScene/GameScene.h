@@ -51,5 +51,4 @@ private:
 	uint32_t texHandle_ = 0;
 
 	WorldTransform worldTransform_2{};*/
-	/*uint32_t texHandle_ = 0;
 };
