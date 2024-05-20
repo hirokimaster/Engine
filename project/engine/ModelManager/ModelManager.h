@@ -6,6 +6,7 @@
 #include "externals/assimp/include/assimp/scene.h"
 #include "externals/assimp/include/assimp/postprocess.h"
 #include "engine/Model/Model.h"
+#include "engine/Model/Animation/ModelAnimation.h"
 #include <numbers>
 #include <map>
 
@@ -32,6 +33,12 @@ public:
 	static void LoadGLTFModel(const std::string& fileName);
 
 	/// <summary>
+	/// animationを含んだモデルのロード
+	/// </summary>
+	/// <param name="fileName"></param>
+	static void LoadAnimationModel(const std::string& fileName);
+
+	/// <summary>
 	/// ロードしたobjモデルで生成
 	/// </summary>
 	/// <param name="fileName"></param>
@@ -45,6 +52,13 @@ public:
 	/// <returns></returns>
 	static Model* CreateGLTF(const std::string& fileName);
 
+	/// <summary>
+	/// ロードしたアニメーションモデルを生成
+	/// </summary>
+	/// <param name="fileName"></param>
+	/// <returns></returns>
+	static ModelAnimation* Create(const std::string& fileName);
+
 private:
 	ModelManager() = default;
 	~ModelManager() = default;
@@ -53,5 +67,5 @@ private:
 
 private:
 	std::map<std::string, std::unique_ptr<Model>>  models_;
-
+	std::map<std::string, std::unique_ptr<ModelAnimation>> animModels_;
 };

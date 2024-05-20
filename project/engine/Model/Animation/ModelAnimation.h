@@ -11,7 +11,7 @@ public:
 	// 初期化
 	void Initialize(const std::string& fileName);
 	// 描画
-	void Draw(WorldTransform& worldTransform, Camera& camera, bool isAnimation = false);
+	void Draw(bool isAnimation);
 
 	// アニメーションを適用する
 	void ApplyAnimation(Skeleton& skeleton, const Animation& animation, float animationTime);
@@ -19,8 +19,8 @@ public:
 	// animationの再生
 	//void PlayAnimation();
 
-	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 	void SetAnimationTime(float animationTime) { animationTime_ = animationTime; }
+	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 	void SetColor(const Vector4& color) { color_ = color; }
 
 private: // ここでしか使わない関数
@@ -49,7 +49,6 @@ private: // ここでしか使わない関数
 	void CreateBuffer();
 
 private:
-	float animationTime_ = 0.0f;
 	Animation animation_{};
 	Matrix4x4 localMatrix_{};
 	ModelData modelData_;
@@ -64,4 +63,5 @@ private:
 	uint32_t srvIndex_ = 0;
 	Skeleton skeleton_{};
 	SkinCluster skinCluster_{};
+	float animationTime_ = 0.0f;
 };
