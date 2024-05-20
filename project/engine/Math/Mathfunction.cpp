@@ -249,7 +249,7 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Quaternion& rotate, const
 	Matrix4x4 Translate = MakeTranslateMatrix(translate);
 
 	// スケール、回転、平行移動の合成
-	Matrix4x4 Transform = Multiply(Multiply(Scale, Rotate), Translate);
+	Matrix4x4 Transform = Scale * Rotate * Translate;
 
 	return Transform;
 }
@@ -393,6 +393,33 @@ Matrix4x4 MakeIdentityMatrix() {
 	return result;
 }
 
+Matrix4x4 InverseTranspose(const Matrix4x4& m)
+{
+	Matrix4x4 result;
+	result = Transpose(m);
+	result = Inverse(result);
+
+	return result;
+}
+
+Matrix4x4 Transpose(const Matrix4x4& m)
+{
+	Matrix4x4 result;
+
+	result.m[1][0] = m.m[0][1];
+	result.m[1][2] = m.m[2][1];
+	result.m[1][3] = m.m[3][1];
+	result.m[2][0] = m.m[0][2];
+	result.m[2][1] = m.m[1][2];
+	result.m[2][3] = m.m[3][2];
+	result.m[3][0] = m.m[0][3];
+	result.m[3][1] = m.m[1][3];
+	result.m[3][2] = m.m[2][3];
+
+
+	return result;
+}
+
 //正規化
 Vector3 Normalize(const Vector3& v) {
 	Vector3 result;
@@ -474,9 +501,9 @@ float Dot(const Vector3& v1, const Vector3& v2) {
 
 Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) {
 	Vector3 p;
-	p.x = v1.x + t * (v2.x - v1.x);
-	p.y = v1.y + t * (v2.y - v1.y);
-	p.z = v1.z + t * (v2.z - v1.z);
+	p.x = (1.0f - t) * v1.x + t * v2.x;
+	p.y = (1.0f - t) * v1.y + t * v2.y;
+	p.z = (1.0f - t) * v1.z + t * v2.z;
 	return p;
 };
 
@@ -745,4 +772,58 @@ Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
 	}
 
 	return 	result;
+}
+
+// 演算子のオーバーロード
+
+Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b)
+{
+	return Multiply(a, b);
+}
+
+Vector3 operator+(const Vector3& a, const Vector3& b) {
+	Vector3 c = { a.x + b.x,a.y + b.y ,a.z + b.z };
+
+	return c;
+}
+
+Vector3 operator+(const Vector3& a, const float& b) {
+	Vector3 c = { a.x + b,a.y + b,a.z + b };
+
+	return c;
+}
+
+Vector3 operator-(const Vector3& a, const Vector3& b) {
+	Vector3 c = { a.x - b.x,a.y - b.y,a.z - b.z };
+
+	return c;
+}
+
+Vector3 operator-(const Vector3& a, const float& b) {
+	Vector3 c = { a.x - b,a.y - b,a.z - b };
+
+	return c;
+}
+
+Vector3 operator*(const float& a, const Vector3& b) {
+	Vector3 c = { a * b.x,a * b.y,a * b.z };
+
+	return c;
+}
+
+Vector3 operator/(const Vector3& a, const float& b) {
+	Vector3 c = { a.x / b , a.y / b, a.z / b };
+
+	return c;
+}
+
+Vector3 operator*(const Vector3& vec, const Matrix4x4& mat) {
+	Vector4 result = {
+		vec.x * mat.m[0][0] + vec.y * mat.m[1][0] + vec.z * mat.m[2][0] + mat.m[3][0],
+		vec.x * mat.m[0][1] + vec.y * mat.m[1][1] + vec.z * mat.m[2][1] + mat.m[3][1],
+		vec.x * mat.m[0][2] + vec.y * mat.m[1][2] + vec.z * mat.m[2][2] + mat.m[3][2],
+		vec.x * mat.m[0][3] + vec.y * mat.m[1][3] + vec.z * mat.m[2][3] + mat.m[3][3]
+	};
+
+	return { result.x / result.w, result.y / result.w, result.z / result.w };
 }

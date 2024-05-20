@@ -54,7 +54,7 @@ void Model::InitializeGLTF(const std::string& filename)
 	IBV_.SizeInBytes = sizeof(uint32_t) * UINT(modelData_.indices.size());
 	IBV_.Format = DXGI_FORMAT_R32_UINT;
 
-	uint32_t* index;
+	uint32_t* index = nullptr;
 	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&index));
 	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
 
@@ -174,6 +174,25 @@ ModelData Model::LoadGLTFFile(const std::string& directoryPath, const std::strin
 				modelData.indices.push_back(vertexIndex);
 			}
 		}
+
+		// skinCluster構築用のデータを取得
+		for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
+			aiBone* bone = mesh->mBones[boneIndex];
+			std::string jointName = bone->mName.C_Str();
+			JointWeightData& jointWeightData = modelData.skinClusterData[jointName];
+
+			aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
+			aiVector3D scale, translate;
+			aiQuaternion rotate;
+			bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
+			Matrix4x4 bindPoseMatrix = MakeAffineMatrix({ scale.x,scale.y,scale.z }, { rotate.x,-rotate.y,-rotate.z,rotate.w }, { -translate.x,translate.y,translate.z });
+			jointWeightData.inverseBindPoseMatrix = Inverse(bindPoseMatrix);
+
+			for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
+				jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight, bone->mWeights[weightIndex].mVertexId });
+			}
+		}
+
 	}
 
 	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
@@ -222,9 +241,9 @@ Node Model::ReadNode(aiNode* node)
 	aiQuaternion rotate;
 	node->mTransformation.Decompose(scale, rotate, translate);
 	result.transform.scale = { scale.x,scale.y,scale.y };
-	result.transform.quaternion = { rotate.x,-rotate.y,-rotate.z,rotate.w };
+	result.transform.rotate = { rotate.x,-rotate.y,-rotate.z,rotate.w };
 	result.transform.translate = { -translate.x, translate.y,translate.z };
-	result.localMatrix = MakeAffineMatrix(result.transform.scale, result.transform.quaternion, result.transform.translate);
+	result.localMatrix = MakeAffineMatrix(result.transform.scale, result.transform.rotate, result.transform.translate);
 	result.name = node->mName.C_Str(); // nodeの名前を格納
 	result.children.resize(node->mNumChildren); // 子供の数だけ確保
 	for (uint32_t childIndex = 0; childIndex < node->mNumChildren; ++childIndex) {
