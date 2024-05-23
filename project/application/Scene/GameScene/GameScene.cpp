@@ -52,6 +52,14 @@ void GameScene::Initialize()
 	texHandle_ = TextureManager::Load("resources/taiyou.jpg");
 	sprite_.reset(Sprite::Create(texHandle_));*/
 
+	camera_.Initialize();
+	transform_.Initialize();
+
+	texHandle_ = TextureManager::Load("resources/rostock_laage_airport_4k.dds");
+	skyBox_ = std::make_unique<SkyBox>();
+	skyBox_->Initialize();
+	skyBox_->SetTexHandle(texHandle_);
+
 }
 
 void GameScene::Update()
@@ -61,7 +69,7 @@ void GameScene::Update()
 	animationTime_ = fmod(animationTime_, 1.0f);
 	animationTime_2 = fmod(animationTime_2, 6.0f);*/
 
-	/*ImGui::Begin("camera");
+	ImGui::Begin("camera");
 	ImGui::SliderAngle("rotateX", &camera_.rotate.x, 1.0f);
 	ImGui::SliderAngle("rotateY", &camera_.rotate.y, 1.0f);
 	ImGui::SliderAngle("rotateZ", &camera_.rotate.z, 1.0f);
@@ -69,6 +77,7 @@ void GameScene::Update()
 	ImGui::DragFloat3("scale", &camera_.scale.x, 0.1f, -100.0f, 100.0f);
 	ImGui::End();
 
+	/*
 	ImGui::Begin("transform");
 	ImGui::SliderAngle("rotateX", &worldTransform_.rotate.x,1.0f);
 	ImGui::SliderAngle("rotateY", &worldTransform_.rotate.y, 1.0f);
@@ -89,6 +98,9 @@ void GameScene::Update()
 	worldTransform_.UpdateMatrix();
 	worldTransform_2.UpdateMatrix();
 	worldTransform_3.UpdateMatrix();*/
+
+	transform_.UpdateMatrix();
+	camera_.UpdateMatrix();
 }
 
 void GameScene::Draw()
@@ -100,6 +112,8 @@ void GameScene::Draw()
 	anim_3->SetAnimationTime(animationTime_2);
 	anim_3->Draw(worldTransform_2, camera_, true);*/
 	//postProcess_->Draw();
+
+	skyBox_->Draw(transform_, camera_);
 }
 
 void GameScene::PostProcessDraw()

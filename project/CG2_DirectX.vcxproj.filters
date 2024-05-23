@@ -238,6 +238,12 @@
     <ClCompile Include="engine\Model\Animation\ModelAnimation.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="engine\Model\Primitive\Primitive.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Model\SkyBox\SkyBox.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CreateResource\CreateResource.h">
@@ -389,6 +395,9 @@
     </ClInclude>
     <ClInclude Include="engine\Model\Animation\ModelAnimation.h" />
     <ClInclude Include="engine\Model\Animation\Animation.h" />
+    <ClInclude Include="engine\Model\Primitive\IPrimitiveState.h" />
+    <ClInclude Include="engine\Model\Primitive\Primitive.h" />
+    <ClInclude Include="engine\Model\SkyBox\SkyBox.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">
@@ -429,6 +438,7 @@
     <FxCompile Include="resources\ShaderFile\Vignette.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\GaussianBlur.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\SkinningObject3d.VS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\SkyBox.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">
@@ -438,6 +448,8 @@
       <Filter>Engine\Shader</Filter>
     </None>
     <None Include="resources\ShaderFile\PostProcess.hlsli" />
+    <None Include="resources\ShaderFile\SkyBox.hlsli" />
+    <None Include="resources\ShaderFile\SkyBox.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">

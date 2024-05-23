@@ -6,6 +6,7 @@
 #include "engine/PostProcess/PostProcess.h"
 #include "engine/Model/Animation/ModelAnimation.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
+#include "engine/Model/SkyBox/SkyBox.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -47,11 +48,15 @@ private:
 	float animationTime_2 = 0;
 	WorldTransform worldTransform_{};
 	WorldTransform worldTransform_3{};
-	Camera camera_{};
 	uint32_t texHandle_ = 0;
 
 	WorldTransform worldTransform_2{};*/
 	/*uint32_t texHandle_ = 0;
 	std::unique_ptr<PostProcess> postProcess_ = nullptr;
 	std::unique_ptr<Sprite> sprite_ = nullptr;*/
+
+	std::unique_ptr<SkyBox> skyBox_;
+	uint32_t texHandle_ = 0;
+	WorldTransform transform_{};
+	Camera camera_{};
 };
