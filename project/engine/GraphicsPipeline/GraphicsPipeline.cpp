@@ -1509,6 +1509,12 @@ Property GraphicsPipeline::CreateSkinningObject3D(Microsoft::WRL::ComPtr<ID3D12D
 	return property;
 }
 
+/// <summary>
+/// skyBox用
+/// </summary>
+/// <param name="device"></param>
+/// <param name="shaderName"></param>
+/// <returns></returns>
 Property GraphicsPipeline::CreateSkyBox(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
 	Property property;
@@ -1573,7 +1579,7 @@ Property GraphicsPipeline::CreateSkyBox(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	CreateRootSignature(device, descriptionRootSignature, property);
 
 	// InputLayout
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
 	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -1582,10 +1588,6 @@ Property GraphicsPipeline::CreateSkyBox(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	inputElementDescs[1].SemanticIndex = 0;
 	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
 	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[2].SemanticName = "NORMAL";
-	inputElementDescs[2].SemanticIndex = 0;
-	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);
@@ -1599,7 +1601,7 @@ Property GraphicsPipeline::CreateSkyBox(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
 	// 裏面（時計回り）を表示しない
-	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
+	rasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
 	// 三角形の中を塗りつぶす
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 

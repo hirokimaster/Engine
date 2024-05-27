@@ -15,7 +15,7 @@ public:
 	/// </summary>
 	/// <param name="worldTransform"></param>
 	/// <param name="camera"></param>
-	void Draw(WorldTransform& worldTransform, Camera& camera);
+	void Draw(WorldTransform worldTransform, Camera& camera);
 
 	/// <summary>
 	/// textureのsrvHandleを設定
@@ -37,8 +37,8 @@ private:
 
 private:
 	Property pipeline_{};
-	D3D12_INDEX_BUFFER_VIEW IBV{};
-	D3D12_VERTEX_BUFFER_VIEW VBV{};
+	D3D12_INDEX_BUFFER_VIEW IBV_{};
+	D3D12_VERTEX_BUFFER_VIEW VBV_{};
 	Resource resource_ = {};
 	VertexData* vertexData_ = nullptr;
 	uint32_t* indexData_ = nullptr;

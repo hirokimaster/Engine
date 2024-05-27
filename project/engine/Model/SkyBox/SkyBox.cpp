@@ -6,7 +6,7 @@ void SkyBox::Initialize()
 	CreateVertex();
 }
 
-void SkyBox::Draw(WorldTransform& worldTransform, Camera& camera)
+void SkyBox::Draw(WorldTransform worldTransform, Camera& camera)
 {
 	pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().SkyBox;
 
@@ -14,13 +14,14 @@ void SkyBox::Draw(WorldTransform& worldTransform, Camera& camera)
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(pipeline_.rootSignature_.Get());
 	DirectXCommon::GetCommandList()->SetPipelineState(pipeline_.graphicsPipelineState_.Get()); // PSOを設定
 
+	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &VBV_); // VBVを設定
+	DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
+
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 
-	// wvp用のCBufferの場所を設定
-	//worldTransform.TransferMatrix(resource_.wvpResource, camera);
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
@@ -30,15 +31,15 @@ void SkyBox::Draw(WorldTransform& worldTransform, Camera& camera)
 
 void SkyBox::CreateBuffer()
 {
-	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * 8);
+	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * 24);
 
-	VBV = CreateResource::CreateVertexBufferView(resource_.vertexResource, sizeof(VertexData) * 8, 8);
+	VBV_ = CreateResource::CreateVertexBufferView(resource_.vertexResource, sizeof(VertexData) * 24, 24);
 
 	// 書き込むためのアドレスを取得
 	resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 
 	resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * 36);
-	IBV = CreateResource::CreateIndexBufferView(resource_.indexResource, sizeof(uint32_t) * 36);
+	IBV_ = CreateResource::CreateIndexBufferView(resource_.indexResource, sizeof(uint32_t) * 36);
 
 	// 書き込むためのアドレスを取得
 	resource_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
@@ -48,7 +49,7 @@ void SkyBox::CreateBuffer()
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
 	materialData_->enableLighting = false;
-	materialData_->shininess = 70.0f;
+	//materialData_->shininess = 70.0f;
 }
 
 void SkyBox::CreateVertex()
@@ -99,14 +100,14 @@ void SkyBox::CreateVertex()
 	indexData_[12] = 8; indexData_[13] = 9; indexData_[14] = 10;
 	indexData_[15] = 10; indexData_[16] = 9; indexData_[17] = 11;
 	// 後面
-	indexData_[18] = 4; indexData_[19] = 0; indexData_[20] = 3;
-	indexData_[21] = 7; indexData_[22] = 4; indexData_[23] = 3;
+	indexData_[18] = 1; indexData_[19] = 4; indexData_[20] = 3;
+	indexData_[21] = 3; indexData_[22] = 4; indexData_[23] = 6;
 	// 上面
-	indexData_[24] = 7; indexData_[25] = 6; indexData_[26] = 2;
-	indexData_[27] = 2; indexData_[28] = 3; indexData_[29] = 7;
+	indexData_[24] = 4; indexData_[25] = 5; indexData_[26] = 0;
+	indexData_[27] = 0; indexData_[28] = 5; indexData_[29] = 1;
 	// 下面
-	indexData_[30] = 4; indexData_[31] = 5; indexData_[32] = 1;
-	indexData_[33] = 1; indexData_[34] = 0; indexData_[35] = 4;
+	indexData_[30] = 6; indexData_[31] = 7; indexData_[32] = 2;
+	indexData_[33] = 2; indexData_[34] = 7; indexData_[35] = 3;
 
 #pragma endregion
 
