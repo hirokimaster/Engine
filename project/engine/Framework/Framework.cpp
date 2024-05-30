@@ -78,6 +78,9 @@ void Framework::Run()
 		// 描画後処理
 		dxCommon_->PostDraw();
 
+		// textureの中間リソース破棄
+		TextureManager::Release();
+
 	}
 
 	Finalize();

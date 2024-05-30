@@ -29,6 +29,7 @@ public : // メンバ関数
 
 	DXGI_SWAP_CHAIN_DESC1 GetBufferCount() { return swapChainDesc; }
 
+
 	/// <summary>
 	/// 初期化
 	/// </summary>

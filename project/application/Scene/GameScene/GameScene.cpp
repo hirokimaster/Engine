@@ -54,7 +54,7 @@ void GameScene::Initialize()
 
 	camera_.Initialize();
 	transform_.Initialize();
-	//transform_.scale = { 10.0f,10.0f,10.0f };
+	transform_.scale = { 100.0f,100.0f,100.0f };
 
 	texHandle_ = TextureManager::Load("resources/rostock_laage_airport_4k.dds");
 	skyBox_ = std::make_unique<SkyBox>();

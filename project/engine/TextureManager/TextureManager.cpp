@@ -63,7 +63,7 @@ void TextureManager::LoadTexture(const std::string& filePath, uint32_t index)
 
 	// SRV作成
 	TextureManager::GetInstance()->texResource[index] = CreateTextureResource(TextureManager::GetInstance()->metadata_[index]);
-	UploadTextureData(TextureManager::GetInstance()->texResource[index].Get(), mipImages);
+	TextureManager::GetInstance()->intermediateResource_ = UploadTextureData(TextureManager::GetInstance()->texResource[index].Get(), mipImages);
 	SrvManager::GetInstance()->CreateTextureSrv(TextureManager::GetInstance()->texResource[index], TextureManager::GetInstance()->metadata_[index], index);
 }
 
@@ -81,18 +81,18 @@ ID3D12Resource* TextureManager::CreateTextureResource(const DirectX::TexMetadata
 	resourceDesc.Format = metadata.format; // TextureのFormat
 	resourceDesc.SampleDesc.Count = 1; // サンプリングカウント。1固定
 	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION(metadata.dimension);  // Textureの次元数。普段使っているのは2次元
-	// 利用するHeapの設定。非常に特殊な運用。02_04exで一般的なケース版がある
+	// 利用するHeapの設定
 	D3D12_HEAP_PROPERTIES heapProperties{};
-	heapProperties.Type = D3D12_HEAP_TYPE_CUSTOM; // 細かい設定を行う
-	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
-	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
+	heapProperties.Type = D3D12_HEAP_TYPE_DEFAULT; // default
+	//heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
+	//heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
 	// Resourceの作成
 	ID3D12Resource* resource = nullptr;
 	HRESULT hr = device->CreateCommittedResource(
 		&heapProperties, // Heapの設定
 		D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし。
 		&resourceDesc, // Resourceの設定
-		D3D12_RESOURCE_STATE_GENERIC_READ, // 初回のResourceState。Textureは基本読むだけ
+		D3D12_RESOURCE_STATE_COPY_DEST, // データ転送される設定
 		nullptr, // Clear最適値。使わないのでnullptr
 		IID_PPV_ARGS(&resource)); // 作成するResourceポインタへのポインタ
 	assert(SUCCEEDED(hr));
@@ -101,30 +101,34 @@ ID3D12Resource* TextureManager::CreateTextureResource(const DirectX::TexMetadata
 
 }
 
-void TextureManager::UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages) {
-	// Meta情報を取得
-	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
-	// 全MipMapについて
-	for (size_t mipLevel = 0; mipLevel < metadata.mipLevels; ++mipLevel) {
-		// MipMapLevelを指定して各Imageを取得
-		const DirectX::Image* img = mipImages.GetImage(mipLevel, 0, 0);
+[[nodiscard]]
+ID3D12Resource* TextureManager::UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages) {
 
-		// Textureに転送
-		HRESULT hr = texture->WriteToSubresource(
-			UINT(mipLevel),
-			nullptr, // 全領域へコピー
-			img->pixels, // 元データアドレス
-			UINT(img->rowPitch), // 1ラインサイズ
-			UINT(img->slicePitch) // 1枚サイズ
-		);
+	std::vector<D3D12_SUBRESOURCE_DATA> subresource;
+	DirectX::PrepareUpload(DirectXCommon::GetInstance()->GetDevice(), mipImages.GetImages(), mipImages.GetImageCount(), mipImages.GetMetadata(), subresource);
+	uint64_t intermediateSize = GetRequiredIntermediateSize(texture.Get(), 0, UINT(subresource.size()));
+	ID3D12Resource* intermediateResource = CreateResource::CreateIntermediateResource(intermediateSize);
+	UpdateSubresources(DirectXCommon::GetCommandList(), texture.Get(), intermediateResource, 0, 0, UINT(subresource.size()), subresource.data());
+	// texture転送後は利用できるよう、STATE_COPY_DESTからSTATE_GENERIC_READへ変更する
+	D3D12_RESOURCE_BARRIER barrier{};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	barrier.Transition.pResource = texture.Get();
+	barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
+	DirectXCommon::GetCommandList()->ResourceBarrier(1, &barrier);
 
-		assert(SUCCEEDED(hr));
-	}
-
+	return intermediateResource;
 }
 
 const DirectX::TexMetadata& TextureManager::GetMetaData(uint32_t textureIndex)
 {
 	
 	return metadata_[textureIndex];
+}
+
+void TextureManager::Release()
+{
+	TextureManager::GetInstance()->intermediateResource_->Release();
 }
