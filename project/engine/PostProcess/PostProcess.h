@@ -75,6 +75,11 @@ private: // このクラス内でしか使わない関数
 	/// </summary>
 	void SetConstantBuffer();
 
+	/// <summary>
+	/// depth用のtextureのsrv
+	/// </summary>
+	void CreateDepthTextureSrv();
+
 private:
 	Resource resource_{};
 	Vector4* materialData_ = nullptr;
@@ -97,4 +102,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> gaussian_;
 	PostEffectType type_;
 	Property property_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> depthTexBuff_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> depthOutline_;
+	ProjectionInverse* projection_ = nullptr;
 };

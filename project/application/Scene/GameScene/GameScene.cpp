@@ -13,7 +13,7 @@ void GameScene::Initialize()
 {
 	postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
-	postProcess_->SetEffect(GaussianBlur);
+	postProcess_->SetEffect(LuminanceOutline);
 
 	texHandle_ = TextureManager::Load("resources/uvChecker.png");
 	sprite_.reset(Sprite::Create(texHandle_));

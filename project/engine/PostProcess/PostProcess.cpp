@@ -148,6 +148,11 @@ void PostProcess::CreateBuffer()
 		gaussianData_->sigma = 0.001f;
 		gaussianData_->stepWidth = 0.005f;
 	}
+	else if (type_ == DepthOutline) {
+		depthOutline_ = CreateResource::CreateBufferResource(sizeof(ProjectionInverse));
+		depthOutline_->Map(0, nullptr, reinterpret_cast<void**>(&projection_));
+		projection_->projectionInverse;
+	}
 }
 
 void PostProcess::CreatePipeLine()
@@ -164,6 +169,9 @@ void PostProcess::CreatePipeLine()
 	else if (type_ == GaussianBlur) {
 		property_ = GraphicsPipeline::GetInstance()->GetPSO().GaussianBlur;
 	}
+	else if (type_ == LuminanceOutline) {
+		property_ = GraphicsPipeline::GetInstance()->GetPSO().LuminanceOutline;
+	}
 }
 
 void PostProcess::SetConstantBuffer()
@@ -177,6 +185,37 @@ void PostProcess::SetConstantBuffer()
 	else if (type_ == GaussianBlur) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, gaussian_->GetGPUVirtualAddress());
 	}
+}
+
+void PostProcess::CreateDepthTextureSrv()
+{
+	Microsoft::WRL::ComPtr<ID3D12Device> device = DirectXCommon::GetInstance()->GetDevice();
+
+	D3D12_RESOURCE_DESC resourceDesc{};
+	resourceDesc.Width = WinApp::kWindowWidth; // Textureの幅
+	resourceDesc.Height = WinApp::kWindowHeight; // Textureの高さ
+	resourceDesc.MipLevels = 1; // mipmapの数
+	resourceDesc.DepthOrArraySize = 1; // 奥行 or 配列Textureの配列数
+	resourceDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // TextureのFormat
+	resourceDesc.SampleDesc.Count = 1; // サンプリングカウント。1固定 
+	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
+	// 利用するHeapの設定。非常に特殊な運用。02_04exで一般的なケース版がある
+	D3D12_HEAP_PROPERTIES heapProperties{};
+	heapProperties.Type = D3D12_HEAP_TYPE_CUSTOM; // 細かい設定を行う
+	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
+	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
+	//Resourceの作成
+	HRESULT hr = device->CreateCommittedResource(
+			&heapProperties, // Heapの設定
+			D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし。
+			&resourceDesc, // Resourceの設定
+			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+			nullptr, // Clear最適値。使わないのでnullptr
+			IID_PPV_ARGS(&depthTexBuff_)); // 作成するResourceポインタへのポインタ
+	assert(SUCCEEDED(hr));
+
+	SrvManager::GetInstance()->CreateDepthTextureSrv(depthTexBuff_.Get(), index_);
 }
 
 void PostProcess::PreDraw()

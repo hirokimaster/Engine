@@ -83,6 +83,10 @@ struct GaussianParam {
 	float stepWidth;
 };
 
+struct ProjectionInverse {
+	Matrix4x4 projectionInverse;
+};
+
 class CreateResource {
 public:
 	// Resource作成
