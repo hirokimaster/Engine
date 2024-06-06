@@ -7,6 +7,7 @@
 #include "engine/Model/Animation/ModelAnimation.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "engine/Model/SkyBox/SkyBox.h"
+#include "engine/Lighting/Lighting.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -46,7 +47,6 @@ private:
 	std::unique_ptr<Object3DPlacer> anim_3;
 	float animationTime_ = 0;
 	float animationTime_2 = 0;
-	WorldTransform worldTransform_{};
 	WorldTransform worldTransform_3{};
 	uint32_t texHandle_ = 0;
 
@@ -59,4 +59,10 @@ private:
 	uint32_t texHandle_ = 0;
 	WorldTransform transform_{};
 	Camera camera_{};
+
+	std::unique_ptr<Object3DPlacer> object_;
+	std::unique_ptr<Lighting> light_;
+	WorldTransform worldTransform_{};
+	uint32_t texHandleTexture_ = 0;
+	Material material_{};
 };

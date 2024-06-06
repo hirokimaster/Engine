@@ -55,11 +55,27 @@ void GameScene::Initialize()
 	camera_.Initialize();
 	transform_.Initialize();
 	transform_.scale = { 100.0f,100.0f,100.0f };
+	worldTransform_.Initialize();
+	worldTransform_.scale = { 1.0f,1.0f,1.0f };
+
+	texHandleTexture_ = TextureManager::Load("resources/white.png");
+	ModelManager::LoadGLTFModel("Walk.gltf");
+
+	object_ = std::make_unique<Object3DPlacer>();
+	object_->Initialize();
+	object_->SetModel("Walk.gltf");
+	object_->SetTexHandle(texHandleTexture_);
 
 	texHandle_ = TextureManager::Load("resources/rostock_laage_airport_4k.dds");
 	skyBox_ = std::make_unique<SkyBox>();
 	skyBox_->Initialize();
 	skyBox_->SetTexHandle(texHandle_);
+
+	light_ = std::make_unique<Lighting>();
+	light_->Initialize(Environment);
+	light_->SetEnvironmentTexture(texHandle_);
+	light_->SetCameraData(camera_.translate);
+	object_->SetLight(light_.get());
 
 }
 
@@ -78,15 +94,25 @@ void GameScene::Update()
 	ImGui::DragFloat3("scale", &camera_.scale.x, 0.1f, -100.0f, 100.0f);
 	ImGui::End();
 
-	/*
 	ImGui::Begin("transform");
-	ImGui::SliderAngle("rotateX", &worldTransform_.rotate.x,1.0f);
+	ImGui::SliderAngle("rotateX", &worldTransform_.rotate.x, 1.0f);
 	ImGui::SliderAngle("rotateY", &worldTransform_.rotate.y, 1.0f);
 	ImGui::SliderAngle("rotateZ", &worldTransform_.rotate.z, 1.0f);
 	ImGui::DragFloat3("trans", &worldTransform_.translate.x, 0.1f, -100.0f, 100.0f);
 	ImGui::DragFloat3("scale", &worldTransform_.scale.x, 0.1f, -100.0f, 100.0f);
 	ImGui::End();
 
+	object_->SetMaterialProperty(material_);
+	material_.enableLighting = true;
+	material_.color = { 1.0f,1.0f,1.0f,1.0f };
+
+	ImGui::Begin("material");
+	ImGui::DragFloat("shiness", &material_.shininess, 0.1f, -100.0f, 100.0f);
+	ImGui::DragFloat("scale", &material_.environmentCoefficient, 0.1f, -100.0f, 100.0f);
+	ImGui::End();
+
+	/*
+	
 	ImGui::Begin("transform2");
 	ImGui::SliderAngle("rotateX", &worldTransform_2.rotate.x,1.0f);
 	ImGui::SliderAngle("rotateY", &worldTransform_2.rotate.y, 1.0f);
@@ -96,11 +122,13 @@ void GameScene::Update()
 	ImGui::End();*/
 
 	/*camera_.UpdateMatrix();
-	worldTransform_.UpdateMatrix();
+	
 	worldTransform_2.UpdateMatrix();
 	worldTransform_3.UpdateMatrix();*/
 
+	//worldTransform_.rotate.y += 0.03f;
 	transform_.UpdateMatrix();
+	worldTransform_.UpdateMatrix();
 	camera_.UpdateMatrix();
 }
 
@@ -115,6 +143,7 @@ void GameScene::Draw()
 	//postProcess_->Draw();
 
 	skyBox_->Draw(transform_, camera_);
+	object_->Draw(worldTransform_, camera_);
 }
 
 void GameScene::PostProcessDraw()

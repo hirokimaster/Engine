@@ -29,6 +29,8 @@ void Framework::Initialize()
 
 void Framework::Finalize()
 {
+	// textureの中間リソース破棄
+	TextureManager::Release();
 	//gameManager_->Finalize();
 	imguiManager_->Finalize();
 	// ゲームウィンドウ破棄
@@ -77,9 +79,6 @@ void Framework::Run()
 		imguiManager_->Draw();
 		// 描画後処理
 		dxCommon_->PostDraw();
-
-		// textureの中間リソース破棄
-		TextureManager::Release();
 
 	}
 

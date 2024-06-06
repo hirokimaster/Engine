@@ -439,6 +439,8 @@
     <FxCompile Include="resources\ShaderFile\GaussianBlur.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\SkinningObject3d.VS.hlsl" />
     <FxCompile Include="resources\ShaderFile\SkyBox.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Environment.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Environment.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">

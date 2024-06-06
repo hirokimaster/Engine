@@ -28,12 +28,14 @@ struct PipelineState {
 	Property GaussianBlur;
 	Property SkinningObject3D;
 	Property SkyBox;
+	Property Environment;
 };
 
 enum Light {
 	None,
 	Point,
-	Spot
+	Spot,
+	Environment
 };
 
 enum PostEffectType {
@@ -115,6 +117,8 @@ private:
 	static Property CreateSkinningObject3D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	static Property CreateSkyBox(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateEnvironment(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);	
 
 	PipelineState pso = {};
 

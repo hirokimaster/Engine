@@ -5,16 +5,17 @@ void Object3DPlacer::Initialize()
 	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	materialData_->enableLighting = false;
-	materialData_->shininess = 70.0f;
+	materialData_->enableLighting = true;
+	materialData_->shininess = 20.0f;
+	materialData_->environmentCoefficient = 1.0f;
 
 	// 平行光源用のリソース
 	resource_.directionalLightResource = CreateResource::CreateBufferResource(sizeof(DirectionalLight));
 	// 書き込むためのアドレスを取得
 	resource_.directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
 	directionalLightData_->color = { color_ };
-	directionalLightData_->direction = Normalize({ 0.0f, -1.0f, 0.0f });
-	directionalLightData_->intensity = 1.0f;
+	directionalLightData_->direction = Normalize({ 0.0f, -10.0f, 0.0f });
+	directionalLightData_->intensity = 10.0f;
 }
 
 void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera)
@@ -32,6 +33,9 @@ void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera)
 		}
 		else if (lighting_->GetLightType() == Spot) {
 			property_ = GraphicsPipeline::GetInstance()->GetPSO().SpotLight;
+		}
+		else if (lighting_->GetLightType() == Environment) {
+			property_ = GraphicsPipeline::GetInstance()->GetPSO().Environment;
 		}
 	}
 	
