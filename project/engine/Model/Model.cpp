@@ -137,8 +137,6 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 		}
 	}
 
-	modelData.rootNode = ReadNode(scene->mRootNode);
-
 	return modelData;
 }
 

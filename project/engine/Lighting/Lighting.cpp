@@ -4,7 +4,7 @@ void Lighting::Initialize(Light light)
 {
 	resource_.cameraResource = CreateResource::CreateBufferResource(sizeof(Camera));
 	resource_.cameraResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
-	cameraData_->worldPosition = { 0.0f,10.0f,-40.0f };
+	cameraData_->worldPosition = { 0.0f,10.0f,-60.0f };
 
 	if (light == Spot) {
 		InitializeSpotLight();

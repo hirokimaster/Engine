@@ -11,10 +11,7 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	/*worldTransform_.Initialize();
-	worldTransform_.translate = { 2.0f,-0.5f,0 };
-	worldTransform_.rotate.y = std::numbers::pi_v<float>;
-
+	/*
 	worldTransform_3.Initialize();
 	worldTransform_3.translate = { -2.0f,-0.5f,0 };
 	worldTransform_3.rotate.y = std::numbers::pi_v<float>;
@@ -57,14 +54,16 @@ void GameScene::Initialize()
 	transform_.scale = { 100.0f,100.0f,100.0f };
 	worldTransform_.Initialize();
 	worldTransform_.scale = { 1.0f,1.0f,1.0f };
+	worldTransform_.translate = { 0,-0.5f,-50.0f };
+	worldTransform_.rotate.y = std::numbers::pi_v<float>;
 
-	texHandleTexture_ = TextureManager::Load("resources/white.png");
+	texHandle2_ = TextureManager::Load("resources/white.png");
 	ModelManager::LoadGLTFModel("Walk.gltf");
 
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
 	object_->SetModel("Walk.gltf");
-	object_->SetTexHandle(texHandleTexture_);
+	object_->SetTexHandle(texHandle2_);
 
 	texHandle_ = TextureManager::Load("resources/rostock_laage_airport_4k.dds");
 	skyBox_ = std::make_unique<SkyBox>();
@@ -74,8 +73,8 @@ void GameScene::Initialize()
 	light_ = std::make_unique<Lighting>();
 	light_->Initialize(Environment);
 	light_->SetEnvironmentTexture(texHandle_);
-	light_->SetCameraData(camera_.translate);
-	object_->SetLight(light_.get());
+	material_.environmentCoefficient = 1.0f;
+	material_.shininess = 10.0f;
 
 }
 
@@ -102,9 +101,11 @@ void GameScene::Update()
 	ImGui::DragFloat3("scale", &worldTransform_.scale.x, 0.1f, -100.0f, 100.0f);
 	ImGui::End();
 
+	object_->SetLight(light_.get());
 	object_->SetMaterialProperty(material_);
 	material_.enableLighting = true;
 	material_.color = { 1.0f,1.0f,1.0f,1.0f };
+	light_->SetCameraData(camera_.translate);
 
 	ImGui::Begin("material");
 	ImGui::DragFloat("shiness", &material_.shininess, 0.1f, -100.0f, 100.0f);

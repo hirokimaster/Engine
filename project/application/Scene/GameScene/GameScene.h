@@ -63,6 +63,6 @@ private:
 	std::unique_ptr<Object3DPlacer> object_;
 	std::unique_ptr<Lighting> light_;
 	WorldTransform worldTransform_{};
-	uint32_t texHandleTexture_ = 0;
+	uint32_t texHandle2_ = 0;
 	Material material_{};
 };

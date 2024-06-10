@@ -47,6 +47,7 @@ enum PostEffectType {
 
 // BlendMode
 enum BlendMode {
+	BlendNone,
 	BlendNormal,
 	BlendAdd,
 };
