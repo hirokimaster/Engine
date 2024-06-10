@@ -16,6 +16,7 @@ void PostProcess::Initialize()
 	CreateSRV();
 	CreateRTV();
 	CreateDSV();
+	CreateDepthTextureSrv();
 
 	// クライアント領域のサイズと一緒にして画面全体に表示
 	viewport.Width = WinApp::kWindowWidth;
@@ -151,7 +152,7 @@ void PostProcess::CreateBuffer()
 	else if (type_ == DepthOutline) {
 		depthOutline_ = CreateResource::CreateBufferResource(sizeof(ProjectionInverse));
 		depthOutline_->Map(0, nullptr, reinterpret_cast<void**>(&projection_));
-		projection_->projectionInverse;
+		projection_->projectionInverse = Inverse(MakePerspectiveFovMatrix(0.45f, (float)16 / 9, 0.1f, 1000.0f));
 	}
 }
 
@@ -172,6 +173,9 @@ void PostProcess::CreatePipeLine()
 	else if (type_ == LuminanceOutline) {
 		property_ = GraphicsPipeline::GetInstance()->GetPSO().LuminanceOutline;
 	}
+	else if (type_ == DepthOutline) {
+		property_ = GraphicsPipeline::GetInstance()->GetPSO().DepthOutline;
+	}
 }
 
 void PostProcess::SetConstantBuffer()
@@ -185,6 +189,10 @@ void PostProcess::SetConstantBuffer()
 	else if (type_ == GaussianBlur) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, gaussian_->GetGPUVirtualAddress());
 	}
+	else if (type_ == DepthOutline) {
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, depthOutline_->GetGPUVirtualAddress());
+		DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(10));
+	}
 }
 
 void PostProcess::CreateDepthTextureSrv()
@@ -196,26 +204,31 @@ void PostProcess::CreateDepthTextureSrv()
 	resourceDesc.Height = WinApp::kWindowHeight; // Textureの高さ
 	resourceDesc.MipLevels = 1; // mipmapの数
 	resourceDesc.DepthOrArraySize = 1; // 奥行 or 配列Textureの配列数
-	resourceDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // TextureのFormat
+	resourceDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // TextureのFormat
 	resourceDesc.SampleDesc.Count = 1; // サンプリングカウント。1固定 
 	resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
-	// 利用するHeapの設定。非常に特殊な運用。02_04exで一般的なケース版がある
+	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+	// 利用するHeapの設定
 	D3D12_HEAP_PROPERTIES heapProperties{};
 	heapProperties.Type = D3D12_HEAP_TYPE_CUSTOM; // 細かい設定を行う
 	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
 	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
+	// 深度値のクリア設定
+	D3D12_CLEAR_VALUE depthClearValue{};
+	depthClearValue.DepthStencil.Depth = 1.0f; // 1.0f（最大値）でクリア
+	depthClearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // フォーマット。Resourceと合わせる
+	
 	//Resourceの作成
 	HRESULT hr = device->CreateCommittedResource(
 			&heapProperties, // Heapの設定
 			D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし。
 			&resourceDesc, // Resourceの設定
-			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-			nullptr, // Clear最適値。使わないのでnullptr
+		    D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+		    &depthClearValue, // Clear最適値
 			IID_PPV_ARGS(&depthTexBuff_)); // 作成するResourceポインタへのポインタ
 	assert(SUCCEEDED(hr));
 
-	SrvManager::GetInstance()->CreateDepthTextureSrv(depthTexBuff_.Get(), index_);
+	SrvManager::GetInstance()->CreateDepthTextureSrv(depthTexBuff_.Get(),10);
 }
 
 void PostProcess::PreDraw()

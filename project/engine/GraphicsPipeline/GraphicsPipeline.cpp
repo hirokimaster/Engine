@@ -84,6 +84,7 @@ void GraphicsPipeline::CreatePipeline(PipelineState& pso) {
 	pso.GaussianBlur = CreateGaussianBlur(device.Get(), L"GaussianBlur");
 	pso.LuminanceOutline = CreateLuminanceOutline(device.Get(), L"LuminanceBasedOutline");
 	pso.SkinningObject3D = CreateSkinningObject3D(device.Get(), L"SkinningObject3d");
+	pso.DepthOutline = CreateDepthOutline(device.Get(), L"DepthBasedOutline");
 
 }
 
@@ -1659,13 +1660,13 @@ Property GraphicsPipeline::CreateDepthOutline(Microsoft::WRL::ComPtr<ID3D12Devic
 	descriptorRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
 	// rootParameters
-	D3D12_ROOT_PARAMETER rootParameters[2] = {};
+	D3D12_ROOT_PARAMETER rootParameters[3] = {};
 	// texture
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptortableを使う
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
 	rootParameters[0].DescriptorTable.pDescriptorRanges = &descriptorRange[0]; // Tableの中身の配列を指定
-	rootParameters[0].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange); // Tableで利用する数
-	// material
+	rootParameters[0].DescriptorTable.NumDescriptorRanges = 1; // Tableで利用する数
+	// projection
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 	rootParameters[1].Descriptor.ShaderRegister = 0;
@@ -1673,7 +1674,7 @@ Property GraphicsPipeline::CreateDepthOutline(Microsoft::WRL::ComPtr<ID3D12Devic
 	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptortableを使う
 	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
 	rootParameters[2].DescriptorTable.pDescriptorRanges = &descriptorRange[1]; // Tableの中身の配列を指定
-	rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange); // Tableで利用する数
+	rootParameters[2].DescriptorTable.NumDescriptorRanges = 1; // Tableで利用する数
 
 	descriptionRootSignature.pParameters = rootParameters;
 	descriptionRootSignature.NumParameters = _countof(rootParameters);

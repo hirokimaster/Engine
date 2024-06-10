@@ -27,7 +27,7 @@ struct PixelShaderOutput
 	
 };
 
-struct Material
+struct Projection
 {
     float32_t4x4 projectionInverse;
 };
@@ -40,7 +40,7 @@ Texture2D<float32_t> gDepthTexture : register(t1);
 
 SamplerState gSamplerPoint : register(s1);
 
-ConstantBuffer<Material> gMaterial: register(b0);
+ConstantBuffer<Projection> gProjection: register(b0);
 
 PixelShaderOutput main(VertexShaderOutput input)
 {
@@ -58,7 +58,7 @@ PixelShaderOutput main(VertexShaderOutput input)
         {
             float32_t2 texcoord = input.texcoord + kIndex3x3[x][y] * uvStepSize;
             float32_t ndcDepth = gDepthTexture.Sample(gSamplerPoint, texcoord);
-            float32_t4 viewSpace = mul(float32_t4(0.0f, 0.0f, ndcDepth, 1.0f), gMaterial.projectionInverse);
+            float32_t4 viewSpace = mul(float32_t4(0.0f, 0.0f, ndcDepth, 1.0f), gProjection.projectionInverse);
             float32_t viewZ = viewSpace.z * rcp(viewSpace.w);
             
             difference.x += viewZ * kPrewittHorizontalKernel[x][y];

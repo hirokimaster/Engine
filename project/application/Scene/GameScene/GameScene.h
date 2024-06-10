@@ -40,7 +40,9 @@ public: // メンバ関数
 	void PostProcessDraw()override;
 
 private:
+	Camera camera_{};
+	WorldTransform worldTransform_{};
 	std::unique_ptr<PostProcess> postProcess_;
-	std::unique_ptr<Sprite> sprite_;
+	std::unique_ptr<Object3DPlacer> object_;
 	uint32_t texHandle_ = 0;
 };
