@@ -44,5 +44,8 @@ private:
 	WorldTransform worldTransform_{};
 	std::unique_ptr<PostProcess> postProcess_;
 	std::unique_ptr<Object3DPlacer> object_;
+	std::unique_ptr<Object3DPlacer> object2_;
+	WorldTransform worldTransform2_{};
+	uint32_t texHandle2_ = 0;
 	uint32_t texHandle_ = 0;
 };

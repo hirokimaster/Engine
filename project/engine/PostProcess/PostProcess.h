@@ -79,6 +79,14 @@ private: // このクラス内でしか使わない関数
 	/// depth用のtextureのsrv
 	/// </summary>
 	void CreateDepthTextureSrv();
+public:
+	/// <summary>
+	/// depthTextureSRV用のバリア
+	/// </summary>
+	void PreDepthBarrier();
+	void PostDepthBarrier();
+
+	void SetCamera(Camera camera) { camera = camera_; }
 
 private:
 	Resource resource_{};
@@ -91,6 +99,7 @@ private:
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_;
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandles_;
 	D3D12_RESOURCE_BARRIER barrier_{};
+	D3D12_RESOURCE_BARRIER depthBarrier_{};
 	D3D12_VIEWPORT viewport{};
 	D3D12_RECT scissorRect{};
 	uint32_t index_;
@@ -105,4 +114,5 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthTexBuff_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthOutline_;
 	ProjectionInverse* projection_ = nullptr;
+	Camera camera_{};
 };

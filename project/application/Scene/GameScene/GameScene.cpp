@@ -11,6 +11,7 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
+	camera_.Initialize();
 	postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
 	postProcess_->SetEffect(DepthOutline);
@@ -22,7 +23,7 @@ void GameScene::Initialize()
 	object_->Initialize();
 	object_->SetModel("terrain.obj");
 	object_->SetTexHandle(texHandle_);
-	camera_.Initialize();
+	
 	worldTransform_.Initialize();
 	
 }
@@ -38,12 +39,15 @@ void GameScene::Update()
 	ImGui::End();
 
 	camera_.UpdateMatrix();
+	postProcess_->SetCamera(camera_);
 	worldTransform_.UpdateMatrix();
 }
 
 void GameScene::Draw()
 {
+	postProcess_->PreDepthBarrier();
 	postProcess_->Draw();
+	postProcess_->PostDepthBarrier();
 }
 
 void GameScene::PostProcessDraw()

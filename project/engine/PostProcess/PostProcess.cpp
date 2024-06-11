@@ -152,7 +152,8 @@ void PostProcess::CreateBuffer()
 	else if (type_ == DepthOutline) {
 		depthOutline_ = CreateResource::CreateBufferResource(sizeof(ProjectionInverse));
 		depthOutline_->Map(0, nullptr, reinterpret_cast<void**>(&projection_));
-		projection_->projectionInverse = Inverse(MakePerspectiveFovMatrix(0.45f, (float)16 / 9, 0.1f, 1000.0f));
+		//projection_->projectionInverse = Inverse(MakePerspectiveFovMatrix(0.45f, (float)16 / 9, 0.1f, 1000.0f));
+		
 	}
 }
 
@@ -223,7 +224,7 @@ void PostProcess::CreateDepthTextureSrv()
 			&heapProperties, // Heapの設定
 			D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし。
 			&resourceDesc, // Resourceの設定
-		    D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+		    D3D12_RESOURCE_STATE_DEPTH_WRITE,
 		    &depthClearValue, // Clear最適値
 			IID_PPV_ARGS(&depthTexBuff_)); // 作成するResourceポインタへのポインタ
 	assert(SUCCEEDED(hr));
@@ -231,8 +232,34 @@ void PostProcess::CreateDepthTextureSrv()
 	SrvManager::GetInstance()->CreateDepthTextureSrv(depthTexBuff_.Get(),10);
 }
 
+void PostProcess::PreDepthBarrier()
+{
+	
+	depthBarrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	// Noneにしておく
+	depthBarrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	// バリアを張る対象のリソース
+	depthBarrier_.Transition.pResource = depthTexBuff_.Get();
+	// 遷移前（現在）のResourceState
+	depthBarrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+	// 遷移後のResourceState
+	depthBarrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	DirectXCommon::GetCommandList()->ResourceBarrier(1, &depthBarrier_);
+}
+
+void PostProcess::PostDepthBarrier()
+{
+	depthBarrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+	depthBarrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+	DirectXCommon::GetCommandList()->ResourceBarrier(1, &depthBarrier_);
+}
+
 void PostProcess::PreDraw()
 {
+	/*if (type_ == DepthOutline) {
+		PreDepthBarrier();
+	}*/
+
 	barrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 	// Noneにしておく
 	barrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
@@ -243,6 +270,7 @@ void PostProcess::PreDraw()
 	// 遷移後のResourceState
 	barrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
 	DirectXCommon::GetCommandList()->ResourceBarrier(1, &barrier_);
+
 
 	// レンダーターゲットをセット
 	DirectXCommon::GetCommandList()->OMSetRenderTargets(1, &rtvHandles_, false, &dsvHandles_);
@@ -261,6 +289,10 @@ void PostProcess::PreDraw()
 
 void PostProcess::PostDraw()
 {
+	/*if (type_ == DepthOutline) {
+		PostDepthBarrier();
+	}*/
+
 	barrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
 	barrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
 	DirectXCommon::GetCommandList()->ResourceBarrier(1, &barrier_);
@@ -268,6 +300,7 @@ void PostProcess::PostDraw()
 
 void PostProcess::Draw()	
 {
+	projection_->projectionInverse = Inverse(camera_.matProjection);
 	// effectの種類によって変えてる
 	CreatePipeLine();
   
