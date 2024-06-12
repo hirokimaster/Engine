@@ -15,6 +15,8 @@
 #include "engine/DescriptorManager/DescriptorManager.h"
 #include <thread>
 
+class PostProcess;
+
 class DirectXCommon {
 public : // メンバ関数
 
@@ -28,6 +30,12 @@ public : // メンバ関数
 	static ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); }
 
 	DXGI_SWAP_CHAIN_DESC1 GetBufferCount() { return swapChainDesc; }
+
+	// depthBufferの取得
+	ID3D12Resource* GetDepthBuffer() { return depthBuffer_.Get(); }
+
+	// postProcessの設定
+	void SetPostProcess(PostProcess* postProcess) { postProcess_ = postProcess; }
 
 	/// <summary>
 	/// 初期化
@@ -107,5 +115,7 @@ private:
 	UINT backBufferIndex_;
 	// 記録時間	(FPS固定用)
 	std::chrono::steady_clock::time_point reference_;
+	// postProcessのポインタ
+	PostProcess* postProcess_ = nullptr;
 
 };

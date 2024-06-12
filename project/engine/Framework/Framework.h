@@ -27,6 +27,5 @@ private:
 	Audio* audio_;
 	ImGuiManager* imguiManager_;
 	GameManager* gameManager_ = nullptr;
-	uint32_t texHandle_ = 0;
 	std::unique_ptr<AbstractSceneFactory> sceneFactory_ = nullptr;
 };

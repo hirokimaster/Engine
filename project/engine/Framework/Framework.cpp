@@ -67,6 +67,9 @@ void Framework::Run()
 
 		PostProcessDraw();
 
+		// postProcessのポインタを設定する
+		DirectXCommon::GetInstance()->SetPostProcess(gameManager_->GetPostProcess());
+
 		// 描画前処理
 		dxCommon_->PreDraw();
 

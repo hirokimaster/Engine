@@ -1,5 +1,6 @@
 #include "DirectXCommon.h"
 #include "engine/Utility/StringUtility.h"
+#include "engine/PostProcess/PostProcess.h"
 
 DirectXCommon* DirectXCommon::GetInstance() {
 	static DirectXCommon instance;
@@ -49,6 +50,7 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 
 // 描画前
 void DirectXCommon::PreDraw() {
+
 	// これから書き込むバックバッファのインデックスを取得
 	backBufferIndex_ = swapChain_->GetCurrentBackBufferIndex();
 	// SwapChainからResourceを引っ張ってくる
@@ -66,7 +68,15 @@ void DirectXCommon::PreDraw() {
 	// TransitionBarrierを張る
 	commandList_->ResourceBarrier(1, &barrier);
 
-	ClearDepthBuffer();
+	// postEffectを使わない時だけdepthをクリアする
+	if (postProcess_ == nullptr) {
+		ClearDepthBuffer();
+	}
+	else {
+		// 描画先のRTVとDSVを設定する
+		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = DescriptorManager::GetInstance()->GetDSV()->GetCPUDescriptorHandleForHeapStart();
+		commandList_->OMSetRenderTargets(1, &rtvHandles[backBufferIndex_], false, &dsvHandle);
+	}
 	
 	// 指定した色で画面全体をクリアする
 	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
@@ -77,6 +87,10 @@ void DirectXCommon::PreDraw() {
 
 	commandList_->RSSetViewports(1, &viewport); // viewportを設定
 	commandList_->RSSetScissorRects(1, &scissorRect); // scissorRectを設定
+
+	if (postProcess_->GetEffectType() == DepthOutline) {
+		postProcess_->PreDepthBarrier();
+	}
 
 }
 
@@ -89,6 +103,10 @@ void DirectXCommon::PostDraw() {
 	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
 	// TransitionBarrierを張る
 	commandList_->ResourceBarrier(1, &barrier);
+
+	if (postProcess_->GetEffectType() == DepthOutline) {
+		postProcess_->PostDepthBarrier();
+	}
 
 	// コマンドリストの内容を確定させる。すべてのコマンドを積んでからCloseすること
     hr_ = commandList_->Close();
@@ -330,8 +348,8 @@ void DirectXCommon::CreateDepthBuffer()
 {
 	// 生成するResourceの設定
 	D3D12_RESOURCE_DESC resourceDesc{};
-	resourceDesc.Width = 1280; // Textureの幅
-	resourceDesc.Height = 720; // Textureの高さ
+	resourceDesc.Width = WinApp::kWindowWidth; // Textureの幅
+	resourceDesc.Height = WinApp::kWindowHeight; // Textureの高さ
 	resourceDesc.MipLevels = 1; // mipmapの数
 	resourceDesc.DepthOrArraySize = 1; // 奥行 or 配列Textureの配列数
 	resourceDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // DepthStencilとして使う通知

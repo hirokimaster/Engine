@@ -53,7 +53,7 @@ private: // このクラス内でしか使わない関数
 	/// <summary>
 	/// dsv作成
 	/// </summary>
-	void CreateDSV();
+	//void CreateDSV();
 
 	/// <summary>
 	/// srv作成
@@ -88,6 +88,8 @@ public:
 
 	void SetCamera(Camera camera) { camera = camera_; }
 
+	PostEffectType GetEffectType() { return type_; }
+
 private:
 	Resource resource_{};
 	Vector4* materialData_ = nullptr;
@@ -97,7 +99,6 @@ private:
 	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuffer_;
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_;
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandles_;
 	D3D12_RESOURCE_BARRIER barrier_{};
 	D3D12_RESOURCE_BARRIER depthBarrier_{};
 	D3D12_VIEWPORT viewport{};

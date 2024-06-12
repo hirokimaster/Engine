@@ -11,10 +11,10 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	camera_.Initialize();
 	postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
 	postProcess_->SetEffect(DepthOutline);
+	GameManager::GetInstance()->SetPostProcess(postProcess_.get());
 
 	ModelManager::LoadObjModel("terrain.obj");
 	texHandle_ = TextureManager::Load("resources/grass.png");
@@ -25,6 +25,7 @@ void GameScene::Initialize()
 	object_->SetTexHandle(texHandle_);
 	
 	worldTransform_.Initialize();
+	camera_.Initialize();
 	
 }
 
@@ -45,9 +46,7 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	postProcess_->PreDepthBarrier();
-	postProcess_->Draw();
-	postProcess_->PostDepthBarrier();
+	postProcess_->Draw();	
 }
 
 void GameScene::PostProcessDraw()

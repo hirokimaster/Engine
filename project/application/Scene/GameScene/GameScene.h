@@ -6,6 +6,7 @@
 #include "engine/PostProcess/PostProcess.h"
 #include "engine/Model/Animation/ModelAnimation.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
+#include "application/GameManager/GameManager.h"
 
 class GameScene : public IScene {
 public: // メンバ関数

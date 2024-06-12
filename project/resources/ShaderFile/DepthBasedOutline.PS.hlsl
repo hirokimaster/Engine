@@ -46,6 +46,9 @@ PixelShaderOutput main(VertexShaderOutput input)
 {
     PixelShaderOutput output;
     
+    
+    float32_t DepthTex = gDepthTexture.Sample(gSamplerPoint, input.texcoord);
+    
     uint32_t width, height;
     gTexture.GetDimensions(width, height);
     float32_t2 uvStepSize = float32_t2(rcp(width), rcp(height));
@@ -57,6 +60,7 @@ PixelShaderOutput main(VertexShaderOutput input)
         for (int32_t y = 0; y < 3; ++y)
         {
             float32_t2 texcoord = input.texcoord + kIndex3x3[x][y] * uvStepSize;
+            
             float32_t ndcDepth = gDepthTexture.Sample(gSamplerPoint, texcoord);
             float32_t4 viewSpace = mul(float32_t4(0.0f, 0.0f, ndcDepth, 1.0f), gProjection.projectionInverse);
             float32_t viewZ = viewSpace.z * rcp(viewSpace.w);
@@ -73,6 +77,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     
     output.color.rgb = (1.0f - weight) * gTexture.Sample(gSampler, input.texcoord).rgb;
     output.color.a = 1.0f;
+    //output.color = float32_t4(pow(DepthTex, 20.0f), pow(DepthTex, 20.0f), pow(DepthTex, 20.0f), 1.0f);
     return output;
 
 }
