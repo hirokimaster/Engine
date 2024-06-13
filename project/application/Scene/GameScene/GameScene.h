@@ -49,4 +49,5 @@ private:
 	WorldTransform worldTransform2_{};
 	uint32_t texHandle2_ = 0;
 	uint32_t texHandle_ = 0;
+	BloomParam param_{};
 };

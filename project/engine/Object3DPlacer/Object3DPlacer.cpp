@@ -12,7 +12,7 @@ void Object3DPlacer::Initialize()
 	resource_.directionalLightResource = CreateResource::CreateBufferResource(sizeof(DirectionalLight));
 	// 書き込むためのアドレスを取得
 	resource_.directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
-	directionalLightData_->color = { color_ };
+	directionalLightData_->color = {1.0f,1.0f,1.0f,1.0f};
 	directionalLightData_->direction = Normalize({ 0.0f, -1.0f, 0.0f });
 	directionalLightData_->intensity = 1.0f;
 }

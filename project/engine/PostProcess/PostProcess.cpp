@@ -15,7 +15,7 @@ void PostProcess::Initialize()
 	index_ = SrvManager::GetInstance()->GetIndex();
 	CreateSRV();
 	CreateRTV();
-	CreateDepthTextureSrv();
+	//CreateDepthTextureSrv();
 
 	// クライアント領域のサイズと一緒にして画面全体に表示
 	viewport.Width = WinApp::kWindowWidth;

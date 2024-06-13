@@ -38,9 +38,13 @@ public:
 
 	void SetEffect(PostEffectType type);
 
-	BloomParam SetBloomProperty(BloomParam bloom) { return *bloomData_ = bloom; }
+	BloomParam SetBloomParam(BloomParam bloom) { return *bloomData_ = bloom; }
 
 	GaussianParam SetGaussianParam(GaussianParam gaussian) { return *gaussianData_ = gaussian; }
+
+	void SetCamera(Camera camera) { camera = camera_; }
+
+	PostEffectType GetEffectType() { return type_; }
 
 #pragma endregion
 
@@ -79,16 +83,12 @@ private: // このクラス内でしか使わない関数
 	/// depth用のtextureのsrv
 	/// </summary>
 	void CreateDepthTextureSrv();
-public:
+
 	/// <summary>
 	/// depthTextureSRV用のバリア
 	/// </summary>
 	void PreDepthBarrier();
 	void PostDepthBarrier();
-
-	void SetCamera(Camera camera) { camera = camera_; }
-
-	PostEffectType GetEffectType() { return type_; }
 
 private:
 	Resource resource_{};

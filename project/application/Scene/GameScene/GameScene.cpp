@@ -13,15 +13,20 @@ void GameScene::Initialize()
 {
 	postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
-	postProcess_->SetEffect(DepthOutline);
+	postProcess_->SetEffect(Bloom);
+	param_.stepWidth = 0.001f;
+	param_.sigma = 0.005f;
+	param_.lightStrength = 1.0f;
+	param_.bloomThreshold = 0.5f;
 	GameManager::GetInstance()->SetPostProcess(postProcess_.get());
+	
 
-	ModelManager::LoadGLTFModel("Walk.gltf");
-	texHandle_ = TextureManager::Load("resources/grass.png");
+	ModelManager::LoadObjModel("cube.obj");
+	texHandle_ = TextureManager::Load("resources/frame.jpg");
 
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("Walk.gltf");
+	object_->SetModel("cube.obj");
 	object_->SetTexHandle(texHandle_);
 	
 	worldTransform_.Initialize();
@@ -37,6 +42,15 @@ void GameScene::Update()
 	ImGui::SliderAngle("rotateZ", &camera_.rotate.z, 1.0f);
 	ImGui::DragFloat3("trans", &camera_.translate.x, 0.1f, -100.0f, 100.0f);
 	ImGui::DragFloat3("scale", &camera_.scale.x, 0.1f, -100.0f, 100.0f);
+	ImGui::End();
+
+	postProcess_->SetBloomParam(param_);
+
+	ImGui::Begin("param");
+	ImGui::DragFloat("stepWidth", &param_.stepWidth, 0.001f, 0.0f, 10.0f);
+	ImGui::DragFloat("sigma", &param_.sigma, 0.001f, 0.0f, 10.0f);
+	ImGui::DragFloat("lightStrength", &param_.lightStrength, 0.1f, 0.0f, 10.0f);
+	ImGui::DragFloat("bloomThreshold", &param_.bloomThreshold, 0.01f, 0.0f, 10.0f);
 	ImGui::End();
 
 	camera_.UpdateMatrix();

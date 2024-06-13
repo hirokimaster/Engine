@@ -431,6 +431,7 @@
     <FxCompile Include="resources\ShaderFile\SkinningObject3d.VS.hlsl" />
     <FxCompile Include="resources\ShaderFile\LuminanceBasedOutline.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\DepthBasedOutline.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\RadialBlur.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">
