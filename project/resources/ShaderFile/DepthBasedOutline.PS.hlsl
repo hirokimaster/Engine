@@ -77,7 +77,6 @@ PixelShaderOutput main(VertexShaderOutput input)
     
     output.color.rgb = (1.0f - weight) * gTexture.Sample(gSampler, input.texcoord).rgb;
     output.color.a = 1.0f;
-    //output.color = float32_t4(pow(DepthTex, 20.0f), pow(DepthTex, 20.0f), pow(DepthTex, 20.0f), 1.0f);
     return output;
 
 }

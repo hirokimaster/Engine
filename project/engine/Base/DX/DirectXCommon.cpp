@@ -34,8 +34,8 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 	CreateDepthBuffer();
 
 	// クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = 1280;
-	viewport.Height = 720;
+	viewport.Width = WinApp::kWindowWidth;;
+	viewport.Height = WinApp::kWindowHeight;
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	viewport.MinDepth = 0.0f;
@@ -43,9 +43,9 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 
 	// 基本的にビューポートと同じ矩形が構成されるようにする
 	scissorRect.left = 0;
-	scissorRect.right = 1280;
+	scissorRect.right = WinApp::kWindowWidth;
 	scissorRect.top = 0;
-	scissorRect.bottom = 720;
+	scissorRect.bottom = WinApp::kWindowHeight;
 }
 
 // 描画前
@@ -75,7 +75,7 @@ void DirectXCommon::PreDraw() {
 	else {
 		// 描画先のRTVとDSVを設定する
 		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = DescriptorManager::GetInstance()->GetDSV()->GetCPUDescriptorHandleForHeapStart();
-		commandList_->OMSetRenderTargets(1, &rtvHandles[backBufferIndex_], false, &dsvHandle);
+		commandList_->OMSetRenderTargets(1, &rtvHandles[backBufferIndex_], false, nullptr);
 	}
 	
 	// 指定した色で画面全体をクリアする
@@ -87,11 +87,6 @@ void DirectXCommon::PreDraw() {
 
 	commandList_->RSSetViewports(1, &viewport); // viewportを設定
 	commandList_->RSSetScissorRects(1, &scissorRect); // scissorRectを設定
-
-	if (postProcess_->GetEffectType() == DepthOutline) {
-		postProcess_->PreDepthBarrier();
-	}
-
 }
 
 // 描画後
@@ -103,10 +98,6 @@ void DirectXCommon::PostDraw() {
 	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;
 	// TransitionBarrierを張る
 	commandList_->ResourceBarrier(1, &barrier);
-
-	if (postProcess_->GetEffectType() == DepthOutline) {
-		postProcess_->PostDepthBarrier();
-	}
 
 	// コマンドリストの内容を確定させる。すべてのコマンドを積んでからCloseすること
     hr_ = commandList_->Close();

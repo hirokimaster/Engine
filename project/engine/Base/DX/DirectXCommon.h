@@ -106,6 +106,7 @@ private:
 	UINT64 fenceVal_ = 0;
 	HANDLE fenceEvent_;
 	D3D12_RESOURCE_BARRIER barrier{};
+	D3D12_RESOURCE_BARRIER depthBarrier_{};
 	HRESULT hr_;
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles[2];
 	// ビューポート

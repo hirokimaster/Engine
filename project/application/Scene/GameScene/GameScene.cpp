@@ -16,12 +16,12 @@ void GameScene::Initialize()
 	postProcess_->SetEffect(DepthOutline);
 	GameManager::GetInstance()->SetPostProcess(postProcess_.get());
 
-	ModelManager::LoadObjModel("terrain.obj");
+	ModelManager::LoadGLTFModel("Walk.gltf");
 	texHandle_ = TextureManager::Load("resources/grass.png");
 
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("terrain.obj");
+	object_->SetModel("Walk.gltf");
 	object_->SetTexHandle(texHandle_);
 	
 	worldTransform_.Initialize();
@@ -40,7 +40,6 @@ void GameScene::Update()
 	ImGui::End();
 
 	camera_.UpdateMatrix();
-	postProcess_->SetCamera(camera_);
 	worldTransform_.UpdateMatrix();
 }
 
