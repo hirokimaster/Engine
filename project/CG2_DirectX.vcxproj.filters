@@ -244,6 +244,9 @@
     <ClCompile Include="engine\Model\SkyBox\SkyBox.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="engine\Model\Primitive\PrimitiveType\Line.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CreateResource\CreateResource.h">
@@ -398,6 +401,7 @@
     <ClInclude Include="engine\Model\Primitive\IPrimitiveState.h" />
     <ClInclude Include="engine\Model\Primitive\Primitive.h" />
     <ClInclude Include="engine\Model\SkyBox\SkyBox.h" />
+    <ClInclude Include="engine\Model\Primitive\PrimitiveType\Line.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">
