@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "engine/ModelManager/ModelManager.h"
+#define CUSTOM_DEADZONE 12000
 
 GameScene::GameScene()
 {
@@ -11,45 +12,25 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	/*
-	worldTransform_3.Initialize();
-	worldTransform_3.translate = { -2.0f,-0.5f,0 };
-	worldTransform_3.rotate.y = std::numbers::pi_v<float>;
-
-	worldTransform_2.Initialize();
-	worldTransform_2.translate = { 0,-0.5f,0 };
-	worldTransform_2.rotate.y = std::numbers::pi_v<float>;
 	camera_.Initialize();
 	camera_.translate = { 0,0,-10.0f };
 
-	ModelManager::LoadAnimationModel("simpleSkin.gltf");
-	ModelManager::LoadAnimationModel("sneakWalk.gltf");
 	ModelManager::LoadAnimationModel("Walk.gltf");
+	ModelManager::LoadObjModel("cube.obj");
 
 	anim_ = std::make_unique<Object3DPlacer>();
 	anim_->Initialize();
-	anim_->SetAnimModel("sneakWalk.gltf");
-	anim_2 = std::make_unique<Object3DPlacer>();
-	anim_2->Initialize();
-	anim_2->SetAnimModel("Walk.gltf");
-	anim_3 = std::make_unique<Object3DPlacer>();
-	anim_3->Initialize();
-	anim_3->SetAnimModel("simpleSkin.gltf");
+	//anim_->SetModel("cube.obj");
+	anim_->SetAnimModel("Walk.gltf");
 
 	texHandle_ = TextureManager::Load("resources/uvChecker.png");
 	anim_->SetTexHandle(texHandle_);
 
-	anim_2->SetTexHandle(texHandle_);
+	worldTransform_.Initialize();
+	worldTransform_.translate = { 0,-0.5f,0 };
+	worldTransform_.rotate.y = std::numbers::pi_v<float>;
 
-	anim_3->SetTexHandle(texHandle_);*/
-
-	/*postProcess_ = std::make_unique<PostProcess>();
-	postProcess_->SetEffect(GaussianBlur);
-	postProcess_->Initialize();
-	texHandle_ = TextureManager::Load("resources/taiyou.jpg");
-	sprite_.reset(Sprite::Create(texHandle_));*/
-
-	camera_.Initialize();
+	/*camera_.Initialize();
 	transform_.Initialize();
 	transform_.scale = { 100.0f,100.0f,100.0f };
 	worldTransform_.Initialize();
@@ -74,18 +55,44 @@ void GameScene::Initialize()
 	light_->Initialize(Environment);
 	light_->SetEnvironmentTexture(texHandle_);
 	material_.environmentCoefficient = 1.0f;
-	material_.shininess = 10.0f;
+	material_.shininess = 10.0f;*/
 
 }
 
 void GameScene::Update()
 {
-    /*animationTime_ += 1.0f / 60.0f;
-	animationTime_2 += 1.0f / 60.0f;
-	animationTime_ = fmod(animationTime_, 1.0f);
-	animationTime_2 = fmod(animationTime_2, 6.0f);*/
 
-	ImGui::Begin("camera");
+	XINPUT_STATE joyState{};
+
+	Vector3 move{ 0,0,0 };
+
+	if (Input::GetInstance()->GetJoystickState(joyState)) {
+		if ((joyState.Gamepad.sThumbLX < CUSTOM_DEADZONE && joyState.Gamepad.sThumbLX > -CUSTOM_DEADZONE)) {
+			joyState.Gamepad.sThumbLX = 0;
+			joyState.Gamepad.sThumbLY = 0;
+			move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kMoveSpeed_;
+		}
+		else {
+			move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kMoveSpeed_;
+			animationTime_ += 1.0f / 60.0f;
+			if ((float)joyState.Gamepad.sThumbLX < -CUSTOM_DEADZONE) {
+				worldTransform_.rotate.y = -std::numbers::pi_v<float> / 2.0f;
+			}
+	
+			if ((float)joyState.Gamepad.sThumbLX > CUSTOM_DEADZONE) {
+				worldTransform_.rotate.y = std::numbers::pi_v<float> / 2.0f;
+			}
+		}
+	}
+
+	worldTransform_.translate = Add(worldTransform_.translate, move);
+
+	worldTransform_.UpdateMatrix();
+
+	animationTime_ = fmod(animationTime_, 1.0f);
+#ifdef _DEBUG
+
+	ImGui::Begin("camera");	d
 	ImGui::SliderAngle("rotateX", &camera_.rotate.x, 1.0f);
 	ImGui::SliderAngle("rotateY", &camera_.rotate.y, 1.0f);
 	ImGui::SliderAngle("rotateZ", &camera_.rotate.z, 1.0f);
@@ -101,7 +108,9 @@ void GameScene::Update()
 	ImGui::DragFloat3("scale", &worldTransform_.scale.x, 0.1f, -100.0f, 100.0f);
 	ImGui::End();
 
-	object_->SetLight(light_.get());
+#endif
+
+	/*object_->SetLight(light_.get());
 	object_->SetMaterialProperty(material_);
 	material_.enableLighting = true;
 	material_.color = { 1.0f,1.0f,1.0f,1.0f };
@@ -110,7 +119,7 @@ void GameScene::Update()
 	ImGui::Begin("material");
 	ImGui::DragFloat("shiness", &material_.shininess, 0.1f, -100.0f, 100.0f);
 	ImGui::DragFloat("scale", &material_.environmentCoefficient, 0.1f, -100.0f, 100.0f);
-	ImGui::End();
+	ImGui::End();*/
 
 	/*
 	
@@ -128,30 +137,20 @@ void GameScene::Update()
 	worldTransform_3.UpdateMatrix();*/
 
 	//worldTransform_.rotate.y += 0.03f;
-	transform_.UpdateMatrix();
-	worldTransform_.UpdateMatrix();
+	//transform_.UpdateMatrix();
+	
 	camera_.UpdateMatrix();
 }
 
 void GameScene::Draw()
 {
-	/*anim_->SetAnimationTime(animationTime_);
+	anim_->SetAnimationTime(animationTime_);
 	anim_->Draw(worldTransform_, camera_, true);
-	anim_2->SetAnimationTime(animationTime_);
-	anim_2->Draw(worldTransform_3, camera_, true);
-	anim_3->SetAnimationTime(animationTime_2);
-	anim_3->Draw(worldTransform_2, camera_, true);*/
-	//postProcess_->Draw();
 
-	skyBox_->Draw(transform_, camera_);
-	object_->Draw(worldTransform_, camera_);
+	/*skyBox_->Draw(transform_, camera_);
+	object_->Draw(worldTransform_, camera_);*/
 }
 
 void GameScene::PostProcessDraw()
 {
-	/*postProcess_->PreDraw();
-
-	sprite_->Draw();
-
-	postProcess_->PostDraw();*/
 }

@@ -42,20 +42,15 @@ public: // メンバ関数
 	void PostProcessDraw()override;
 
 private:
-	/*std::unique_ptr<Object3DPlacer>	anim_;
-	std::unique_ptr<Object3DPlacer> anim_2;
-	std::unique_ptr<Object3DPlacer> anim_3;
+	Camera camera_{};
+	WorldTransform worldTransform_{};
+	std::unique_ptr<Object3DPlacer>	anim_;
 	float animationTime_ = 0;
-	float animationTime_2 = 0;
-	WorldTransform worldTransform_3{};
 	uint32_t texHandle_ = 0;
+	const float kMoveSpeed_ = 0.05f;
+	bool isAnimation_ = false;
 
-	WorldTransform worldTransform_2{};*/
-	/*uint32_t texHandle_ = 0;
-	std::unique_ptr<PostProcess> postProcess_ = nullptr;
-	std::unique_ptr<Sprite> sprite_ = nullptr;*/
-
-	std::unique_ptr<SkyBox> skyBox_;
+	/*std::unique_ptr<SkyBox> skyBox_;
 	uint32_t texHandle_ = 0;
 	WorldTransform transform_{};
 	Camera camera_{};
@@ -64,5 +59,5 @@ private:
 	std::unique_ptr<Lighting> light_;
 	WorldTransform worldTransform_{};
 	uint32_t texHandle2_ = 0;
-	Material material_{};
+	Material material_{};*/
 };

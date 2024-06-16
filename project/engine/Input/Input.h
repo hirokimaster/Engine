@@ -23,6 +23,10 @@ public:
 
 	bool GetJoystickState(XINPUT_STATE& out) const;
 
+	static bool GetJoystickState();
+
+	bool PressedButton(WORD button);
+
 	//void SetJoystickDeadZone(int32_t deadZoneL, int32_t deadZoneR);
 
 	struct ButtonState {
@@ -45,7 +49,8 @@ private:
 
 	bool isInitialize = false;
 
-
+	XINPUT_STATE state_{};
+	XINPUT_STATE preState_{};
 
 	//0x80=押している状態
 	//0x00=押してない状態
