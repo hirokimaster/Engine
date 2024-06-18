@@ -398,7 +398,7 @@
     </ClInclude>
     <ClInclude Include="engine\Model\Animation\ModelAnimation.h" />
     <ClInclude Include="engine\Model\Animation\Animation.h" />
-    <ClInclude Include="engine\Model\Primitive\IPrimitiveState.h" />
+    <ClInclude Include="engine\Model\Primitive\IPrimitive.h" />
     <ClInclude Include="engine\Model\Primitive\Primitive.h" />
     <ClInclude Include="engine\Model\SkyBox\SkyBox.h" />
     <ClInclude Include="engine\Model\Primitive\PrimitiveType\Line.h" />
@@ -445,6 +445,7 @@
     <FxCompile Include="resources\ShaderFile\SkyBox.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\Environment.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\Environment.VS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Line.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">

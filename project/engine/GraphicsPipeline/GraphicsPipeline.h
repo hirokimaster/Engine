@@ -29,6 +29,7 @@ struct PipelineState {
 	Property SkinningObject3D;
 	Property SkyBox;
 	Property Environment;
+	Property Line;
 };
 
 enum Light {
@@ -119,7 +120,9 @@ private:
 
 	static Property CreateSkyBox(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateEnvironment(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);	
+	static Property CreateEnvironment(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateLine(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	PipelineState pso = {};
 

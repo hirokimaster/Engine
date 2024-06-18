@@ -1,12 +1,19 @@
 #include "Primitive.h"
 
-void Primitive::Initialize(IPrimitiveState* state)
+Primitive::Primitive(){}
+
+Primitive::~Primitive()
 {
-	state_ = state;
-	state_->Initialize(this, texHandle_);
+	delete state_;
 }
 
-void Primitive::Draw(WorldTransform& worldTransform, Camera& camera)
+void Primitive::Initialize(IPrimitive* state)
+{
+	state_ = state;
+	state_->Initialize(this);
+}
+
+void Primitive::Draw(WorldTransform worldTransform, Camera& camera)
 {
 	state_->Draw(worldTransform, camera);
 }

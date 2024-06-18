@@ -1,17 +1,21 @@
 #pragma once
-#include "engine/Model/Primitive/IPrimitiveState.h"
+#include "engine/Model/Primitive/IPrimitive.h"
 
 class Primitive {
 public:
+
+	Primitive();
+	~Primitive();
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(IPrimitiveState* state);
+	void Initialize(IPrimitive* state);
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(WorldTransform& worldTransform, Camera& camera);
+	void Draw(WorldTransform worldTransform, Camera& camera);
 
 	/// <summary>
 	/// textureのsrvHandleを設定
@@ -21,6 +25,6 @@ public:
 
 private:
 	// 描画する図形のタイプ
-	IPrimitiveState* state_ = nullptr;
+	IPrimitive* state_ = nullptr;
 	uint32_t texHandle_ = 0;
 };

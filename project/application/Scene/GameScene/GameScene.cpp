@@ -30,6 +30,10 @@ void GameScene::Initialize()
 	worldTransform_.translate = { 0,-0.5f,0 };
 	worldTransform_.rotate.y = std::numbers::pi_v<float>;
 
+	primitive_ = std::make_unique<Primitive>();
+	primitive_->Initialize(new Line);
+	trans.Initialize();
+
 	/*camera_.Initialize();
 	transform_.Initialize();
 	transform_.scale = { 100.0f,100.0f,100.0f };
@@ -88,11 +92,12 @@ void GameScene::Update()
 	worldTransform_.translate = Add(worldTransform_.translate, move);
 
 	worldTransform_.UpdateMatrix();
+	trans.UpdateMatrix();
 
 	animationTime_ = fmod(animationTime_, 1.0f);
 #ifdef _DEBUG
 
-	ImGui::Begin("camera");	d
+	ImGui::Begin("camera");
 	ImGui::SliderAngle("rotateX", &camera_.rotate.x, 1.0f);
 	ImGui::SliderAngle("rotateY", &camera_.rotate.y, 1.0f);
 	ImGui::SliderAngle("rotateZ", &camera_.rotate.z, 1.0f);
@@ -146,6 +151,7 @@ void GameScene::Draw()
 {
 	anim_->SetAnimationTime(animationTime_);
 	anim_->Draw(worldTransform_, camera_, true);
+	primitive_->Draw(trans, camera_);
 
 	/*skyBox_->Draw(transform_, camera_);
 	object_->Draw(worldTransform_, camera_);*/

@@ -166,7 +166,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\DescriptorManager\SRVManager\SrvManager.h" />
     <ClInclude Include="engine\Lighting\Lighting.h" />
     <ClInclude Include="engine\ModelManager\ModelManager.h" />
-    <ClInclude Include="engine\Model\Primitive\IPrimitiveState.h" />
+    <ClInclude Include="engine\Model\Primitive\IPrimitive.h" />
     <ClInclude Include="engine\Model\Primitive\Primitive.h" />
     <ClInclude Include="engine\Model\Primitive\PrimitiveType\Line.h" />
     <ClInclude Include="engine\Model\SkyBox\SkyBox.h" />
@@ -253,6 +253,12 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="resources\ShaderFile\Grayscale.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\Line.PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

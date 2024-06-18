@@ -8,6 +8,8 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "engine/Model/SkyBox/SkyBox.h"
 #include "engine/Lighting/Lighting.h"
+#include "engine/Model/Primitive/Primitive.h"
+#include "engine/Model/Primitive/PrimitiveType/Line.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -49,6 +51,8 @@ private:
 	uint32_t texHandle_ = 0;
 	const float kMoveSpeed_ = 0.05f;
 	bool isAnimation_ = false;
+	std::unique_ptr<Primitive> primitive_;
+	WorldTransform trans{};
 
 	/*std::unique_ptr<SkyBox> skyBox_;
 	uint32_t texHandle_ = 0;
