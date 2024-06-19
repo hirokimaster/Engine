@@ -42,6 +42,12 @@ public:
 
 	GaussianParam SetGaussianParam(GaussianParam gaussian) { return *gaussianData_ = gaussian; }
 
+	RadialParam SetRadialParam(RadialParam param) { return *radialData_ = param; }
+
+	DissolveParam SetDissolveParam(DissolveParam param) { return *dissolveData_ = param; }
+
+	void SetMaskTexture(uint32_t texHandle) {maskTexHandle_ = texHandle; }
+
 	void SetCamera(Camera camera) { camera = camera_; }
 
 	PostEffectType GetEffectType() { return type_; }
@@ -53,11 +59,6 @@ private: // このクラス内でしか使わない関数
 	/// rtv作成
 	/// </summary>
 	void CreateRTV();
-
-	/// <summary>
-	/// dsv作成
-	/// </summary>
-	//void CreateDSV();
 
 	/// <summary>
 	/// srv作成
@@ -111,9 +112,14 @@ private:
 	GaussianParam* gaussianData_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> gaussian_;
 	PostEffectType type_;
-	Property property_;
+	Property pipeline_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthTexBuff_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthOutline_;
 	ProjectionInverse* projection_ = nullptr;
 	Camera camera_{};
+	Microsoft::WRL::ComPtr<ID3D12Resource> radialBlur_;
+	RadialParam* radialData_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> dissolve_;
+	DissolveParam* dissolveData_ = nullptr;
+	uint32_t maskTexHandle_ = 0;
 };

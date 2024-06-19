@@ -87,6 +87,15 @@ struct ProjectionInverse {
 	Matrix4x4 projectionInverse;
 };
 
+struct RadialParam {
+	Vector2 center;
+	float blurWidth;
+};
+
+struct DissolveParam {
+	float threshold;
+};
+
 class CreateResource {
 public:
 	// Resource作成

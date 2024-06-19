@@ -15,7 +15,6 @@ void PostProcess::Initialize()
 	index_ = SrvManager::GetInstance()->GetIndex();
 	CreateSRV();
 	CreateRTV();
-	//CreateDepthTextureSrv();
 
 	// クライアント領域のサイズと一緒にして画面全体に表示
 	viewport.Width = WinApp::kWindowWidth;
@@ -110,27 +109,44 @@ void PostProcess::CreateBuffer()
 		depthOutline_->Map(0, nullptr, reinterpret_cast<void**>(&projection_));
 		camera_.Initialize();
 	}
+	else if (type_ == RadialBlur) {
+		radialBlur_ = CreateResource::CreateBufferResource(sizeof(RadialParam));
+		radialBlur_->Map(0, nullptr, reinterpret_cast<void**>(&radialData_));
+		radialData_->center = Vector2(0.5f, 0.5f);
+		radialData_->blurWidth = 0.01f;
+	}
+	else if (type_ == Dissolve) {
+		dissolve_ = CreateResource::CreateBufferResource(sizeof(DissolveParam));
+		dissolve_->Map(0, nullptr, reinterpret_cast<void**>(&dissolveData_));
+		dissolveData_->threshold = 0.5f;
+	}
 }
 
 void PostProcess::CreatePipeLine()
 {
 	if (type_ == Bloom) {
-		property_ = GraphicsPipeline::GetInstance()->GetPSO().Bloom;
+		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Bloom;
 	}
 	else if (type_ == Grayscale) {
-		property_ = GraphicsPipeline::GetInstance()->GetPSO().Grayscale;
+		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Grayscale;
 	}
 	else if (type_ == Vignette) {
-		property_ = GraphicsPipeline::GetInstance()->GetPSO().Vignette;
+		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Vignette;
 	}
 	else if (type_ == GaussianBlur) {
-		property_ = GraphicsPipeline::GetInstance()->GetPSO().GaussianBlur;
+		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().GaussianBlur;
 	}
 	else if (type_ == LuminanceOutline) {
-		property_ = GraphicsPipeline::GetInstance()->GetPSO().LuminanceOutline;
+		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().LuminanceOutline;
 	}
 	else if (type_ == DepthOutline) {
-		property_ = GraphicsPipeline::GetInstance()->GetPSO().DepthOutline;
+		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().DepthOutline;
+	}
+	else if (type_ == RadialBlur) {
+		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().RadialBlur;
+	}
+	else if (type_ == Dissolve) {
+		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Dissolve;
 	}
 }
 
@@ -148,6 +164,13 @@ void PostProcess::SetConstantBuffer()
 	else if (type_ == DepthOutline) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, depthOutline_->GetGPUVirtualAddress());
 		DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(10));
+	}
+	else if (type_ == RadialBlur) {
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, radialBlur_->GetGPUVirtualAddress());
+	}
+	else if (type_ == Dissolve) {
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, dissolve_->GetGPUVirtualAddress());
+		DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(maskTexHandle_));
 	}
 }
 
@@ -227,8 +250,8 @@ void PostProcess::Draw()
 	CreatePipeLine();
   
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
-	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
-	DirectXCommon::GetCommandList()->SetPipelineState(property_.graphicsPipelineState_.Get()); // PSOを設定
+	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(pipeline_.rootSignature_.Get());
+	DirectXCommon::GetCommandList()->SetPipelineState(pipeline_.graphicsPipelineState_.Get()); // PSOを設定
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// srvの設定
@@ -249,5 +272,10 @@ void PostProcess::Draw()
 void PostProcess::SetEffect(PostEffectType type)
 {
 	type_ = type;
+	// depthoutlineならそれ用のsrvも作る
+	if (type_ == DepthOutline) {
+		CreateDepthTextureSrv();
+	}
+
 	CreateBuffer();
 }

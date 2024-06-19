@@ -28,6 +28,8 @@ struct PipelineState {
 	Property GaussianBlur;
 	Property LuminanceOutline;
 	Property DepthOutline;
+	Property RadialBlur;
+	Property Dissolve;
 	Property SkinningObject3D;
 };
 
@@ -43,7 +45,9 @@ enum PostEffectType {
 	Vignette,
 	GaussianBlur,
 	LuminanceOutline,
-	DepthOutline
+	DepthOutline,
+	RadialBlur,
+	Dissolve
 };
 
 // BlendMode
@@ -120,6 +124,10 @@ private:
 	static Property CreateLuminanceOutline(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	static Property CreateDepthOutline(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateRadialBlur(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateDissolve(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	PipelineState pso = {};
 
