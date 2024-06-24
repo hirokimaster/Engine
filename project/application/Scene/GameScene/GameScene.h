@@ -6,10 +6,7 @@
 #include "engine/PostProcess/PostProcess.h"
 #include "engine/Model/Animation/ModelAnimation.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
-#include "engine/Model/SkyBox/SkyBox.h"
-#include "engine/Lighting/Lighting.h"
-#include "engine/Model/Primitive/Primitive.h"
-#include "engine/Model/Primitive/PrimitiveType/Line.h"
+#include "application/GameManager/GameManager.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -44,24 +41,4 @@ public: // メンバ関数
 	void PostProcessDraw()override;
 
 private:
-	Camera camera_{};
-	WorldTransform worldTransform_{};
-	std::unique_ptr<Object3DPlacer>	anim_;
-	float animationTime_ = 0;
-	uint32_t texHandle_ = 0;
-	const float kMoveSpeed_ = 0.05f;
-	bool isAnimation_ = false;
-	std::unique_ptr<Primitive> primitive_;
-	WorldTransform trans{};
-
-	/*std::unique_ptr<SkyBox> skyBox_;
-	uint32_t texHandle_ = 0;
-	WorldTransform transform_{};
-	Camera camera_{};
-
-	std::unique_ptr<Object3DPlacer> object_;
-	std::unique_ptr<Lighting> light_;
-	WorldTransform worldTransform_{};
-	uint32_t texHandle2_ = 0;
-	Material material_{};*/
 };

@@ -35,6 +35,13 @@ public:
 	/// <param name="resource"></param>
 	/// <param name="index"></param>
 	void CreatePostProcessSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resource, uint32_t index);
+	
+	/// <summary>
+	/// depthTextureSRV
+	/// </summary>
+	/// <param name="resource"></param>
+	/// <param name="index"></param>
+	void CreateDepthTextureSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resource, uint32_t index);
 
 	/// <summary>
 	///  animationのpalette用のsrv

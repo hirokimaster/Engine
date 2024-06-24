@@ -1,5 +1,6 @@
 #include "DirectXCommon.h"
 #include "engine/Utility/StringUtility.h"
+#include "engine/PostProcess/PostProcess.h"
 
 DirectXCommon* DirectXCommon::GetInstance() {
 	static DirectXCommon instance;
@@ -33,8 +34,8 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 	CreateDepthBuffer();
 
 	// クライアント領域のサイズと一緒にして画面全体に表示
-	viewport.Width = 1280;
-	viewport.Height = 720;
+	viewport.Width = WinApp::kWindowWidth;;
+	viewport.Height = WinApp::kWindowHeight;
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	viewport.MinDepth = 0.0f;
@@ -42,13 +43,14 @@ void DirectXCommon::Initialize(WinApp* winApp) {
 
 	// 基本的にビューポートと同じ矩形が構成されるようにする
 	scissorRect.left = 0;
-	scissorRect.right = 1280;
+	scissorRect.right = WinApp::kWindowWidth;
 	scissorRect.top = 0;
-	scissorRect.bottom = 720;
+	scissorRect.bottom = WinApp::kWindowHeight;
 }
 
 // 描画前
 void DirectXCommon::PreDraw() {
+
 	// これから書き込むバックバッファのインデックスを取得
 	backBufferIndex_ = swapChain_->GetCurrentBackBufferIndex();
 	// SwapChainからResourceを引っ張ってくる
@@ -66,7 +68,15 @@ void DirectXCommon::PreDraw() {
 	// TransitionBarrierを張る
 	commandList_->ResourceBarrier(1, &barrier);
 
-	ClearDepthBuffer();
+	// postEffectを使わない時だけdepthをクリアする
+	if (postProcess_ == nullptr) {
+		ClearDepthBuffer();
+	}
+	else {
+		// 描画先のRTVとDSVを設定する
+		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = DescriptorManager::GetInstance()->GetDSV()->GetCPUDescriptorHandleForHeapStart();
+		commandList_->OMSetRenderTargets(1, &rtvHandles[backBufferIndex_], false, nullptr);
+	}
 	
 	// 指定した色で画面全体をクリアする
 	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
@@ -77,7 +87,6 @@ void DirectXCommon::PreDraw() {
 
 	commandList_->RSSetViewports(1, &viewport); // viewportを設定
 	commandList_->RSSetScissorRects(1, &scissorRect); // scissorRectを設定
-
 }
 
 // 描画後
@@ -330,8 +339,8 @@ void DirectXCommon::CreateDepthBuffer()
 {
 	// 生成するResourceの設定
 	D3D12_RESOURCE_DESC resourceDesc{};
-	resourceDesc.Width = 1280; // Textureの幅
-	resourceDesc.Height = 720; // Textureの高さ
+	resourceDesc.Width = WinApp::kWindowWidth; // Textureの幅
+	resourceDesc.Height = WinApp::kWindowHeight; // Textureの高さ
 	resourceDesc.MipLevels = 1; // mipmapの数
 	resourceDesc.DepthOrArraySize = 1; // 奥行 or 配列Textureの配列数
 	resourceDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // DepthStencilとして使う通知

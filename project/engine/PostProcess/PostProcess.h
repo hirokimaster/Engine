@@ -36,11 +36,21 @@ public:
 
 #pragma region setter
 
-	void SetEffect(PostEffectType type) { type_ = type; }
+	void SetEffect(PostEffectType type);
 
-	BloomParam SetBloomProperty(BloomParam bloom) { return *bloomData_ = bloom; }
+	BloomParam SetBloomParam(BloomParam bloom) { return *bloomData_ = bloom; }
 
 	GaussianParam SetGaussianParam(GaussianParam gaussian) { return *gaussianData_ = gaussian; }
+
+	RadialParam SetRadialParam(RadialParam param) { return *radialData_ = param; }
+
+	DissolveParam SetDissolveParam(DissolveParam param) { return *dissolveData_ = param; }
+
+	void SetMaskTexture(uint32_t texHandle) {maskTexHandle_ = texHandle; }
+
+	void SetCamera(Camera camera) { camera = camera_; }
+
+	PostEffectType GetEffectType() { return type_; }
 
 #pragma endregion
 
@@ -49,11 +59,6 @@ private: // このクラス内でしか使わない関数
 	/// rtv作成
 	/// </summary>
 	void CreateRTV();
-
-	/// <summary>
-	/// dsv作成
-	/// </summary>
-	void CreateDSV();
 
 	/// <summary>
 	/// srv作成
@@ -65,6 +70,27 @@ private: // このクラス内でしか使わない関数
 	/// </summary>
 	void CreateBuffer();
 
+	/// <summary>
+	/// pipelineを作成
+	/// </summary>
+	void CreatePipeLine();
+
+	/// <summary>
+	/// constantBufferViewの設定
+	/// </summary>
+	void SetConstantBuffer();
+
+	/// <summary>
+	/// depth用のtextureのsrv
+	/// </summary>
+	void CreateDepthTextureSrv();
+
+	/// <summary>
+	/// depthTextureSRV用のバリア
+	/// </summary>
+	void PreDepthBarrier();
+	void PostDepthBarrier();
+
 private:
 	Resource resource_{};
 	Vector4* materialData_ = nullptr;
@@ -74,8 +100,8 @@ private:
 	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuffer_;
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_;
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandles_;
 	D3D12_RESOURCE_BARRIER barrier_{};
+	D3D12_RESOURCE_BARRIER depthBarrier_{};
 	D3D12_VIEWPORT viewport{};
 	D3D12_RECT scissorRect{};
 	uint32_t index_;
@@ -86,5 +112,14 @@ private:
 	GaussianParam* gaussianData_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> gaussian_;
 	PostEffectType type_;
-	Property property_;
+	Property pipeline_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> depthTexBuff_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> depthOutline_;
+	ProjectionInverse* projection_ = nullptr;
+	Camera camera_{};
+	Microsoft::WRL::ComPtr<ID3D12Resource> radialBlur_;
+	RadialParam* radialData_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> dissolve_;
+	DissolveParam* dissolveData_ = nullptr;
+	uint32_t maskTexHandle_ = 0;
 };

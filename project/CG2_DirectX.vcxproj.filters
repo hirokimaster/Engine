@@ -446,6 +446,10 @@
     <FxCompile Include="resources\ShaderFile\Environment.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\Environment.VS.hlsl" />
     <FxCompile Include="resources\ShaderFile\Line.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\LuminanceBasedOutline.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\DepthBasedOutline.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\RadialBlur.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Dissolve.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">
