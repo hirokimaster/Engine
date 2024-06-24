@@ -9,7 +9,6 @@
 #include "engine/Base/DX/DirectXCommon.h"
 #include "engine/DescriptorManager/SRVManager/SrvManager.h"
 #include <iostream>
-#include <vector>
 
 class TextureManager {
 public:
@@ -28,9 +27,6 @@ public:
 	// get
 	const DirectX::TexMetadata& GetMetaData(uint32_t textureIndex);
 
-	// 中間リソースの破棄
-	static void Release();
-
 private:
 	TextureManager() = default;
 	~TextureManager() = default;
@@ -43,7 +39,7 @@ private:
 
 	static ID3D12Resource* CreateTextureResource(const DirectX::TexMetadata& metadata);
 
-	[[nodiscard]] static ID3D12Resource* UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages);
+	static void UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages);
 
 
 private: // メンバ変数
@@ -51,5 +47,4 @@ private: // メンバ変数
 	Microsoft::WRL::ComPtr<ID3D12Resource>texResource[128];
 	std::unordered_map<std::string, uint32_t> fileHandleMap;
 	DirectX::TexMetadata metadata_[128];
-	ID3D12Resource* intermediateResource_;
 };
