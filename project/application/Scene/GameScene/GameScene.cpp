@@ -11,54 +11,38 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	/*worldTransform_.Initialize();
-	worldTransform_.translate = { 2.0f,-0.5f,0 };
-	worldTransform_.rotate.y = std::numbers::pi_v<float>;
+	postProcess_ = std::make_unique<PostProcess>();
+	postProcess_->Initialize();
+	postProcess_->SetEffect(Grayscale);
+	/*param_.stepWidth = 0.001f;
+	param_.sigma = 0.005f;
+	param_.lightStrength = 1.0f;
+	param_.bloomThreshold = 0.5f;*/
+	/*param_.center = Vector2(0.5f, 0.5f);
+	param_.blurWidth = 0.1f;*/
+	//param_.threshold = 0.5f;
+	maskTex_ = TextureManager::Load("resources/noise0.png");
+	//postProcess_->SetMaskTexture(maskTex_);
+	GameManager::GetInstance()->SetPostProcess(postProcess_.get());
+	
 
-	worldTransform_3.Initialize();
-	worldTransform_3.translate = { -2.0f,-0.5f,0 };
-	worldTransform_3.rotate.y = std::numbers::pi_v<float>;
-
-	worldTransform_2.Initialize();
-	worldTransform_2.translate = { 0,-0.5f,0 };
-	worldTransform_2.rotate.y = std::numbers::pi_v<float>;
-	camera_.Initialize();
-	camera_.translate = { 0,0,-10.0f };
-
-	ModelManager::LoadAnimationModel("simpleSkin.gltf");
-	ModelManager::LoadAnimationModel("sneakWalk.gltf");
-	ModelManager::LoadAnimationModel("Walk.gltf");
-
-	anim_ = std::make_unique<Object3DPlacer>();
-	anim_->Initialize();
-	anim_->SetAnimModel("sneakWalk.gltf");
-	anim_2 = std::make_unique<Object3DPlacer>();
-	anim_2->Initialize();
-	anim_2->SetAnimModel("Walk.gltf");
-	anim_3 = std::make_unique<Object3DPlacer>();
-	anim_3->Initialize();
-	anim_3->SetAnimModel("simpleSkin.gltf");
-
+	ModelManager::LoadObjModel("cube.obj");
 	texHandle_ = TextureManager::Load("resources/uvChecker.png");
-	anim_->SetTexHandle(texHandle_);
+	
 
-	anim_2->SetTexHandle(texHandle_);
-
-	anim_3->SetTexHandle(texHandle_);*/
-
-	/*postProcess_ = std::make_unique<PostProcess>();
-	postProcess_->SetEffect(GaussianBlur);
-  
+	object_ = std::make_unique<Object3DPlacer>();
+	object_->Initialize();
+	object_->SetModel("cube.obj");
+	object_->SetTexHandle(texHandle_);
+	
+	worldTransform_.Initialize();
+	camera_.Initialize();
+	
 }
 
 void GameScene::Update()
 {
-    /*animationTime_ += 1.0f / 60.0f;
-	animationTime_2 += 1.0f / 60.0f;
-	animationTime_ = fmod(animationTime_, 1.0f);
-	animationTime_2 = fmod(animationTime_2, 6.0f);*/
-
-	/*ImGui::Begin("camera");
+	ImGui::Begin("camera");
 	ImGui::SliderAngle("rotateX", &camera_.rotate.x, 1.0f);
 	ImGui::SliderAngle("rotateY", &camera_.rotate.y, 1.0f);
 	ImGui::SliderAngle("rotateZ", &camera_.rotate.z, 1.0f);
@@ -66,39 +50,41 @@ void GameScene::Update()
 	ImGui::DragFloat3("scale", &camera_.scale.x, 0.1f, -100.0f, 100.0f);
 	ImGui::End();
 
-	ImGui::Begin("transform");
-	ImGui::SliderAngle("rotateX", &worldTransform_.rotate.x,1.0f);
-	ImGui::SliderAngle("rotateY", &worldTransform_.rotate.y, 1.0f);
-	ImGui::SliderAngle("rotateZ", &worldTransform_.rotate.z, 1.0f);
-	ImGui::DragFloat3("trans", &worldTransform_.translate.x, 0.1f, -100.0f, 100.0f);
-	ImGui::DragFloat3("scale", &worldTransform_.scale.x, 0.1f, -100.0f, 100.0f);
-	ImGui::End();
+	/*postProcess_->SetBloomParam(param_);
 
-	ImGui::Begin("transform2");
-	ImGui::SliderAngle("rotateX", &worldTransform_2.rotate.x,1.0f);
-	ImGui::SliderAngle("rotateY", &worldTransform_2.rotate.y, 1.0f);
-	ImGui::SliderAngle("rotateZ", &worldTransform_2.rotate.z, 1.0f);
-	ImGui::DragFloat3("trans", &worldTransform_2.translate.x, 0.1f, -100.0f, 100.0f);
-	ImGui::DragFloat3("scale", &worldTransform_2.scale.x, 0.1f, -100.0f, 100.0f);
+	ImGui::Begin("param");
+	ImGui::DragFloat("stepWidth", &param_.stepWidth, 0.001f, 0.0f, 10.0f);
+	ImGui::DragFloat("sigma", &param_.sigma, 0.001f, 0.0f, 10.0f);
+	ImGui::DragFloat("lightStrength", &param_.lightStrength, 0.1f, 0.0f, 10.0f);
+	ImGui::DragFloat("bloomThreshold", &param_.bloomThreshold, 0.01f, 0.0f, 10.0f);
 	ImGui::End();*/
 
-	/*camera_.UpdateMatrix();
+	//postProcess_->SetRadialParam(param_);
+	//postProcess_->SetDissolveParam(param_);
+
+	/*ImGui::Begin("param");
+	ImGui::DragFloat2("center", &param_.center.x, 0.1f, 0.0f, 10.0f);
+	ImGui::DragFloat("blurWidth", &param_.blurWidth, 0.001f, 0.0f, 10.0f);
+	ImGui::End();*/
+
+	ImGui::Begin("param");
+	ImGui::DragFloat("threshold", &param_.threshold, 0.01f, 0.0f, 10.0f);
+	ImGui::End();
+
+	camera_.UpdateMatrix();
 	worldTransform_.UpdateMatrix();
-	worldTransform_2.UpdateMatrix();
-	worldTransform_3.UpdateMatrix();*/
 }
 
 void GameScene::Draw()
 {
-	/*anim_->SetAnimationTime(animationTime_);
-	anim_->Draw(worldTransform_, camera_, true);
-	anim_2->SetAnimationTime(animationTime_);
-	anim_2->Draw(worldTransform_3, camera_, true);
-	anim_3->SetAnimationTime(animationTime_2);
-	anim_3->Draw(worldTransform_2, camera_, true);*/
-	//postProcess_->Draw();
+	postProcess_->Draw();	
 }
 
 void GameScene::PostProcessDraw()
 {
+	postProcess_->PreDraw();
+
+	object_->Draw(worldTransform_, camera_);
+
+	postProcess_->PostDraw();
 }

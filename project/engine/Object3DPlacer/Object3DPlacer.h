@@ -23,7 +23,7 @@ public:
 	/// <param name="worldTransform"></param>
 	/// <param name="camera"></param>
 	/// <param name="isAnimation"></param>
-	void Draw(WorldTransform worldTransform, Camera& camera, bool isAnimation = false);
+	void Draw(WorldTransform worldTransform, Camera& camera, bool isAnimation);
 
 	// setter
 	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
