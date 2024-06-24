@@ -86,7 +86,7 @@ void GraphicsPipeline::CreatePipeline(PipelineState& pso) {
 	pso.SkinningObject3D = CreateSkinningObject3D(device.Get(), L"SkinningObject3d");
 	pso.DepthOutline = CreateDepthOutline(device.Get(), L"DepthBasedOutline");
 	pso.RadialBlur = CreateRadialBlur(device.Get(), L"RadialBlur");
-	pso.Dissolve = CreateDissolve(device.Get(), L"Dissolve");
+	//pso.Dissolve = CreateDissolve(device.Get(), L"Dissolve");
 
 }
 

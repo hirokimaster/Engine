@@ -13,16 +13,16 @@ void GameScene::Initialize()
 {
 	postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
-	postProcess_->SetEffect(Dissolve);
+	postProcess_->SetEffect(Grayscale);
 	/*param_.stepWidth = 0.001f;
 	param_.sigma = 0.005f;
 	param_.lightStrength = 1.0f;
 	param_.bloomThreshold = 0.5f;*/
 	/*param_.center = Vector2(0.5f, 0.5f);
 	param_.blurWidth = 0.1f;*/
-	param_.threshold = 0.5f;
+	//param_.threshold = 0.5f;
 	maskTex_ = TextureManager::Load("resources/noise0.png");
-	postProcess_->SetMaskTexture(maskTex_);
+	//postProcess_->SetMaskTexture(maskTex_);
 	GameManager::GetInstance()->SetPostProcess(postProcess_.get());
 	
 
@@ -60,7 +60,7 @@ void GameScene::Update()
 	ImGui::End();*/
 
 	//postProcess_->SetRadialParam(param_);
-	postProcess_->SetDissolveParam(param_);
+	//postProcess_->SetDissolveParam(param_);
 
 	/*ImGui::Begin("param");
 	ImGui::DragFloat2("center", &param_.center.x, 0.1f, 0.0f, 10.0f);
