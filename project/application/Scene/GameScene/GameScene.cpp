@@ -1,6 +1,5 @@
 #include "GameScene.h"
 #include "engine/ModelManager/ModelManager.h"
-#define CUSTOM_DEADZONE 12000
 
 GameScene::GameScene()
 {

@@ -29,9 +29,6 @@
     <Filter Include="Engine\Model">
       <UniqueIdentifier>{9a162fdd-9688-4759-a86e-b2282c21c5d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Model\State">
-      <UniqueIdentifier>{3b7bdb5f-4cf1-498f-b16c-ff0777a39590}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Input">
       <UniqueIdentifier>{057ce1d9-8048-4b15-ae6b-a45e590d0c2a}</UniqueIdentifier>
     </Filter>
@@ -113,6 +110,18 @@
     <Filter Include="Engine\Object3DPlacer">
       <UniqueIdentifier>{41a6379d-2db2-4742-a3b4-3b342f198862}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Model\Primitive">
+      <UniqueIdentifier>{62c43cf3-5ccb-4da0-a9a8-d14331ebfbf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Demo">
+      <UniqueIdentifier>{bb753d12-54d1-4b8b-84a9-ee90ded29183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Model\Animation">
+      <UniqueIdentifier>{1f0a2562-0e87-44b8-b019-86b6c7934133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Model\SkyBox">
+      <UniqueIdentifier>{51b046d8-1c8b-489e-bede-f4b667b9360e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -172,12 +181,6 @@
     <ClCompile Include="Engine\Model\Model.cpp">
       <Filter>Engine\Model</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Model\State\Triangle.cpp">
-      <Filter>Engine\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Model\State\ModelSphere.cpp">
-      <Filter>Engine\Model\State</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Input\Input.cpp">
       <Filter>Engine\Input</Filter>
     </ClCompile>
@@ -189,9 +192,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Engine.cpp">
       <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Model\State\ModelCube.cpp">
-      <Filter>Engine\Model\State</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Audio\Audio.cpp">
       <Filter>Engine\Audio</Filter>
@@ -235,17 +235,20 @@
     <ClCompile Include="engine\Object3DPlacer\Object3DPlacer.cpp">
       <Filter>Engine\Object3DPlacer</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Model\Animation\ModelAnimation.cpp">
-      <Filter>Engine</Filter>
+    <ClCompile Include="engine\Model\Primitive\PrimitiveType\Line.cpp">
+      <Filter>Engine\Model\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="engine\Model\Primitive\Primitive.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Model\Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="application\Scene\Demo\Demo.cpp">
+      <Filter>Application\Scene\Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Model\Animation\ModelAnimation.cpp">
+      <Filter>Engine\Model\Animation</Filter>
     </ClCompile>
     <ClCompile Include="engine\Model\SkyBox\SkyBox.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\Model\Primitive\PrimitiveType\Line.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Engine\Model\SkyBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -306,15 +309,6 @@
     <ClInclude Include="Engine\Model\Model.h">
       <Filter>Engine\Model</Filter>
     </ClInclude>
-    <ClInclude Include="engine\Model\State\Triangle.h">
-      <Filter>Engine\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Model\State\IModelState.h">
-      <Filter>Engine\Model\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Model\State\ModelSphere.h">
-      <Filter>Engine\Model\State</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Input\Input.h">
       <Filter>Engine\Input</Filter>
     </ClInclude>
@@ -341,9 +335,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Engine.h">
       <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Model\State\ModelCube.h">
-      <Filter>Engine\Model\State</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Audio\Audio.h">
       <Filter>Engine\Audio</Filter>
@@ -396,12 +387,27 @@
     <ClInclude Include="engine\Object3DPlacer\Object3DPlacer.h">
       <Filter>Engine\Object3DPlacer</Filter>
     </ClInclude>
-    <ClInclude Include="engine\Model\Animation\ModelAnimation.h" />
-    <ClInclude Include="engine\Model\Animation\Animation.h" />
-    <ClInclude Include="engine\Model\Primitive\IPrimitive.h" />
-    <ClInclude Include="engine\Model\Primitive\Primitive.h" />
-    <ClInclude Include="engine\Model\SkyBox\SkyBox.h" />
-    <ClInclude Include="engine\Model\Primitive\PrimitiveType\Line.h" />
+    <ClInclude Include="engine\Model\Primitive\IPrimitive.h">
+      <Filter>Engine\Model\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Model\Primitive\PrimitiveType\Line.h">
+      <Filter>Engine\Model\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Model\Primitive\Primitive.h">
+      <Filter>Engine\Model\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="application\Scene\Demo\Demo.h">
+      <Filter>Application\Scene\Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Model\Animation\Animation.h">
+      <Filter>Engine\Model\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Model\Animation\ModelAnimation.h">
+      <Filter>Engine\Model\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Model\SkyBox\SkyBox.h">
+      <Filter>Engine\Model\SkyBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">
@@ -437,19 +443,45 @@
     <FxCompile Include="resources\ShaderFile\Bloom.PS.hlsl">
       <Filter>Engine\Shader</Filter>
     </FxCompile>
-    <FxCompile Include="resources\ShaderFile\PostProcess.VS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\Grayscale.PS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\Vignette.PS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\GaussianBlur.PS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\SkinningObject3d.VS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\SkyBox.PS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\Environment.PS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\Environment.VS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\Line.PS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\LuminanceBasedOutline.PS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\DepthBasedOutline.PS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\RadialBlur.PS.hlsl" />
-    <FxCompile Include="resources\ShaderFile\Dissolve.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\PostProcess.VS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\LuminanceBasedOutline.PS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\Line.PS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\Grayscale.PS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\GaussianBlur.PS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\Environment.VS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\Environment.PS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\Dissolve.PS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\DepthBasedOutline.PS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\SkinningObject3d.VS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\RadialBlur.PS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\SkyBox.PS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\Vignette.PS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">
@@ -458,9 +490,15 @@
     <None Include="resources\ShaderFile\Particle.hlsli">
       <Filter>Engine\Shader</Filter>
     </None>
-    <None Include="resources\ShaderFile\PostProcess.hlsli" />
-    <None Include="resources\ShaderFile\SkyBox.hlsli" />
-    <None Include="resources\ShaderFile\SkyBox.VS.hlsl" />
+    <None Include="resources\ShaderFile\PostProcess.hlsli">
+      <Filter>Engine\Shader</Filter>
+    </None>
+    <None Include="resources\ShaderFile\SkyBox.hlsli">
+      <Filter>Engine\Shader</Filter>
+    </None>
+    <None Include="resources\ShaderFile\SkyBox.VS.hlsl">
+      <Filter>Engine\Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">

@@ -110,6 +110,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="application\GameManager\GameManager.cpp" />
+    <ClCompile Include="application\Scene\Demo\Demo.cpp" />
     <ClCompile Include="application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="application\Scene\IScene\IScene.cpp" />
     <ClCompile Include="engine\Model\Animation\ModelAnimation.cpp" />
@@ -127,7 +128,6 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\Utility\CollisionManager\CollisionManager.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="engine\Framework\Framework.cpp" />
-    <ClCompile Include="Engine\Model\State\ModelCube.cpp" />
     <ClCompile Include="engine\SceneFactory\SceneFactory.cpp" />
     <ClCompile Include="externals\imgui\imgui.cpp" />
     <ClCompile Include="externals\imgui\imgui_demo.cpp" />
@@ -144,18 +144,17 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Math\Mathfunction.cpp" />
     <ClCompile Include="Engine\CreateResource\CreateResource.cpp" />
     <ClCompile Include="Engine\Model\Model.cpp" />
-    <ClCompile Include="Engine\Model\State\ModelSphere.cpp" />
     <ClCompile Include="Engine\Sprite\Sprite.cpp" />
     <ClCompile Include="Engine\Utility\ShaderCompile.cpp" />
     <ClCompile Include="Engine\Utility\StringUtility.cpp" />
     <ClCompile Include="Engine\TextureManager\TextureManager.cpp" />
-    <ClCompile Include="engine\Model\State\Triangle.cpp" />
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Base\WinApp\WinApp.cpp" />
     <ClCompile Include="Engine\Transform\WorldTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
+    <ClInclude Include="application\Scene\Demo\Demo.h" />
     <ClInclude Include="application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="application\Scene\IScene\IScene.h" />
     <ClInclude Include="engine\Model\Animation\Animation.h" />
@@ -177,7 +176,6 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\Utility\CollisionManager\CollisionManager.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="engine\Framework\Framework.h" />
-    <ClInclude Include="Engine\Model\State\ModelCube.h" />
     <ClInclude Include="engine\SceneFactory\AbstractSceneFactory.h" />
     <ClInclude Include="engine\SceneFactory\SceneFactory.h" />
     <ClInclude Include="externals\imgui\imconfig.h" />
@@ -197,13 +195,10 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Math\Matrix4x4.h" />
     <ClInclude Include="Engine\CreateResource\CreateResource.h" />
     <ClInclude Include="Engine\Model\Model.h" />
-    <ClInclude Include="Engine\Model\State\ModelSphere.h" />
-    <ClInclude Include="Engine\Model\State\IModelState.h" />
     <ClInclude Include="Engine\Sprite\Sprite.h" />
     <ClInclude Include="Engine\Utility\ShaderCompile.h" />
     <ClInclude Include="Engine\Utility\StringUtility.h" />
     <ClInclude Include="Engine\TextureManager\TextureManager.h" />
-    <ClInclude Include="engine\Model\State\Triangle.h" />
     <ClInclude Include="Engine\Math\Vector2.h" />
     <ClInclude Include="Engine\Math\Vector3.h" />
     <ClInclude Include="Engine\Math\Vector4.h" />
