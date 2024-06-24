@@ -31,12 +31,16 @@ struct PipelineState {
 	Property RadialBlur;
 	Property Dissolve;
 	Property SkinningObject3D;
+	Property SkyBox;
+	Property Environment;
+	Property Line;
 };
 
 enum Light {
 	None,
 	Point,
-	Spot
+	Spot,
+	Environment
 };
 
 enum PostEffectType {
@@ -52,6 +56,7 @@ enum PostEffectType {
 
 // BlendMode
 enum BlendMode {
+	BlendNone,
 	BlendNormal,
 	BlendAdd,
 };
@@ -120,6 +125,12 @@ private:
 	static Property CreateGaussianBlur(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	static Property CreateSkinningObject3D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateSkyBox(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateEnvironment(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateLine(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	static Property CreateLuminanceOutline(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 

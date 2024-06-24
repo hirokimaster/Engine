@@ -238,6 +238,15 @@
     <ClCompile Include="engine\Model\Animation\ModelAnimation.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="engine\Model\Primitive\Primitive.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Model\SkyBox\SkyBox.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Model\Primitive\PrimitiveType\Line.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CreateResource\CreateResource.h">
@@ -389,6 +398,10 @@
     </ClInclude>
     <ClInclude Include="engine\Model\Animation\ModelAnimation.h" />
     <ClInclude Include="engine\Model\Animation\Animation.h" />
+    <ClInclude Include="engine\Model\Primitive\IPrimitive.h" />
+    <ClInclude Include="engine\Model\Primitive\Primitive.h" />
+    <ClInclude Include="engine\Model\SkyBox\SkyBox.h" />
+    <ClInclude Include="engine\Model\Primitive\PrimitiveType\Line.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">
@@ -429,6 +442,10 @@
     <FxCompile Include="resources\ShaderFile\Vignette.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\GaussianBlur.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\SkinningObject3d.VS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\SkyBox.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Environment.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Environment.VS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Line.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\LuminanceBasedOutline.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\DepthBasedOutline.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\RadialBlur.PS.hlsl" />
@@ -442,6 +459,8 @@
       <Filter>Engine\Shader</Filter>
     </None>
     <None Include="resources\ShaderFile\PostProcess.hlsli" />
+    <None Include="resources\ShaderFile\SkyBox.hlsli" />
+    <None Include="resources\ShaderFile\SkyBox.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt">

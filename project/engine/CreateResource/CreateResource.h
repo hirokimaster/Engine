@@ -27,6 +27,7 @@ struct Material {
 	Vector4 color;
 	int32_t enableLighting;
 	float shininess;
+	float environmentCoefficient;
 };
 
 struct DirectionalLight {
@@ -100,6 +101,8 @@ class CreateResource {
 public:
 	// Resource作成
 	static Microsoft::WRL::ComPtr<ID3D12Resource> CreateBufferResource(size_t sizeInBytes);
+
+	static ID3D12Resource* CreateIntermediateResource(size_t sizeInBytes);
 	// IBV
 	static D3D12_INDEX_BUFFER_VIEW CreateIndexBufferView(Microsoft::WRL::ComPtr<ID3D12Resource> resource, size_t sizeInBytes);
 	// VBV

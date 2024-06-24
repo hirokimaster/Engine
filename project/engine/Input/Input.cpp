@@ -34,6 +34,8 @@ void Input::Update(){
 	memcpy(Input::GetInstance()->preKeys, Input::GetInstance()->keys, 256);
 	Input::GetInstance()->keyboard->Acquire();
 	Input::GetInstance()->keyboard->GetDeviceState(sizeof(Input::GetInstance()->keys), Input::GetInstance()->keys);
+	Input::GetInstance()->preState_ = Input::GetInstance()->state_;
+	GetJoystickState();
 }
 
 bool Input::PushKey(uint8_t keyNum){
@@ -59,6 +61,33 @@ bool Input::GetJoystickState(XINPUT_STATE& out) const
 {
 	DWORD dwResult = XInputGetState(0, &out);
 	if (dwResult == ERROR_SUCCESS) {
+		return true;
+	}
+
+	return false;
+}
+
+bool Input::GetJoystickState()
+{
+	DWORD dwResult = XInputGetState(0, &Input::GetInstance()->state_);
+	if (dwResult == ERROR_SUCCESS) {
+		return true;
+	}
+
+	return false;
+}
+
+bool Input::PressedButton(WORD button)
+{
+	bool flag = false;
+
+	if (Input::GetInstance()->preState_.Gamepad.wButtons & button)
+	{
+		flag = true;
+	}
+
+	if (!flag && state_.Gamepad.wButtons & button)
+	{
 		return true;
 	}
 

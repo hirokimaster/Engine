@@ -9,8 +9,16 @@ public:
 	void Initialize(Light light);
 
 	/// <summary>
-	/// spotLight
+	///  描画
 	/// </summary>
+	/// <param name="light"></param>
+	void CreateCommand();
+
+private:
+
+	/// <summary>
+    /// spotLight
+    /// </summary>
 	void InitializeSpotLight();
 
 	/// <summary>
@@ -19,10 +27,11 @@ public:
 	void InitializePointLight();
 
 	/// <summary>
-	///  描画
+	/// 環境マップ
 	/// </summary>
-	/// <param name="light"></param>
-	void CreateCommand();
+	void InitializeEnvironment();
+
+public:
 
 #pragma region	getter
 
@@ -37,6 +46,7 @@ public:
 	SpotLight SetSpotLightProperty(SpotLight spotLight) { return *spotLightData_ = spotLight; }
 	// cameradataの設定
 	Vector3 SetCameraData(Vector3 camera) { return cameraData_->worldPosition = camera; }
+	void SetEnvironmentTexture(uint32_t index) { index_ = index; }
 
 #pragma endregion
 
@@ -47,4 +57,5 @@ private:
 	CameraData* cameraData_ = nullptr;
 	Property property_{};
 	Light light_{};
+	uint32_t index_ = 0;
 };

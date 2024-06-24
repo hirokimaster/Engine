@@ -10,7 +10,7 @@ void Framework::Initialize()
 	audio_ = Audio::GetInstance();
 
 	// ウィンドウの作成
-	win_->CreateGameWindow(L"DirectXGame");
+	win_->CreateGameWindow(L"CG5_評価課題1");
 	// DirectX初期化
 	dxCommon_->Initialize(win_);
 	Input::Initialize();
@@ -29,6 +29,8 @@ void Framework::Initialize()
 
 void Framework::Finalize()
 {
+	// textureの中間リソース破棄
+	TextureManager::Release();
 	//gameManager_->Finalize();
 	imguiManager_->Finalize();
 	// ゲームウィンドウ破棄
