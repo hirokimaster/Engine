@@ -11,9 +11,9 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	postProcess_ = std::make_unique<PostProcess>();
+	/*postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
-	postProcess_->SetEffect(Grayscale);
+	postProcess_->SetEffect(Grayscale);*/
 	/*param_.stepWidth = 0.001f;
 	param_.sigma = 0.005f;
 	param_.lightStrength = 1.0f;
@@ -21,34 +21,34 @@ void GameScene::Initialize()
 	/*param_.center = Vector2(0.5f, 0.5f);
 	param_.blurWidth = 0.1f;*/
 	//param_.threshold = 0.5f;
-	maskTex_ = TextureManager::Load("resources/noise0.png");
+	//maskTex_ = TextureManager::Load("resources/noise0.png");
 	//postProcess_->SetMaskTexture(maskTex_);
-	GameManager::GetInstance()->SetPostProcess(postProcess_.get());
+	//GameManager::GetInstance()->SetPostProcess(postProcess_.get());
 	
 
-	ModelManager::LoadObjModel("cube.obj");
-	texHandle_ = TextureManager::Load("resources/uvChecker.png");
+	//ModelManager::LoadObjModel("cube.obj");
+	//texHandle_ = TextureManager::Load("resources/uvChecker.png");
 	
 
-	object_ = std::make_unique<Object3DPlacer>();
-	object_->Initialize();
-	object_->SetModel("cube.obj");
-	object_->SetTexHandle(texHandle_);
+	//object_ = std::make_unique<Object3DPlacer>();
+	//object_->Initialize();
+	//object_->SetModel("cube.obj");
+	//object_->SetTexHandle(texHandle_);
 	
-	worldTransform_.Initialize();
-	camera_.Initialize();
+	//worldTransform_.Initialize();
+	//camera_.Initialize();
 	
 }
 
 void GameScene::Update()
 {
-	ImGui::Begin("camera");
+	/*ImGui::Begin("camera");
 	ImGui::SliderAngle("rotateX", &camera_.rotate.x, 1.0f);
 	ImGui::SliderAngle("rotateY", &camera_.rotate.y, 1.0f);
 	ImGui::SliderAngle("rotateZ", &camera_.rotate.z, 1.0f);
 	ImGui::DragFloat3("trans", &camera_.translate.x, 0.1f, -100.0f, 100.0f);
 	ImGui::DragFloat3("scale", &camera_.scale.x, 0.1f, -100.0f, 100.0f);
-	ImGui::End();
+	ImGui::End();*/
 
 	/*postProcess_->SetBloomParam(param_);
 
@@ -67,24 +67,24 @@ void GameScene::Update()
 	ImGui::DragFloat("blurWidth", &param_.blurWidth, 0.001f, 0.0f, 10.0f);
 	ImGui::End();*/
 
-	ImGui::Begin("param");
+	/*ImGui::Begin("param");
 	ImGui::DragFloat("threshold", &param_.threshold, 0.01f, 0.0f, 10.0f);
 	ImGui::End();
 
 	camera_.UpdateMatrix();
-	worldTransform_.UpdateMatrix();
+	worldTransform_.UpdateMatrix();*/
 }
 
 void GameScene::Draw()
 {
-	postProcess_->Draw();	
+	//postProcess_->Draw();	
 }
 
 void GameScene::PostProcessDraw()
 {
-	postProcess_->PreDraw();
+	/*postProcess_->PreDraw();
 
 	object_->Draw(worldTransform_, camera_);
 
-	postProcess_->PostDraw();
+	postProcess_->PostDraw();*/
 }
