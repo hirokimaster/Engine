@@ -7,6 +7,8 @@
 #include "engine/Model/Animation/ModelAnimation.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameManager/GameManager.h"
+#include "application/GameObject/Player/PlayerManager.h"
+#include "application/GameObject/ModelResources/ModelResources.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -41,4 +43,6 @@ public: // メンバ関数
 	void PostProcessDraw()override;
 
 private:
+	Camera camera_{};
+	std::unique_ptr<PlayerManager> playerManager_ = nullptr; // playerまとめたとこ
 };

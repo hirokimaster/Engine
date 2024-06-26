@@ -1,6 +1,6 @@
 #pragma once
-#include "engine/Model/State/IModelState.h"
-#include "engine/Model/State/ModelSphere.h"
+#include "engine/GraphicsPipeline/GraphicsPipeline.h"
+#include "engine/DescriptorManager/SRVManager/SrvManager.h"
 #include "engine/Math/Vector2.h"
 #include <fstream>
 #include <sstream>
