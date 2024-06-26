@@ -21,7 +21,7 @@ void Object3DPlacer::Initialize()
 void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera)
 {
 
-	if (lighting_ == nullptr) {
+	/*if (lighting_ == nullptr) {
 		property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 	}
 	else {
@@ -37,7 +37,9 @@ void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera)
 		else if (lighting_->GetLightType() == Environment) {
 			property_ = GraphicsPipeline::GetInstance()->GetPSO().Environment;
 		}
-	}
+	}*/
+
+	property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 	
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());

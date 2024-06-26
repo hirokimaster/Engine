@@ -111,11 +111,12 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="application\GameManager\GameManager.cpp" />
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp" />
+    <ClCompile Include="application\GameObject\Player\Bullet\PlayerBullet.cpp" />
     <ClCompile Include="application\GameObject\Player\Player.cpp" />
     <ClCompile Include="application\Scene\Demo\Demo.cpp" />
     <ClCompile Include="application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="application\Scene\IScene\IScene.cpp" />
-    <ClCompile Include="application\GameObject\BaseCharacter\BaseCharacter.cpp" />
+    <ClCompile Include="application\GameObject\BaseObject\BaseObject.cpp" />
     <ClCompile Include="engine\Model\Animation\ModelAnimation.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\DX\DirectXCommon.cpp" />
@@ -159,11 +160,12 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
+    <ClInclude Include="application\GameObject\Player\Bullet\PlayerBullet.h" />
     <ClInclude Include="application\GameObject\Player\Player.h" />
     <ClInclude Include="application\Scene\Demo\Demo.h" />
     <ClInclude Include="application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="application\Scene\IScene\IScene.h" />
-    <ClInclude Include="application\GameObject\BaseCharacter\BaseCharacter.h" />
+    <ClInclude Include="application\GameObject\BaseObject\BaseObject.h" />
     <ClInclude Include="engine\Model\Animation\Animation.h" />
     <ClInclude Include="engine\Model\Animation\ModelAnimation.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />

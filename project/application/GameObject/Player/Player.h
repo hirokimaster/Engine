@@ -1,7 +1,9 @@
 #pragma once
-#include "application/GameObject/BaseCharacter/BaseCharacter.h"
+#include "application/GameObject/BaseObject/BaseObject.h"
+#include "application/GameObject/Player/Bullet/PlayerBullet.h"
+#include "engine/TextureManager/TextureManager.h"
 
-class Player : public BaseCharacter
+class Player : public BaseObject
 {
 public:
 	/// <summary>
@@ -23,6 +25,25 @@ public:
 	/// <param name="camera"></param>
 	void Draw(Camera& camera)override;
 
-private:
+	/// <summary>
+	/// 移動処理
+	/// </summary>
+	void Move();
 
+	/// <summary>
+	/// 攻撃処理
+	/// </summary>
+	void Attack();
+
+	/// <summary>
+	/// 弾の更新処理
+	/// </summary>
+	void UpdateBullet();
+
+private:
+	const float kMoveSpeed_ = 0.2f; // 移動スピード
+	std::list<std::unique_ptr<PlayerBullet>> bullets_; // 弾のリスト
+	std::list<std::unique_ptr<PlayerBullet>>::iterator bulletsItr_; // 弾のイテレータ
+	std::unique_ptr<Object3DPlacer> bulletObject_ = nullptr;
+	uint32_t texHandleBullet_ = 0;
 };

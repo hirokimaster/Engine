@@ -1,10 +1,11 @@
 C:\授業\2024年度前期\DirectXEngine\project\application\GameManager\GameManager.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\GameManager.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\GameObject\ModelResources\ModelResources.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\ModelResources.obj
+C:\授業\2024年度前期\DirectXEngine\project\application\GameObject\Player\Bullet\PlayerBullet.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\PlayerBullet.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\GameObject\Player\Player.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\Player.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\Scene\Demo\Demo.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\Demo.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\Scene\GameScene\GameScene.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\GameScene.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\Scene\IScene\IScene.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\IScene.obj
-C:\授業\2024年度前期\DirectXEngine\project\application\GameObject\BaseCharacter\BaseCharacter.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\BaseCharacter.obj
+C:\授業\2024年度前期\DirectXEngine\project\application\GameObject\BaseObject\BaseObject.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\BaseObject.obj
 C:\授業\2024年度前期\DirectXEngine\project\engine\Model\Animation\ModelAnimation.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\ModelAnimation.obj
 C:\授業\2024年度前期\DirectXEngine\project\Engine\Audio\Audio.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\Audio.obj
 C:\授業\2024年度前期\DirectXEngine\project\Engine\Base\DX\DirectXCommon.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\DirectXCommon.obj
