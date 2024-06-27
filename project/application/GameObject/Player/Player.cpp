@@ -76,4 +76,19 @@ void Player::UpdateBullet()
 		(*bulletsItr_)->Update();
 	}
 
+	std::list<std::unique_ptr<Object3DPlacer>>::iterator bulletObjectsItr = bulletObjects_.begin();	// objectのイテレータ
+
+	// デスフラグが立ったら要素を削除
+	bullets_.remove_if([&bulletObjectsItr, this](std::unique_ptr<PlayerBullet>& bullet) {
+		if (bullet->GetIsDead()) {
+			// 対応するbulletObjectを削除
+			bulletObjectsItr = bulletObjects_.erase(bulletObjectsItr);
+			return true;
+		}
+		else {
+			++bulletObjectsItr;
+			return false;
+		}
+		});
+
 }

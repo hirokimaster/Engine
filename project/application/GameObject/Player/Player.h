@@ -25,6 +25,8 @@ public:
 	/// <param name="camera"></param>
 	void Draw(Camera& camera)override;
 
+private: // クラス内でしか使わない
+
 	/// <summary>
 	/// 移動処理
 	/// </summary>
@@ -45,6 +47,5 @@ private:
 	std::list<std::unique_ptr<PlayerBullet>> bullets_; // 弾のリスト
 	std::list<std::unique_ptr<Object3DPlacer>> bulletObjects_;
 	std::list<std::unique_ptr<PlayerBullet>>::iterator bulletsItr_; // 弾のイテレータ
-	std::list<std::unique_ptr<Object3DPlacer>>::iterator bulletObjectsItr_;
 	uint32_t texHandleBullet_ = 0;
 };
