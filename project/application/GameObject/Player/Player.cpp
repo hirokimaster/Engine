@@ -58,8 +58,9 @@ void Player::Attack()
 	if (Input::GetInstance()->PressedKey(DIK_SPACE)) {
 		// 弾を生成し、初期化
 		std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-		bulletObject_ = std::make_unique<Object3DPlacer>();
-		bullet->Initialize(bulletObject_.get(), texHandleBullet_, "cube.obj");
+		std::unique_ptr<Object3DPlacer> bulletObject = std::make_unique<Object3DPlacer>();
+		bulletObjects_.push_back(std::move(bulletObject));
+		bullet->Initialize(bulletObjects_.back().get(), texHandleBullet_, "cube.obj");
 		bullet->SetVelocity(velocity);
 		bullet->SetPosition(worldTransform_.translate);
 		bullets_.push_back(std::move(bullet));
