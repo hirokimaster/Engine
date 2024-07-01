@@ -1,7 +1,8 @@
 #pragma once
 #include "application/GameObject/BaseObject/BaseObject.h"
+#include "engine/Utility/CollisionManager/Collider/Collider.h"
 
-class PlayerBullet : public BaseObject{
+class PlayerBullet : public BaseObject, public Collider{
 public:
 	/// <summary>
 	/// 初期化
@@ -34,11 +35,18 @@ private: // クラス内でしか使わない
 	/// </summary>
 	void BulletErase();
 
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
+	void OnCollision()override;
+
 public:
 
 #pragma	region getter
 
 	bool GetIsDead() { return isDead_; }; // デスフラグ
+
+	Vector3 GetWorldPosition()override;
 
 #pragma endregion
 

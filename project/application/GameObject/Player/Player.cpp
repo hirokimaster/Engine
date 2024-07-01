@@ -4,6 +4,9 @@ void Player::Initialize(Object3DPlacer* object, uint32_t texHandle, const std::s
 {
 	BaseObject::Initialize(object, texHandle, model); // 共通処理初期化
 	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
+
+	SetCollosionAttribute(kCollisionAttributePlayer);
+	SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
 }
 
 void Player::Update()
@@ -62,7 +65,7 @@ void Player::Attack()
 		bulletObjects_.push_back(std::move(bulletObject));
 		bullet->Initialize(bulletObjects_.back().get(), texHandleBullet_, "cube.obj");
 		bullet->SetVelocity(velocity);
-		bullet->SetPosition(worldTransform_.translate);
+		bullet->SetPosition(GetWorldPosition());
 		bullets_.push_back(std::move(bullet));
 	}
 
@@ -91,4 +94,21 @@ void Player::UpdateBullet()
 		}
 		});
 
+}
+
+void Player::OnCollision()
+{
+	
+}
+
+Vector3 Player::GetWorldPosition()
+{
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform_.matWorld.m[3][0];
+	worldPos.y = worldTransform_.matWorld.m[3][1];
+	worldPos.z = worldTransform_.matWorld.m[3][2];
+
+	return worldPos;
 }

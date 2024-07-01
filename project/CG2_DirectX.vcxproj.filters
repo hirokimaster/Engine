@@ -265,6 +265,15 @@
     <ClCompile Include="application\GameObject\Player\Bullet\PlayerBullet.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="application\GameObject\Enemy\Enemy.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="application\GameObject\Enemy\EnemyManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="application\GameObject\RailCamera\RailCamera.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CreateResource\CreateResource.h">
@@ -428,6 +437,10 @@
     <ClInclude Include="application\GameObject\Player\PlayerManager.h" />
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
     <ClInclude Include="application\GameObject\Player\Bullet\PlayerBullet.h" />
+    <ClInclude Include="application\GameObject\Enemy\Enemy.h" />
+    <ClInclude Include="application\GameObject\Enemy\EnemyManager.h" />
+    <ClInclude Include="application\GameObject\Enemy\IEnemy.h" />
+    <ClInclude Include="application\GameObject\RailCamera\RailCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">

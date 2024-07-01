@@ -2,8 +2,9 @@
 #include "application/GameObject/BaseObject/BaseObject.h"
 #include "application/GameObject/Player/Bullet/PlayerBullet.h"
 #include "engine/TextureManager/TextureManager.h"
+#include "engine/Utility/CollisionManager/Collider/Collider.h"
 
-class Player : public BaseObject
+class Player : public BaseObject, public Collider 
 {
 public:
 	/// <summary>
@@ -41,6 +42,27 @@ private: // クラス内でしか使わない
 	/// 弾の更新処理
 	/// </summary>
 	void UpdateBullet();
+
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
+	void OnCollision()override;
+
+public:
+
+#pragma region getter
+
+	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() const { return bullets_; }
+
+	Vector3 GetWorldPosition()override;
+
+#pragma endregion
+
+#pragma region setter
+
+	void SetParent(const WorldTransform* parent) { worldTransform_.parent = parent; }
+
+#pragma endregion
 
 private:
 	const float kMoveSpeed_ = 0.2f; // 移動スピード
