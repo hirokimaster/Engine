@@ -27,7 +27,8 @@ public:
 	void ColliderPush(CollisionManager* collision);
 
 private:
-	std::unique_ptr<Enemy> enemy_ = nullptr;
-	std::unique_ptr<Object3DPlacer> objectEnemy_ = nullptr;
+	std::list<std::unique_ptr<Enemy>> enemys_;
+	std::list<std::unique_ptr<Enemy>>::iterator enemysItr_;
+	std::list<std::unique_ptr<Object3DPlacer>> objectEnemys_;;
 	uint32_t texHandleEnemy_ = 0;
 };
