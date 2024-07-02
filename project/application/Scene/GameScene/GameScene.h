@@ -12,6 +12,7 @@
 #include "application/GameObject/Enemy/EnemyManager.h"
 #include "engine/Utility/CollisionManager/CollisionManager.h"
 #include "application/GameObject/RailCamera/RailCamera.h"
+#include "engine/Model/SkyBox/SkyBox.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -58,4 +59,6 @@ private:
 	std::unique_ptr<EnemyManager> enemyManager_ = nullptr; // enemyまとめたとこ
 	std::unique_ptr<CollisionManager> collisionManager_ = nullptr; // 衝突判定まとめ
 	std::unique_ptr<RailCamera> railCamera_ = nullptr; // レールカメラ
+	std::unique_ptr<SkyBox> skyBox_ = nullptr; // スカイボックス(背景)
+	uint32_t texHandleSkyBox_ = 0; // skyBoxのtexture
 };

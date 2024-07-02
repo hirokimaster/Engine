@@ -25,6 +25,10 @@ void GameScene::Initialize()
 	railCamera_ = std::make_unique<RailCamera>();
 	railCamera_->Initialize(playerManager_->GetPlayerPosition(), {0,0,0});
 	playerManager_->SetParent(&railCamera_->GetWorldTransform());
+	// skyBox
+	skyBox_ = std::make_unique<SkyBox>();
+	skyBox_->Initialize();
+	texHandleSkyBox_ = 0;
 }
 
 void GameScene::Update()
