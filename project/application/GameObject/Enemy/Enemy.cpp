@@ -3,7 +3,7 @@
 void Enemy::Initialize(Object3DPlacer* object, uint32_t texHandle, const std::string& model)
 {
 	BaseObject::Initialize(object, texHandle, model); // 共通処理初期化
-	worldTransform_.translate = { 0,0,20.0f };
+	worldTransform_.translate = { 0,0,80.0f };
 
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
@@ -22,10 +22,6 @@ void Enemy::Draw(Camera& camera)
 void Enemy::OnCollision()
 {
 	isDead_ = true;	
-}
-
-void Enemy::Dead()
-{
 }
 
 Vector3 Enemy::GetWorldPosition()

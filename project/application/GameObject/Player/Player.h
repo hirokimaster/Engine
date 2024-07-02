@@ -62,12 +62,14 @@ public:
 
 	void SetParent(const WorldTransform* parent) { worldTransform_.parent = parent; }
 
+	void SetPosition(Vector3 position) { worldTransform_.translate = position; }
+
 #pragma endregion
 
 private:
 	const float kMoveSpeed_ = 0.2f; // 移動スピード
 	std::list<std::unique_ptr<PlayerBullet>> bullets_; // 弾のリスト
-	std::list<std::unique_ptr<Object3DPlacer>> bulletObjects_;
+	std::list<std::unique_ptr<Object3DPlacer>> objectBullets_;
 	std::list<std::unique_ptr<PlayerBullet>>::iterator bulletsItr_; // 弾のイテレータ
 	uint32_t texHandleBullet_ = 0;
 };

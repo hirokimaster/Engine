@@ -11,8 +11,8 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
+	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 	camera_.Initialize();
-	ModelResources::GetInstance()->LoadModel();
 	// player
 	playerManager_ = std::make_unique<PlayerManager>();
 	playerManager_->Initialize();
@@ -37,7 +37,7 @@ void GameScene::Update()
 	railCamera_->Update();
 	camera_.matView = railCamera_->GetCamera().matView;
 	camera_.matProjection = railCamera_->GetCamera().matProjection;
-	camera_.UpdateMatrix();
+	camera_.TransferMatrix();
 
 	Collision();
 }

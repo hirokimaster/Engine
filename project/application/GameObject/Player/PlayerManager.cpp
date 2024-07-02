@@ -6,6 +6,7 @@ void PlayerManager::Initialize()
 	objectPlayer_ = std::make_unique<Object3DPlacer>();
 	texHandlePlayer_ = TextureManager::Load("resources/white.png");
 	player_->Initialize(objectPlayer_.get(), texHandlePlayer_, "cube.obj");
+	player_->SetPosition({ 0,0,40.0f });
 }
 
 void PlayerManager::Update()

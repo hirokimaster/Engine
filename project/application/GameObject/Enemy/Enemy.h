@@ -30,11 +30,6 @@ private:
 	/// </summary>
 	void OnCollision()override;
 
-	/// <summary>
-	/// 死んだ
-	/// </summary>
-	void Dead();
-
 public:
 
 #pragma region getter

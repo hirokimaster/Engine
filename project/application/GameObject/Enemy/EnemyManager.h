@@ -27,6 +27,13 @@ public:
 	void ColliderPush(CollisionManager* collision);
 
 private:
+
+	/// <summary>
+	/// enemyのリストを削除
+	/// </summary>
+	void EnemysDead();
+
+private:
 	std::list<std::unique_ptr<Enemy>> enemys_;
 	std::list<std::unique_ptr<Enemy>>::iterator enemysItr_;
 	std::list<std::unique_ptr<Object3DPlacer>> objectEnemys_;;

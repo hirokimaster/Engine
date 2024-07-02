@@ -62,8 +62,8 @@ void Player::Attack()
 		// 弾を生成し、初期化
 		std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 		std::unique_ptr<Object3DPlacer> bulletObject = std::make_unique<Object3DPlacer>();
-		bulletObjects_.push_back(std::move(bulletObject));
-		bullet->Initialize(bulletObjects_.back().get(), texHandleBullet_, "cube.obj");
+		objectBullets_.push_back(std::move(bulletObject));
+		bullet->Initialize(objectBullets_.back().get(), texHandleBullet_, "cube.obj");
 		bullet->SetVelocity(velocity);
 		bullet->SetPosition(GetWorldPosition());
 		bullets_.push_back(std::move(bullet));
@@ -79,17 +79,17 @@ void Player::UpdateBullet()
 		(*bulletsItr_)->Update();
 	}
 
-	std::list<std::unique_ptr<Object3DPlacer>>::iterator bulletObjectsItr = bulletObjects_.begin();	// objectのイテレータ
+	std::list<std::unique_ptr<Object3DPlacer>>::iterator objectBulletsItr = objectBullets_.begin();	// objectのイテレータ
 
 	// デスフラグが立ったら要素を削除
-	bullets_.remove_if([&bulletObjectsItr, this](std::unique_ptr<PlayerBullet>& bullet) {
+	bullets_.remove_if([&objectBulletsItr, this](std::unique_ptr<PlayerBullet>& bullet) {
 		if (bullet->GetIsDead()) {
 			// 対応するbulletObjectを削除
-			bulletObjectsItr = bulletObjects_.erase(bulletObjectsItr);
+			objectBulletsItr = objectBullets_.erase(objectBulletsItr);
 			return true;
 		}
 		else {
-			++bulletObjectsItr;
+			++objectBulletsItr;
 			return false;
 		}
 		});

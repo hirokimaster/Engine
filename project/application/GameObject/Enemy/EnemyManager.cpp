@@ -12,15 +12,50 @@ void EnemyManager::Initialize()
 
 void EnemyManager::Update()
 {
-	enemy_->Update();
+	for (enemysItr_ = enemys_.begin();
+		enemysItr_ != enemys_.end(); ++enemysItr_) {
+
+		(*enemysItr_)->Update();
+	}
+
+	EnemysDead(); // デスフラグが立ったらリストから削除する
+	
 }
 
 void EnemyManager::Draw(Camera& camera)
 {
-	enemy_->Draw(camera);
+	for (enemysItr_ = enemys_.begin();
+		enemysItr_ != enemys_.end(); ++enemysItr_) {
+
+		(*enemysItr_)->Draw(camera);
+	}
 }
 
 void EnemyManager::ColliderPush(CollisionManager* collision)
 {
-	collision->ColliderPush(enemy_.get()); // enemyをリストに登録
+	for (enemysItr_ = enemys_.begin();
+		enemysItr_ != enemys_.end(); ++enemysItr_) {
+
+		collision->ColliderPush((*enemysItr_).get()); // enemyをリストに登録
+	}
+	
+}
+
+void EnemyManager::EnemysDead()
+{
+	std::list<std::unique_ptr<Object3DPlacer>>::iterator objectEnemysItr = objectEnemys_.begin();	// objectのイテレータ
+
+	// デスフラグが立ったら要素を削除
+	enemys_.remove_if([&objectEnemysItr, this](std::unique_ptr<Enemy>& enemy) {
+		if (enemy->GetIsDead()) {
+			// 対応するbulletObjectを削除
+			objectEnemysItr = objectEnemys_.erase(objectEnemysItr);
+			return true;
+		}
+		else {
+			++objectEnemysItr;
+			return false;
+		}
+		});
+
 }
