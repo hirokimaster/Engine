@@ -4,6 +4,7 @@ void Player::Initialize(Object3DPlacer* object, uint32_t texHandle, const std::s
 {
 	BaseObject::Initialize(object, texHandle, model); // 共通処理初期化
 	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
+	object->SetColor(Vector4(1.0f, 0.0f, 1.0f, 1.0f));
 
 	SetCollosionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
@@ -15,6 +16,15 @@ void Player::Update()
 	Attack(); // 攻撃
 	UpdateBullet(); // 弾の更新
 	BaseObject::Update(); // 共通の更新処理
+
+#ifdef _DEBUG
+
+	ImGui::Begin("Player");
+	ImGui::Text("position [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.translate.x,
+		worldTransform_.translate.y, worldTransform_.translate.z);
+	ImGui::End();
+
+#endif
 }
 
 void Player::Draw(Camera& camera)

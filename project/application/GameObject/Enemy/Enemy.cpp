@@ -5,6 +5,7 @@ void Enemy::Initialize(Object3DPlacer* object, uint32_t texHandle, const std::st
 	BaseObject::Initialize(object, texHandle, model); // 共通処理初期化
 	worldTransform_.translate = { 0,0,80.0f };
 	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
+	object->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
@@ -14,6 +15,14 @@ void Enemy::Update()
 {
 	BulletUpdate(); // 弾の更新処理
 	BaseObject::Update(); // 共通の更新処理
+
+#ifdef _DEBUG
+
+	ImGui::Begin("Enemy");
+	ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, -100.0f, 100.0f);
+	ImGui::End();
+
+#endif
 }
 
 void Enemy::Draw(Camera& camera)

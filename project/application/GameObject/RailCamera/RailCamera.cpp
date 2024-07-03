@@ -12,11 +12,11 @@ void RailCamera::Initialize(const Vector3& position, const Vector3& rotate)
 
 void RailCamera::Update()
 {
-	//MoveOnRail(); // 移動
+	MoveOnRail(); // 移動
 
 #ifdef _DEBUG
 	// カメラの座標を画面表示する処理
-	ImGui::Begin("Camera");
+	ImGui::Begin("RailCamera");
 	ImGui::SliderFloat3("CmeraTranslation ", &worldTransform_.translate.x, -50.0f, 50.0f);
 	ImGui::SliderFloat3("CmeraRotate ", &worldTransform_.rotate.x, 0.0f, 10.0f);
 	ImGui::End();
