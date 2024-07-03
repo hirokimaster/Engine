@@ -12,7 +12,7 @@ void RailCamera::Initialize(const Vector3& position, const Vector3& rotate)
 
 void RailCamera::Update()
 {
-	MoveOnRail(); // 移動
+	//MoveOnRail(); // 移動
 
 #ifdef _DEBUG
 	// カメラの座標を画面表示する処理

@@ -37,8 +37,13 @@ void EnemyManager::ColliderPush(CollisionManager* collision)
 		enemysItr_ != enemys_.end(); ++enemysItr_) {
 
 		collision->ColliderPush((*enemysItr_).get()); // enemyをリストに登録
+
+		for (auto enemyBulletsItr = (*enemysItr_)->GetBullets().begin();
+			enemyBulletsItr != (*enemysItr_)->GetBullets().end(); ++enemyBulletsItr) {
+			collision->ColliderPush((*enemyBulletsItr).get()); // enemybulletをリストに追加
+		}
 	}
-	
+
 }
 
 void EnemyManager::EnemysDead()

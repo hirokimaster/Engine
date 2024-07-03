@@ -110,6 +110,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="application\GameManager\GameManager.cpp" />
+    <ClCompile Include="application\GameObject\Enemy\Bullet\EnemyBullet.cpp" />
     <ClCompile Include="application\GameObject\Enemy\Enemy.cpp" />
     <ClCompile Include="application\GameObject\Enemy\EnemyManager.cpp" />
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp" />
@@ -163,6 +164,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
+    <ClInclude Include="application\GameObject\Enemy\Bullet\EnemyBullet.h" />
     <ClInclude Include="application\GameObject\Enemy\Enemy.h" />
     <ClInclude Include="application\GameObject\Enemy\EnemyManager.h" />
     <ClInclude Include="application\GameObject\Enemy\IEnemy.h" />

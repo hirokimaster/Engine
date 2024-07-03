@@ -1,6 +1,8 @@
 #pragma once
 #include "application/GameObject/BaseObject/BaseObject.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
+#include "application/GameObject/Enemy/Bullet/EnemyBullet.h"
+#include "engine/TextureManager/TextureManager.h"
 
 class Enemy : public BaseObject, public Collider {
 public:
@@ -23,6 +25,8 @@ public:
 	/// <param name="camera"></param>
 	void Draw(Camera& camera)override;
 
+	static const uint32_t kFireInterval_ = 60; // 発射間隔
+
 private:
 
 	/// <summary>
@@ -30,11 +34,23 @@ private:
 	/// </summary>
 	void OnCollision()override;
 
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Fire();
+
+	/// <summary>
+	/// 弾の更新
+	/// </summary>
+	void BulletUpdate();
+
 public:
 
 #pragma region getter
 
 	Vector3 GetWorldPosition()override;
+
+	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const { return bullets_; }
 
 	bool GetIsDead() { return isDead_; }
 	
@@ -42,6 +58,10 @@ public:
 #pragma endregion
 
 private:
-
 	bool isDead_ = false; // デスフラグ
+	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
+	std::list<std::unique_ptr<Object3DPlacer>> objectBullets_;
+	std::list<std::unique_ptr<EnemyBullet>>::iterator bulletsItr_; // 弾のイテレータ
+	uint32_t texHandleBullet_ = 0; // bulletのtexHandle
+	float fireTimer_ = 120.0f; // 攻撃のタイマー
 };

@@ -13,6 +13,7 @@ void GameScene::Initialize()
 {
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 	camera_.Initialize();
+	camera_.translate = { 0,1.0f,-60.0f };
 	// player
 	playerManager_ = std::make_unique<PlayerManager>();
 	playerManager_->Initialize();
@@ -48,6 +49,15 @@ void GameScene::Update()
 	worldTransformSkyBox_.UpdateMatrix();
 
 	Collision();
+
+#ifdef _DEBUG
+	// カメラの座標
+	ImGui::Begin("Camera");
+	ImGui::SliderFloat3("CmeraTranslation ", &camera_.translate.x, -50.0f, 50.0f);
+	ImGui::SliderFloat3("CmeraRotate ", &camera_.rotate.x, 0.0f, 10.0f);
+	ImGui::End();
+#endif
+
 }
 
 void GameScene::Draw()
@@ -57,7 +67,7 @@ void GameScene::Draw()
 	// enemy
 	enemyManager_->Draw(camera_);
 	// skyBox
-	//skyBox_->Draw(worldTransformSkyBox_, camera_);
+	skyBox_->Draw(worldTransformSkyBox_, camera_);
 }
 
 void GameScene::PostProcessDraw()

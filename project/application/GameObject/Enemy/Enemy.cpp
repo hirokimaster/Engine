@@ -4,6 +4,7 @@ void Enemy::Initialize(Object3DPlacer* object, uint32_t texHandle, const std::st
 {
 	BaseObject::Initialize(object, texHandle, model); // 共通処理初期化
 	worldTransform_.translate = { 0,0,80.0f };
+	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
 
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
@@ -11,17 +12,76 @@ void Enemy::Initialize(Object3DPlacer* object, uint32_t texHandle, const std::st
 
 void Enemy::Update()
 {
+	BulletUpdate(); // 弾の更新処理
 	BaseObject::Update(); // 共通の更新処理
 }
 
 void Enemy::Draw(Camera& camera)
 {
 	BaseObject::Draw(camera); // 共通の描画処理
+
+	// 弾の描画
+	for (bulletsItr_ = bullets_.begin();
+		bulletsItr_ != bullets_.end(); ++bulletsItr_) {
+		(*bulletsItr_)->Draw(camera);
+	}
 }
 
 void Enemy::OnCollision()
 {
-	isDead_ = true;	
+	isDead_ = true;
+}
+
+void Enemy::Fire()
+{
+	// 弾の速度
+	const float kBulletSpeed = -2.0f;
+	Vector3 velocity = { 0,0,kBulletSpeed };
+
+	// 弾を生成し、初期化
+	std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+	std::unique_ptr<Object3DPlacer> objectBullet = std::make_unique<Object3DPlacer>();
+	objectBullets_.push_back(std::move(objectBullet));
+	bullet->Initialize(objectBullets_.back().get(), texHandleBullet_, "cube.obj");
+	bullet->SetVelocity(velocity);
+	bullet->SetPosition(GetWorldPosition());
+	bullets_.push_back(std::move(bullet));
+
+}
+
+void Enemy::BulletUpdate()
+{
+	//発射タイマーをデクリメント
+	--fireTimer_;
+
+	if (fireTimer_ <= 0) {
+		// 弾を発射
+		Fire();
+		// 発射タイマーの初期化
+		fireTimer_ = kFireInterval_;
+	}
+
+	// 弾更新
+	for (bulletsItr_ = bullets_.begin();
+		bulletsItr_ != bullets_.end(); ++bulletsItr_) {
+		(*bulletsItr_)->Update();
+	}
+
+	std::list<std::unique_ptr<Object3DPlacer>>::iterator objectBulletsItr = objectBullets_.begin();	// objectのイテレータ
+
+	// デスフラグが立ったら要素を削除
+	bullets_.remove_if([&objectBulletsItr, this](std::unique_ptr<EnemyBullet>& bullet) {
+		if (bullet->GetIsDead()) {
+			// 対応するbulletObjectを削除
+			objectBulletsItr = objectBullets_.erase(objectBulletsItr);
+			return true;
+		}
+		else {
+			++objectBulletsItr;
+			return false;
+		}
+		});
+
 }
 
 Vector3 Enemy::GetWorldPosition()
