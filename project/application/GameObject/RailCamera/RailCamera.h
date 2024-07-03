@@ -24,10 +24,16 @@ public:
 	/// </summary>
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
+private:
+
 	/// <summary>
 	/// レールカメラを動かす計算をする所
 	/// </summary>
 	void MoveOnRail();
+
+	Vector3 CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t);
+
+	Vector3 CatmullRomPosition(const std::vector<Vector3>& points, float t);
 
 private:
 	// ワールド変換データ
