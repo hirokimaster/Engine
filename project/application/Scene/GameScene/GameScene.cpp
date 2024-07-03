@@ -28,7 +28,7 @@ void GameScene::Initialize()
 	// skyBox
 	skyBox_ = std::make_unique<SkyBox>();
 	skyBox_->Initialize();
-	texHandleSkyBox_ = TextureManager::Load("resources/skyCubeMap.dds");
+	texHandleSkyBox_ = TextureManager::Load("resources/rostock_laage_airport_4k.dds");
 	skyBox_->SetTexHandle(texHandleSkyBox_);
 	worldTransformSkyBox_.Initialize();
 }
