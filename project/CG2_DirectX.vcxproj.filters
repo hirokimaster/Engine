@@ -274,6 +274,9 @@
     <ClCompile Include="application\GameObject\RailCamera\RailCamera.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="application\Scene\TitleScene\TitleScene.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CreateResource\CreateResource.h">
@@ -441,6 +444,7 @@
     <ClInclude Include="application\GameObject\Enemy\EnemyManager.h" />
     <ClInclude Include="application\GameObject\Enemy\IEnemy.h" />
     <ClInclude Include="application\GameObject\RailCamera\RailCamera.h" />
+    <ClInclude Include="application\Scene\TitleScene\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">

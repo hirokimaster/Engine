@@ -60,5 +60,6 @@ private:
 	std::unique_ptr<CollisionManager> collisionManager_ = nullptr; // 衝突判定まとめ
 	std::unique_ptr<RailCamera> railCamera_ = nullptr; // レールカメラ
 	std::unique_ptr<SkyBox> skyBox_ = nullptr; // スカイボックス(背景)
+	WorldTransform worldTransformSkyBox_{};
 	uint32_t texHandleSkyBox_ = 0; // skyBoxのtexture
 };

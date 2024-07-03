@@ -28,7 +28,9 @@ void GameScene::Initialize()
 	// skyBox
 	skyBox_ = std::make_unique<SkyBox>();
 	skyBox_->Initialize();
-	texHandleSkyBox_ = 0;
+	texHandleSkyBox_ = TextureManager::Load("resources/skyCubeMap.dds");
+	skyBox_->SetTexHandle(texHandleSkyBox_);
+	worldTransformSkyBox_.Initialize();
 }
 
 void GameScene::Update()
@@ -42,6 +44,8 @@ void GameScene::Update()
 	camera_.matView = railCamera_->GetCamera().matView;
 	camera_.matProjection = railCamera_->GetCamera().matProjection;
 	camera_.TransferMatrix();
+	// skyBox
+	worldTransformSkyBox_.UpdateMatrix();
 
 	Collision();
 }
@@ -52,6 +56,8 @@ void GameScene::Draw()
 	playerManager_->Draw(camera_);
 	// enemy
 	enemyManager_->Draw(camera_);
+	// skyBox
+	//skyBox_->Draw(worldTransformSkyBox_, camera_);
 }
 
 void GameScene::PostProcessDraw()

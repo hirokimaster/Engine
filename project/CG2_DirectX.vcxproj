@@ -120,6 +120,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="application\Scene\IScene\IScene.cpp" />
     <ClCompile Include="application\GameObject\BaseObject\BaseObject.cpp" />
+    <ClCompile Include="application\Scene\TitleScene\TitleScene.cpp" />
     <ClCompile Include="engine\Model\Animation\ModelAnimation.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\DX\DirectXCommon.cpp" />
@@ -173,6 +174,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="application\Scene\IScene\IScene.h" />
     <ClInclude Include="application\GameObject\BaseObject\BaseObject.h" />
+    <ClInclude Include="application\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="engine\Model\Animation\Animation.h" />
     <ClInclude Include="engine\Model\Animation\ModelAnimation.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
