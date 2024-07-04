@@ -9,9 +9,10 @@ void PlayerManager::Initialize()
 	player_->SetPosition({ 0,0,40.0f });
 }
 
-void PlayerManager::Update()
+void PlayerManager::Update(const Camera& camera)
 {
 	player_->Update();
+	player_->UpdateReticle(camera);
 }
 
 void PlayerManager::Draw(Camera& camera)

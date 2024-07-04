@@ -17,7 +17,7 @@ public:
 	/// <summary>
 	/// 更新処理
 	/// </summary>
-	void Update();
+	void Update(const Camera& camera);
 
 	/// <summary>
 	/// 描画

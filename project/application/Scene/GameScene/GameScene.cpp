@@ -37,7 +37,7 @@ void GameScene::Initialize()
 void GameScene::Update()
 {
 	// player
-	playerManager_->Update();
+	playerManager_->Update(camera_);
 	// enemy
 	enemyManager_->Update();
 	// railCamera
@@ -62,12 +62,12 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	// player
-	playerManager_->Draw(camera_);
 	// enemy
 	enemyManager_->Draw(camera_);
 	// skyBox
 	skyBox_->Draw(worldTransformSkyBox_, camera_);
+	// player
+	playerManager_->Draw(camera_);
 }
 
 void GameScene::PostProcessDraw()

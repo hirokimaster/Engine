@@ -71,6 +71,9 @@ Matrix4x4 InverseTranspose(const Matrix4x4& m);
 // 転置行列
 Matrix4x4 Transpose(const Matrix4x4& m);
 
+Matrix4x4 MakeViewportMatrix(
+	float left, float top, float width, float heght, float minDepth, float maxDepth);
+
 // 正規化
 Vector3 Normalize(const Vector3& v);
 

@@ -3,6 +3,7 @@
 #include "application/GameObject/Player/Bullet/PlayerBullet.h"
 #include "engine/TextureManager/TextureManager.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
+#include "engine/Sprite/Sprite.h"
 
 class Player : public BaseObject, public Collider 
 {
@@ -19,6 +20,12 @@ public:
 	/// 更新
 	/// </summary>
 	void Update()override;
+
+	/// <summary>
+	/// reticleの更新
+	/// </summary>
+	/// <param name="camera"></param>
+	void UpdateReticle(const Camera& camera);
 
 	/// <summary>
 	/// 描画
@@ -48,6 +55,19 @@ private: // クラス内でしか使わない
 	/// </summary>
 	void OnCollision()override;
 
+	/// <summary>
+	/// レティクル
+	/// </summary>
+	/// <param name="camera"></param>
+	/// <param name="position"></param>
+	void Reticle(const Camera& camera, const Vector2& position);
+
+	/// <summary>
+	/// UIの描画
+	/// </summary>
+	/// <param name="camera"></param>
+	void DrawUI();
+
 public:
 
 #pragma region getter
@@ -55,6 +75,8 @@ public:
 	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() const { return bullets_; }
 
 	Vector3 GetWorldPosition()override;
+
+	Vector3 GetWorldPosition3DReticle();
 
 #pragma endregion
 
@@ -72,4 +94,7 @@ private:
 	std::list<std::unique_ptr<Object3DPlacer>> objectBullets_;
 	std::list<std::unique_ptr<PlayerBullet>>::iterator bulletsItr_; // 弾のイテレータ
 	uint32_t texHandleBullet_ = 0;
+	WorldTransform worldTransform3DReticle_;
+	std::unique_ptr<Sprite> sprite2DReticle_;
+	uint32_t texHandle2DReticle_ = 0;
 };
