@@ -7,9 +7,8 @@
 #pragma comment(lib,"xinput.lib")
 #pragma comment(lib,"dinput8.lib")
 
-class Input{
+class Input {
 public:
-
 
 	static Input* GetInstance();
 
@@ -21,23 +20,11 @@ public:
 
 	bool PressedKey(uint32_t keyNum);
 
-	bool GetJoystickState(XINPUT_STATE& out) const;
-
 	static bool GetJoystickState();
 
+	bool GetJoystickState(XINPUT_STATE& out);
+
 	bool PressedButton(WORD button);
-
-	//void SetJoystickDeadZone(int32_t deadZoneL, int32_t deadZoneR);
-
-	struct ButtonState {
-		bool isPressed;
-		bool wasPressed;
-
-		ButtonState() : isPressed(false), wasPressed(false) {}
-	};
-
-	void UpdateButtonState(ButtonState& state, bool isPressed);
-
 
 private:
 
@@ -52,8 +39,8 @@ private:
 	XINPUT_STATE state_{};
 	XINPUT_STATE preState_{};
 
-	//0x80=押している状態
-	//0x00=押してない状態
+private:
+
 	Input() = default;
 	~Input() = default;
 	Input(const Input&) = delete;

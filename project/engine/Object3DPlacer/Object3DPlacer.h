@@ -30,7 +30,7 @@ public:
 	void SetAnimModel(const std::string& fileName) { modelAnimation_ = ModelManager::Create(fileName); }
 	void SetAnimationTime(float animationTime) { modelAnimation_->SetAnimationTime(animationTime); }
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
-	void SetColor(const Vector4& color) { color_ = color; }
+	void SetColor(const Vector4& color) { materialData_->color = color; }
 	void SetLight(Lighting* lighting) { lighting_ = lighting; }
 	Material SetMaterialProperty(Material materialdata) { return *materialData_ = materialdata; }
 	// directionalLightの設定
