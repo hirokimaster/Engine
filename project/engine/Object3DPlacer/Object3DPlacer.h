@@ -2,6 +2,7 @@
 #include "engine/ModelManager/ModelManager.h"
 #include "engine/Lighting/Lighting.h"
 #include "engine/Model/Animation/ModelAnimation.h"
+#include "engine/GraphicsPipeline/GraphicsPipeline.h"
 
 class Object3DPlacer {
 public:

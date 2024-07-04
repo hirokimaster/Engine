@@ -3,6 +3,7 @@
 #include "engine/Model/Model.h"
 #include "engine/DescriptorManager/DescriptorManager.h"
 #include "engine/DescriptorManager/SRVManager/SrvManager.h"
+#include "engine/GraphicsPipeline/GraphicsPipeline.h"
 #include  <numbers>
 
 class ModelAnimation : public Model{

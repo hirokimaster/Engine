@@ -7,6 +7,12 @@
 #include "engine/Model/Animation/ModelAnimation.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameManager/GameManager.h"
+#include "application/GameObject/Player/PlayerManager.h"
+#include "application/GameObject/ModelResources/ModelResources.h"
+#include "application/GameObject/Enemy/EnemyManager.h"
+#include "engine/Utility/CollisionManager/CollisionManager.h"
+#include "application/GameObject/RailCamera/RailCamera.h"
+#include "engine/Model/SkyBox/SkyBox.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -41,4 +47,19 @@ public: // メンバ関数
 	void PostProcessDraw()override;
 
 private:
+
+	/// <summary>
+	/// collision書くとこ
+	/// </summary>
+	void Collision();
+
+private:
+	Camera camera_{};
+	std::unique_ptr<PlayerManager> playerManager_ = nullptr; // playerまとめたとこ
+	std::unique_ptr<EnemyManager> enemyManager_ = nullptr; // enemyまとめたとこ
+	std::unique_ptr<CollisionManager> collisionManager_ = nullptr; // 衝突判定まとめ
+	std::unique_ptr<RailCamera> railCamera_ = nullptr; // レールカメラ
+	std::unique_ptr<SkyBox> skyBox_ = nullptr; // スカイボックス(背景)
+	WorldTransform worldTransformSkyBox_{};
+	uint32_t texHandleSkyBox_ = 0; // skyBoxのtexture
 };
