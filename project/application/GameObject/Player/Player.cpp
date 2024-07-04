@@ -56,12 +56,23 @@ void Player::Move()
 		move.y -= kMoveSpeed_;
 	}
 
+	// ゲームパッドの状態を得る変数(XINPUT)
+	XINPUT_STATE joyState;
+
+	// ゲームパッド状態取得
+	if (Input::GetInstance()->GetJoystickState(joyState)) {
+		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kMoveSpeed_;
+		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kMoveSpeed_;
+	}
+
 	// 移動
 	worldTransform_.translate = worldTransform_.translate + move;
 }
 
 void Player::Attack()
 {
+
+	XINPUT_STATE joyState{};
 
 	// 弾の速度
 	const float kBulletSpeed = 1.0f;
@@ -78,6 +89,25 @@ void Player::Attack()
 		bullet->SetPosition(GetWorldPosition());
 		bullets_.push_back(std::move(bullet));
 	}
+
+	// ゲームパッドの状態を得る変数(XINPUT)
+	if (Input::GetInstance()->GetJoystickState(joyState)) {
+	
+		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
+
+			// 弾を生成し、初期化
+			std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
+			std::unique_ptr<Object3DPlacer> objectBullet = std::make_unique<Object3DPlacer>();
+			objectBullets_.push_back(std::move(objectBullet));
+			bullet->Initialize(objectBullets_.back().get(), texHandleBullet_, "cube.obj");
+			bullet->SetVelocity(velocity);
+			bullet->SetPosition(GetWorldPosition());
+			bullets_.push_back(std::move(bullet));
+		}
+	
+	}
+
+	
 
 }
 

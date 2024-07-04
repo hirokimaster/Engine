@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/Transform/WorldTransform.h"
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"
+#include <algorithm>
 
 class RailCamera {
 public:
@@ -44,5 +45,4 @@ private:
 	Vector3 velocity_ = { 0.0f, 0.0f, 0.0f };
 	// 角度
 	Vector3 rotate_ = { 0.0f, 0.0f, 0.0f };
-
 };

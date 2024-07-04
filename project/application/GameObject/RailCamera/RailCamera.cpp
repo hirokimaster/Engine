@@ -8,6 +8,7 @@ void RailCamera::Initialize(const Vector3& position, const Vector3& rotate)
 	worldTransform_.rotate = rotate;
 
 	camera_.Initialize();
+
 }
 
 void RailCamera::Update()
@@ -29,7 +30,7 @@ void RailCamera::MoveOnRail()
 	const float cameraSpeed = 0.1f; // 移動スピード
 	velocity_.z = cameraSpeed;
 	worldTransform_.translate = worldTransform_.translate + velocity_;
-
+	
 	// ワールドトランスフォームのワールド行列再計算
 	worldTransform_.matWorld = MakeAffineMatrix(
 		worldTransform_.scale, worldTransform_.rotate, worldTransform_.translate);
@@ -72,7 +73,11 @@ Vector3 RailCamera::CatmullRomPosition(const std::vector<Vector3>& points, float
 	t_2 = std::clamp(t_2, 0.0f, 1.0f);
 
 	size_t index = static_cast<size_t>(t / areaWidth);
-	//index = std::min(index, points.size() - 2);
+	
+	// 上限を超えないようにする
+	if (index > points.size() - 2) {
+		index = points.size() - 2;
+	}
 
 	size_t index0 = index - 1;
 	size_t index1 = index;
