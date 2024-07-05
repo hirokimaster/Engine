@@ -89,8 +89,8 @@ void PostProcess::CreateBuffer()
 		bloom_->Map(0, nullptr, reinterpret_cast<void**>(&bloomData_));
 		bloomData_->stepWidth = 0.001f;
 		bloomData_->sigma = 0.005f;
-		bloomData_->lightStrength = 1.0;
-		bloomData_->bloomThreshold = 0.5f;
+		bloomData_->lightStrength = 1.0f;
+		bloomData_->bloomThreshold = 0.2f;
 	}
 	else if (type_ == Vignette) {
 		vignette_ = CreateResource::CreateBufferResource(sizeof(VignetteParam));
@@ -116,10 +116,19 @@ void PostProcess::CreateBuffer()
 		radialData_->blurWidth = 0.01f;
 	}
 	else if (type_ == Dissolve) {
-		dissolve_ = CreateResource::CreateBufferResource(sizeof(DissolveParam));
-		dissolve_->Map(0, nullptr, reinterpret_cast<void**>(&dissolveData_));
-		dissolveData_->threshold = 0.5f;
+
 	}
+	else if (type_ == Random) {
+
+	}
+
+	dissolve_ = CreateResource::CreateBufferResource(sizeof(DissolveParam));
+	dissolve_->Map(0, nullptr, reinterpret_cast<void**>(&dissolveData_));
+	dissolveData_->threshold = 0.5f;
+
+	random_ = CreateResource::CreateBufferResource(sizeof(RandomParam));
+	random_->Map(0, nullptr, reinterpret_cast<void**>(&randomData_));
+	randomData_->time = 0.0f;
 }
 
 void PostProcess::CreatePipeLine()
@@ -148,6 +157,9 @@ void PostProcess::CreatePipeLine()
 	else if (type_ == Dissolve) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Dissolve;
 	}
+	else if (type_ == Random) {
+		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Random;
+	}
 }
 
 void PostProcess::SetConstantBuffer()
@@ -171,6 +183,9 @@ void PostProcess::SetConstantBuffer()
 	else if (type_ == Dissolve) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, dissolve_->GetGPUVirtualAddress());
 		DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(maskTexHandle_));
+	}
+	else if (type_ == Random) {
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, random_->GetGPUVirtualAddress());
 	}
 }
 
@@ -202,7 +217,7 @@ void PostProcess::PostDepthBarrier()
 
 void PostProcess::PreDraw()
 {
-	
+
 	barrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 	// Noneにしておく
 	barrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
@@ -239,7 +254,7 @@ void PostProcess::PostDraw()
 	DirectXCommon::GetCommandList()->ResourceBarrier(1, &barrier_);
 }
 
-void PostProcess::Draw()	
+void PostProcess::Draw()
 {
 	if (type_ == DepthOutline) {
 		PreDepthBarrier();
@@ -248,7 +263,7 @@ void PostProcess::Draw()
 
 	// effectの種類によって変えてる
 	CreatePipeLine();
-  
+
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(pipeline_.rootSignature_.Get());
 	DirectXCommon::GetCommandList()->SetPipelineState(pipeline_.graphicsPipelineState_.Get()); // PSOを設定
@@ -256,7 +271,7 @@ void PostProcess::Draw()
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// srvの設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(0, SrvManager::GetInstance()->GetGPUHandle(index_));
-	
+
 	// effectの種類によって変えてる
 	SetConstantBuffer();
 

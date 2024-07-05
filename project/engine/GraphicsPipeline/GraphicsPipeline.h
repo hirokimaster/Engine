@@ -34,6 +34,7 @@ struct PipelineState {
 	Property SkyBox;
 	Property Environment;
 	Property Line;
+	Property Random;
 };
 
 enum Light {
@@ -51,7 +52,8 @@ enum PostEffectType {
 	LuminanceOutline,
 	DepthOutline,
 	RadialBlur,
-	Dissolve
+	Dissolve  ,
+	Random
 };
 
 // BlendMode
@@ -139,6 +141,8 @@ private:
 	static Property CreateRadialBlur(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	static Property CreateDissolve(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	static Property CreateRandom(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	PipelineState pso = {};
 

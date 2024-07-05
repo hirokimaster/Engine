@@ -482,6 +482,7 @@
     <FxCompile Include="resources\ShaderFile\Vignette.PS.hlsl">
       <Filter>Engine\Shader</Filter>
     </FxCompile>
+    <FxCompile Include="resources\ShaderFile\Random.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">
