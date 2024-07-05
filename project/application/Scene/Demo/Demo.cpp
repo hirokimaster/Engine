@@ -87,15 +87,15 @@ void Demo::Update()
 
 	if (DissolvePram_.threshold >= 1.0f) {
 		dFlag_2 = true;
-		dflag_1 = false;
+		dFlag_1 = false;
 	}
 
 	if (DissolvePram_.threshold <= 0.0f) {
-		dflag_1 = true;
+		dFlag_1 = true;
 		dFlag_2 = false;
 	}
 
-	if (dflag_1) {
+	if (dFlag_1) {
 		DissolvePram_.threshold += 0.01f;
 	}
 

@@ -51,8 +51,7 @@ private:
 	Camera camera_{};
 	WorldTransform trans_{};
 	RandomParam param_{};
-	bool dissolve_ = false;
-	bool dflag_1 = true;
+	bool dFlag_1 = true;
 	bool dFlag_2 = false;
 	DissolveParam DissolvePram_{};
 };
