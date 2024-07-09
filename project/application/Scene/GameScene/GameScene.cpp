@@ -69,6 +69,13 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	postProcess_->Draw();
+
+	///* enemy
+	//enemyManager_->Draw(camera_);
+	// skyBox
+	//skyBox_->Draw(worldTransformSkyBox_, camera_);
+	// player
+	//playerManager_->Draw(camera_);*/
 }
 
 void GameScene::PostProcessDraw()
@@ -78,7 +85,7 @@ void GameScene::PostProcessDraw()
 	// enemy
 	enemyManager_->Draw(camera_);
 	// skyBox
-	skyBox_->Draw(worldTransformSkyBox_, camera_);
+	//skyBox_->Draw(worldTransformSkyBox_, camera_);
 	// player
 	playerManager_->Draw(camera_);
 

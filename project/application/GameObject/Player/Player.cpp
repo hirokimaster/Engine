@@ -8,7 +8,7 @@ void Player::Initialize(Object3DPlacer* object, uint32_t texHandle, const std::s
 
 	// reticle
 	texHandle2DReticle_ = TextureManager::Load("resources/reticle.png");
-	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, { 150.0f,150.0f }));
+	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, { 640.0f,360.0f }));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
 
@@ -83,12 +83,11 @@ void Player::Attack()
 
 	XINPUT_STATE joyState{};
 
-	// 弾の速度
-	const float kBulletSpeed = 1.0f;
-	Vector3 velocity = { 0,0,kBulletSpeed };
-
 	// 処理
 	if (Input::GetInstance()->PressedKey(DIK_SPACE)) {
+		// 弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity = { 0,0,kBulletSpeed };
 		// 弾を生成し、初期化
 		std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 		std::unique_ptr<Object3DPlacer> objectBullet = std::make_unique<Object3DPlacer>();
@@ -101,19 +100,29 @@ void Player::Attack()
 
 	// ゲームパッドの状態を得る変数(XINPUT)
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
-	
-		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 
+		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
+			// 弾の速度
+			const float kBulletSpeed = 1.0f;
+			Vector3 velocity = { 0,0,kBulletSpeed };
+			// 自機から照準オブジェクトのベクトル
+			Vector3 WorldPos = GetWorldPosition();
+			Vector3 ReticleWorldPos = GetWorldPosition3DReticle();
+			velocity = Subtract(ReticleWorldPos, WorldPos);
+			velocity = Normalize(velocity);
+			velocity = Multiply(kBulletSpeed, velocity);
+			// プレイヤーの向きに速度を合わせる
+			velocity = TransformNormal(velocity, worldTransform_.matWorld);
 			// 弾を生成し、初期化
 			std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 			std::unique_ptr<Object3DPlacer> objectBullet = std::make_unique<Object3DPlacer>();
 			objectBullets_.push_back(std::move(objectBullet));
 			bullet->Initialize(objectBullets_.back().get(), texHandleBullet_, "cube.obj");
+			bullet->SetPosition(WorldPos);
 			bullet->SetVelocity(velocity);
-			bullet->SetPosition(GetWorldPosition());
 			bullets_.push_back(std::move(bullet));
 		}
-	
+
 	}
 
 }
@@ -145,7 +154,7 @@ void Player::UpdateBullet()
 
 void Player::OnCollision()
 {
-	
+
 }
 
 void Player::Reticle(const Camera& camera, const Vector2& position)
@@ -177,7 +186,7 @@ void Player::Reticle(const Camera& camera, const Vector2& position)
 	// カメラから照準オブジェクトの距離
 	const float kDistanceTestObject = 100.0f;
 	worldTransform3DReticle_.translate = Multiply(kDistanceTestObject, mouseDirection);
-	worldTransform3DReticle_.UpdateMatrix();	
+	worldTransform3DReticle_.UpdateMatrix();
 }
 
 void Player::DrawUI()
