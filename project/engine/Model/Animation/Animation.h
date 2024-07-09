@@ -9,6 +9,7 @@
 #include <map>
 #include <optional>
 #include <span>
+#include <array>
 
 template<typename tValue>
 

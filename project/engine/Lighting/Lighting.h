@@ -1,5 +1,6 @@
 #pragma once
 #include "engine/Model/Model.h"
+#include "engine/DescriptorManager/SRVManager/SrvManager.h"
 
 class Lighting {
 public:

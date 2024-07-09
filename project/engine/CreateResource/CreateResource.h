@@ -97,6 +97,10 @@ struct DissolveParam {
 	float threshold;
 };
 
+struct RandomParam {
+	float time;
+};
+
 class CreateResource {
 public:
 	// Resource作成

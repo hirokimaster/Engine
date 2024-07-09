@@ -46,6 +46,8 @@ public:
 
 	DissolveParam SetDissolveParam(DissolveParam param) { return *dissolveData_ = param; }
 
+	RandomParam SetRandomParam(RandomParam param) {return *randomData_ = param;}
+
 	void SetMaskTexture(uint32_t texHandle) {maskTexHandle_ = texHandle; }
 
 	void SetCamera(Camera camera) { camera = camera_; }
@@ -122,4 +124,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> dissolve_;
 	DissolveParam* dissolveData_ = nullptr;
 	uint32_t maskTexHandle_ = 0;
+	Microsoft::WRL::ComPtr<ID3D12Resource> random_;
+	RandomParam* randomData_ = nullptr;
+
 };
