@@ -116,19 +116,15 @@ void PostProcess::CreateBuffer()
 		radialData_->blurWidth = 0.01f;
 	}
 	else if (type_ == Dissolve) {
-
+		dissolve_ = CreateResource::CreateBufferResource(sizeof(DissolveParam));
+		dissolve_->Map(0, nullptr, reinterpret_cast<void**>(&dissolveData_));
+		dissolveData_->threshold = 0.5f;
 	}
 	else if (type_ == Random) {
-
+		random_ = CreateResource::CreateBufferResource(sizeof(RandomParam));
+		random_->Map(0, nullptr, reinterpret_cast<void**>(&randomData_));
+		randomData_->time = 0.0f;
 	}
-
-	dissolve_ = CreateResource::CreateBufferResource(sizeof(DissolveParam));
-	dissolve_->Map(0, nullptr, reinterpret_cast<void**>(&dissolveData_));
-	dissolveData_->threshold = 0.5f;
-
-	random_ = CreateResource::CreateBufferResource(sizeof(RandomParam));
-	random_->Map(0, nullptr, reinterpret_cast<void**>(&randomData_));
-	randomData_->time = 0.0f;
 }
 
 void PostProcess::CreatePipeLine()

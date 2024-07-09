@@ -42,7 +42,7 @@ public: // メンバ関数
 
 private:
 
-	uint32_t texHandle_ = 0;
+	/*uint32_t texHandle_ = 0;
 	uint32_t texHandleUV_ = 0;
 	uint32_t maskTex_ = 0;
 	std::unique_ptr<PostProcess> postProcess_ = nullptr;
@@ -53,7 +53,7 @@ private:
 	RandomParam param_{};
 	bool dFlag_1 = true;
 	bool dFlag_2 = false;
-	DissolveParam DissolvePram_{};
+	DissolveParam DissolvePram_{};*/
 };
 
 
