@@ -62,4 +62,5 @@ private:
 	std::unique_ptr<SkyBox> skyBox_ = nullptr; // スカイボックス(背景)
 	WorldTransform worldTransformSkyBox_{};
 	uint32_t texHandleSkyBox_ = 0; // skyBoxのtexture
+	std::unique_ptr<PostProcess> postProcess_ = nullptr;
 };

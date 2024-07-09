@@ -12,6 +12,12 @@ GameScene::~GameScene()
 void GameScene::Initialize()
 {
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
+
+	postProcess_ = std::make_unique<PostProcess>();
+	postProcess_->Initialize();
+	GameManager::GetInstance()->SetPostProcess(postProcess_.get());
+	postProcess_->SetEffect(Bloom);
+
 	camera_.Initialize();
 	// player
 	playerManager_ = std::make_unique<PlayerManager>();
@@ -62,16 +68,21 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
+	postProcess_->Draw();
+}
+
+void GameScene::PostProcessDraw()
+{
+	postProcess_->PreDraw();
+
 	// enemy
 	enemyManager_->Draw(camera_);
 	// skyBox
 	skyBox_->Draw(worldTransformSkyBox_, camera_);
 	// player
 	playerManager_->Draw(camera_);
-}
 
-void GameScene::PostProcessDraw()
-{
+	postProcess_->PostDraw();
 }
 
 void GameScene::Collision()
