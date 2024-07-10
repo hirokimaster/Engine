@@ -24,9 +24,9 @@ void Player::Update()
 	BaseObject::Update(); // 共通の更新処理
 }
 
-void Player::UpdateReticle(const Vector3& position,const Camera& camera)
+void Player::UpdateReticle(const Camera& camera)
 {
-	Reticle(position);
+	Reticle();
 
 	// 3Dレティクルの座標から2Dレティクルのスクリーン座標を計算
 	Vector3 positionReticle = GetWorldPosition3DReticle();
@@ -202,11 +202,11 @@ void Player::OnCollision()
 //	worldTransform3DReticle_.UpdateMatrix();
 //}
 
-void Player::Reticle(const Vector3& position)
+void Player::Reticle()
 {
 	// 自機のワールド座標から3Dレティクルのワールド座標を計算
 	// 自機から3Dレティクルへの距離
-	const float kDistancePlayerTo3DReticle = position.z + 50.0f;
+	const float kDistancePlayerTo3DReticle = GetWorldPosition().z + 50.0f;
 	// 自機から3Dレティクルへのオフセット(Z+向き)
 	Vector3 offset = { 0, 0, 1.0f };
 	// 自機のワールド行列の回転を反映

@@ -12,7 +12,7 @@ void PlayerManager::Initialize()
 void PlayerManager::Update(const Camera& camera)
 {
 	player_->Update();
-	player_->UpdateReticle(GetPlayerPosition(), camera);
+	player_->UpdateReticle(camera);
 }
 
 void PlayerManager::Draw(Camera& camera)
