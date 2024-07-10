@@ -1,5 +1,8 @@
 #pragma once
 #include "application/Scene/IScene/IScene.h"
+#include "engine/Sprite/Sprite.h"
+#include "engine/Input/Input.h"
+#include "application/GameManager/GameManager.h"
 
 class TitleScene : public IScene {
 public:
@@ -29,5 +32,7 @@ public:
 	void Draw()override;
 
 private:
+	std::unique_ptr<Sprite> spriteTitle_ = nullptr;
+	uint32_t texHandleTitle_ = 0;
 
 };
