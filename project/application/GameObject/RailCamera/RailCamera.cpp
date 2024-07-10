@@ -8,7 +8,7 @@ void RailCamera::Initialize(const Vector3& position, const Vector3& rotate)
 	worldTransform_.rotate = rotate;
 
 	camera_.Initialize();
-
+	camera_.farZ = 2000.0f;
 }
 
 void RailCamera::Update()
@@ -37,8 +37,6 @@ void RailCamera::MoveOnRail()
 
 	// カメラオブジェクトのワールド行列からビュー行列を計算する
 	camera_.matView = Inverse(worldTransform_.matWorld);
-
-	worldTransform_.UpdateMatrix();
 
 }
 

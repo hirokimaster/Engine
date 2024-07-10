@@ -16,7 +16,7 @@ void GameScene::Initialize()
 	postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
 	GameManager::GetInstance()->SetPostProcess(postProcess_.get());
-	postProcess_->SetEffect(Bloom);
+	postProcess_->SetEffect(DepthOutline);
 
 	camera_.Initialize();
 	// player
@@ -62,6 +62,11 @@ void GameScene::Update()
 	ImGui::SliderFloat3("CmeraTranslation ", &camera_.translate.x, -50.0f, 50.0f);
 	ImGui::SliderFloat3("CmeraRotate ", &camera_.rotate.x, 0.0f, 10.0f);
 	ImGui::End();
+
+	ImGui::Begin("Player");
+	ImGui::Text("position [x: %.3f ] [y: %.3f] [z: %.3f]", playerManager_->GetPlayerPosition().x,
+		playerManager_->GetPlayerPosition().y, playerManager_->GetPlayerPosition().z);
+	ImGui::End();
 #endif
 
 }
@@ -85,7 +90,7 @@ void GameScene::PostProcessDraw()
 	// enemy
 	enemyManager_->Draw(camera_);
 	// skyBox
-	//skyBox_->Draw(worldTransformSkyBox_, camera_);
+	skyBox_->Draw(worldTransformSkyBox_, camera_);
 	// player
 	playerManager_->Draw(camera_);
 

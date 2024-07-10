@@ -25,7 +25,7 @@ public:
 	/// reticleの更新
 	/// </summary>
 	/// <param name="camera"></param>
-	void UpdateReticle(const Camera& camera);
+	void UpdateReticle(const Vector3& position, const Camera& camera);
 
 	/// <summary>
 	/// 描画
@@ -60,7 +60,9 @@ private: // クラス内でしか使わない
 	/// </summary>
 	/// <param name="camera"></param>
 	/// <param name="position"></param>
-	void Reticle(const Camera& camera, const Vector2& position);
+	//void Reticle(const Camera& camera, const Vector2& position);
+
+	void Reticle(const Vector3& position);
 
 	/// <summary>
 	/// UIの描画
