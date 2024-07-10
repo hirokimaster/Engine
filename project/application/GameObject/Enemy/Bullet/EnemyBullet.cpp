@@ -21,7 +21,10 @@ void EnemyBullet::Draw(Camera& camera)
 void EnemyBullet::Move()
 {
 	//移動
-	worldTransform_.translate = worldTransform_.translate + velocity_;
+	//worldTransform_.translate = worldTransform_.translate + velocity_;
+
+
+
 }
 
 void EnemyBullet::BulletErase()
