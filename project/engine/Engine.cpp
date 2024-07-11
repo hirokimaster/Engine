@@ -9,7 +9,7 @@ void Engine::Initialize() {
 	sceneFactory_ = std::make_unique<SceneFactory>();
 	gameManager_ = GameManager::GetInstance();
 	gameManager_->SetSceneFactory(std::move(sceneFactory_));
-	gameManager_->ChangeScene("TITLE");
+	gameManager_->ChangeScene("GAME");
 
 }
 

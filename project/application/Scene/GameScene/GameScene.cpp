@@ -20,17 +20,24 @@ void GameScene::Initialize()
 
 	camera_.Initialize();
 	// player
-	playerManager_ = std::make_unique<PlayerManager>();
-	playerManager_->Initialize();
+	player_ = std::make_unique<Player>();
+	objectPlayer_ = std::make_unique<Object3DPlacer>();
+	texHandlePlayer_ = TextureManager::Load("resources/white.png");
+	player_->Initialize(objectPlayer_.get(), texHandlePlayer_, "cube.obj");
+	player_->SetPosition({ 0,0,50.0f });
 	// enemy
-	enemyManager_ = std::make_unique<EnemyManager>();
-	enemyManager_->Initialize();
+	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
+	std::unique_ptr<Object3DPlacer> objectEnemy = std::make_unique<Object3DPlacer>();
+	objectEnemys_.push_back(std::move(objectEnemy));
+	texHandleEnemy_ = TextureManager::Load("resources/white.png");
+	enemy->Initialize(objectEnemys_.back().get(), texHandleEnemy_, "cube.obj");
+	enemys_.push_back(std::move(enemy));
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
 	// railCamera
 	railCamera_ = std::make_unique<RailCamera>();
-	railCamera_->Initialize(playerManager_->GetPlayerPosition(), {0,0,0});
-	playerManager_->SetParent(&railCamera_->GetWorldTransform());
+	railCamera_->Initialize(player_->GetWorldPosition(), {0,0,0});
+	player_->SetParent(&railCamera_->GetWorldTransform());
 	// skyBox
 	skyBox_ = std::make_unique<SkyBox>();
 	skyBox_->Initialize();
@@ -38,14 +45,39 @@ void GameScene::Initialize()
 	skyBox_->SetTexHandle(texHandleSkyBox_);
 	worldTransformSkyBox_.Initialize();
 	worldTransformSkyBox_.scale = { 500.0f,500.0f,500.0f };
+	// lockOn
+	lockOn_ = std::make_unique<LockOn>();
+	lockOn_->Initialize();
 }
 
 void GameScene::Update()
 {
 	// player
-	playerManager_->Update(camera_);
+	player_->Update();
+	player_->UpdateReticle(camera_);
 	// enemy
-	enemyManager_->Update();
+	for (enemysItr_ = enemys_.begin();
+		enemysItr_ != enemys_.end(); ++enemysItr_) {
+
+		(*enemysItr_)->Update();
+
+	}
+
+	std::list<std::unique_ptr<Object3DPlacer>>::iterator objectEnemysItr = objectEnemys_.begin();	// objectのイテレータ
+
+	// デスフラグが立ったら要素を削除
+	enemys_.remove_if([&objectEnemysItr, this](std::unique_ptr<Enemy>& enemy) {
+		if (enemy->GetIsDead()) {
+			// 対応するbulletObjectを削除
+			objectEnemysItr = objectEnemys_.erase(objectEnemysItr);
+			return true;
+		}
+		else {
+			++objectEnemysItr;
+			return false;
+		}
+		});
+
 	// railCamera
 	railCamera_->Update();
 	camera_.matView = railCamera_->GetCamera().matView;
@@ -53,6 +85,8 @@ void GameScene::Update()
 	camera_.TransferMatrix();
 	// skyBox
 	worldTransformSkyBox_.UpdateMatrix();
+	// lockOn
+	lockOn_->Update(enemys_, camera_);
 
 	Collision();
 
@@ -64,8 +98,8 @@ void GameScene::Update()
 	ImGui::End();
 
 	ImGui::Begin("Player");
-	ImGui::Text("position [x: %.3f ] [y: %.3f] [z: %.3f]", playerManager_->GetPlayerPosition().x,
-		playerManager_->GetPlayerPosition().y, playerManager_->GetPlayerPosition().z);
+	ImGui::Text("position [x: %.3f ] [y: %.3f] [z: %.3f]", player_->GetWorldPosition().x,
+		player_->GetWorldPosition().y, player_->GetWorldPosition().z);
 	ImGui::End();
 #endif
 
@@ -74,13 +108,6 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	postProcess_->Draw();
-
-	///* enemy
-	//enemyManager_->Draw(camera_);
-	// skyBox
-	//skyBox_->Draw(worldTransformSkyBox_, camera_);
-	// player
-	//playerManager_->Draw(camera_);*/
 }
 
 void GameScene::PostProcessDraw()
@@ -88,11 +115,17 @@ void GameScene::PostProcessDraw()
 	postProcess_->PreDraw();
 
 	// enemy
-	enemyManager_->Draw(camera_);
+	for (enemysItr_ = enemys_.begin();
+		enemysItr_ != enemys_.end(); ++enemysItr_) {
+
+		(*enemysItr_)->Draw(camera_);
+	}
 	// skyBox
 	skyBox_->Draw(worldTransformSkyBox_, camera_);
 	// player
-	playerManager_->Draw(camera_);
+	player_->Draw(camera_);
+	// lockOn
+	lockOn_->Draw();
 
 	postProcess_->PostDraw();
 }
@@ -101,8 +134,23 @@ void GameScene::Collision()
 {
 	collisionManager_->ColliderClear(); // colliderのリストをクリア
 
-	playerManager_->ColliderPush(collisionManager_.get()); // player関係のcolliderをリストに登録
-	enemyManager_->ColliderPush(collisionManager_.get()); // enemy関係のcolliderをリストに登録
+	collisionManager_->ColliderPush(player_.get()); // playerをリストに追加
+
+	for (auto playerBulletsItr = player_->GetBullets().begin();
+		playerBulletsItr != player_->GetBullets().end(); ++playerBulletsItr) {
+		collisionManager_->ColliderPush((*playerBulletsItr).get()); // playerbulletをリストに追加
+	}
+
+	for (enemysItr_ = enemys_.begin();
+		enemysItr_ != enemys_.end(); ++enemysItr_) {
+
+		collisionManager_->ColliderPush((*enemysItr_).get()); // enemyをリストに登録
+
+		for (auto enemyBulletsItr = (*enemysItr_)->GetBullets().begin();
+			enemyBulletsItr != (*enemysItr_)->GetBullets().end(); ++enemyBulletsItr) {
+			collisionManager_->ColliderPush((*enemyBulletsItr).get()); // enemybulletをリストに追加
+		}
+	}
 
 	collisionManager_->CheckAllCollision(); // 判定
 }

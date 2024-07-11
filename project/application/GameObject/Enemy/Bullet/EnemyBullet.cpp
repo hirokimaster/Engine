@@ -21,7 +21,7 @@ void EnemyBullet::Draw(Camera& camera)
 void EnemyBullet::Move()
 {
 	//移動
-	//worldTransform_.translate = worldTransform_.translate + velocity_;
+	worldTransform_.translate = worldTransform_.translate + velocity_;
 
 
 
@@ -40,7 +40,7 @@ void EnemyBullet::OnCollision()
 	isDead_ = true;
 }
 
-Vector3 EnemyBullet::GetWorldPosition()
+Vector3 EnemyBullet::GetWorldPosition() const
 {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;

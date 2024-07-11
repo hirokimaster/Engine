@@ -46,7 +46,7 @@ public:
 
 	bool GetIsDead() { return isDead_; }; // デスフラグ
 
-	Vector3 GetWorldPosition()override;
+	Vector3 GetWorldPosition()const override;
 
 #pragma endregion
 

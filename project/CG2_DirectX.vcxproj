@@ -112,10 +112,9 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\GameManager\GameManager.cpp" />
     <ClCompile Include="application\GameObject\Enemy\Bullet\EnemyBullet.cpp" />
     <ClCompile Include="application\GameObject\Enemy\Enemy.cpp" />
-    <ClCompile Include="application\GameObject\Enemy\EnemyManager.cpp" />
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp" />
     <ClCompile Include="application\GameObject\Player\Bullet\PlayerBullet.cpp" />
-    <ClCompile Include="application\GameObject\Player\LockOn\LockOn.cpp" />
+    <ClCompile Include="application\GameObject\LockOn\LockOn.cpp" />
     <ClCompile Include="application\GameObject\Player\Player.cpp" />
     <ClCompile Include="application\GameObject\RailCamera\RailCamera.cpp" />
     <ClCompile Include="application\Scene\Demo\Demo.cpp" />
@@ -161,17 +160,15 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Base\WinApp\WinApp.cpp" />
     <ClCompile Include="Engine\Transform\WorldTransform.cpp" />
-    <ClCompile Include="application\GameObject\Player\PlayerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
     <ClInclude Include="application\GameObject\Enemy\Bullet\EnemyBullet.h" />
     <ClInclude Include="application\GameObject\Enemy\Enemy.h" />
-    <ClInclude Include="application\GameObject\Enemy\EnemyManager.h" />
     <ClInclude Include="application\GameObject\Enemy\IEnemy.h" />
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
     <ClInclude Include="application\GameObject\Player\Bullet\PlayerBullet.h" />
-    <ClInclude Include="application\GameObject\Player\LockOn\LockOn.h" />
+    <ClInclude Include="application\GameObject\LockOn\LockOn.h" />
     <ClInclude Include="application\GameObject\Player\Player.h" />
     <ClInclude Include="application\GameObject\RailCamera\RailCamera.h" />
     <ClInclude Include="application\Scene\Demo\Demo.h" />
@@ -227,7 +224,6 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Camera\Camera.h" />
     <ClInclude Include="Engine\Base\WinApp\WinApp.h" />
     <ClInclude Include="Engine\Transform\WorldTransform.h" />
-    <ClInclude Include="application\GameObject\Player\PlayerManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">

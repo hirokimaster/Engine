@@ -10,7 +10,7 @@ public:
 	float GetRadious() { return radious_; }
 	void SetRadious(float radious) { radious_ = radious; }
 
-	virtual Vector3 GetWorldPosition() = 0;
+	virtual Vector3 GetWorldPosition() const = 0;
 	virtual void OnCollision() = 0;
 
 	uint32_t GetCollosionAttribute() const { return collisionAttribute_; }

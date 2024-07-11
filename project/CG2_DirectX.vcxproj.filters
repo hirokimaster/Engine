@@ -256,9 +256,6 @@
     <ClCompile Include="application\GameObject\Player\Player.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Player\PlayerManager.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -266,9 +263,6 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="application\GameObject\Enemy\Enemy.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="application\GameObject\Enemy\EnemyManager.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="application\GameObject\RailCamera\RailCamera.cpp">
@@ -280,7 +274,7 @@
     <ClCompile Include="application\GameObject\Enemy\Bullet\EnemyBullet.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Player\LockOn\LockOn.cpp">
+    <ClCompile Include="application\GameObject\LockOn\LockOn.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -443,16 +437,14 @@
     </ClInclude>
     <ClInclude Include="application\GameObject\BaseObject\BaseObject.h" />
     <ClInclude Include="application\GameObject\Player\Player.h" />
-    <ClInclude Include="application\GameObject\Player\PlayerManager.h" />
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
     <ClInclude Include="application\GameObject\Player\Bullet\PlayerBullet.h" />
     <ClInclude Include="application\GameObject\Enemy\Enemy.h" />
-    <ClInclude Include="application\GameObject\Enemy\EnemyManager.h" />
     <ClInclude Include="application\GameObject\Enemy\IEnemy.h" />
     <ClInclude Include="application\GameObject\RailCamera\RailCamera.h" />
     <ClInclude Include="application\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="application\GameObject\Enemy\Bullet\EnemyBullet.h" />
-    <ClInclude Include="application\GameObject\Player\LockOn\LockOn.h" />
+    <ClInclude Include="application\GameObject\LockOn\LockOn.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">

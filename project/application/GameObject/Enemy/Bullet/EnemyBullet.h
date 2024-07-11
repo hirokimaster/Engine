@@ -44,7 +44,7 @@ public:
 
 #pragma region getter
 
-	Vector3 GetWorldPosition()override;
+	Vector3 GetWorldPosition()const override;
 
 	bool GetIsDead() { return isDead_; }
 

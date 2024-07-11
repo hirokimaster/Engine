@@ -253,7 +253,7 @@ void Player::DrawUI()
 //	Reticle(camera, Vector2((float)spritePosition.x, (float)spritePosition.y));
 //}
 
-Vector3 Player::GetWorldPosition()
+Vector3 Player::GetWorldPosition() const
 {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;

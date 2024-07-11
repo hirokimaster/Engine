@@ -76,7 +76,7 @@ public:
 
 	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() const { return bullets_; }
 
-	Vector3 GetWorldPosition()override;
+	Vector3 GetWorldPosition()const override;
 
 	Vector3 GetWorldPosition3DReticle();
 

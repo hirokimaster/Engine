@@ -93,7 +93,7 @@ void Enemy::BulletUpdate()
 
 }
 
-Vector3 Enemy::GetWorldPosition()
+Vector3 Enemy::GetWorldPosition() const 
 {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;

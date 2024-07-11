@@ -4,7 +4,7 @@
 #include "application/GameObject/Enemy/Bullet/EnemyBullet.h"
 #include "engine/TextureManager/TextureManager.h"
 
-class Enemy : public BaseObject, public Collider {
+class Enemy : public BaseObject, public Collider{
 public:
 	/// <summary>
 	/// 初期化
@@ -48,11 +48,11 @@ public:
 
 #pragma region getter
 
-	Vector3 GetWorldPosition()override;
+	Vector3 GetWorldPosition() const override;
 
 	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const { return bullets_; }
 
-	bool GetIsDead() { return isDead_; }
+	bool GetIsDead()const { return isDead_; }
 	
 
 #pragma endregion
