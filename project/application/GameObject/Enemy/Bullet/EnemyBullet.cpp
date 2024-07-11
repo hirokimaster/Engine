@@ -23,8 +23,6 @@ void EnemyBullet::Move()
 	//移動
 	worldTransform_.translate = worldTransform_.translate + velocity_;
 
-
-
 }
 
 void EnemyBullet::BulletErase()

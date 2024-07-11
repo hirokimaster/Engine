@@ -6,21 +6,11 @@
 class LockOn {
 public:
 	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize();
-
-	/// <summary>
 	/// 更新
 	/// </summary>
 	/// <param name="enemies"></param>
 	/// <param name="camera"></param>
 	void Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera);
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw();
 
 private:
 
@@ -56,6 +46,16 @@ private:
 	/// <returns></returns>
 	Vector3 TransformPositionWorld(const Vector3& positionWorld, const Camera& camera);
 
+public:
+
+#pragma region gettr
+
+	const Vector2& GetPosition() { return positionScreenV2_; } // reticleのposition
+
+	const Enemy* GetTarget() { return target_; } // targetのポインタ
+
+#pragma endregion
+
 private:
 	
 	const Enemy* target_ = nullptr;	// ロックオン対象
@@ -63,4 +63,5 @@ private:
 	uint32_t texHandleLockOn_ = 0; // spriteのtexHandle
 	float minDistance_ = 10.0f;
 	float maxDistance_ = 100.0f;
+	Vector2 positionScreenV2_{};
 };

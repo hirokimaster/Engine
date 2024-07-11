@@ -42,8 +42,14 @@ void Player::UpdateReticle(const Camera& camera)
 	// ワールド→スクリーン座標変換(ここで3Dから2Dになる)
 	positionReticle = Transform(positionReticle, matViewProjectionViewport);
 
-	// スプライトのレティクルに座標設定
-	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+	// ロックオン対象がいるならreticleの位置を対象に合わせる
+	if (lockOn_->GetTarget()&& !lockOn_->GetTarget()->GetIsDead()) {
+		sprite2DReticle_->SetPosition(lockOn_->GetPosition());
+	}
+	else {
+		// スプライトのレティクルに座標設定
+		sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+	}
 }
 
 void Player::Draw(Camera& camera)
@@ -104,6 +110,7 @@ void Player::Attack()
 		// 弾を生成し、初期化
 		std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 		std::unique_ptr<Object3DPlacer> objectBullet = std::make_unique<Object3DPlacer>();
+		objectBullet->SetColor(Vector4(3.0f, 3.0f, 3.0f, 1.0f));
 		objectBullets_.push_back(std::move(objectBullet));
 		bullet->Initialize(objectBullets_.back().get(), texHandleBullet_, "cube.obj");
 		bullet->SetVelocity(velocity);
@@ -120,8 +127,16 @@ void Player::Attack()
 			Vector3 velocity = { 0,0,kBulletSpeed };
 			// 自機から照準オブジェクトのベクトル
 			Vector3 WorldPos = GetWorldPosition();
-			Vector3 ReticleWorldPos = GetWorldPosition3DReticle();
-			velocity = ReticleWorldPos - WorldPos;
+
+			// ロックオン対象がいたら対象に向かって弾を撃つ
+			if (lockOn_->GetTarget() && !lockOn_->GetTarget()->GetIsDead()) {
+				reticleWorldPos_ = lockOn_->GetTarget()->GetWorldPosition();
+			}
+			else {
+				reticleWorldPos_ = GetWorldPosition3DReticle();
+			}
+			
+			velocity = reticleWorldPos_ - WorldPos;
 			velocity = Normalize(velocity);
 			velocity = kBulletSpeed * velocity;
 			// プレイヤーの向きに速度を合わせる

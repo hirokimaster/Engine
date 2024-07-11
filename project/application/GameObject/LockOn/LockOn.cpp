@@ -1,12 +1,5 @@
 #include "LockOn.h"
 
-void LockOn::Initialize()
-{
-	texHandleLockOn_ = TextureManager::Load("resources/reticle.png");
-	spriteLockOn_.reset(Sprite::Create(texHandleLockOn_));
-	spriteLockOn_->SetAnchorPoint(Vector2(0.5f, 0.5f));
-}
-
 void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
 {
 	XINPUT_STATE joyState{};
@@ -41,13 +34,6 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	// reticleの位置を決める
 	ReticlePositionCalc(camera);
 
-}
-
-void LockOn::Draw()
-{
-	if (target_ && !target_->GetIsDead()) {
-		spriteLockOn_->Draw();
-	}
 }
 
 void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
@@ -106,9 +92,8 @@ void LockOn::ReticlePositionCalc(const Camera& camera)
 
 		Vector3 positionScreen = Transform(positionWorld, matViewProjectionViewport);
 		// Vector2に入れる
-		Vector2 positionScreenV2(positionScreen.x, positionScreen.y);
-		// spriteの座標を設定
-		spriteLockOn_->SetPosition(positionScreenV2);
+		positionScreenV2_ = Vector2(positionScreen.x, positionScreen.y);
+		
 	}
 }
 

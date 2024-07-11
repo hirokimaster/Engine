@@ -3,6 +3,7 @@
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "application/GameObject/Enemy/Bullet/EnemyBullet.h"
 #include "engine/TextureManager/TextureManager.h"
+#include "engine/ParticleSystem/ParticleSystem.h"
 
 class Enemy : public BaseObject, public Collider{
 public:
@@ -54,6 +55,12 @@ public:
 
 	bool GetIsDead()const { return isDead_; }
 	
+
+#pragma endregion
+
+#pragma region setter
+
+	void SetPosition(Vector3 position) { worldTransform_.translate = position; }
 
 #pragma endregion
 

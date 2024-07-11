@@ -19,12 +19,15 @@ void GameScene::Initialize()
 	postProcess_->SetEffect(DepthOutline);
 
 	camera_.Initialize();
+	// lockOn
+	lockOn_ = std::make_unique<LockOn>();
 	// player
 	player_ = std::make_unique<Player>();
 	objectPlayer_ = std::make_unique<Object3DPlacer>();
 	texHandlePlayer_ = TextureManager::Load("resources/white.png");
 	player_->Initialize(objectPlayer_.get(), texHandlePlayer_, "cube.obj");
 	player_->SetPosition({ 0,0,50.0f });
+	player_->SetLockOn(lockOn_.get());
 	// enemy
 	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
 	std::unique_ptr<Object3DPlacer> objectEnemy = std::make_unique<Object3DPlacer>();
@@ -45,9 +48,6 @@ void GameScene::Initialize()
 	skyBox_->SetTexHandle(texHandleSkyBox_);
 	worldTransformSkyBox_.Initialize();
 	worldTransformSkyBox_.scale = { 500.0f,500.0f,500.0f };
-	// lockOn
-	lockOn_ = std::make_unique<LockOn>();
-	lockOn_->Initialize();
 }
 
 void GameScene::Update()
@@ -55,6 +55,9 @@ void GameScene::Update()
 	// player
 	player_->Update();
 	player_->UpdateReticle(camera_);
+
+	RandomRespawn();
+
 	// enemy
 	for (enemysItr_ = enemys_.begin();
 		enemysItr_ != enemys_.end(); ++enemysItr_) {
@@ -108,6 +111,7 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	postProcess_->Draw();
+
 }
 
 void GameScene::PostProcessDraw()
@@ -124,9 +128,7 @@ void GameScene::PostProcessDraw()
 	skyBox_->Draw(worldTransformSkyBox_, camera_);
 	// player
 	player_->Draw(camera_);
-	// lockOn
-	lockOn_->Draw();
-
+	
 	postProcess_->PostDraw();
 }
 
@@ -153,4 +155,23 @@ void GameScene::Collision()
 	}
 
 	collisionManager_->CheckAllCollision(); // 判定
+}
+
+void GameScene::RandomRespawn()
+{
+	spawnTimer_++;
+	std::random_device seed;
+
+	if (spawnTimer_ >= 90) {
+		std::mt19937 randomEngine(seed());
+		std::uniform_real_distribution<float>distribution(-20.0f, 20.0f);
+		std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
+		std::unique_ptr<Object3DPlacer> objectEnemy = std::make_unique<Object3DPlacer>();
+		objectEnemys_.push_back(std::move(objectEnemy));
+		texHandleEnemy_ = TextureManager::Load("resources/white.png");
+		enemy->Initialize(objectEnemys_.back().get(), texHandleEnemy_, "cube.obj");
+		enemy->SetPosition(Vector3(float(distribution(randomEngine)), float(distribution(randomEngine)), 80.0f + railCamera_->GetWorldTransform().translate.z));
+		enemys_.push_back(std::move(enemy));
+		spawnTimer_ = 0;
+	}
 }

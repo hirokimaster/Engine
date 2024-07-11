@@ -4,6 +4,7 @@
 #include "engine/TextureManager/TextureManager.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/Sprite/Sprite.h"
+#include "application/GameObject/LockOn/LockOn.h"
 
 class Player : public BaseObject, public Collider 
 {
@@ -88,6 +89,8 @@ public:
 
 	void SetPosition(Vector3 position) { worldTransform_.translate = position; }
 
+	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
+
 #pragma endregion
 
 private:
@@ -99,4 +102,6 @@ private:
 	WorldTransform worldTransform3DReticle_;
 	std::unique_ptr<Sprite> sprite2DReticle_;
 	uint32_t texHandle2DReticle_ = 0;
+	LockOn* lockOn_ = nullptr;
+	Vector3 reticleWorldPos_{};
 };
