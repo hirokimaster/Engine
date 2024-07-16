@@ -41,6 +41,12 @@ private:
 	/// <returns></returns>
 	Vector3 TransformPositionWorld(const Vector3& positionWorld, const Camera& camera);
 
+	/// <summary>
+	/// worldからscreenに変換
+	/// </summary>
+	/// <param name="positionWorld"></param>
+	/// <param name="camera"></param>
+	/// <returns></returns>
 	Vector3 TransformPositionScreen(const Vector3& positionWorld, const Camera& camera);
 
 	/// <summary>
@@ -68,8 +74,6 @@ public:
 private:
 	
 	const Enemy* target_ = nullptr;	// ロックオン対象
-	std::unique_ptr<Sprite> spriteLockOn_ = nullptr; // ロックオンのsprite
-	uint32_t texHandleLockOn_ = 0; // spriteのtexHandle
 	float minDistance_ = 10.0f;
 	float maxDistance_ = 100.0f;
 	Vector2 positionScreen_{};

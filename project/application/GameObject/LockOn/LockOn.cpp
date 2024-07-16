@@ -103,7 +103,7 @@ bool LockOn::CheckReticleRange(const Vector3& position)
 {
 	// レティクルの範囲内にあるかを判定
 
-	float reticleRadius = 25.0f; // レティクルの半径
+	float reticleRadius = 50.0f; // レティクルの半径
 
 	Vector2 reticleCenter = player_->GetScreenPosition2DReticle();
 
