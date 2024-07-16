@@ -4,7 +4,8 @@
 #include "engine/TextureManager/TextureManager.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/Sprite/Sprite.h"
-#include "application/GameObject/LockOn/LockOn.h"
+
+class LockOn;
 
 class Player : public BaseObject, public Collider 
 {
@@ -65,6 +66,8 @@ private: // クラス内でしか使わない
 
 	void Reticle();
 
+	void Reticle(const Camera& camera, const Vector2& position);
+
 	/// <summary>
 	/// UIの描画
 	/// </summary>
@@ -80,6 +83,8 @@ public:
 	Vector3 GetWorldPosition()const override;
 
 	Vector3 GetWorldPosition3DReticle();
+
+	Vector2 GetScreenPosition2DReticle() { return screenPositionReticle_; }
 
 #pragma endregion
 
@@ -104,4 +109,5 @@ private:
 	uint32_t texHandle2DReticle_ = 0;
 	LockOn* lockOn_ = nullptr;
 	Vector3 reticleWorldPos_{};
+	Vector2 screenPositionReticle_{};
 };

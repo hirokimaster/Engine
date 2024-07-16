@@ -27,7 +27,7 @@ void GameScene::Initialize()
 	texHandlePlayer_ = TextureManager::Load("resources/white.png");
 	player_->Initialize(objectPlayer_.get(), texHandlePlayer_, "cube.obj");
 	player_->SetPosition({ 0,0,50.0f });
-	player_->SetLockOn(lockOn_.get());
+	
 	// enemy
 	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
 	std::unique_ptr<Object3DPlacer> objectEnemy = std::make_unique<Object3DPlacer>();
@@ -52,6 +52,8 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
+	player_->SetLockOn(lockOn_.get());
+	lockOn_->SetPlayer(player_.get());
 	// player
 	player_->Update();
 	player_->UpdateReticle(camera_);

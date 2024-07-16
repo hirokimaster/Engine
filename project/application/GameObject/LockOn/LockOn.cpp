@@ -1,4 +1,5 @@
 #include "LockOn.h"
+#include "application/GameObject/Player/Player.h"
 
 void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
 {
@@ -34,20 +35,25 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	// reticleの位置を決める
 	ReticlePositionCalc(camera);
 
+	ImGui::Begin("reticle");
+	ImGui::Text("ret = %f.2, %f.2", &positionScreen_);
+	ImGui::End();
+
 }
 
 void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
 {
 	// ロックオン目標
-	std::list<std::pair<float, const Enemy*>> targets;
+	std::list<const Enemy*> targets;
 
 	// すべての敵に対して順にロックオン判定
 	for (const std::unique_ptr<Enemy>& enemy : enemies) {
-		// view座標
-		Vector3 positionView = TransformPositionWorld(enemy->GetWorldPosition(), camera);
-		
-		if (CheckDistance(positionView)) {
-			targets.emplace_back(std::make_pair(positionView.z, enemy.get()));
+		// screen座標
+		Vector3 positionWorld = enemy->GetWorldPosition();
+		Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
+
+		if (CheckReticleRange(positionScreen)) {
+			targets.push_back(enemy.get());
 		}
 	}
 
@@ -55,20 +61,18 @@ void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	target_ = nullptr;
 
 	if (!targets.empty()) {
-		// 距離で昇順にソート
-		targets.sort([](auto& pair1, auto& pair2) {return pair1.first < pair2.first; });
-		// ソートの結果一番近い敵をロックオン対象にする
-		target_ = targets.front().second;
+		// ロックオン対象を設定 (最初の敵を選択)
+		target_ = targets.front();
 	}
 }
 
 bool LockOn::UnLock(const Camera& camera)
 {
-	// view座標
-	Vector3 positionView = TransformPositionWorld(target_->GetWorldPosition(), camera);
+	Vector3 positionWorld = target_->GetWorldPosition();
+	Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
 	// 距離判定
-	if (CheckDistance(positionView)) {
+	if (CheckReticleRange(positionScreen)) {
 		return false;
 	}
 
@@ -81,29 +85,11 @@ void LockOn::ReticlePositionCalc(const Camera& camera)
 	if (target_ && !target_->GetIsDead()) {
 		// 敵のロックオン座標
 		Vector3 positionWorld = target_->GetWorldPosition();
-		// worldからscreenに変換
-		// ビューポート行列
-		Matrix4x4 matViewport =
-			MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+		Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
-		// ビュー行列とプロジェクション行列、ビューポート行列を合成する
-		Matrix4x4 matViewProjectionViewport =
-			camera.matView * camera.matProjection * matViewport;
-
-		Vector3 positionScreen = Transform(positionWorld, matViewProjectionViewport);
 		// Vector2に入れる
-		positionScreenV2_ = Vector2(positionScreen.x, positionScreen.y);
-		
+		positionScreen_ = Vector2(positionScreen.x, positionScreen.y);
 	}
-}
-
-bool LockOn::CheckDistance(const Vector3& positionView)
-{
-	if (minDistance_ <= positionView.z && positionView.z <= maxDistance_) {
-		return true;
-	}
-
-	return false;
 }
 
 Vector3 LockOn::TransformPositionWorld(const Vector3& positionWorld, const Camera& camera)
@@ -111,4 +97,32 @@ Vector3 LockOn::TransformPositionWorld(const Vector3& positionWorld, const Camer
 	Vector3 positionView = Transform(positionWorld, camera.matView);
 
 	return positionView;
+}
+
+bool LockOn::CheckReticleRange(const Vector3& position)
+{
+	// レティクルの範囲内にあるかを判定
+
+	float reticleRadius = 25.0f; // レティクルの半径
+
+	Vector2 reticleCenter = player_->GetScreenPosition2DReticle();
+
+	Vector2 enemyPosition = Vector2(position.x,position.y); // enemyのスクリーン座標
+
+	float distance = Length(enemyPosition - reticleCenter); // 距離
+
+	if (distance <= reticleRadius) {
+		return true;
+	}
+
+	return false;
+}
+
+Vector3 LockOn::TransformPositionScreen(const Vector3& positionWorld, const Camera& camera)
+{
+	// worldからscreenに変換
+	Matrix4x4 matViewport = MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+	Matrix4x4 matViewProjectionViewport = camera.matView * camera.matProjection * matViewport;
+
+	return Transform(positionWorld, matViewProjectionViewport);
 }

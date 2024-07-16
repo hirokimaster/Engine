@@ -481,6 +481,13 @@ float Length(const Vector3& v) {
 	return result;
 }
 
+float Length(const Vector2& v)
+{
+	float result;
+	result = sqrtf(v.x * v.x + v.y * v.y);
+	return result;
+}
+
 // 加算
 Vector3 Add(const Vector3& v1, const Vector3& v2) {
 	Vector3 result;
@@ -863,4 +870,14 @@ Vector3 operator*(const Vector3& vec, const Matrix4x4& mat) {
 	};
 
 	return { result.x / result.w, result.y / result.w, result.z / result.w };
+}
+
+Vector2 operator-(const Vector2& v1, const Vector2& v2)
+{
+	Vector2 result = {
+		v1.x - v2.x,
+		v1.y - v2.y
+	};
+
+	return result;
 }

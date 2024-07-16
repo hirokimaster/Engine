@@ -1,5 +1,6 @@
 #pragma once
 #include "Matrix4x4.h"
+#include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
 #include <cassert>
@@ -83,6 +84,8 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 // ノルム
 float Length(const Vector3& v);
 
+float Length(const Vector2& v);
+
 // ベクトル減算
 Vector3 Subtract(const Vector3& v1, const Vector3& v2);
 
@@ -142,3 +145,4 @@ Vector3 operator-(const Vector3& a, const float& b);
 Vector3 operator*(const float& a, const Vector3& b);
 Vector3 operator/(const Vector3& a, const float& b);
 Vector3 operator*(const Vector3& vec, const Matrix4x4& mat);
+Vector2 operator-(const Vector2& v1, const Vector2& v2);

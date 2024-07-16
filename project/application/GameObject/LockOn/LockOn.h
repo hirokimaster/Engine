@@ -3,6 +3,8 @@
 #include "engine/Sprite/Sprite.h"
 #include <math.h>
 
+class Player;
+
 class LockOn {
 public:
 	/// <summary>
@@ -32,13 +34,6 @@ private:
 	void ReticlePositionCalc(const Camera& camera);
 
 	/// <summary>
-	/// 距離条件の判定
-	/// </summary>
-	/// <param name="positionView"></param>
-	/// <returns></returns>
-	bool CheckDistance(const Vector3& positionView);
-
-	/// <summary>
 	/// worldからviewに変換
 	/// </summary>
 	/// <param name="positionWorld"></param>
@@ -46,13 +41,27 @@ private:
 	/// <returns></returns>
 	Vector3 TransformPositionWorld(const Vector3& positionWorld, const Camera& camera);
 
+	Vector3 TransformPositionScreen(const Vector3& positionWorld, const Camera& camera);
+
+	/// <summary>
+	/// レティクルの範囲にいるか判定する
+	/// </summary>
+	/// <param name="position"></param>
+	bool CheckReticleRange(const Vector3& position);
+
 public:
 
 #pragma region gettr
 
-	const Vector2& GetPosition() { return positionScreenV2_; } // reticleのposition
+	const Vector2& GetPosition() { return positionScreen_; } // reticleのposition
 
 	const Enemy* GetTarget() { return target_; } // targetのポインタ
+
+#pragma endregion
+
+#pragma region setter
+
+	void SetPlayer(Player* player) { player_ = player; }
 
 #pragma endregion
 
@@ -63,5 +72,6 @@ private:
 	uint32_t texHandleLockOn_ = 0; // spriteのtexHandle
 	float minDistance_ = 10.0f;
 	float maxDistance_ = 100.0f;
-	Vector2 positionScreenV2_{};
+	Vector2 positionScreen_{};
+	Player* player_ = nullptr;
 };
