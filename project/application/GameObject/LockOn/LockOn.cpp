@@ -36,7 +36,7 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	ReticlePositionCalc(camera);
 
 	ImGui::Begin("reticle");
-	ImGui::Text("ret = %f.2, %f.2", &positionScreen_);
+	ImGui::Text("ret = %f, %f", &positionScreen_);
 	ImGui::End();
 
 }
