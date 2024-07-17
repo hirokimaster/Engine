@@ -25,41 +25,6 @@ void Player::Update()
 	BaseObject::Update(); // 共通の更新処理
 }
 
-void Player::UpdateReticle(const Camera& camera)
-{	
-
-	POINT mousePosition;
-	// マウス座標(スクリーン座標)を取得する
-	GetCursorPos(&mousePosition);
-
-	// クライアントエリア座標に変換する
-	HWND hwnd = WinApp::GetInstance()->GetHwnd();
-	ScreenToClient(hwnd, &mousePosition);
-
-	Vector2 spritePosition = sprite2DReticle_->GetPosition();
-
-	XINPUT_STATE joyState{};
-
-	//// ロックオン対象がいるならreticleの位置を対象に合わせる
-	//if (lockOn_->GetTarget().back() && !lockOn_->GetTarget().back()->GetIsDead()) {
-	//	sprite2DReticle_->SetPosition(lockOn_->GetPosition().back());
-	//}
-	//else {
-
-	//	// ジョイスティック状態取得
-	//	if (Input::GetInstance()->GetJoystickState(joyState)) {
-	//		spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 5.0f;
-	//		spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 5.0f;
-	//		// スプライトのレティクルに座標設定
-	//		sprite2DReticle_->SetPosition(spritePosition);
-	//		screenPositionReticle_ = spritePosition;
-	//	}
-	//}
-
-	// レティクル
-	Reticle(camera, Vector2((float)spritePosition.x, (float)spritePosition.y));
-}
-
 void Player::Draw(Camera& camera)
 {
 	BaseObject::Draw(camera); // 共通の描画処理
@@ -193,40 +158,9 @@ void Player::OnCollision()
 
 }
 
-void Player::Reticle(const Camera& camera, const Vector2& position)
-{
-
-	// ビューポート行列
-	Matrix4x4 matViewport =
-		MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
-
-	// ビュープロジェクションビューポート合成行列
-	Matrix4x4 matVPN =
-		Multiply(camera.matView, Multiply(camera.matProjection, matViewport));
-	// 逆行列を計算
-	Matrix4x4 matInverseVPN = Inverse(matVPN);
-
-	// スクリーン座標
-	Vector3 posNear = Vector3((float)position.x, (float)position.y, 1);
-	Vector3 posFar = Vector3((float)position.x, (float)position.y, 0);
-
-	// スクリーン座標からワールド座標系へ
-	posNear = Transform(posNear, matInverseVPN);
-	posFar = Transform(posFar, matInverseVPN);
-
-	// マウスレイの方向
-	Vector3 mouseDirection = Subtract(posNear, posFar);
-	mouseDirection = Normalize(mouseDirection);
-
-	// カメラから照準オブジェクトの距離
-	const float kDistanceTestObject = GetWorldPosition().z + 100.0f;
-	worldTransform3DReticle_.translate = Multiply(kDistanceTestObject, mouseDirection);
-	worldTransform3DReticle_.UpdateMatrix();
-}
-
 void Player::DrawUI()
 {
-	//sprite2DReticle_->Draw();
+	lockOn_->Draw();
 }
 
 Vector3 Player::GetWorldPosition() const

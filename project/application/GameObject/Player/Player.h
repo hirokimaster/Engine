@@ -24,12 +24,6 @@ public:
 	void Update()override;
 
 	/// <summary>
-	/// reticleの更新
-	/// </summary>
-	/// <param name="camera"></param>
-	void UpdateReticle(const Camera& camera);
-
-	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
@@ -56,14 +50,6 @@ private: // クラス内でしか使わない
 	/// 当たり判定
 	/// </summary>
 	void OnCollision()override;
-
-	/// <summary>
-	/// レティクル
-	/// </summary>
-	/// <param name="camera"></param>
-	/// <param name="position"></param>
-	//void Reticle(const Camera& camera, const Vector2& position);
-	void Reticle(const Camera& camera, const Vector2& position);
 
 	/// <summary>
 	/// UIの描画

@@ -54,10 +54,8 @@ void GameScene::Initialize()
 void GameScene::Update()
 {
 	player_->SetLockOn(lockOn_.get());
-	lockOn_->SetPlayer(player_.get());
 	// player
 	player_->Update();
-	player_->UpdateReticle(camera_);
 
 	RandomRespawn();
 
@@ -132,8 +130,6 @@ void GameScene::PostProcessDraw()
 	// player
 	player_->Draw(camera_);
 
-	lockOn_->Draw();
-	
 	postProcess_->PostDraw();
 }
 

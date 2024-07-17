@@ -20,7 +20,17 @@ public:
 	/// <param name="camera"></param>
 	void Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera);
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// レティクルの更新
+	/// </summary>
+	/// <param name="camera"></param>
+	/// <param name="playerPosition"></param>
+	void UpdateReticle(const Camera& camera, const Vector3& playerPosition);
 
 private:
 
@@ -63,6 +73,14 @@ private:
 	/// <param name="position"></param>
 	bool CheckReticleRange(const Vector3& position);
 
+	/// <summary>
+	/// レティクル
+	/// </summary>
+	/// <param name="camera"></param>
+	/// <param name="position"></param>
+	/// <param name="playerPosition"></param>
+	void Reticle(const Camera& camera, const Vector2& position, const Vector3& playerPosition);
+
 public:
 
 #pragma region gettr
@@ -75,7 +93,7 @@ public:
 
 #pragma region setter
 
-	void SetPlayer(Player* player) { player_ = player; }
+
 
 #pragma endregion
 
@@ -85,7 +103,9 @@ private:
 	float minDistance_ = 10.0f;
 	float maxDistance_ = 100.0f;
 	std::list<Vector2> positionScreen_{};
-	Player* player_ = nullptr;
 	std::list<std::unique_ptr<Sprite>> sprite_;
-	uint32_t texHandle_ = 0;
+	uint32_t texHandle2DReticle_ = 0;
+	WorldTransform worldTransform3DReticle_; // reticleのworldTransform
+	std::unique_ptr<Sprite> sprite2DReticle_;
+	Vector2 screenPositionReticle_{};
 };
