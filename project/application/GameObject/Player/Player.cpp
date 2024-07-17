@@ -40,21 +40,21 @@ void Player::UpdateReticle(const Camera& camera)
 
 	XINPUT_STATE joyState{};
 
-	// ロックオン対象がいるならreticleの位置を対象に合わせる
-	if (lockOn_->GetTarget() && !lockOn_->GetTarget()->GetIsDead()) {
-		sprite2DReticle_->SetPosition(lockOn_->GetPosition());
-	}
-	else {
+	//// ロックオン対象がいるならreticleの位置を対象に合わせる
+	//if (lockOn_->GetTarget().back() && !lockOn_->GetTarget().back()->GetIsDead()) {
+	//	sprite2DReticle_->SetPosition(lockOn_->GetPosition().back());
+	//}
+	//else {
 
-		// ジョイスティック状態取得
-		if (Input::GetInstance()->GetJoystickState(joyState)) {
-			spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 5.0f;
-			spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 5.0f;
-			// スプライトのレティクルに座標設定
-			sprite2DReticle_->SetPosition(spritePosition);
-			screenPositionReticle_ = spritePosition;
-		}
-	}
+	//	// ジョイスティック状態取得
+	//	if (Input::GetInstance()->GetJoystickState(joyState)) {
+	//		spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 5.0f;
+	//		spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 5.0f;
+	//		// スプライトのレティクルに座標設定
+	//		sprite2DReticle_->SetPosition(spritePosition);
+	//		screenPositionReticle_ = spritePosition;
+	//	}
+	//}
 
 	// レティクル
 	Reticle(camera, Vector2((float)spritePosition.x, (float)spritePosition.y));
@@ -136,13 +136,13 @@ void Player::Attack()
 			// 自機から照準オブジェクトのベクトル
 			Vector3 WorldPos = GetWorldPosition();
 
-			// ロックオン対象がいたら対象に向かって弾を撃つ
-			if (lockOn_->GetTarget() && !lockOn_->GetTarget()->GetIsDead()) {
-				reticleWorldPos_ = lockOn_->GetTarget()->GetWorldPosition();
-			}
-			else {
-				reticleWorldPos_ = GetWorldPosition3DReticle();
-			}
+			//// ロックオン対象がいたら対象に向かって弾を撃つ
+			//if (lockOn_->GetTarget().front() && !lockOn_->GetTarget().front()->GetIsDead()) {
+			//	reticleWorldPos_ = lockOn_->GetTarget().front()->GetWorldPosition();
+			//}
+			//else {
+			//	reticleWorldPos_ = GetWorldPosition3DReticle();
+			//}
 			
 			velocity = reticleWorldPos_ - WorldPos;
 			velocity = Normalize(velocity);
@@ -226,7 +226,7 @@ void Player::Reticle(const Camera& camera, const Vector2& position)
 
 void Player::DrawUI()
 {
-	sprite2DReticle_->Draw();
+	//sprite2DReticle_->Draw();
 }
 
 Vector3 Player::GetWorldPosition() const

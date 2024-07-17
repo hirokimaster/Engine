@@ -21,6 +21,7 @@ void GameScene::Initialize()
 	camera_.Initialize();
 	// lockOn
 	lockOn_ = std::make_unique<LockOn>();
+	lockOn_->Initialize();
 	// player
 	player_ = std::make_unique<Player>();
 	objectPlayer_ = std::make_unique<Object3DPlacer>();
@@ -130,6 +131,8 @@ void GameScene::PostProcessDraw()
 	skyBox_->Draw(worldTransformSkyBox_, camera_);
 	// player
 	player_->Draw(camera_);
+
+	lockOn_->Draw();
 	
 	postProcess_->PostDraw();
 }

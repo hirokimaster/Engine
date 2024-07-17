@@ -1,25 +1,37 @@
 #include "LockOn.h"
 #include "application/GameObject/Player/Player.h"
 
+void LockOn::Initialize()
+{
+	texHandle_ = TextureManager::Load("resources/reticle.png");
+
+}
+
 void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
 {
 	XINPUT_STATE joyState{};
 
 	// ロックオン状態なら
-	if (target_) {
+	if (!target_.empty()) {
 
 		if (Input::GetInstance()->GetJoystickState(joyState)) {
 
 			if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_LEFT_SHOULDER)) {
 				// ロックオンを外す
-				target_ = nullptr;
+				target_.clear();
 			}
 		}
-		else if (UnLock(camera)) {
-			// ロックオンを外す
-			target_ = nullptr;
+		else {
+			// アンロック判定
+			for (auto itr = target_.begin(); itr != target_.end(); ) {
+				if (UnLock(camera, *itr)) {
+					itr = target_.erase(itr);
+				}
+				else {
+					++itr;
+				}
+			}
 		}
-		
 		
 	}
 	else {
@@ -35,10 +47,28 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	// reticleの位置を決める
 	ReticlePositionCalc(camera);
 
+	if (!target_.empty()) {
+
+		for (auto itr = positionScreen_.begin(); itr != positionScreen_.end(); ++itr) {
+			std::unique_ptr<Sprite> sprite;
+			sprite.reset(Sprite::Create(texHandle_, { (*itr).x,(*itr).y }));
+			sprite->SetAnchorPoint({ 0.5f,0.5f });
+			sprite_.push_back(std::move(sprite));
+		}
+
+	}
+	
 	ImGui::Begin("reticle");
 	ImGui::Text("ret = %f, %f", &positionScreen_);
 	ImGui::End();
 
+}
+
+void LockOn::Draw()
+{
+	for (auto itr = sprite_.begin(); itr != sprite_.end(); ++itr) {
+		(*itr)->Draw();
+	}
 }
 
 void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
@@ -58,17 +88,19 @@ void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	}
 
 	// ロックオン対象をリセット
-	target_ = nullptr;
+	target_.clear();
 
 	if (!targets.empty()) {
-		// ロックオン対象を設定 (最初の敵を選択)
-		target_ = targets.front();
+		// ロックオン対象を設定
+		for (const Enemy* target: targets) {
+			target_.push_back(target);
+		}
 	}
 }
 
-bool LockOn::UnLock(const Camera& camera)
+bool LockOn::UnLock(const Camera& camera, const Enemy* target)
 {
-	Vector3 positionWorld = target_->GetWorldPosition();
+	Vector3 positionWorld = target->GetWorldPosition();
 	Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
 	// 距離判定
@@ -81,15 +113,21 @@ bool LockOn::UnLock(const Camera& camera)
 
 void LockOn::ReticlePositionCalc(const Camera& camera)
 {
-	// ロックオン状態なら
-	if (target_ && !target_->GetIsDead()) {
-		// 敵のロックオン座標
-		Vector3 positionWorld = target_->GetWorldPosition();
-		Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
+	positionScreen_.clear();
+	sprite_.clear();
+	
+	for (const Enemy* target : target_) {
+		// ロックオン状態なら
+		if (target && !target->GetIsDead()) {
+			// 敵のロックオン座標
+			Vector3 positionWorld = target->GetWorldPosition();
+			Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
-		// Vector2に入れる
-		positionScreen_ = Vector2(positionScreen.x, positionScreen.y);
+			// Vector2に入れる
+			positionScreen_.push_back(Vector2(positionScreen.x, positionScreen.y));
+		}
 	}
+	
 }
 
 Vector3 LockOn::TransformPositionWorld(const Vector3& positionWorld, const Camera& camera)
@@ -103,7 +141,7 @@ bool LockOn::CheckReticleRange(const Vector3& position)
 {
 	// レティクルの範囲内にあるかを判定
 
-	float reticleRadius = 50.0f; // レティクルの半径
+	float reticleRadius = 1280.0f; // レティクルの半径
 
 	Vector2 reticleCenter = player_->GetScreenPosition2DReticle();
 

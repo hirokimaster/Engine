@@ -63,9 +63,6 @@ private: // クラス内でしか使わない
 	/// <param name="camera"></param>
 	/// <param name="position"></param>
 	//void Reticle(const Camera& camera, const Vector2& position);
-
-	void Reticle();
-
 	void Reticle(const Camera& camera, const Vector2& position);
 
 	/// <summary>
@@ -86,6 +83,8 @@ public:
 
 	Vector2 GetScreenPosition2DReticle() { return screenPositionReticle_; }
 
+	bool GetLockOnMode() { return lockOnMode_; }
+
 #pragma endregion
 
 #pragma region setter
@@ -96,6 +95,8 @@ public:
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
+	void SetLockOnMode(bool lockOnMode) { lockOnMode_ = lockOnMode; }
+
 #pragma endregion
 
 private:
@@ -105,9 +106,11 @@ private:
 	std::list<std::unique_ptr<PlayerBullet>>::iterator bulletsItr_; // 弾のイテレータ
 	uint32_t texHandleBullet_ = 0;
 	WorldTransform worldTransform3DReticle_;
-	std::unique_ptr<Sprite> sprite2DReticle_;
+	std::unique_ptr<Sprite> sprite2DReticle_; // reticleのsprite
 	uint32_t texHandle2DReticle_ = 0;
 	LockOn* lockOn_ = nullptr;
 	Vector3 reticleWorldPos_{};
 	Vector2 screenPositionReticle_{};
+	bool lockOnMode_ = false;
+	uint32_t texHandleLockOnReticle_ = 0;
 };

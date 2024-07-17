@@ -7,12 +7,20 @@ class Player;
 
 class LockOn {
 public:
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Initialize();
+
 	/// <summary>
 	/// 更新
 	/// </summary>
 	/// <param name="enemies"></param>
 	/// <param name="camera"></param>
 	void Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera);
+
+	void Draw();
 
 private:
 
@@ -26,7 +34,7 @@ private:
 	/// <summary>
 	/// ロックオン解除
 	/// </summary>
-	bool UnLock(const Camera& camera);
+	bool UnLock(const Camera& camera, const Enemy* target);
 
 	/// <summary>
 	/// reticleのposition計算
@@ -59,9 +67,9 @@ public:
 
 #pragma region gettr
 
-	const Vector2& GetPosition() { return positionScreen_; } // reticleのposition
+	const std::list<Vector2> GetPosition() { return positionScreen_; } // reticleのposition
 
-	const Enemy* GetTarget() { return target_; } // targetのポインタ
+	std::list<const Enemy*> GetTarget() { return target_; } // targetのポインタ
 
 #pragma endregion
 
@@ -73,9 +81,11 @@ public:
 
 private:
 	
-	const Enemy* target_ = nullptr;	// ロックオン対象
+	std::list<const Enemy*> target_;	// ロックオン対象
 	float minDistance_ = 10.0f;
 	float maxDistance_ = 100.0f;
-	Vector2 positionScreen_{};
+	std::list<Vector2> positionScreen_{};
 	Player* player_ = nullptr;
+	std::list<std::unique_ptr<Sprite>> sprite_;
+	uint32_t texHandle_ = 0;
 };
