@@ -1,5 +1,4 @@
 #include "LockOn.h"
-#include "application/GameObject/Player/Player.h"
 
 void LockOn::Initialize()
 {

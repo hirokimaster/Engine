@@ -3,8 +3,6 @@
 #include "engine/Sprite/Sprite.h"
 #include <math.h>
 
-class Player;
-
 class LockOn {
 public:
 
