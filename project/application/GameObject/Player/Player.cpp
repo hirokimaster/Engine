@@ -83,7 +83,7 @@ void Player::Attack()
 		bullet->SetVelocity(velocity);
 		bullet->SetPosition(GetWorldPosition());
 		bullets_.push_back(std::move(bullet));
-	} 
+	}
 
 	// ゲームパッドの状態を得る変数(XINPUT)
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
@@ -103,27 +103,23 @@ void Player::Attack()
 					if ((*targetItr) && !(*targetItr)->GetIsDead()) {
 						// レティクルのworld座標にターゲットのworld座標を入れる
 						Vector3 targetWorldPos = (*targetItr)->GetWorldPosition();
-						lockOnVelocity.push_back(targetWorldPos - WorldPos);
+						Vector3 diff = targetWorldPos - WorldPos;
+						diff = Normalize(diff);
+						velocity = Normalize(velocity);
+						velocity = Multiply(kBulletSpeed, diff);
 
-						lockOnVelocity.push_back(targetWorldPos - WorldPos);
+						// プレイヤーの向きに速度を合わせる
+						//velocity = TransformNormal(velocity, worldTransform_.matWorld);
 
-						for (Vector3& velocity : lockOnVelocity) {
-							velocity.z = kBulletSpeed;
-							velocity = Normalize(velocity);
-							velocity = kBulletSpeed * velocity;
-							// プレイヤーの向きに速度を合わせる
-							velocity = TransformNormal(velocity, worldTransform_.matWorld);
+						std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
+						std::unique_ptr<Object3DPlacer> objectBullet = std::make_unique<Object3DPlacer>();
+						objectBullets_.push_back(std::move(objectBullet));
+						bullet->SetLockOn(lockOn_);
+						bullet->Initialize(objectBullets_.back().get(), texHandleBullet_, "cube.obj");
+						bullet->SetPosition(WorldPos);
+						bullet->SetVelocity(velocity);
+						bullets_.push_back(std::move(bullet));
 
-							std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-							std::unique_ptr<Object3DPlacer> objectBullet = std::make_unique<Object3DPlacer>();
-							objectBullets_.push_back(std::move(objectBullet));
-							bullet->Initialize(objectBullets_.back().get(), texHandleBullet_, "cube.obj");
-							bullet->SetPosition(WorldPos);
-							bullet->SetVelocity(velocity);
-							bullets_.push_back(std::move(bullet));
-						}
-							
-							
 					}
 				}
 			}
@@ -144,7 +140,7 @@ void Player::Attack()
 				bullet->SetVelocity(velocity);
 				bullets_.push_back(std::move(bullet));
 			}
-			
+
 		}
 
 	}
@@ -183,7 +179,7 @@ void Player::OnCollision()
 
 void Player::DrawUI()
 {
-	
+
 }
 
 Vector3 Player::GetWorldPosition() const

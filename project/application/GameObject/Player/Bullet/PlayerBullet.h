@@ -1,6 +1,7 @@
 #pragma once
 #include "application/GameObject/BaseObject/BaseObject.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
+#include "application/GameObject/LockOn/LockOn.h"
 
 class PlayerBullet : public BaseObject, public Collider{
 public:
@@ -56,6 +57,8 @@ public:
 
 	void SetPosition(Vector3 position) { worldTransform_.translate = position; } // 位置
 
+	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
+
 #pragma endregion
 
 private:
@@ -63,4 +66,5 @@ private:
 	bool isDead_ = false; // bulletのデスフラグ
 	static const int32_t kLifeTime_ = 60 * 5; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
+	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
 };

@@ -66,11 +66,11 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 		lockOnTimer_ = 60.0f;
 	}
 
-	for (auto itr = target_.begin(); itr != target_.end(); ++itr) {
+	/*for (auto itr = target_.begin(); itr != target_.end(); ++itr) {
 		if ((*itr)->GetIsDead()) {
 			target_.erase(itr);
 		}
-	}
+	}*/
 
 	// reticleの位置を決める
 	ReticlePositionCalc(camera);
