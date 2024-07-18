@@ -21,6 +21,7 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 			if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_LEFT_SHOULDER)) {
 				// ロックオンを外す
 				target_.clear();
+				isLockOnMode_ = false;
 			}
 		}
 		else {
@@ -37,12 +38,38 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 	}
 	else {
+		// 空だったらモードを勝手に外す
+		isLockOnMode_ = false;
+
 		// 検索
 		if (Input::GetInstance()->GetJoystickState(joyState)) {
 
 			if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_LEFT_SHOULDER)) {
-				Search(enemies, camera);
+				startLockOnTimer_ = true;
+				isLockOnMode_ = true;
 			}
+		}
+	}
+
+	if (startLockOnTimer_) {
+		--lockOnTimer_;
+	}
+
+	if (lockOnTimer_ <= 0.0f) {
+		isLockOnMode_ = false;
+	}
+
+	// ロックオンモードになったとき検索をし始める
+	if (isLockOnMode_) {
+		Search(enemies, camera);
+	}
+	else {
+		lockOnTimer_ = 60.0f;
+	}
+
+	for (auto itr = target_.begin(); itr != target_.end(); ++itr) {
+		if ((*itr)->GetIsDead()) {
+			target_.erase(itr);
 		}
 	}
 
@@ -103,6 +130,18 @@ void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector
 	const float kDistanceTestObject = playerPosition.z + 100.0f;
 	worldTransform3DReticle_.translate = Multiply(kDistanceTestObject, mouseDirection);
 	worldTransform3DReticle_.UpdateMatrix();
+}
+
+Vector3 LockOn::GetWorldPosition3DReticle() const
+{
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = worldTransform3DReticle_.matWorld.m[3][0];
+	worldPos.y = worldTransform3DReticle_.matWorld.m[3][1];
+	worldPos.z = worldTransform3DReticle_.matWorld.m[3][2];
+
+	return worldPos;
 }
 
 void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition)

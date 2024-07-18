@@ -28,6 +28,7 @@ void GameScene::Initialize()
 	texHandlePlayer_ = TextureManager::Load("resources/white.png");
 	player_->Initialize(objectPlayer_.get(), texHandlePlayer_, "cube.obj");
 	player_->SetPosition({ 0,0,50.0f });
+	player_->SetLockOn(lockOn_.get());
 	
 	// enemy
 	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
@@ -53,9 +54,9 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	player_->SetLockOn(lockOn_.get());
 	// player
 	player_->Update();
+	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition());
 
 	RandomRespawn();
 
@@ -129,6 +130,8 @@ void GameScene::PostProcessDraw()
 	skyBox_->Draw(worldTransformSkyBox_, camera_);
 	// player
 	player_->Draw(camera_);
+	// lockOn_(レティクル)
+	lockOn_->Draw();
 
 	postProcess_->PostDraw();
 }

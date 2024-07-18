@@ -83,11 +83,15 @@ private:
 
 public:
 
-#pragma region gettr
+#pragma region getter
 
 	const std::list<Vector2> GetPosition() { return positionScreen_; } // reticleのposition
 
 	std::list<const Enemy*> GetTarget() { return target_; } // targetのポインタ
+
+	Vector3 GetWorldPosition3DReticle()const; // reticleのworld座標
+
+	bool GetIsLockOnMode()const { return isLockOnMode_; } // ロックオンのフラグ
 
 #pragma endregion
 
@@ -108,4 +112,7 @@ private:
 	WorldTransform worldTransform3DReticle_; // reticleのworldTransform
 	std::unique_ptr<Sprite> sprite2DReticle_;
 	Vector2 screenPositionReticle_{};
+	bool isLockOnMode_ = false;
+	float lockOnTimer_ = 60.0f;
+	bool startLockOnTimer_ = false;
 };

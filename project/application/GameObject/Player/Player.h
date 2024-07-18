@@ -4,6 +4,7 @@
 #include "engine/TextureManager/TextureManager.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/Sprite/Sprite.h"
+#include <vector>
 
 class LockOn;
 
@@ -65,11 +66,7 @@ public:
 
 	Vector3 GetWorldPosition()const override;
 
-	Vector3 GetWorldPosition3DReticle();
-
 	Vector2 GetScreenPosition2DReticle() { return screenPositionReticle_; }
-
-	bool GetLockOnMode() { return lockOnMode_; }
 
 #pragma endregion
 
@@ -81,8 +78,6 @@ public:
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
-	void SetLockOnMode(bool lockOnMode) { lockOnMode_ = lockOnMode; }
-
 #pragma endregion
 
 private:
@@ -91,12 +86,8 @@ private:
 	std::list<std::unique_ptr<Object3DPlacer>> objectBullets_;
 	std::list<std::unique_ptr<PlayerBullet>>::iterator bulletsItr_; // 弾のイテレータ
 	uint32_t texHandleBullet_ = 0;
-	WorldTransform worldTransform3DReticle_;
-	std::unique_ptr<Sprite> sprite2DReticle_; // reticleのsprite
-	uint32_t texHandle2DReticle_ = 0;
 	LockOn* lockOn_ = nullptr;
-	Vector3 reticleWorldPos_{};
 	Vector2 screenPositionReticle_{};
-	bool lockOnMode_ = false;
-	uint32_t texHandleLockOnReticle_ = 0;
+	float shotTimer_ = 0.0f;
+
 };

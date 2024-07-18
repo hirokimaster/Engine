@@ -7,12 +7,6 @@ void Player::Initialize(Object3DPlacer* object, uint32_t texHandle, const std::s
 	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
 	object->SetColor(Vector4(1.0f, 0.0f, 1.0f, 1.0f));
 
-	// reticle
-	texHandle2DReticle_ = TextureManager::Load("resources/reticle.png");
-	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, { 640.0f,360.0f }));
-	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
-	worldTransform3DReticle_.Initialize();
-
 	SetCollosionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
 }
@@ -89,7 +83,7 @@ void Player::Attack()
 		bullet->SetVelocity(velocity);
 		bullet->SetPosition(GetWorldPosition());
 		bullets_.push_back(std::move(bullet));
-	}
+	} 
 
 	// ゲームパッドの状態を得る変数(XINPUT)
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
@@ -98,30 +92,59 @@ void Player::Attack()
 			// 弾の速度
 			const float kBulletSpeed = 1.0f;
 			Vector3 velocity = { 0,0,kBulletSpeed };
+			std::list<Vector3> lockOnVelocity;
 			// 自機から照準オブジェクトのベクトル
 			Vector3 WorldPos = GetWorldPosition();
 
-			//// ロックオン対象がいたら対象に向かって弾を撃つ
-			//if (lockOn_->GetTarget().front() && !lockOn_->GetTarget().front()->GetIsDead()) {
-			//	reticleWorldPos_ = lockOn_->GetTarget().front()->GetWorldPosition();
-			//}
-			//else {
-			//	reticleWorldPos_ = GetWorldPosition3DReticle();
-			//}
+			if (lockOn_->GetIsLockOnMode()) {
+				std::list<const Enemy*> targets = lockOn_->GetTarget(); // コピーしておく
+				for (std::list<const Enemy*>::iterator targetItr = targets.begin(); targetItr != targets.end(); ++targetItr) {
+					// ロックオン対象がいるかつ生きてたら対象に向かって弾を撃つ
+					if ((*targetItr) && !(*targetItr)->GetIsDead()) {
+						// レティクルのworld座標にターゲットのworld座標を入れる
+						Vector3 targetWorldPos = (*targetItr)->GetWorldPosition();
+						lockOnVelocity.push_back(targetWorldPos - WorldPos);
+
+						lockOnVelocity.push_back(targetWorldPos - WorldPos);
+
+						for (Vector3& velocity : lockOnVelocity) {
+							velocity.z = kBulletSpeed;
+							velocity = Normalize(velocity);
+							velocity = kBulletSpeed * velocity;
+							// プレイヤーの向きに速度を合わせる
+							velocity = TransformNormal(velocity, worldTransform_.matWorld);
+
+							std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
+							std::unique_ptr<Object3DPlacer> objectBullet = std::make_unique<Object3DPlacer>();
+							objectBullets_.push_back(std::move(objectBullet));
+							bullet->Initialize(objectBullets_.back().get(), texHandleBullet_, "cube.obj");
+							bullet->SetPosition(WorldPos);
+							bullet->SetVelocity(velocity);
+							bullets_.push_back(std::move(bullet));
+						}
+							
+							
+					}
+				}
+			}
+			else {
+				Vector3 reticleWorldPos = lockOn_->GetWorldPosition3DReticle();
+
+				velocity = reticleWorldPos - WorldPos;
+				velocity = Normalize(velocity);
+				velocity = kBulletSpeed * velocity;
+				// プレイヤーの向きに速度を合わせる
+				velocity = TransformNormal(velocity, worldTransform_.matWorld);
+				// 弾を生成し、初期化
+				std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
+				std::unique_ptr<Object3DPlacer> objectBullet = std::make_unique<Object3DPlacer>();
+				objectBullets_.push_back(std::move(objectBullet));
+				bullet->Initialize(objectBullets_.back().get(), texHandleBullet_, "cube.obj");
+				bullet->SetPosition(WorldPos);
+				bullet->SetVelocity(velocity);
+				bullets_.push_back(std::move(bullet));
+			}
 			
-			velocity = reticleWorldPos_ - WorldPos;
-			velocity = Normalize(velocity);
-			velocity = kBulletSpeed * velocity;
-			// プレイヤーの向きに速度を合わせる
-			//velocity = TransformNormal(velocity, worldTransform_.matWorld);
-			// 弾を生成し、初期化
-			std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-			std::unique_ptr<Object3DPlacer> objectBullet = std::make_unique<Object3DPlacer>();
-			objectBullets_.push_back(std::move(objectBullet));
-			bullet->Initialize(objectBullets_.back().get(), texHandleBullet_, "cube.obj");
-			bullet->SetPosition(WorldPos);
-			bullet->SetVelocity(velocity);
-			bullets_.push_back(std::move(bullet));
 		}
 
 	}
@@ -160,7 +183,7 @@ void Player::OnCollision()
 
 void Player::DrawUI()
 {
-	lockOn_->Draw();
+	
 }
 
 Vector3 Player::GetWorldPosition() const
@@ -175,14 +198,3 @@ Vector3 Player::GetWorldPosition() const
 	return worldPos;
 }
 
-Vector3 Player::GetWorldPosition3DReticle()
-{
-	// ワールド座標を入れる変数
-	Vector3 worldPos;
-	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = worldTransform3DReticle_.matWorld.m[3][0];
-	worldPos.y = worldTransform3DReticle_.matWorld.m[3][1];
-	worldPos.z = worldTransform3DReticle_.matWorld.m[3][2];
-
-	return worldPos;
-}
