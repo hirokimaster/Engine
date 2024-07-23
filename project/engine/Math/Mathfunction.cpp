@@ -420,6 +420,31 @@ Matrix4x4 Transpose(const Matrix4x4& m)
 	return result;
 }
 
+Matrix4x4 MakeViewportMatrix(float left, float top, float width, float heght, float minDepth, float maxDepth)
+{
+	Matrix4x4 result;
+
+	result.m[0][0] = width / 2.0f;
+	result.m[0][1] = 0.0f;
+	result.m[0][2] = 0.0f;
+	result.m[0][3] = 0.0f;
+	result.m[1][0] = 0.0f;
+	result.m[1][1] = -heght / 2.0f;
+	result.m[1][2] = 0.0f;
+	result.m[1][3] = 0.0f;
+	result.m[2][0] = 0.0f;
+	result.m[2][1] = 0.0f;
+	result.m[2][2] = maxDepth - minDepth;
+	result.m[2][3] = 0.0f;
+	result.m[3][0] = left + width / 2.0f;
+	result.m[3][1] = top + heght / 2.0f;
+	result.m[3][2] = minDepth;
+	result.m[3][3] = 1.0f;
+
+	return result;
+}
+
+
 //正規化
 Vector3 Normalize(const Vector3& v) {
 	Vector3 result;
@@ -453,6 +478,13 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
 float Length(const Vector3& v) {
 	float result;
 	result = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	return result;
+}
+
+float Length(const Vector2& v)
+{
+	float result;
+	result = sqrtf(v.x * v.x + v.y * v.y);
 	return result;
 }
 
@@ -534,7 +566,19 @@ Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t) {
 
 
 	return p;
-};
+}
+
+Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m)
+{
+	Vector3 result{
+	  v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0],
+	  v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1],
+	  v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2]
+	};
+
+	return result;
+}
+
 
 Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
 {
@@ -826,4 +870,14 @@ Vector3 operator*(const Vector3& vec, const Matrix4x4& mat) {
 	};
 
 	return { result.x / result.w, result.y / result.w, result.z / result.w };
+}
+
+Vector2 operator-(const Vector2& v1, const Vector2& v2)
+{
+	Vector2 result = {
+		v1.x - v2.x,
+		v1.y - v2.y
+	};
+
+	return result;
 }

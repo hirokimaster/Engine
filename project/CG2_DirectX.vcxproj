@@ -110,10 +110,19 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="application\GameManager\GameManager.cpp" />
+    <ClCompile Include="application\GameObject\Enemy\Bullet\EnemyBullet.cpp" />
+    <ClCompile Include="application\GameObject\Enemy\Enemy.cpp" />
+    <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp" />
+    <ClCompile Include="application\GameObject\Player\Bullet\PlayerBullet.cpp" />
+    <ClCompile Include="application\GameObject\LockOn\LockOn.cpp" />
+    <ClCompile Include="application\GameObject\Player\Player.cpp" />
+    <ClCompile Include="application\GameObject\RailCamera\RailCamera.cpp" />
     <ClCompile Include="application\Scene\Demo\Demo.cpp" />
     <ClCompile Include="application\Scene\GameScene\GameScene.cpp" />
     <ClCompile Include="application\Scene\IScene\IScene.cpp" />
     <ClCompile Include="engine\Loader\Loader.cpp" />
+    <ClCompile Include="application\GameObject\BaseObject\BaseObject.cpp" />
+    <ClCompile Include="application\Scene\TitleScene\TitleScene.cpp" />
     <ClCompile Include="engine\Model\Animation\ModelAnimation.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\DX\DirectXCommon.cpp" />
@@ -155,10 +164,20 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
+    <ClInclude Include="application\GameObject\Enemy\Bullet\EnemyBullet.h" />
+    <ClInclude Include="application\GameObject\Enemy\Enemy.h" />
+    <ClInclude Include="application\GameObject\Enemy\IEnemy.h" />
+    <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
+    <ClInclude Include="application\GameObject\Player\Bullet\PlayerBullet.h" />
+    <ClInclude Include="application\GameObject\LockOn\LockOn.h" />
+    <ClInclude Include="application\GameObject\Player\Player.h" />
+    <ClInclude Include="application\GameObject\RailCamera\RailCamera.h" />
     <ClInclude Include="application\Scene\Demo\Demo.h" />
     <ClInclude Include="application\Scene\GameScene\GameScene.h" />
     <ClInclude Include="application\Scene\IScene\IScene.h" />
     <ClInclude Include="engine\Loader\Loader.h" />
+    <ClInclude Include="application\GameObject\BaseObject\BaseObject.h" />
+    <ClInclude Include="application\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="engine\Model\Animation\Animation.h" />
     <ClInclude Include="engine\Model\Animation\ModelAnimation.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />

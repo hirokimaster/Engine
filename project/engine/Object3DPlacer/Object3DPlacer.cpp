@@ -41,6 +41,7 @@ void Object3DPlacer::Draw(Camera& camera)
 			property_ = GraphicsPipeline::GetInstance()->GetPSO().Environment;
 		}
 	}
+
 	
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property_.rootSignature_.Get());
