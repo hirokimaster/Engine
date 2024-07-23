@@ -43,7 +43,10 @@ void Demo::Initialize()
 
 void Demo::Update()
 {
-	camera_.UpdateMatrix();
+	loader_->UpdateCamera();
+	camera_ = loader_->GetCamera();
+	camera_.TransferMatrix();
+
 	//static int currentItem_ = 0;
 	//const char* item[9] = { "Grayscale", "Vignette", "Bloom","Gaussian","LuminanceOutline",
 	//	"DepthOutline","RadialBlur","Dissolve","Random" };

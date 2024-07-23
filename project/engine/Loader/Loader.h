@@ -8,6 +8,7 @@
 #include "engine/Model/Model.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "engine/ModelManager/ModelManager.h"
+#include <numbers>
 
 // レベルデータ
 struct LevelData {
@@ -42,9 +43,17 @@ public:
 
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 
+	void UpdateCamera();
+
+#pragma region getter
+
+	const Camera& GetCamera() { return camera_; }
+
+#pragma endregion
+
 private:
 	std::map<std::string, std::unique_ptr<Model>>  models_;
 	std::vector<std::unique_ptr<Object3DPlacer>> objects_;
-	std::vector<WorldTransform> transforms_;
 	uint32_t texHandle_ = 0;
+	Camera camera_{};
 };

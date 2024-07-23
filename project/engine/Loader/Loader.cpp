@@ -35,6 +35,9 @@ LevelData* Loader::Load(const std::string& fileName)
 	// レベルデータ格納用インスタンスを生成
 	LevelData* levelData = new LevelData();
 
+	// カメラの初期化
+	camera_.Initialize();
+
 	// "objects"の全オブジェクトを走査
 	for (nlohmann::json& object : deserialized["objects"]) {
 		assert(object.contains("type"));
@@ -56,18 +59,36 @@ LevelData* Loader::Load(const std::string& fileName)
 			nlohmann::json& transform = object["transform"];
 			// 平行移動
 			objectData.translate.x = (float)transform["translation"][0];
-			objectData.translate.y = (float)transform["translation"][1];
-			objectData.translate.z = (float)transform["translation"][2];
+			objectData.translate.y = (float)transform["translation"][2];
+			objectData.translate.z = (float)transform["translation"][1];
 			// 回転角
 			objectData.rotate.x = (float)transform["rotation"][0];
-			objectData.rotate.y = (float)transform["rotation"][1];
-			objectData.rotate.z = (float)transform["rotation"][2];
+			objectData.rotate.y = (float)transform["rotation"][2];
+			objectData.rotate.z = (float)transform["rotation"][1];
 			// スケーリング
 			objectData.scale.x = (float)transform["scaling"][0];
-			objectData.scale.y = (float)transform["scaling"][1];
-			objectData.scale.z = (float)transform["scaling"][2];
+			objectData.scale.y = (float)transform["scaling"][2];
+			objectData.scale.z = (float)transform["scaling"][1];
 			// modelのロード
-			ModelManager::GetInstance()->LoadObjModel("cube.obj");
+			ModelManager::GetInstance()->LoadObjModel(objectData.fileName + ".obj");
+		}
+		// camera
+		if (type.compare("CAMERA") == 0) {
+			// トランスフォームのパラメータ読み込み
+			nlohmann::json& transform = object["transform"];
+			// 平行移動
+			camera_.translate.x = (float)transform["translation"][0];
+			camera_.translate.y = (float)transform["translation"][2];
+			camera_.translate.z = (float)transform["translation"][1];
+			// 回転角
+			camera_.rotate.x = -((float)transform["rotation"][0] - std::numbers::pi_v<float> / 2.0f);
+			camera_.rotate.y = -(float)transform["rotation"][2];
+			camera_.rotate.z = -(float)transform["rotation"][1];
+			// スケーリング
+			camera_.scale.x = (float)transform["scaling"][0];
+			camera_.scale.y = (float)transform["scaling"][2];
+			camera_.scale.z = (float)transform["scaling"][1];
+
 		}
 
 		// オブジェクト走査を再帰関数にまとめ、再帰関数で枝を走査する
@@ -87,14 +108,11 @@ void Loader::Arrangement(LevelData* levelData)
 		// モデルを指定して3Dオブジェクトを生成
 		std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 		newObject->Initialize();
-		newObject->SetModel("cube.obj");
+		newObject->SetModel(objectData.fileName + ".obj");
 		newObject->SetTexHandle(texHandle_);
-		WorldTransform transform{};
-		transform.Initialize();
-		transform.translate = objectData.translate;
-		transform.rotate = objectData.rotate;
-		transform.scale = objectData.scale;
-		transforms_.push_back(transform);
+		newObject->SetPosition(objectData.translate);
+		newObject->SetRotate(objectData.rotate);
+		newObject->SetScale(objectData.scale);
 		objects_.push_back(std::move(newObject));
 	}
 }
@@ -102,15 +120,12 @@ void Loader::Arrangement(LevelData* levelData)
 void Loader::Draw(Camera& camera)
 {
 	for (auto& object : objects_) {
-		for (auto& transform : transforms_) {
-			transform.UpdateMatrix();
-			object->Draw(transform, camera);
-			ImGui::Begin("transform");
-			ImGui::Text("%.2f %.2f %.2f", transform.translate.x, transform.translate.y, transform.translate.z);
-			ImGui::End();
-		}
+		object->Draw(camera);
 	}
+}
 
-	
+void Loader::UpdateCamera()
+{
+	camera_.UpdateMatrix();
 }
 

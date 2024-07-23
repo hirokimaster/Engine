@@ -2,6 +2,8 @@
 
 void Object3DPlacer::Initialize()
 {
+	worldTransform_.Initialize();
+
 	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
@@ -18,8 +20,9 @@ void Object3DPlacer::Initialize()
 	directionalLightData_->intensity = 1.0f;
 }
 
-void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera)
+void Object3DPlacer::Draw(Camera& camera)
 {
+	worldTransform_.UpdateMatrix();
 
 	if (lighting_ == nullptr) {
 		property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
@@ -50,7 +53,7 @@ void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera)
 
 	// wvp用のCBufferの場所を設定
 	//worldTransform.TransferMatrix(resource_.wvpResource, camera);
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 	// 平行光源
@@ -65,8 +68,10 @@ void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera)
 	}
 }
 
-void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera, bool isAnimation)
+void Object3DPlacer::Draw(Camera& camera, bool isAnimation)
 {
+	worldTransform_.UpdateMatrix();
+
 	property_ = GraphicsPipeline::GetInstance()->GetPSO().SkinningObject3D;
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
@@ -78,7 +83,7 @@ void Object3DPlacer::Draw(WorldTransform worldTransform, Camera& camera, bool is
 
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform.constBuff->GetGPUVirtualAddress());
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(4, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 	// 平行光源

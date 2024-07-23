@@ -15,7 +15,7 @@ public:
 	/// </summary>
 	/// <param name="worldTransform"></param>
 	/// <param name="camera"></param>
-	void Draw(WorldTransform worldTransform, Camera& camera);
+	void Draw(Camera& camera);
 
 	/// <summary>
 	/// animation描画
@@ -23,7 +23,7 @@ public:
 	/// <param name="worldTransform"></param>
 	/// <param name="camera"></param>
 	/// <param name="isAnimation"></param>
-	void Draw(WorldTransform worldTransform, Camera& camera, bool isAnimation);
+	void Draw(Camera& camera, bool isAnimation);
 
 	// setter
 	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
@@ -32,6 +32,10 @@ public:
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 	void SetColor(const Vector4& color) { materialData_->color = color; }
 	void SetLight(Lighting* lighting) { lighting_ = lighting; }
+	void SetWorldTransform(WorldTransform worldTransform) { worldTransform_ = worldTransform; }
+	void SetPosition(Vector3 position) { worldTransform_.translate = position;}
+	void SetRotate(Vector3 rotate) { worldTransform_.rotate = rotate; }
+	void SetScale(Vector3 scale) { worldTransform_.scale = scale; }
 	Material SetMaterialProperty(Material materialdata) { return *materialData_ = materialdata; }
 	// directionalLightの設定
 	DirectionalLight SetLightingProperty(DirectionalLight directionalLight) { return *directionalLightData_ = directionalLight; }
@@ -47,4 +51,5 @@ private:
 	uint32_t texHandle_ = 0;
 	Vector4 color_ = {};
 	Lighting* lighting_{};
+	WorldTransform worldTransform_{};
 };
