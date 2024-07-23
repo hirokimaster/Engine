@@ -89,7 +89,7 @@ void Loader::Arrangement(LevelData* levelData)
 		newObject->Initialize();
 		newObject->SetModel("cube.obj");
 		newObject->SetTexHandle(texHandle_);
-		WorldTransform transform;
+		WorldTransform transform{};
 		transform.Initialize();
 		transform.translate = objectData.translate;
 		transform.rotate = objectData.rotate;
@@ -103,12 +103,14 @@ void Loader::Draw(Camera& camera)
 {
 	for (auto& object : objects_) {
 		for (auto& transform : transforms_) {
+			transform.UpdateMatrix();
 			object->Draw(transform, camera);
+			ImGui::Begin("transform");
+			ImGui::Text("%.2f %.2f %.2f", transform.translate.x, transform.translate.y, transform.translate.z);
+			ImGui::End();
 		}
 	}
 
-	ImGui::Begin("transform");
-	ImGui::Text("%.2f %.2f %.2f", transforms_.front().translate, transforms_.front().rotate, transforms_.front().scale);
-	ImGui::End();
+	
 }
 
