@@ -129,7 +129,7 @@ void Player::Attack()
 				velocity = Normalize(velocity);
 				velocity = kBulletSpeed * velocity;
 				// プレイヤーの向きに速度を合わせる
-				velocity = TransformNormal(velocity, worldTransform_.matWorld);
+				//velocity = TransformNormal(velocity, worldTransform_.matWorld);
 				// 弾を生成し、初期化
 				std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 				bullet->Initialize(texHandleBullet_);

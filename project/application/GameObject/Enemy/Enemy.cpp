@@ -3,7 +3,7 @@
 
 void Enemy::Initialize(uint32_t texHandle)
 {
-	object_ = std::unique_ptr<Object3DPlacer>();
+	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
 	object_->SetModel("cube.obj");
 	worldTransform_.Initialize();

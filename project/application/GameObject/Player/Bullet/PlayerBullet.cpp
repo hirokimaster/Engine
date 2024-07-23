@@ -60,7 +60,7 @@ void PlayerBullet::Update()
 
 void PlayerBullet::Draw(Camera& camera)
 {
-	
+	object_->Draw(camera);
 }
 
 void PlayerBullet::Move()

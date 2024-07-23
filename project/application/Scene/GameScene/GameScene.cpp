@@ -31,10 +31,11 @@ void GameScene::Initialize()
 	player_->SetLockOn(lockOn_.get());
 
 	// enemy
-	/*std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
+	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
 	texHandleEnemy_ = TextureManager::Load("resources/white.png");
 	enemy->Initialize(texHandleEnemy_);
-	enemys_.push_back(std::move(enemy));*/
+	enemys_.push_back(std::move(enemy));
+
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
 	// railCamera
@@ -56,24 +57,24 @@ void GameScene::Update()
 	player_->Update();
 	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition());
 
-	//RandomRespawn();
+	RandomRespawn();
 
 	// enemy
-	/*for (enemysItr_ = enemys_.begin();
+	for (enemysItr_ = enemys_.begin();
 		enemysItr_ != enemys_.end(); ++enemysItr_) {
 
 		(*enemysItr_)->Update();
 
-	}*/
+	}
 
 	// デスフラグが立ったら要素を削除
-	/*enemys_.remove_if([](std::unique_ptr<Enemy>& enemy) {
+	enemys_.remove_if([](std::unique_ptr<Enemy>& enemy) {
 		if (enemy->GetIsDead()) {
 
 			return true;
 		}
 			return false;
-		});*/
+		});
 
 	// railCamera
 	railCamera_->Update();
@@ -113,11 +114,11 @@ void GameScene::PostProcessDraw()
 	postProcess_->PreDraw();
 
 	// enemy
-	/*for (enemysItr_ = enemys_.begin();
+	for (enemysItr_ = enemys_.begin();
 		enemysItr_ != enemys_.end(); ++enemysItr_) {
 
 		(*enemysItr_)->Draw(camera_);
-	}*/
+	}
 	// skyBox
 	skyBox_->Draw(worldTransformSkyBox_, camera_);
 	// player
