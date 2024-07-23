@@ -7,6 +7,7 @@
 #include "engine/Model/Animation/ModelAnimation.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameManager/GameManager.h"
+#include "engine/Loader/Loader.h"
 
 class Demo : public IScene {
 public: // メンバ関数
@@ -54,6 +55,10 @@ private:
 	bool dFlag_1 = true;
 	bool dFlag_2 = false;
 	DissolveParam DissolvePram_{};*/
+	std::unique_ptr<Loader> loader_;
+	LevelData* levelData_ = nullptr;
+	uint32_t texHandle_ = 0;
+	Camera camera_;
 };
 
 

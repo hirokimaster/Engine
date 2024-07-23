@@ -250,6 +250,9 @@
     <ClCompile Include="engine\Model\SkyBox\SkyBox.cpp">
       <Filter>Engine\Model\SkyBox</Filter>
     </ClCompile>
+    <ClCompile Include="engine\Loader\Loader.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CreateResource\CreateResource.h">
@@ -408,6 +411,7 @@
     <ClInclude Include="engine\Model\SkyBox\SkyBox.h">
       <Filter>Engine\Model\SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="engine\Loader\Loader.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">
