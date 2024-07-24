@@ -12,16 +12,16 @@ void PlayerBullet::Initialize(uint32_t texHandle)
 	SetCollosionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
 
-	if (lockOn_ && lockOn_->GetIsLockOnMode()) {
-		// ホーミング弾
-		worldTransform_.rotate.y = std::atan2(velocity_.x, velocity_.z);
+	//if (lockOn_ && lockOn_->GetIsLockOnMode()) {
+	//	// ホーミング弾
+	//	worldTransform_.rotate.y = std::atan2(velocity_.x, velocity_.z);
 
-		Vector3 velocityXZ = { velocity_.x, 0.0f,velocity_.z };
+	//	Vector3 velocityXZ = { velocity_.x, 0.0f,velocity_.z };
 
-		float veloXZ = Length(velocityXZ);
+	//	float veloXZ = Length(velocityXZ);
 
-		worldTransform_.rotate.z = std::atan2(-velocity_.y, veloXZ);
-	}
+	//	worldTransform_.rotate.z = std::atan2(-velocity_.y, veloXZ);
+	//}
 
 	worldTransform_.scale = { 0.5f,0.5f,0.5f };
 
@@ -33,28 +33,28 @@ void PlayerBullet::Update()
 	BulletErase(); // 弾を削除
 	worldTransform_.UpdateMatrix();
 
-	if (lockOn_ && lockOn_->GetIsLockOnMode()) {
-		// ホーミング弾
-		std::list<const Enemy*> targets = lockOn_->GetTarget();
-		if (!targets.empty()) {
-			for (std::list<const Enemy*>::iterator itr = targets.begin();
-				itr != targets.end(); ++itr) {
-				Vector3 toEnemy = (*itr)->GetWorldPosition() - GetWorldPosition();
-				Normalize(toEnemy);
-				Normalize(velocity_);
-				float t = 0.01f;
-				velocity_ = SLerp(toEnemy, GetWorldPosition(), t);
-			}
-		}
+	//if (lockOn_ && lockOn_->GetIsLockOnMode()) {
+	//	// ホーミング弾
+	//	std::list<const Enemy*> targets = lockOn_->GetTarget();
+	//	if (!targets.empty()) {
+	//		for (std::list<const Enemy*>::iterator itr = targets.begin();
+	//			itr != targets.end(); ++itr) {
+	//			Vector3 toEnemy = (*itr)->GetWorldPosition() - GetWorldPosition();
+	//			Normalize(toEnemy);
+	//			Normalize(velocity_);
+	//			float t = 0.01f;
+	//			velocity_ = SLerp(toEnemy, GetWorldPosition(), t);
+	//		}
+	//	}
 
-		worldTransform_.rotate.y = std::atan2(velocity_.x, velocity_.z);
+	//	worldTransform_.rotate.y = std::atan2(velocity_.x, velocity_.z);
 
-		Vector3 velocityXZ = { velocity_.x, 0.0f, velocity_.z };
+	//	Vector3 velocityXZ = { velocity_.x, 0.0f, velocity_.z };
 
-		float veloXZ = Length(velocityXZ);
+	//	float veloXZ = Length(velocityXZ);
 
-		worldTransform_.rotate.z = std::atan2(-velocity_.y, veloXZ);
-	}
+	//	worldTransform_.rotate.z = std::atan2(-velocity_.y, veloXZ);
+	//}
 
 }
 

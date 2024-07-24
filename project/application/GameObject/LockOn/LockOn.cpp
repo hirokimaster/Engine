@@ -4,7 +4,10 @@
 void LockOn::Initialize()
 {
 	texHandle2DReticle_ = TextureManager::Load("resources/reticle.png");
+	texHandleLockOnReticle_ = TextureManager::Load("resources/reticle2.png");
 	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, { 640.0f,360.0f }));
+	spriteLockOnReticle_.reset(Sprite::Create(texHandleLockOnReticle_, { 640.0f,360.0f }));
+	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
 }
@@ -38,33 +41,26 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 	}
 	else {
-		// 空だったらモードを勝手に外す
-		isLockOnMode_ = false;
-
-		// 検索
+		
+		// lockOnModeにする
 		if (Input::GetInstance()->GetJoystickState(joyState)) {
 
 			if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_LEFT_SHOULDER)) {
-				startLockOnTimer_ = true;
 				isLockOnMode_ = true;
 			}
+
 		}
 	}
 
-	if (startLockOnTimer_) {
-		--lockOnTimer_;
-	}
-
-	if (lockOnTimer_ <= 0.0f) {
-		isLockOnMode_ = false;
+	if (isLockOnMode_) {
+		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
+			isLockOnMode_ = false;
+		}
 	}
 
 	// ロックオンモードになったとき検索をし始める
 	if (isLockOnMode_) {
 		Search(enemies, camera);
-	}
-	else {
-		lockOnTimer_ = 60.0f;
 	}
 
 	/*for (auto itr = target_.begin(); itr != target_.end(); ++itr) {
@@ -88,15 +84,21 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	}
 
 	ImGui::Begin("reticle");
-	ImGui::Text("ret = %f, %f", &positionScreen_);
+	ImGui::Text("lockOn = %d", isLockOnMode_);
 	ImGui::End();
 
 }
 
 void LockOn::Draw()
 {
-	sprite2DReticle_->Draw();
 
+	if (isLockOnMode_) {
+		spriteLockOnReticle_->Draw();
+	}
+	else {
+		sprite2DReticle_->Draw();
+	}
+	
 	for (auto itr = sprite_.begin(); itr != sprite_.end(); ++itr) {
 		(*itr)->Draw();
 	}
@@ -154,7 +156,15 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition)
 	HWND hwnd = WinApp::GetInstance()->GetHwnd();
 	ScreenToClient(hwnd, &mousePosition);
 
-	Vector2 spritePosition = sprite2DReticle_->GetPosition();
+	Vector2 spritePosition;
+
+	if (isLockOnMode_) {
+		spritePosition = spriteLockOnReticle_->GetPosition();
+	}
+	else {
+		spritePosition = sprite2DReticle_->GetPosition();
+		spriteLockOnReticle_->SetPosition(spritePosition);
+	}
 
 	XINPUT_STATE joyState{};
 
@@ -163,7 +173,13 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition)
 		spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 5.0f;
 		spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 5.0f;
 		// スプライトの座標変更を反映
-		sprite2DReticle_->SetPosition(spritePosition);
+		if (isLockOnMode_) {
+			spriteLockOnReticle_->SetPosition(spritePosition);
+		}
+		else {
+			sprite2DReticle_->SetPosition(spritePosition);
+		}
+		
 		screenPositionReticle_ = spritePosition;
 	}
 
@@ -241,7 +257,7 @@ bool LockOn::CheckReticleRange(const Vector3& position)
 {
 	// レティクルの範囲内にあるかを判定
 
-	float reticleRadius = 1280.0f; // レティクルの半径
+	float reticleRadius = 150.0f; // レティクルの半径
 
 	Vector2 reticleCenter = screenPositionReticle_;
 

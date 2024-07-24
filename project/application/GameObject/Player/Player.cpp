@@ -110,7 +110,7 @@ void Player::Attack()
 						velocity = Multiply(kBulletSpeed, diff);
 
 						// プレイヤーの向きに速度を合わせる
-						velocity = TransformNormal(velocity, worldTransform_.matWorld);
+						//velocity = TransformNormal(velocity, worldTransform_.matWorld);
 
 						std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 						bullet->SetLockOn(lockOn_);
@@ -118,7 +118,6 @@ void Player::Attack()
 						bullet->SetPosition(WorldPos);
 						bullet->SetVelocity(velocity);
 						bullets_.push_back(std::move(bullet));
-
 					}
 				}
 			}

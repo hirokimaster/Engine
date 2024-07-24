@@ -114,4 +114,6 @@ private:
 	bool isLockOnMode_ = false;
 	float lockOnTimer_ = 60.0f;
 	bool startLockOnTimer_ = false;
+	uint32_t texHandleLockOnReticle_ = 0;
+	std::unique_ptr<Sprite> spriteLockOnReticle_;
 };
