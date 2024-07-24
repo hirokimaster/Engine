@@ -51,9 +51,10 @@ void GameScene::Initialize()
 	worldTransformSkyBox_.scale = { 500.0f,500.0f,500.0f };
 
 	// loader
+	uint32_t texhandle = TextureManager::Load("resources/uvChecker.png");
 	loader_ = std::make_unique<Loader>();
 	levelData_ = loader_->Load("level");
-	loader_->SetTexHandle(texHandlePlayer_);
+	loader_->SetTexHandle(texhandle);
 	loader_->Arrangement(levelData_);
 }
 
@@ -120,11 +121,11 @@ void GameScene::Draw()
 	}
 	// skyBox
 	//skyBox_->Draw(worldTransformSkyBox_, camera_);
+	loader_->Draw(camera_);
 	// player
 	player_->Draw(camera_);
 	// lockOn_(レティクル)
 	lockOn_->Draw();
-	loader_->Draw(camera_);
 }
 
 void GameScene::PostProcessDraw()
@@ -179,7 +180,7 @@ void GameScene::RandomRespawn()
 
 	if (spawnTimer_ >= 90) {
 		std::mt19937 randomEngine(seed());
-		std::uniform_real_distribution<float>distribution(-20.0f, 20.0f);
+		std::uniform_real_distribution<float>distribution(-5.0f, 15.0f);
 		std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
 		texHandleEnemy_ = TextureManager::Load("resources/white.png");
 		enemy->Initialize(texHandleEnemy_);

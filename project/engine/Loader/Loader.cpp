@@ -120,6 +120,7 @@ void Loader::Arrangement(LevelData* levelData)
 void Loader::Draw(Camera& camera)
 {
 	for (auto& object : objects_) {
+		object->GetWorldTransform().UpdateMatrix();
 		object->Draw(camera);
 		
 	}
