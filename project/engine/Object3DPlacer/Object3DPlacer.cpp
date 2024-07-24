@@ -2,6 +2,7 @@
 
 void Object3DPlacer::Initialize()
 {
+	worldTransform_.Initialize();
 	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
@@ -20,7 +21,6 @@ void Object3DPlacer::Initialize()
 
 void Object3DPlacer::Draw(Camera& camera)
 {
-
 	if (lighting_ == nullptr) {
 		property_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 	}

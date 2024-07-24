@@ -3,7 +3,7 @@
 LevelData* Loader::Load(const std::string& fileName)
 {
 	// 連結してフルパスを得る
-	const std::string fullpath = "resources/" + fileName + ".json";
+	const std::string fullpath = "resources/LevelEditorObj/" + fileName + ".json";
 
 	// ファイルストリーム
 	std::ifstream file;
@@ -70,26 +70,26 @@ LevelData* Loader::Load(const std::string& fileName)
 			objectData.scale.y = (float)transform["scaling"][2];
 			objectData.scale.z = (float)transform["scaling"][1];
 			// modelのロード
-			ModelManager::GetInstance()->LoadObjModel(objectData.fileName + ".obj");
+			ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
 		}
 		// camera
-		if (type.compare("CAMERA") == 0) {
-			// トランスフォームのパラメータ読み込み
-			nlohmann::json& transform = object["transform"];
-			// 平行移動
-			camera_.translate.x = (float)transform["translation"][0];
-			camera_.translate.y = (float)transform["translation"][2];
-			camera_.translate.z = (float)transform["translation"][1];
-			// 回転角
-			camera_.rotate.x = -((float)transform["rotation"][0] - std::numbers::pi_v<float> / 2.0f);
-			camera_.rotate.y = -(float)transform["rotation"][2];
-			camera_.rotate.z = -(float)transform["rotation"][1];
-			// スケーリング
-			camera_.scale.x = (float)transform["scaling"][0];
-			camera_.scale.y = (float)transform["scaling"][2];
-			camera_.scale.z = (float)transform["scaling"][1];
+		//if (type.compare("CAMERA") == 0) {
+		//	// トランスフォームのパラメータ読み込み
+		//	nlohmann::json& transform = object["transform"];
+		//	// 平行移動
+		//	camera_.translate.x = (float)transform["translation"][0];
+		//	camera_.translate.y = (float)transform["translation"][2];
+		//	camera_.translate.z = (float)transform["translation"][1];
+		//	// 回転角
+		//	camera_.rotate.x = -((float)transform["rotation"][0] - std::numbers::pi_v<float> / 2.0f);
+		//	camera_.rotate.y = -(float)transform["rotation"][2];
+		//	camera_.rotate.z = -(float)transform["rotation"][1];
+		//	// スケーリング
+		//	camera_.scale.x = (float)transform["scaling"][0];
+		//	camera_.scale.y = (float)transform["scaling"][2];
+		//	camera_.scale.z = (float)transform["scaling"][1];
 
-		}
+		//}
 
 		// オブジェクト走査を再帰関数にまとめ、再帰関数で枝を走査する
 		if (object.contains("children")) {
@@ -108,7 +108,7 @@ void Loader::Arrangement(LevelData* levelData)
 		// モデルを指定して3Dオブジェクトを生成
 		std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 		newObject->Initialize();
-		newObject->SetModel(objectData.fileName + ".obj");
+		newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
 		newObject->SetTexHandle(texHandle_);
 		newObject->SetPosition(objectData.translate);
 		newObject->SetRotate(objectData.rotate);
@@ -121,6 +121,7 @@ void Loader::Draw(Camera& camera)
 {
 	for (auto& object : objects_) {
 		object->Draw(camera);
+		
 	}
 }
 

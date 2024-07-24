@@ -49,6 +49,12 @@ void GameScene::Initialize()
 	skyBox_->SetTexHandle(texHandleSkyBox_);
 	worldTransformSkyBox_.Initialize();
 	worldTransformSkyBox_.scale = { 500.0f,500.0f,500.0f };
+
+	// loader
+	loader_ = std::make_unique<Loader>();
+	levelData_ = loader_->Load("level");
+	loader_->SetTexHandle(texHandlePlayer_);
+	loader_->Arrangement(levelData_);
 }
 
 void GameScene::Update()
@@ -113,11 +119,12 @@ void GameScene::Draw()
 		(*enemysItr_)->Draw(camera_);
 	}
 	// skyBox
-	skyBox_->Draw(worldTransformSkyBox_, camera_);
+	//skyBox_->Draw(worldTransformSkyBox_, camera_);
 	// player
 	player_->Draw(camera_);
 	// lockOn_(レティクル)
 	lockOn_->Draw();
+	loader_->Draw(camera_);
 }
 
 void GameScene::PostProcessDraw()

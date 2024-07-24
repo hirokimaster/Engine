@@ -14,6 +14,7 @@
 #include "application/GameObject/RailCamera/RailCamera.h"
 #include "engine/Model/SkyBox/SkyBox.h"
 #include "application/GameObject/LockOn/LockOn.h"
+#include "engine/Loader/Loader.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -74,4 +75,6 @@ private:
 	WorldTransform worldTransformSkyBox_{};
 	uint32_t texHandleSkyBox_ = 0; // skyBoxのtexture
 	std::unique_ptr<PostProcess> postProcess_ = nullptr;
+	std::unique_ptr<Loader> loader_ = nullptr;
+	LevelData* levelData_ = nullptr;
 };
