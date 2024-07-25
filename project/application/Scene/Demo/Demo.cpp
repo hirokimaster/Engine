@@ -34,7 +34,7 @@ void Demo::Initialize()
 	camera_.Initialize();*/
 	camera_.Initialize();
 
-	texHandle_ = TextureManager::Load("resources/uvChecker.png");
+	texHandle_ = TextureManager::Load("resources/white.png");
 	loader_ = std::make_unique<Loader>();
 	levelData_ = loader_->Load("level");
 	loader_->SetTexHandle(texHandle_);

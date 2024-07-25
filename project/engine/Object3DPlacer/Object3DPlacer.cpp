@@ -7,7 +7,7 @@ void Object3DPlacer::Initialize()
 	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	materialData_->enableLighting = false;
+	materialData_->enableLighting = true;
 	materialData_->shininess = 20.0f;
 	materialData_->environmentCoefficient = 1.0f;
 
