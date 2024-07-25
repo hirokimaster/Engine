@@ -180,27 +180,47 @@ void Player::DrawUI()
 
 void Player::Rotate()
 {
-	// プレイヤーからレティクルへのベクトル
-	Vector3 playerToReticle = lockOn_->GetWorldPosition3DReticle() - GetWorldPosition();
-	if (playerToReticle.x == 0.0f, playerToReticle.y == 0.0f, playerToReticle.z == 0.0f) {
-		// ゼロベクトルの場合は処理を行わない
+
+	// レティクルの方向ベクトルを求める
+	Vector3 reticlePosition = lockOn_->GetWorldPosition3DReticle();
+	Vector3 playerToReticle = reticlePosition - GetWorldPosition();
+
+	// 方向ベクトルがゼロの時は計算しない
+	if (Length(playerToReticle) == 0.0f) {
 		return;
 	}
-	playerToReticle = Normalize(playerToReticle);
 
-	// プレイヤーの前方向ベクトル
-	Vector3 forward = Vector3(0.0f, 0.0f, 1.0f);
+	// playerの前方ベクトル
+	Vector3 forward = { 0.0f, 0.0f, 1.0f };
 
-	// 回転クォータニオンを計算
-	Quaternion qRotation = CalculateRotationQuaternion(forward, playerToReticle);
-	qRotation = QNormalize(qRotation); // クォータニオンを正規化
-	Matrix4x4 rotateMatrix = MakeRotateMatrix(qRotation);
+	// 正規化
+	Vector3 playerToReticleNorm = Normalize(playerToReticle);
 
-	// 回転行列から回転ベクトルを抽出
-	Vector3 rotate = RotateVector(rotateMatrix);
+	// 回転軸と角度を計算
+	Vector3 rotationAxis = Cross(forward, playerToReticleNorm);
 
-	// プレイヤーの回転に適用
-	worldTransform_.rotate = rotate;
+	if (Length(rotationAxis) == 0.0f) {
+		// 軸がゼロベクトルなら回転は不要
+		return;
+	}
+
+	// 正規化
+	rotationAxis = Normalize(rotationAxis);
+
+	float dotProduct = Dot(forward, playerToReticleNorm);
+	// -1.0 ～ 1.0の範囲にクランプする
+	float clampedDotProduct = std::clamp(dotProduct, -1.0f, 1.0f);
+	float angle = std::acos(clampedDotProduct);
+
+	// クォータニオンを作成
+	Quaternion rotationQuaternion = MakeRotateAxisAngleQuaternion(rotationAxis, angle);
+	Quaternion normalizedQuaternion = QNormalize(rotationQuaternion);
+
+	// 自機の回転を更新
+	Vector3 rotateVector = RotateVector(forward, normalizedQuaternion);
+	worldTransform_.rotate.x = -rotateVector.y;
+	worldTransform_.rotate.y = rotateVector.x;
+	worldTransform_.rotate.z = 0.0f;
 }
 
 Vector3 Player::GetWorldPosition() const
