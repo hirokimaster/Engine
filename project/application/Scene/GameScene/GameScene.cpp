@@ -120,7 +120,7 @@ void GameScene::Draw()
 		(*enemysItr_)->Draw(camera_);
 	}
 	// skyBox
-	//skyBox_->Draw(worldTransformSkyBox_, camera_);
+	skyBox_->Draw(worldTransformSkyBox_, camera_);
 	loader_->Draw(camera_);
 	// player
 	player_->Draw(camera_);

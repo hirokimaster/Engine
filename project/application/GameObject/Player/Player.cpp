@@ -20,7 +20,14 @@ void Player::Update()
 	Move(); // 移動
 	Attack(); // 攻撃
 	UpdateBullet(); // 弾の更新
+	Rotate(); // 回転
 	worldTransform_.UpdateMatrix();
+#ifdef _DEBUG
+	ImGui::Begin("PlayerRotate");
+	ImGui::Text("position [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.rotate.x,
+		worldTransform_.rotate.y, worldTransform_.rotate.z);
+	ImGui::End();
+#endif
 }
 
 void Player::Draw(Camera& camera)
@@ -169,6 +176,31 @@ void Player::OnCollision()
 void Player::DrawUI()
 {
 
+}
+
+void Player::Rotate()
+{
+	// プレイヤーからレティクルへのベクトル
+	Vector3 playerToReticle = lockOn_->GetWorldPosition3DReticle() - GetWorldPosition();
+	if (playerToReticle.x == 0.0f, playerToReticle.y == 0.0f, playerToReticle.z == 0.0f) {
+		// ゼロベクトルの場合は処理を行わない
+		return;
+	}
+	playerToReticle = Normalize(playerToReticle);
+
+	// プレイヤーの前方向ベクトル
+	Vector3 forward = Vector3(0.0f, 0.0f, 1.0f);
+
+	// 回転クォータニオンを計算
+	Quaternion qRotation = CalculateRotationQuaternion(forward, playerToReticle);
+	qRotation = QNormalize(qRotation); // クォータニオンを正規化
+	Matrix4x4 rotateMatrix = MakeRotateMatrix(qRotation);
+
+	// 回転行列から回転ベクトルを抽出
+	Vector3 rotate = RotateVector(rotateMatrix);
+
+	// プレイヤーの回転に適用
+	worldTransform_.rotate = rotate;
 }
 
 Vector3 Player::GetWorldPosition() const

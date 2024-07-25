@@ -474,6 +474,15 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix) {
 	return result;
 }
 
+Vector3 RotateVector(const Matrix4x4& matrix)
+{
+	Vector3 result;
+	result.x = matrix.m[0][0];
+	result.y = matrix.m[1][1];
+	result.z = matrix.m[2][2];
+	return Normalize(result);
+}
+
 // 長さ（ノルム）
 float Length(const Vector3& v) {
 	float result;
@@ -816,6 +825,14 @@ Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
 	}
 
 	return 	result;
+}
+
+Quaternion CalculateRotationQuaternion(const Vector3& from, const Vector3& to)
+{
+	Vector3 axis = Cross(from, to);
+	float angle = std::acos(Dot(Normalize(from), Normalize(to)));
+	Quaternion q = MakeRotateAxisAngleQuaternion(Normalize(axis), angle);
+	return q;
 }
 
 // 演算子のオーバーロード

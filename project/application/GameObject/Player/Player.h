@@ -58,6 +58,11 @@ private: // クラス内でしか使わない
 	/// <param name="camera"></param>
 	void DrawUI();
 
+	/// <summary>
+	/// 自機の回転
+	/// </summary>
+	void Rotate();
+
 public:
 
 #pragma region getter

@@ -80,6 +80,8 @@ Vector3 Normalize(const Vector3& v);
 
 // 変換
 Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
+// 回転行列から回転ベクトルを抽出
+Vector3 RotateVector(const Matrix4x4& matrix);
 
 // ノルム
 float Length(const Vector3& v);
@@ -135,6 +137,8 @@ Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
 Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
 // 球面線形補間
 Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
+// 回転を計算
+Quaternion CalculateRotationQuaternion(const Vector3& from, const Vector3& to);
 
 // 演算子のオーバーロード
 Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b);
