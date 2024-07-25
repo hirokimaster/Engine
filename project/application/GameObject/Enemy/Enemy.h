@@ -72,5 +72,7 @@ private:
 	float fireTimer_ = 120.0f; // 攻撃のタイマー
 	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
+	static const int32_t kLifeTime_ = 60 * 5; // 生きてる時間
+	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 };
 

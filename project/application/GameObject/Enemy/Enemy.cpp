@@ -23,6 +23,11 @@ void Enemy::Update()
 	BulletUpdate(); // 弾の更新処理
 	worldTransform_.UpdateMatrix();
 
+	// 時間で消滅
+	if (--deathTimer_ <= 0) {
+		isDead_ = true;
+	}
+
 #ifdef _DEBUG
 
 	ImGui::Begin("Enemy");

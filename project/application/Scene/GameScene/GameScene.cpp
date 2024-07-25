@@ -77,7 +77,6 @@ void GameScene::Update()
 	// デスフラグが立ったら要素を削除
 	enemys_.remove_if([](std::unique_ptr<Enemy>& enemy) {
 		if (enemy->GetIsDead()) {
-
 			return true;
 		}
 			return false;
