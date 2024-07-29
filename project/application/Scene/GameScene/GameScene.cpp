@@ -12,8 +12,6 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
-
 	/*postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
 	GameManager::GetInstance()->SetPostProcess(postProcess_.get());

@@ -8,7 +8,6 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameManager/GameManager.h"
 #include "application/GameObject/Player/Player.h"
-#include "application/GameObject/ModelResources/ModelResources.h"
 #include "application/GameObject/Enemy/Enemy.h"
 #include "engine/Utility/CollisionManager/CollisionManager.h"
 #include "application/GameObject/RailCamera/RailCamera.h"
