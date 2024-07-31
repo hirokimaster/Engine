@@ -19,8 +19,8 @@ void RailCamera::Update()
 #ifdef _DEBUG
 	// カメラの座標を画面表示する処理
 	ImGui::Begin("RailCamera");
-	ImGui::SliderFloat3("CmeraTranslation ", &worldTransform_.translate.x, -50.0f, 50.0f);
-	ImGui::SliderFloat3("CmeraRotate ", &worldTransform_.rotate.x, 0.0f, 10.0f);
+	ImGui::SliderFloat3("CameraTranslation ", &worldTransform_.translate.x, -50.0f, 50.0f);
+	ImGui::SliderFloat3("CameraRotate ", &worldTransform_.rotate.x, 0.0f, 10.0f);
 	ImGui::End();
 #endif // _DEBUG
 }

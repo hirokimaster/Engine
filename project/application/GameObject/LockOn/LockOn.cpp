@@ -5,7 +5,7 @@ void LockOn::Initialize()
 {
 	texHandle2DReticle_ = TextureManager::Load("resources/reticle.png");
 	texHandleLockOnReticle_ = TextureManager::Load("resources/reticle2.png");
-	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, { 640.0f,360.0f }));
+	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, reticlePosition_));
 	spriteLockOnReticle_.reset(Sprite::Create(texHandleLockOnReticle_, { 640.0f,360.0f }));
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
@@ -21,7 +21,7 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 		if (Input::GetInstance()->GetJoystickState(joyState)) {
 
-			if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_LEFT_SHOULDER)) {
+			if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
 				// ロックオンを外す
 				target_.clear();
 				isLockOnMode_ = false;
@@ -60,8 +60,10 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 	// ロックオンモードになったとき検索をし始める
 	if (isLockOnMode_) {
-		Search(enemies, camera);
+		//Search(enemies, camera);
 	}
+
+	Search(enemies, camera);
 
 	/*for (auto itr = target_.begin(); itr != target_.end(); ++itr) {
 		if ((*itr)->GetIsDead()) {
@@ -83,10 +85,8 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 	}
 
-	ImGui::Begin("reticle");
-	ImGui::Text("lockOn = %d", isLockOnMode_);
-	ImGui::End();
-
+	// 範囲制限
+	ReticleRangeLimit();
 }
 
 void LockOn::Draw()
@@ -134,6 +134,42 @@ void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector
 	worldTransform3DReticle_.UpdateMatrix();
 }
 
+void LockOn::ReticleRangeLimit()
+{
+	// reticleの範囲制限
+
+	if (sprite2DReticle_->GetPosition().x <= 25.0f) {
+		sprite2DReticle_->SetPosition({ 25.0f,sprite2DReticle_->GetPosition().y });
+	}
+	else if (sprite2DReticle_->GetPosition().x >= 1255.0f) {
+		sprite2DReticle_->SetPosition({ 1255.0f, sprite2DReticle_->GetPosition().y });
+	}
+
+	if (sprite2DReticle_->GetPosition().y <= 25.0f) {
+		sprite2DReticle_->SetPosition({ sprite2DReticle_->GetPosition().x,25.0f});
+	}
+	else if (sprite2DReticle_->GetPosition().y >= 695.0f) {
+		sprite2DReticle_->SetPosition({ sprite2DReticle_->GetPosition().x, 695.0f });
+	}
+
+	// LockOnReticleの範囲制限
+	if (isLockOnMode_) {
+		if (spriteLockOnReticle_->GetPosition().x <= 150.0f) {
+			spriteLockOnReticle_->SetPosition({ 150.0f,spriteLockOnReticle_->GetPosition().y });
+		}
+		else if (spriteLockOnReticle_->GetPosition().x >= 1130.0f) {
+			spriteLockOnReticle_->SetPosition({ 1130.0f, spriteLockOnReticle_->GetPosition().y });
+		}
+
+		if (spriteLockOnReticle_->GetPosition().y <= 100.0f) {
+			spriteLockOnReticle_->SetPosition({ spriteLockOnReticle_->GetPosition().x,100.0f });
+		}
+		else if (spriteLockOnReticle_->GetPosition().y >= 620.0f) {
+			spriteLockOnReticle_->SetPosition({ spriteLockOnReticle_->GetPosition().x, 620.0f });
+		}
+	}
+}
+
 Vector3 LockOn::GetWorldPosition3DReticle() const
 {
 	// ワールド座標を入れる変数
@@ -170,8 +206,8 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition)
 
 	// ジョイスティック状態取得
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
-		spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 8.0f;
-		spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 8.0f;
+		spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 12.0f;
+		spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 12.0f;
 		// スプライトの座標変更を反映
 		if (isLockOnMode_) {
 			spriteLockOnReticle_->SetPosition(spritePosition);
@@ -257,8 +293,15 @@ bool LockOn::CheckReticleRange(const Vector3& position)
 {
 	// レティクルの範囲内にあるかを判定
 
-	float reticleRadius = 150.0f; // レティクルの半径
+	float reticleRadius; // レティクルの範囲
 
+	if (isLockOnMode_) {
+		reticleRadius = 150.0f;
+	}
+	else {
+		reticleRadius = 50.0f;
+	}
+	
 	Vector2 reticleCenter = screenPositionReticle_;
 
 	Vector2 enemyPosition = Vector2(position.x, position.y); // enemyのスクリーン座標

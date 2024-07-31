@@ -26,6 +26,12 @@ public:
 	/// </summary>
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
+#pragma region setter
+
+	void SetRotate(Vector3 rotate) { worldTransform_.rotate = rotate; }
+
+#pragma endregion
+
 private:
 
 	/// <summary>

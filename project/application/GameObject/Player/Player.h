@@ -73,6 +73,8 @@ public:
 
 	Vector2 GetScreenPosition2DReticle() { return screenPositionReticle_; }
 
+	Vector3 GetRotate()const { return worldTransform_.rotate; }
+
 #pragma endregion
 
 #pragma region setter

@@ -71,20 +71,6 @@ void Player::Move()
 		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kMoveSpeed_;
 		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kMoveSpeed_;
 	}
-
-	// 移動
-	//worldTransform_.translate = worldTransform_.translate + move;
-
-	// 移動限界
-	const float kMoveLimitX = 14.5f;
-	const float kMoveLimitDownY = -0.2f;
-	const float kMoveLimitUpY = 6.1f;
-
-	// 範囲を超えない処理
-	worldTransform_.translate.x = max(worldTransform_.translate.x, -kMoveLimitX);
-	worldTransform_.translate.x = min(worldTransform_.translate.x, kMoveLimitX);
-	worldTransform_.translate.y = max(worldTransform_.translate.y, kMoveLimitDownY);
-	worldTransform_.translate.y = min(worldTransform_.translate.y, kMoveLimitUpY);
 }
 
 void Player::Attack()

@@ -37,4 +37,6 @@ private:
 	std::unique_ptr<PostProcess> postProcess_ = nullptr; // postProcess
 	std::unique_ptr<Sprite> spriteTitle_ = nullptr; // Titleのsprite
 	uint32_t texHandleTitle_ = 0;
+	std::unique_ptr<Sprite> spritePushA_ = nullptr; // pushAのsprite
+	uint32_t texHandlePushA_ = 0;
 };

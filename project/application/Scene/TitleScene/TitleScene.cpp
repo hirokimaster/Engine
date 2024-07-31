@@ -13,6 +13,9 @@ void TitleScene::Initialize()
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 	texHandleTitle_ = TextureManager::Load("resources/title.png");
 	spriteTitle_.reset(Sprite::Create(texHandleTitle_));
+
+	texHandlePushA_ = TextureManager::Load("resources/pushA.png");
+	spritePushA_.reset(Sprite::Create(texHandlePushA_,{330.0f,450.0f}));
 }
 
 void TitleScene::Update()
@@ -26,4 +29,5 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {
 	spriteTitle_->Draw();
+	spritePushA_->Draw();
 }

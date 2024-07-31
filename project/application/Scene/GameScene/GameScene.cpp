@@ -92,6 +92,11 @@ void GameScene::Update()
 
 	Collision();
 
+	// 仮のクリア判定
+	if (player_->GetWorldPosition().z >= 250.0f) {
+		GameManager::GetInstance()->ChangeScene("CLEAR");
+	}
+
 #ifdef _DEBUG
 	// カメラの座標
 	ImGui::Begin("Camera");
@@ -175,13 +180,14 @@ void GameScene::RandomRespawn()
 	spawnTimer_++;
 	std::random_device seed;
 
-	if (spawnTimer_ >= 90) {
+	if (spawnTimer_ >= 60) {
 		std::mt19937 randomEngine(seed());
-		std::uniform_real_distribution<float>distribution(-5.0f, 15.0f);
+		std::uniform_real_distribution<float>distributionX(-12.0f, 12.0f);
+		std::uniform_real_distribution<float>distributionY(0.0f, 5.0f);
 		std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
 		texHandleEnemy_ = TextureManager::Load("resources/white.png");
 		enemy->Initialize(texHandleEnemy_);
-		enemy->SetPosition(Vector3(float(distribution(randomEngine)), float(distribution(randomEngine)), 80.0f + railCamera_->GetWorldTransform().translate.z));
+		enemy->SetPosition(Vector3(float(distributionX(randomEngine)), float(distributionY(randomEngine)), 80.0f + railCamera_->GetWorldTransform().translate.z));
 		enemys_.push_back(std::move(enemy));
 		spawnTimer_ = 0;
 	}

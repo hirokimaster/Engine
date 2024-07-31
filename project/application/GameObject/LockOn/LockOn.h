@@ -80,6 +80,11 @@ private:
 	/// <param name="playerPosition"></param>
 	void Reticle(const Camera& camera, const Vector2& position, const Vector3& playerPosition);
 
+	/// <summary>
+	/// レティクルの範囲制限
+	/// </summary>
+	void ReticleRangeLimit();
+
 public:
 
 #pragma region getter
@@ -116,4 +121,5 @@ private:
 	bool startLockOnTimer_ = false;
 	uint32_t texHandleLockOnReticle_ = 0;
 	std::unique_ptr<Sprite> spriteLockOnReticle_;
+	Vector2 reticlePosition_ = { 640.0f, 360.0f }; // reticleの範囲制限用のposition
 };
