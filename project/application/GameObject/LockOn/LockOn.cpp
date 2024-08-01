@@ -65,11 +65,11 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 	Search(enemies, camera);
 
-	/*for (auto itr = target_.begin(); itr != target_.end(); ++itr) {
+	for (auto itr = target_.begin(); itr != target_.end(); ++itr) {
 		if ((*itr)->GetIsDead()) {
 			target_.erase(itr);
 		}
-	}*/
+	}
 
 	// reticleの位置を決める
 	ReticlePositionCalc(camera);
@@ -83,6 +83,10 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 			sprite_.push_back(std::move(sprite));
 		}
 
+	}
+	else {
+		positionScreen_.clear();
+		sprite_.clear();
 	}
 
 	// 範囲制限
@@ -211,6 +215,7 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition)
 		// スプライトの座標変更を反映
 		if (isLockOnMode_) {
 			spriteLockOnReticle_->SetPosition(spritePosition);
+			sprite2DReticle_->SetPosition(spritePosition);
 		}
 		else {
 			sprite2DReticle_->SetPosition(spritePosition);
@@ -265,6 +270,7 @@ bool LockOn::UnLock(const Camera& camera, const Enemy* target)
 
 void LockOn::ReticlePositionCalc(const Camera& camera)
 {
+
 	positionScreen_.clear();
 	sprite_.clear();
 
@@ -299,7 +305,7 @@ bool LockOn::CheckReticleRange(const Vector3& position)
 		reticleRadius = 150.0f;
 	}
 	else {
-		reticleRadius = 50.0f;
+		reticleRadius = 30.0f;
 	}
 	
 	Vector2 reticleCenter = screenPositionReticle_;

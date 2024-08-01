@@ -102,7 +102,7 @@ void Player::Attack()
 			// 自機から照準オブジェクトのベクトル
 			Vector3 WorldPos = GetWorldPosition();
 
-			if (lockOn_->GetIsLockOnMode()) {
+			if (!lockOn_->GetTarget().empty()) {
 				std::list<const Enemy*> targets = lockOn_->GetTarget(); // コピーしておく
 				for (std::list<const Enemy*>::iterator targetItr = targets.begin(); targetItr != targets.end(); ++targetItr) {
 					// ロックオン対象がいるかつ生きてたら対象に向かって弾を撃つ

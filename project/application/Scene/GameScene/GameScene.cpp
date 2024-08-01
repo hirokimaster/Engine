@@ -54,6 +54,15 @@ void GameScene::Initialize()
 	levelData_ = loader_->Load("level");
 	loader_->SetTexHandle(texhandle);
 	loader_->Arrangement(levelData_);
+
+	// 仮のUI
+	texHandleLockOn_ = TextureManager::Load("resources/LockOn.png");
+	texHandleUnLock_ = TextureManager::Load("resources/unLock.png");
+	texHandleAttack_ = TextureManager::Load("resources/attack.png");
+
+	spriteLockOn_.reset(Sprite::Create(texHandleLockOn_, { 20.0f,100.0f }));
+	spriteUnLock_.reset(Sprite::Create(texHandleUnLock_, { 20.0f,100.0f }));
+	spriteAttack_.reset(Sprite::Create(texHandleAttack_, { 1000.0f , 100.0f }));
 }
 
 void GameScene::Update()
@@ -122,12 +131,21 @@ void GameScene::Draw()
 		(*enemysItr_)->Draw(camera_);
 	}
 	// skyBox
-	skyBox_->Draw(worldTransformSkyBox_, camera_);
+	//skyBox_->Draw(worldTransformSkyBox_, camera_);
 	loader_->Draw(camera_);
 	// player
 	player_->Draw(camera_);
 	// lockOn_(レティクル)
 	lockOn_->Draw();
+	// 仮UI
+	if (lockOn_->GetIsLockOnMode()) {
+		spriteUnLock_->Draw();
+	}
+	else {
+		spriteLockOn_->Draw();
+	}
+	
+	spriteAttack_->Draw();
 }
 
 void GameScene::PostProcessDraw()
