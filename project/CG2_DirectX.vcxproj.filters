@@ -253,6 +253,9 @@
     <ClCompile Include="engine\Loader\Loader.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="engine\ComputePipeline\ComputePipeline.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CreateResource\CreateResource.h">
@@ -412,6 +415,7 @@
       <Filter>Engine\Model\SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="engine\Loader\Loader.h" />
+    <ClInclude Include="engine\ComputePipeline\ComputePipeline.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">
@@ -487,6 +491,7 @@
       <Filter>Engine\Shader</Filter>
     </FxCompile>
     <FxCompile Include="resources\ShaderFile\Random.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Skinning.CS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">

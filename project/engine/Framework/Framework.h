@@ -9,6 +9,7 @@
 #include "engine/Audio/Audio.h"
 #include "application/GameManager/GameManager.h"
 #include "engine/SceneFactory/SceneFactory.h"
+#include "engine/ComputePipeline/ComputePipeline.h"
 
 class Framework {
 public:

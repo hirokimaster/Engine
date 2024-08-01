@@ -16,6 +16,7 @@ void Framework::Initialize()
 	Input::Initialize();
 	audio_->Initialize();
 	GraphicsPipeline::Initialize();
+	ComputePipeline::Initialize();
 
 	// ImGuiの初期化
 	imguiManager_ = ImGuiManager::GetInstance();
