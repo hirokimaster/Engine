@@ -34,18 +34,42 @@ void Demo::Initialize()
 	camera_.Initialize();*/
 	camera_.Initialize();
 
-	texHandle_ = TextureManager::Load("resources/uvChecker.png");
-	loader_ = std::make_unique<Loader>();
-	levelData_ = loader_->Load("level");
-	loader_->SetTexHandle(texHandle_);
-	loader_->Arrangement(levelData_);
+	transform_.Initialize();
+	texHandle2_ = TextureManager::Load("resources/white.png");
+	ModelManager::LoadGLTFModel("Walk.gltf");
+
+	trans.Initialize();
+	trans.rotate.y = std::numbers::pi_v<float>;
+	trans.translate = { 0,0,-50.0f };
+	object_ = std::make_unique<Object3DPlacer>();
+	object_->Initialize();
+	object_->SetModel("Walk.gltf");
+	object_->SetTexHandle(texHandle2_);
+	object_->SetWorldTransform(trans);
+	
+
+	texHandle_ = TextureManager::Load("resources/rostock_laage_airport_4k.dds");
+	skyBox_ = std::make_unique<SkyBox>();
+	skyBox_->Initialize();
+	skyBox_->SetTexHandle(texHandle_);
+	transform_.scale = { 1000.0f,1000.0f,1000.0f };
+
+	light_ = std::make_unique<Lighting>();
+	light_->Initialize(Environment);
+	light_->SetEnvironmentTexture(texHandle_);
+	material_.environmentCoefficient = 1.0f;
+	material_.shininess = 10.0f;
+
 }
 
 void Demo::Update()
 {
-	loader_->UpdateCamera();
-	camera_ = loader_->GetCamera();
-	camera_.TransferMatrix();
+	object_->SetLight(light_.get());
+	object_->SetMaterialProperty(material_);
+	material_.enableLighting = true;
+	material_.color = { 1.0f,1.0f,1.0f,1.0f };
+	light_->SetCameraData(camera_.translate);
+	camera_.UpdateMatrix();
 
 	//static int currentItem_ = 0;
 	//const char* item[9] = { "Grayscale", "Vignette", "Bloom","Gaussian","LuminanceOutline",
@@ -116,12 +140,14 @@ void Demo::Update()
 
 
 	//trans_.UpdateMatrix();
-	//camera_.UpdateMatrix();
+	transform_.UpdateMatrix();
+	trans.UpdateMatrix();
 }
 
 void Demo::Draw()
 {
-	loader_->Draw(camera_);
+	skyBox_->Draw(transform_, camera_);
+	object_->Draw(camera_);
 	//postProcess_->Draw();
 }
 

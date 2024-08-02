@@ -2,6 +2,7 @@ C:\授業\2024年度前期\DirectXEngine\project\application\GameManager\GameMan
 C:\授業\2024年度前期\DirectXEngine\project\application\Scene\Demo\Demo.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\Demo.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\Scene\GameScene\GameScene.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\GameScene.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\Scene\IScene\IScene.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\IScene.obj
+C:\授業\2024年度前期\DirectXEngine\project\engine\ComputePipeline\ComputePipeline.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\ComputePipeline.obj
 C:\授業\2024年度前期\DirectXEngine\project\engine\Loader\Loader.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\Loader.obj
 C:\授業\2024年度前期\DirectXEngine\project\engine\Model\Animation\ModelAnimation.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\ModelAnimation.obj
 C:\授業\2024年度前期\DirectXEngine\project\Engine\Audio\Audio.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\Audio.obj

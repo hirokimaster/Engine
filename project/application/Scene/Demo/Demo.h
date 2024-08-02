@@ -8,6 +8,7 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameManager/GameManager.h"
 #include "engine/Loader/Loader.h"
+#include "engine/Model/SkyBox/SkyBox.h"
 
 class Demo : public IScene {
 public: // メンバ関数
@@ -55,10 +56,17 @@ private:
 	bool dFlag_1 = true;
 	bool dFlag_2 = false;
 	DissolveParam DissolvePram_{};*/
-	std::unique_ptr<Loader> loader_;
-	LevelData* levelData_ = nullptr;
+	
+	std::unique_ptr<SkyBox> skyBox_;
 	uint32_t texHandle_ = 0;
-	Camera camera_;
+	WorldTransform transform_{};
+	Camera camera_{};
+
+	std::unique_ptr<Object3DPlacer> object_;
+	std::unique_ptr<Lighting> light_;
+	uint32_t texHandle2_ = 0;
+	Material material_{};
+	WorldTransform trans{};
 };
 
 
