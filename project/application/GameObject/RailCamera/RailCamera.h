@@ -3,6 +3,7 @@
 #include "engine/Transform/WorldTransform.h"
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"
 #include <algorithm>
+#include "application/GameObject/LockOn/LockOn.h"
 
 class RailCamera {
 public:
@@ -30,6 +31,8 @@ public:
 
 	void SetRotate(Vector3 rotate) { worldTransform_.rotate = rotate; }
 
+	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
+
 #pragma endregion
 
 private:
@@ -38,6 +41,11 @@ private:
 	/// レールカメラを動かす計算をする所
 	/// </summary>
 	void MoveOnRail();
+
+	/// <summary>
+	/// 回転
+	/// </summary>
+	void Rotate();
 
 	Vector3 CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t);
 
@@ -52,4 +60,6 @@ private:
 	Vector3 velocity_ = { 0.0f, 0.0f, 0.0f };
 	// 角度
 	Vector3 rotate_ = { 0.0f, 0.0f, 0.0f };
+	// lockOn
+	LockOn* lockOn_ = nullptr;
 };

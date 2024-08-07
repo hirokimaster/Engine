@@ -16,6 +16,8 @@ void RailCamera::Update()
 {
 	MoveOnRail(); // 移動
 
+	Rotate();
+
 #ifdef _DEBUG
 	// カメラの座標を画面表示する処理
 	ImGui::Begin("RailCamera");
@@ -39,6 +41,50 @@ void RailCamera::MoveOnRail()
 	// カメラオブジェクトのワールド行列からビュー行列を計算する
 	camera_.matView = Inverse(worldTransform_.matWorld);
 
+}
+
+void RailCamera::Rotate()
+{
+	// レティクルの方向ベクトルを求める
+	Vector3 reticlePosition = lockOn_->GetWorldPosition3DReticle();
+	Vector3 playerToReticle = reticlePosition - worldTransform_.translate;
+
+	// 方向ベクトルがゼロの時は計算しない
+	if (Length(playerToReticle) == 0.0f) {
+		return;
+	}
+
+	// playerの前方ベクトル
+	Vector3 forward = { 0.0f, 0.0f, 1.0f };
+
+	// 正規化
+	Vector3 playerToReticleNorm = Normalize(playerToReticle);
+
+	// 回転軸と角度を計算
+	Vector3 rotationAxis = Cross(forward, playerToReticleNorm);
+
+	if (Length(rotationAxis) == 0.0f) {
+		// 軸がゼロベクトルなら回転は不要
+		return;
+	}
+
+	// 正規化
+	rotationAxis = Normalize(rotationAxis);
+
+	float dotProduct = Dot(forward, playerToReticleNorm);
+	// -1.0 ～ 1.0の範囲にクランプする
+	float clampedDotProduct = std::clamp(dotProduct, -1.0f, 1.0f);
+	float angle = std::acos(clampedDotProduct);
+
+	// クォータニオンを作成
+	Quaternion rotationQuaternion = MakeRotateAxisAngleQuaternion(rotationAxis, angle);
+	Quaternion normalizedQuaternion = QNormalize(rotationQuaternion);
+
+	// 自機の回転を更新
+	Vector3 rotateVector = RotateVector(forward, normalizedQuaternion);
+	worldTransform_.rotate.x = -rotateVector.y;
+	worldTransform_.rotate.y = rotateVector.x;
+	worldTransform_.rotate.z = 0.0f;
 }
 
 Vector3 RailCamera::CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t)
