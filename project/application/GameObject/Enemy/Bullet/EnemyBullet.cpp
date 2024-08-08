@@ -1,4 +1,5 @@
 #include "EnemyBullet.h"
+#include "application/GameObject/Player/Player.h"
 
 void EnemyBullet::Initialize(uint32_t texHandle)
 {
@@ -6,9 +7,11 @@ void EnemyBullet::Initialize(uint32_t texHandle)
 	object_->Initialize();
 	object_->SetModel("cube.obj");
 	worldTransform_.Initialize();
-	worldTransform_.scale = { 0.5f,0.5f,0.5f };	
+	worldTransform_.scale = { 0.5f,0.5f,0.5f };
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
+
+	velocity_ = 1.2f * RandomDirection();
 
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
@@ -17,6 +20,7 @@ void EnemyBullet::Initialize(uint32_t texHandle)
 void EnemyBullet::Update()
 {
 	Move();
+	BulletErase();
 	worldTransform_.UpdateMatrix();
 }
 
@@ -27,8 +31,26 @@ void EnemyBullet::Draw(Camera& camera)
 
 void EnemyBullet::Move()
 {
+
+	deltaTime_ += 1.0f / 60.0f;
+	// ターゲットへのベクトルを計算
+	Vector3 toTarget = player_->GetWorldPosition() - GetWorldPosition();
+	// 正規化
+	toTarget = Normalize(toTarget);
+
+	Vector3 curveVector = CalculateCurve(deltaTime_);
+
+	// 現在の速度方向と目標方向を補間して新しい方向を決定
+	Vector3 desiredDirection = Normalize(toTarget + curveVector);
+	velocity_ = (1.0f - 0.1f) * velocity_ + 0.1f * desiredDirection;
+	velocity_ = Normalize(velocity_);
+	velocity_ = 1.0f * velocity_;
+
 	//移動
-	worldTransform_.translate = worldTransform_.translate + velocity_;
+	worldTransform_.translate = worldTransform_.translate + (deltaTime_ * velocity_);
+
+	timeElapsed_ += 1.0f / 60.0f;
+
 	worldTransform_.UpdateMatrix();
 }
 
@@ -38,6 +60,10 @@ void EnemyBullet::BulletErase()
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
+
+	if (player_->GetWorldPosition().z - 5.0f  >= GetWorldPosition().z) {
+		isDead_ = true;
+	}
 }
 
 void EnemyBullet::OnCollision()
@@ -45,40 +71,25 @@ void EnemyBullet::OnCollision()
 	isDead_ = true;
 }
 
-Matrix4x4 EnemyBullet::Rotation(float angle, const Vector3& axis)
+Vector3 EnemyBullet::RandomDirection()
 {
-	Matrix4x4 result;
-	float rad = angle * (std::numbers::pi_v<float> / 180.0f); // 角度をラジアンに変換
-	float cosA = cosf(rad);
-	float sinA = sinf(rad);
-
-	// 回転軸の単位ベクトル
-	Vector3 normalizedAxis = Normalize(axis);
-	float x = normalizedAxis.x;
-	float y = normalizedAxis.y;
-	float z = normalizedAxis.z;
-
-	result.m[0][0] = cosA + (1 - cosA) * x * x;
-	result.m[0][1] = (1 - cosA) * x * y - sinA * z;
-	result.m[0][2] = (1 - cosA) * x * z + sinA * y;
-	result.m[0][3] = 0;
-
-	result.m[1][0] = (1 - cosA) * y * x + sinA * z;
-	result.m[1][1] = cosA + (1 - cosA) * y * y;
-	result.m[1][2] = (1 - cosA) * y * z - sinA * x;
-	result.m[1][3] = 0;
-
-	result.m[2][0] = (1 - cosA) * z * x - sinA * y;
-	result.m[2][1] = (1 - cosA) * z * y + sinA * x;
-	result.m[2][2] = cosA + (1 - cosA) * z * z;
-	result.m[2][3] = 0;
-
-	result.m[3][0] = 0;
-	result.m[3][1] = 0;
-	result.m[3][2] = 0;
-	result.m[3][3] = 1;
+	Vector3 result = Vector3(
+		((float)std::rand() / RAND_MAX) * 2.0f - 1.0f,
+		((float)std::rand() / RAND_MAX) * 2.0f - 1.0f,
+		((float)std::rand() / RAND_MAX) * 2.0f - 1.0f);
 
 	return result;
+}
+
+Vector3 EnemyBullet::CalculateCurve(float dt)
+{
+	// カーブの振幅と周波数を設定
+	float curveAmplitude = 0.8f;
+	float curveFrequency = 0.8f;
+
+	// カーブベクトルを計算
+	float curveOffset = std::sin(timeElapsed_ * curveFrequency) * curveAmplitude;
+	return Vector3(0.0f, curveOffset, 0.0f); // Y軸方向のカーブ
 }
 
 Vector3 EnemyBullet::GetWorldPosition() const

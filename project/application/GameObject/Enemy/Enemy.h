@@ -40,7 +40,7 @@ private:
 	/// <summary>
 	/// 攻撃
 	/// </summary>
-	void Fire();
+	void Fire(uint32_t bulletCount);
 
 	/// <summary>
 	/// 弾の更新

@@ -3,6 +3,8 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include <random>
 
+class Player;
+
 class EnemyBullet : public Collider {
 public:
 	/// <summary>
@@ -41,7 +43,9 @@ private:
 	/// </summary>
 	void OnCollision()override;
 
-	Matrix4x4 Rotation(float angle, const Vector3& axis);
+	Vector3 RandomDirection();
+
+	Vector3 CalculateCurve(float dt);
 
 public:
 
@@ -63,6 +67,8 @@ public:
 
 	void SetTarget(const Vector3& target) { target_ = target; }
 
+	void SetPlayer(Player* player) { player_ = player; }
+
 #pragma endregion
 
 private:
@@ -74,4 +80,7 @@ private:
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	float rotateAngle_ = 0.0f;
 	Vector3 target_{};
+	Player* player_ = nullptr;
+	float deltaTime_ = 0.0f;
+	float timeElapsed_ = 0.0f; // 経過時間
 };

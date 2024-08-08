@@ -53,18 +53,17 @@ void Enemy::OnCollision()
 	isDead_ = true;
 }
 
-void Enemy::Fire()
+void Enemy::Fire(uint32_t bulletCount)
 {
-	// 弾の速度
-	const float kBulletSpeed = -2.0f;
-	Vector3 velocity = { 0,0,kBulletSpeed };
 
-	// 弾を生成し、初期化
-	std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-	bullet->Initialize(texHandleBullet_);
-	bullet->SetVelocity(velocity);
-	bullet->SetPosition(GetWorldPosition());
-	bullets_.push_back(std::move(bullet));
+	for (uint32_t i = 0; i < bulletCount; ++i) {
+		// 弾を生成し、初期化
+		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+		bullet->Initialize(texHandleBullet_);
+		bullet->SetPlayer(player_);
+		bullet->SetPosition(GetWorldPosition());
+		bullets_.push_back(std::move(bullet));
+	}
 
 }
 
@@ -74,7 +73,7 @@ void Enemy::BulletUpdate()
 	--fireTimer_;
 
 	if (isFire_) {
-		FireSpiral(0.5f, 60, 0.05f);
+		//FireSpiral(0.5f, 60, 0.05f);
 		--spiralTimer_;
 	}
 
@@ -85,7 +84,7 @@ void Enemy::BulletUpdate()
 	if (fireTimer_ <= 0) {
 		// 弾を発射
 		//FireRadial(20);
-		
+		Fire(3);
 		//FireMissile(1);
 		// 発射タイマーの初期化
 		fireTimer_ = kFireInterval_;
@@ -133,22 +132,22 @@ void Enemy::FireRadial(uint32_t bulletCount)
 void Enemy::FireSpiral(float spiralSpeed, uint32_t bulletCount, float delayBetweenBullets)
 {
 	static uint32_t bulletIndex = 0; // 弾のインデックス
-	static float timeSinceLastShot = 0.0f;
+	static float timeLastShot = 0.0f; // 発射間隔に使う
 
 	// 弾発射タイミングの制御
-	timeSinceLastShot += deltaTime_; // deltaTimeはフレームごとの時間差分
+	timeLastShot += deltaTime_; // deltaTimeはフレームごとの時間差分
 
-	if (timeSinceLastShot >= delayBetweenBullets)
+	if (timeLastShot >= delayBetweenBullets)
 	{
-		timeSinceLastShot = 0.0f;
+		timeLastShot = 0.0f;
 
 		// 弾の速度
 		const float kBulletSpeed = -1.0f;
 
-		// 螺旋の角度計算
+		// 螺旋の角度
 		float angle = bulletIndex * spiralSpeed;
 
-		// 速度ベクトルの計算 (螺旋状の動き)
+		// 速度ベクトルの計算
 		float x = std::cos(angle);
 		float y = std::sin(angle);
 		Vector3 velocity = { x, y, 7.0f};
@@ -189,6 +188,7 @@ void Enemy::FireMissile(uint32_t bulletCount)
 		bullets_.push_back(std::move(bullet));
 	}
 }
+
 
 Vector3 Enemy::GetWorldPosition() const
 {
