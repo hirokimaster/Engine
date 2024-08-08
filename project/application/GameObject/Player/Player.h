@@ -5,6 +5,7 @@
 #include "engine/Sprite/Sprite.h"
 #include <vector>
 #include "engine/Object3DPlacer/Object3DPlacer.h"
+#include "application/GameObject/RailCamera/RailCamera.h"
 
 class LockOn;
 
@@ -85,6 +86,8 @@ public:
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
+	void SetRailCamera(RailCamera* railCamera) { railCamera_ = railCamera; }
+
 #pragma endregion
 
 private:
@@ -97,4 +100,5 @@ private:
 	float shotTimer_ = 0.0f;
 	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
+	RailCamera* railCamera_ = nullptr;
 };

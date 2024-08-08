@@ -27,11 +27,15 @@ public:
 	/// </summary>
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
+	Vector3 GetWorldPosition() const;
+
 #pragma region setter
 
 	void SetRotate(Vector3 rotate) { worldTransform_.rotate = rotate; }
 
-	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
+	void SetPosition(Vector2 position) { worldTransform_.translate.x = position.x, worldTransform_.translate.y = position.y; }
+
+	void SetViewMatrix(Matrix4x4 matView) { camera_.matView = matView; }
 
 #pragma endregion
 
@@ -41,12 +45,7 @@ private:
 	/// レールカメラを動かす計算をする所
 	/// </summary>
 	void MoveOnRail();
-
-	/// <summary>
-	/// 回転
-	/// </summary>
-	void Rotate();
-
+	
 	Vector3 CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t);
 
 	Vector3 CatmullRomPosition(const std::vector<Vector3>& points, float t);
@@ -60,6 +59,4 @@ private:
 	Vector3 velocity_ = { 0.0f, 0.0f, 0.0f };
 	// 角度
 	Vector3 rotate_ = { 0.0f, 0.0f, 0.0f };
-	// lockOn
-	LockOn* lockOn_ = nullptr;
 };

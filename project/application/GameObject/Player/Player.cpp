@@ -219,6 +219,29 @@ void Player::Rotate()
 	worldTransform_.rotate.x = -rotateVector.y;
 	worldTransform_.rotate.y = rotateVector.x;
 	worldTransform_.rotate.z = 0.0f;
+
+	Camera camera = railCamera_->GetCamera();
+	WorldTransform worldTransform = railCamera_->GetWorldTransform();
+
+	Vector3 offset = { 0,0,-10.0f };
+	Quaternion playerRotationQuaternion = MakeRotateAxisAngleQuaternion(rotationAxis, angle);
+
+	// 自機のローカル位置に基づいてカメラの位置を計算
+	Vector3 localCameraPosition = RotateVector(offset, playerRotationQuaternion);
+	Vector3 worldCameraPosition = worldTransform_.translate + localCameraPosition;
+
+	// 親子関係があるため、カメラのワールド行列も再計算
+	worldTransform.translate = worldCameraPosition;
+	//worldTransform.rotate = worldTransform_.rotate;
+
+	worldTransform.matWorld = MakeAffineMatrix(
+		worldTransform.scale, worldTransform.rotate, worldTransform.translate);
+
+	camera.matView = Inverse(worldTransform.matWorld);
+
+	railCamera_->SetViewMatrix(camera.matView);
+	railCamera_->SetPosition({ worldTransform.translate.x, worldTransform.translate.y });
+	railCamera_->SetRotate(worldTransform.rotate);
 }
 
 Vector3 Player::GetWorldPosition() const
