@@ -9,5 +9,5 @@ ModelResources* ModelResources::GetInstance()
 void ModelResources::LoadModel()
 {
 	ModelManager::GetInstance()->LoadObjModel("cube.obj");
-	ModelManager::GetInstance()->LoadObjModel("Jet.obj");
+	//ModelManager::GetInstance()->LoadObjModel("Jet.obj");
 }

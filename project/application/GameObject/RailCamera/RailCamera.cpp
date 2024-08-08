@@ -42,7 +42,7 @@ void RailCamera::MoveOnRail()
 	// 移動
 	const float cameraSpeed = 0.1f; // 移動スピード
 	velocity_.z = cameraSpeed;
-	worldTransform_.translate = worldTransform_.translate + velocity_;
+	//worldTransform_.translate = worldTransform_.translate + velocity_;
 
 	// ワールドトランスフォームのワールド行列再計算
 	worldTransform_.matWorld = MakeAffineMatrix(

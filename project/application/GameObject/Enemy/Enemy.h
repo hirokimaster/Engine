@@ -5,6 +5,8 @@
 #include "engine/ParticleSystem/ParticleSystem.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 
+class Player;
+
 class Enemy : public Collider {
 public:
 	/// <summary>
@@ -45,6 +47,15 @@ private:
 	/// </summary>
 	void BulletUpdate();
 
+	// 360度弾幕
+	void FireRadial(uint32_t bulletCount);
+
+	// 螺旋弾幕
+	void FireSpiral(float spiralSpeed, uint32_t bulletCount, float delayBetweenBullets);
+
+	// ミサイル
+	void FireMissile(uint32_t bulletCount);
+
 public:
 
 #pragma region getter
@@ -62,6 +73,8 @@ public:
 
 	void SetPosition(Vector3 position) { worldTransform_.translate = position; }
 
+	void SetPlayer(Player* player) { player_ = player; }
+
 #pragma endregion
 
 private:
@@ -74,5 +87,9 @@ private:
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	static const int32_t kLifeTime_ = 60 * 5; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
+	Player* player_ = nullptr;
+	float deltaTime_ = 1.0f / 60.0f;
+	bool isFire_ = true;
+	float spiralTimer_ = 180.0f;
 };
 

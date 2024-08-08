@@ -32,6 +32,7 @@ void GameScene::Initialize()
 	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
 	texHandleEnemy_ = TextureManager::Load("resources/white.png");
 	enemy->Initialize(texHandleEnemy_);
+	enemy->SetPlayer(player_.get());
 	enemys_.push_back(std::move(enemy));
 
 	// collision
@@ -72,7 +73,7 @@ void GameScene::Update()
 	player_->Update();
 	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition());
 
-	RandomRespawn();
+	//RandomRespawn();
 
 	// enemy
 	for (enemysItr_ = enemys_.begin();
@@ -206,6 +207,7 @@ void GameScene::RandomRespawn()
 		std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
 		texHandleEnemy_ = TextureManager::Load("resources/white.png");
 		enemy->Initialize(texHandleEnemy_);
+		enemy->SetPlayer(player_.get());
 		enemy->SetPosition(Vector3(float(distributionX(randomEngine)), float(distributionY(randomEngine)), 80.0f + railCamera_->GetWorldTransform().translate.z));
 		enemys_.push_back(std::move(enemy));
 		spawnTimer_ = 0;

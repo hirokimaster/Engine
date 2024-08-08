@@ -5,7 +5,7 @@ void Player::Initialize(uint32_t texHandle)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("Jet.obj");
+	object_->SetModel("cube.obj");
 	worldTransform_.Initialize(); ;
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
@@ -71,6 +71,7 @@ void Player::Move()
 		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kMoveSpeed_;
 		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kMoveSpeed_;
 	}
+	worldTransform_.translate = worldTransform_.translate + move;
 }
 
 void Player::Attack()

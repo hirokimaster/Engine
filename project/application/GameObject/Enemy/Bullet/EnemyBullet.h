@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
+#include <random>
 
 class EnemyBullet : public Collider {
 public:
@@ -40,6 +41,8 @@ private:
 	/// </summary>
 	void OnCollision()override;
 
+	Matrix4x4 Rotation(float angle, const Vector3& axis);
+
 public:
 
 #pragma region getter
@@ -56,6 +59,10 @@ public:
 
 	void SetPosition(Vector3 position) { worldTransform_.translate = position; } // 位置
 
+	void SetRotateAngle(float rotate) {rotateAngle_  = rotate; } // 回転
+
+	void SetTarget(const Vector3& target) { target_ = target; }
+
 #pragma endregion
 
 private:
@@ -65,4 +72,6 @@ private:
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
+	float rotateAngle_ = 0.0f;
+	Vector3 target_{};
 };
