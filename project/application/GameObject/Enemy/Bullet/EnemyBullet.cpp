@@ -32,24 +32,25 @@ void EnemyBullet::Draw(Camera& camera)
 void EnemyBullet::Move()
 {
 
-	deltaTime_ += 1.0f / 60.0f;
-	// ターゲットへのベクトルを計算
-	Vector3 toTarget = player_->GetWorldPosition() - GetWorldPosition();
-	// 正規化
-	toTarget = Normalize(toTarget);
+	//deltaTime_ += 1.0f / 60.0f;
+	//// ターゲットへのベクトルを計算
+	//Vector3 toTarget = player_->GetWorldPosition() - GetWorldPosition();
+	//// 正規化
+	//toTarget = Normalize(toTarget);
 
-	Vector3 curveVector = CalculateCurve(deltaTime_);
+	//Vector3 curveVector = CalculateCurve(deltaTime_);
 
-	// 現在の速度方向と目標方向を補間して新しい方向を決定
-	Vector3 desiredDirection = Normalize(toTarget + curveVector);
-	velocity_ = (1.0f - 0.1f) * velocity_ + 0.1f * desiredDirection;
-	velocity_ = Normalize(velocity_);
-	velocity_ = 1.0f * velocity_;
+	//// 現在の速度方向と目標方向を補間して新しい方向を決定
+	//Vector3 desiredDirection = Normalize(toTarget + curveVector);
+	//velocity_ = (1.0f - 0.1f) * velocity_ + 0.1f * desiredDirection;
+	//velocity_ = Normalize(velocity_);
+	//velocity_ = 1.0f * velocity_;
 
 	//移動
-	worldTransform_.translate = worldTransform_.translate + (deltaTime_ * velocity_);
+	//worldTransform_.translate = worldTransform_.translate + (deltaTime_ * velocity_);
+	worldTransform_.translate = worldTransform_.translate + velocity_;
 
-	timeElapsed_ += 1.0f / 60.0f;
+	//timeElapsed_ += 1.0f / 60.0f;
 
 	worldTransform_.UpdateMatrix();
 }
@@ -61,9 +62,9 @@ void EnemyBullet::BulletErase()
 		isDead_ = true;
 	}
 
-	if (player_->GetWorldPosition().z - 5.0f  >= GetWorldPosition().z) {
+	/*if (player_->GetWorldPosition().z - 5.0f  >= GetWorldPosition().z) {
 		isDead_ = true;
-	}
+	}*/
 }
 
 void EnemyBullet::OnCollision()

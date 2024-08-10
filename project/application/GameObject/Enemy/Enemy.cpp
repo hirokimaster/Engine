@@ -73,7 +73,7 @@ void Enemy::BulletUpdate()
 	--fireTimer_;
 
 	if (isFire_) {
-		//FireSpiral(0.5f, 60, 0.05f);
+		FireSpiral(0.5f, 60, 0.05f);
 		--spiralTimer_;
 	}
 
@@ -84,7 +84,7 @@ void Enemy::BulletUpdate()
 	if (fireTimer_ <= 0) {
 		// 弾を発射
 		//FireRadial(20);
-		Fire(3);
+		//Fire(3);
 		//FireMissile(1);
 		// 発射タイマーの初期化
 		fireTimer_ = kFireInterval_;
