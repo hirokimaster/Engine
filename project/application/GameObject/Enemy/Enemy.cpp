@@ -13,6 +13,7 @@ void Enemy::Initialize(uint32_t texHandle)
 	worldTransform_.translate = { 0,0,80.0f };
 	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+	bulletType_ = Spiral;
 
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
@@ -53,24 +54,18 @@ void Enemy::OnCollision()
 	isDead_ = true;
 }
 
-void Enemy::Fire(uint32_t bulletCount)
+void Enemy::Fire()
 {
-
-	for (uint32_t i = 0; i < bulletCount; ++i) {
-		// 弾を生成し、初期化
-		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_);
-		bullet->SetPlayer(player_);
-		bullet->SetPosition(GetWorldPosition());
-		bullets_.push_back(std::move(bullet));
-	}
-
 }
 
 void Enemy::BulletUpdate()
 {
 	//発射タイマーをデクリメント
 	--fireTimer_;
+
+	if (bulletType_ == Spiral) {
+		isFire_ = true;
+	}
 
 	if (isFire_) {
 		FireSpiral(0.5f, 60, 0.05f);
@@ -82,10 +77,18 @@ void Enemy::BulletUpdate()
 	}
 
 	if (fireTimer_ <= 0) {
-		// 弾を発射
-		//FireRadial(20);
-		//Fire(3);
-		//FireMissile(1);
+
+		if (bulletType_ == Radial) {
+			// 弾を発射
+			FireRadial(20);
+		}
+		else if (bulletType_ == Normal) {
+			Fire();
+		}
+		else if (bulletType_ == Missile) {
+			FireMissile(3);
+		}
+
 		// 発射タイマーの初期化
 		fireTimer_ = kFireInterval_;
 	}
@@ -93,13 +96,13 @@ void Enemy::BulletUpdate()
 	// 弾更新
 	for (bulletsItr_ = bullets_.begin();
 		bulletsItr_ != bullets_.end(); ++bulletsItr_) {
-		(*bulletsItr_)->Update();
+		(*bulletsItr_)->Update(bulletType_);
 	}
 
 	// デスフラグが立ったら要素を削除
 	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
 		if (bullet->GetIsDead()) {
-	
+
 			return true;
 		}
 		return false;
@@ -150,7 +153,7 @@ void Enemy::FireSpiral(float spiralSpeed, uint32_t bulletCount, float delayBetwe
 		// 速度ベクトルの計算
 		float x = std::cos(angle);
 		float y = std::sin(angle);
-		Vector3 velocity = { x, y, 7.0f};
+		Vector3 velocity = { x, y, 7.0f };
 		velocity = Normalize(velocity);
 		velocity.z = kBulletSpeed * velocity.z;
 
@@ -171,24 +174,15 @@ void Enemy::FireSpiral(float spiralSpeed, uint32_t bulletCount, float delayBetwe
 
 void Enemy::FireMissile(uint32_t bulletCount)
 {
-	// 弾の速度
-	const float kBulletSpeed = -4.0f;
-
 	for (uint32_t i = 0; i < bulletCount; ++i) {
-		
 		// 弾を生成し、初期化
 		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
 		bullet->Initialize(texHandleBullet_);
-		Vector3 velocity = player_->GetWorldPosition() - GetWorldPosition();
-		velocity = Normalize(velocity);
-		velocity = kBulletSpeed * velocity;
-		bullet->SetVelocity(velocity);
+		bullet->SetPlayer(player_);
 		bullet->SetPosition(GetWorldPosition());
-		bullet->SetTarget(player_->GetWorldPosition());
 		bullets_.push_back(std::move(bullet));
 	}
 }
-
 
 Vector3 Enemy::GetWorldPosition() const
 {

@@ -3,6 +3,13 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include <random>
 
+enum BulletType {
+	Normal,
+	Spiral,
+	Missile,
+	Radial
+};
+
 class Player;
 
 class EnemyBullet : public Collider {
@@ -18,7 +25,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(BulletType type);
 
 	/// <summary>
 	/// 描画
@@ -43,9 +50,25 @@ private:
 	/// </summary>
 	void OnCollision()override;
 
+	/// <summary>
+	/// 弾がどう出るかランダムで出すやつ
+	/// </summary>
+	/// <returns></returns>
 	Vector3 RandomDirection();
 
+	/// <summary>
+	/// カーブの計算
+	/// </summary>
+	/// <param name="dt"></param>
+	/// <returns></returns>
 	Vector3 CalculateCurve(float dt);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void CurveBullet();
+
+
 
 public:
 

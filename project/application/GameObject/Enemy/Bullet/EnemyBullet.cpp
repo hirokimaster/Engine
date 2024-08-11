@@ -17,9 +17,15 @@ void EnemyBullet::Initialize(uint32_t texHandle)
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
 }
 
-void EnemyBullet::Update()
+void EnemyBullet::Update(BulletType type)
 {
-	Move();
+	if (type == Missile) {
+		CurveBullet();
+	}
+	else {
+		Move();
+	}
+	
 	BulletErase();
 	worldTransform_.UpdateMatrix();
 }
@@ -32,25 +38,7 @@ void EnemyBullet::Draw(Camera& camera)
 void EnemyBullet::Move()
 {
 
-	//deltaTime_ += 1.0f / 60.0f;
-	//// ターゲットへのベクトルを計算
-	//Vector3 toTarget = player_->GetWorldPosition() - GetWorldPosition();
-	//// 正規化
-	//toTarget = Normalize(toTarget);
-
-	//Vector3 curveVector = CalculateCurve(deltaTime_);
-
-	//// 現在の速度方向と目標方向を補間して新しい方向を決定
-	//Vector3 desiredDirection = Normalize(toTarget + curveVector);
-	//velocity_ = (1.0f - 0.1f) * velocity_ + 0.1f * desiredDirection;
-	//velocity_ = Normalize(velocity_);
-	//velocity_ = 1.0f * velocity_;
-
-	//移動
-	//worldTransform_.translate = worldTransform_.translate + (deltaTime_ * velocity_);
 	worldTransform_.translate = worldTransform_.translate + velocity_;
-
-	//timeElapsed_ += 1.0f / 60.0f;
 
 	worldTransform_.UpdateMatrix();
 }
@@ -91,6 +79,28 @@ Vector3 EnemyBullet::CalculateCurve(float dt)
 	// カーブベクトルを計算
 	float curveOffset = std::sin(timeElapsed_ * curveFrequency) * curveAmplitude;
 	return Vector3(0.0f, curveOffset, 0.0f); // Y軸方向のカーブ
+}
+
+void EnemyBullet::CurveBullet()
+{
+	deltaTime_ += 1.0f / 60.0f;
+	// ターゲットへのベクトルを計算
+	Vector3 toTarget = player_->GetWorldPosition() - GetWorldPosition();
+	// 正規化
+	toTarget = Normalize(toTarget);
+
+	Vector3 curveVector = CalculateCurve(deltaTime_);
+
+	// 現在の速度方向と目標方向を補間して新しい方向を決定
+	Vector3 desiredDirection = Normalize(toTarget + curveVector);
+	velocity_ = (1.0f - 0.1f) * velocity_ + 0.1f * desiredDirection;
+	velocity_ = Normalize(velocity_);
+	velocity_ = 1.0f * velocity_;
+
+	// 移動
+	worldTransform_.translate = worldTransform_.translate + (deltaTime_ * velocity_);
+
+	timeElapsed_ += 1.0f / 60.0f;
 }
 
 Vector3 EnemyBullet::GetWorldPosition() const

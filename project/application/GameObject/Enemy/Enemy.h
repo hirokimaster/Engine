@@ -40,7 +40,7 @@ private:
 	/// <summary>
 	/// 攻撃
 	/// </summary>
-	void Fire(uint32_t bulletCount);
+	void Fire();
 
 	/// <summary>
 	/// 弾の更新
@@ -66,6 +66,7 @@ public:
 
 	bool GetIsDead()const { return isDead_; }
 
+	BulletType GetBulletType() { return bulletType_; }
 
 #pragma endregion
 
@@ -74,6 +75,8 @@ public:
 	void SetPosition(Vector3 position) { worldTransform_.translate = position; }
 
 	void SetPlayer(Player* player) { player_ = player; }
+
+	void SetBulletType(BulletType type) { bulletType_ = type; }
 
 #pragma endregion
 
@@ -91,5 +94,6 @@ private:
 	float deltaTime_ = 1.0f / 60.0f;
 	bool isFire_ = true;
 	float spiralTimer_ = 180.0f;
+	BulletType bulletType_{};
 };
 
