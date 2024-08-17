@@ -102,10 +102,19 @@ LevelData* Loader::Load(const std::string& fileName)
 
 void Loader::Arrangement(LevelData* levelData)
 {
+	
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData->objects) {
 
 		// モデルを指定して3Dオブジェクトを生成
+
+		if (objectData.fileName == "enemy") {
+			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+			newEnemy->Initialize(texHandle_);
+			newEnemy->SetPlayer(player_);
+			newEnemy->SetPosition(objectData.translate);
+		}
+
 		std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 		newObject->Initialize();
 		newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");

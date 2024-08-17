@@ -9,6 +9,7 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "engine/ModelManager/ModelManager.h"
 #include <numbers>
+#include "application/GameObject/Enemy/Enemy.h"
 
 // レベルデータ
 struct LevelData {
@@ -51,9 +52,16 @@ public:
 
 #pragma endregion
 
+#pragma region setter
+
+	void SetPlayer(Player* player) { player_ = player; }
+
+#pragma endregion
+
 private:
 	std::map<std::string, std::unique_ptr<Model>>  models_;
 	std::vector<std::unique_ptr<Object3DPlacer>> objects_;
 	uint32_t texHandle_ = 0;
 	Camera camera_{};
+	Player* player_ = nullptr;
 };
