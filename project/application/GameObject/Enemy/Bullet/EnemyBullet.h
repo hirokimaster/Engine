@@ -20,7 +20,7 @@ public:
 	/// <param name="object"></param>
 	/// <param name="texHandle"></param>
 	/// <param name="model"></param>
-	void Initialize(uint32_t texHandle);
+	void Initialize(uint32_t texHandle, BulletType type);
 
 	/// <summary>
 	/// 更新

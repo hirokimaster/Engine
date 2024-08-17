@@ -13,7 +13,7 @@ void Enemy::Initialize(uint32_t texHandle)
 	worldTransform_.translate = { 0,0,80.0f };
 	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-	bulletType_ = Spiral;
+	bulletType_ = Missile;
 
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
@@ -125,7 +125,7 @@ void Enemy::FireRadial(uint32_t bulletCount)
 		Vector3 velocity = { cosf(angle) * kRadius, sinf(angle) * kRadius, kBulletSpeed };
 
 		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_);
+		bullet->Initialize(texHandleBullet_, Radial);
 		bullet->SetVelocity(velocity);
 		bullet->SetPosition(GetWorldPosition());
 		bullets_.push_back(std::move(bullet));
@@ -159,7 +159,7 @@ void Enemy::FireSpiral(float spiralSpeed, uint32_t bulletCount, float delayBetwe
 
 		// 弾を生成し、初期化
 		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_);
+		bullet->Initialize(texHandleBullet_,Spiral);
 		bullet->SetVelocity(velocity);
 		bullet->SetPosition(GetWorldPosition());
 
@@ -177,7 +177,7 @@ void Enemy::FireMissile(uint32_t bulletCount)
 	for (uint32_t i = 0; i < bulletCount; ++i) {
 		// 弾を生成し、初期化
 		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_);
+		bullet->Initialize(texHandleBullet_, Missile);
 		bullet->SetPlayer(player_);
 		bullet->SetPosition(GetWorldPosition());
 		bullets_.push_back(std::move(bullet));

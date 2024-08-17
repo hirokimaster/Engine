@@ -92,7 +92,7 @@ private:
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	Player* player_ = nullptr;
 	float deltaTime_ = 1.0f / 60.0f;
-	bool isFire_ = true;
+	bool isFire_ = false;
 	float spiralTimer_ = 180.0f;
 	BulletType bulletType_{};
 };

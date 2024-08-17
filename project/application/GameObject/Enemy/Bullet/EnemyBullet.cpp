@@ -1,7 +1,7 @@
 #include "EnemyBullet.h"
 #include "application/GameObject/Player/Player.h"
 
-void EnemyBullet::Initialize(uint32_t texHandle)
+void EnemyBullet::Initialize(uint32_t texHandle, BulletType type)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
@@ -11,7 +11,12 @@ void EnemyBullet::Initialize(uint32_t texHandle)
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
 
-	velocity_ = 1.2f * RandomDirection();
+	if (type == Missile) {
+		velocity_ = 1.2f * RandomDirection();
+	}
+	else {
+		type;
+	}
 
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
