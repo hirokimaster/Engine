@@ -579,6 +579,21 @@ Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m)
 	return result;
 }
 
+Matrix4x4 MakeRotateMatrix(const Vector3& radian)
+{
+	Matrix4x4 rotateX{};
+	Matrix4x4 rotateY{};
+	Matrix4x4 rotateZ{};
+	rotateX = MakeRotateXMatrix(radian.x);
+	rotateY = MakeRotateYMatrix(radian.y);
+	rotateZ = MakeRotateZMatrix(radian.z);
+
+	Matrix4x4 result{};
+	result = Multiply(rotateX, Multiply(rotateY, rotateZ));
+
+	return result;
+}
+
 
 Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
 {
@@ -840,7 +855,6 @@ Quaternion CalculateRotationQuaternion(const Vector3& from, const Vector3& to)
 }
 
 // 演算子のオーバーロード
-
 Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b)
 {
 	return Multiply(a, b);

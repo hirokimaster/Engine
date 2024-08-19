@@ -253,7 +253,7 @@
     <ClCompile Include="engine\Loader\Loader.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\RailCamera\RailCamera.cpp">
+    <ClCompile Include="application\GameObject\Rail\Rail.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp">
@@ -278,6 +278,9 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="application\Scene\ClearScene\ClearScene.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="application\GameObject\FollowCamera\FollowCamera.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -439,7 +442,7 @@
       <Filter>Engine\Model\SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="engine\Loader\Loader.h" />
-    <ClInclude Include="application\GameObject\RailCamera\RailCamera.h" />
+    <ClInclude Include="application\GameObject\Rail\Rail.h" />
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
     <ClInclude Include="application\GameObject\LockOn\LockOn.h" />
     <ClInclude Include="application\GameObject\Player\Player.h" />
@@ -448,6 +451,7 @@
     <ClInclude Include="application\GameObject\Enemy\Bullet\EnemyBullet.h" />
     <ClInclude Include="application\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="application\Scene\ClearScene\ClearScene.h" />
+    <ClInclude Include="application\GameObject\FollowCamera\FollowCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">

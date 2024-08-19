@@ -71,6 +71,7 @@ void Player::Move()
 		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kMoveSpeed_;
 		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kMoveSpeed_;
 	}
+
 	worldTransform_.translate = worldTransform_.translate + move;
 }
 
@@ -179,7 +180,6 @@ void Player::DrawUI()
 
 void Player::Rotate()
 {
-
 	// レティクルの方向ベクトルを求める
 	Vector3 reticlePosition = lockOn_->GetWorldPosition3DReticle();
 	Vector3 playerToReticle = reticlePosition - GetWorldPosition();
@@ -189,7 +189,7 @@ void Player::Rotate()
 		return;
 	}
 
-	// playerの前方ベクトル
+	// 自機の前方ベクトル
 	Vector3 forward = { 0.0f, 0.0f, 1.0f };
 
 	// 正規化
@@ -197,52 +197,30 @@ void Player::Rotate()
 
 	// 回転軸と角度を計算
 	Vector3 rotationAxis = Cross(forward, playerToReticleNorm);
+	float angle;
 
 	if (Length(rotationAxis) == 0.0f) {
-		// 軸がゼロベクトルなら回転は不要
-		return;
+		// 軸がゼロベクトルなら、180度回転のケース
+		rotationAxis = { 0.0f, 1.0f, 0.0f }; // 任意の軸を選択
+		angle = std::numbers::pi_v<float>; // 180度回転
+	}
+	else {
+		// 正規化
+		rotationAxis = Normalize(rotationAxis);
+
+		float dotProduct = Dot(forward, playerToReticleNorm);
+		// -1.0 ～ 1.0の範囲にクランプする
+		float clampedDotProduct = std::clamp(dotProduct, -1.0f, 1.0f);
+		angle = std::acos(clampedDotProduct);
 	}
 
-	// 正規化
-	rotationAxis = Normalize(rotationAxis);
+	// 回転を適用
+	worldTransform_.rotate.y = angle * rotationAxis.y;
+	worldTransform_.rotate.x = angle * rotationAxis.x;
 
-	float dotProduct = Dot(forward, playerToReticleNorm);
-	// -1.0 ～ 1.0の範囲にクランプする
-	float clampedDotProduct = std::clamp(dotProduct, -1.0f, 1.0f);
-	float angle = std::acos(clampedDotProduct);
-
-	// クォータニオンを作成
-	Quaternion rotationQuaternion = MakeRotateAxisAngleQuaternion(rotationAxis, angle);
-	Quaternion normalizedQuaternion = QNormalize(rotationQuaternion);
-
-	// 自機の回転を更新
-	Vector3 rotateVector = RotateVector(forward, normalizedQuaternion);
-	worldTransform_.rotate.x = -rotateVector.y;
-	worldTransform_.rotate.y = rotateVector.x;
+	// Z軸回転はしないので0で
 	worldTransform_.rotate.z = 0.0f;
 
-	Camera camera = railCamera_->GetCamera();
-	WorldTransform worldTransform = railCamera_->GetWorldTransform();
-
-	Vector3 offset = { 0,0,-10.0f };
-	Quaternion playerRotationQuaternion = MakeRotateAxisAngleQuaternion(rotationAxis, angle);
-
-	// 自機のローカル位置に基づいてカメラの位置を計算
-	Vector3 localCameraPosition = RotateVector(offset, playerRotationQuaternion);
-	Vector3 worldCameraPosition = worldTransform_.translate + localCameraPosition;
-
-	// 親子関係があるため、カメラのワールド行列も再計算
-	worldTransform.translate = worldCameraPosition;
-	//worldTransform.rotate = worldTransform_.rotate;
-
-	worldTransform.matWorld = MakeAffineMatrix(
-		worldTransform.scale, worldTransform.rotate, worldTransform.translate);
-
-	camera.matView = Inverse(worldTransform.matWorld);
-
-	railCamera_->SetViewMatrix(camera.matView);
-	railCamera_->SetPosition({ worldTransform.translate.x, worldTransform.translate.y });
-	railCamera_->SetRotate(worldTransform.rotate);
 }
 
 Vector3 Player::GetWorldPosition() const

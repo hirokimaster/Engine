@@ -10,10 +10,11 @@
 #include "application/GameObject/Player/Player.h"
 #include "application/GameObject/Enemy/Enemy.h"
 #include "engine/Utility/CollisionManager/CollisionManager.h"
-#include "application/GameObject/RailCamera/RailCamera.h"
+#include "application/GameObject/Rail/Rail.h"
 #include "engine/Model/SkyBox/SkyBox.h"
 #include "application/GameObject/LockOn/LockOn.h"
 #include "engine/Loader/Loader.h"
+#include "application/GameObject/FollowCamera/FollowCamera.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -68,7 +69,7 @@ private:
 	float spawnTimer_ = 0.0f;
 
 	std::unique_ptr<CollisionManager> collisionManager_ = nullptr; // 衝突判定まとめ
-	std::unique_ptr<RailCamera> railCamera_ = nullptr; // レールカメラ
+	std::unique_ptr<Rail> rail_ = nullptr; // レール
 	std::unique_ptr<SkyBox> skyBox_ = nullptr; // スカイボックス(背景)
 	std::unique_ptr<LockOn> lockOn_ = nullptr; // ロックオン
 	WorldTransform worldTransformSkyBox_{};
@@ -76,6 +77,7 @@ private:
 	std::unique_ptr<PostProcess> postProcess_ = nullptr;
 	std::unique_ptr<Loader> loader_ = nullptr;
 	LevelData* levelData_ = nullptr;
+	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
 	// 仮のUI
 	std::unique_ptr<Sprite> spriteLockOn_ = nullptr;
 	std::unique_ptr<Sprite> spriteUnLock_ = nullptr;

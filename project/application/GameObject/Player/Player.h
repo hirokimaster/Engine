@@ -5,7 +5,7 @@
 #include "engine/Sprite/Sprite.h"
 #include <vector>
 #include "engine/Object3DPlacer/Object3DPlacer.h"
-#include "application/GameObject/RailCamera/RailCamera.h"
+#include "application/GameObject/Rail/Rail.h"
 
 class LockOn;
 
@@ -76,6 +76,12 @@ public:
 
 	Vector3 GetRotate()const { return worldTransform_.rotate; }
 
+	/// <summary>
+	/// ワールドトランスフォームを取得
+	/// </summary>
+	/// <returns></returns>
+	const WorldTransform& GetWorldTransform() { return worldTransform_; }
+
 #pragma endregion
 
 #pragma region setter
@@ -86,7 +92,7 @@ public:
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
-	void SetRailCamera(RailCamera* railCamera) { railCamera_ = railCamera; }
+	//void SetRailCamera(RailCamera* railCamera) { railCamera_ = railCamera; }
 
 #pragma endregion
 
@@ -100,5 +106,4 @@ private:
 	float shotTimer_ = 0.0f;
 	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
-	RailCamera* railCamera_ = nullptr;
 };

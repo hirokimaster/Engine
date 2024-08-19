@@ -32,11 +32,17 @@ void GameScene::Initialize()
 
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
-	// railCamera
-	railCamera_ = std::make_unique<RailCamera>();
-	railCamera_->Initialize(player_->GetWorldPosition(), { 0,0,0 });
-	player_->SetParent(&railCamera_->GetWorldTransform());
-	player_->SetRailCamera(railCamera_.get());
+
+	// rail
+	rail_ = std::make_unique<Rail>();
+
+	/*------------------------
+			追従カメラ
+	--------------------------*/
+	followCamera_ = std::make_unique<FollowCamera>();
+	followCamera_->Initialize();
+	followCamera_->SetTarget(&player_->GetWorldTransform());
+
 	// skyBox
 	skyBox_ = std::make_unique<SkyBox>();
 	skyBox_->Initialize();
@@ -89,11 +95,15 @@ void GameScene::Update()
 			return false;
 		});
 
-	// railCamera
-	railCamera_->Update();
-	camera_.matView = railCamera_->GetCamera().matView;
-	camera_.matProjection = railCamera_->GetCamera().matProjection;
+	// rail
+	rail_->Update();
+
+	// followCamera
+	followCamera_->Update();
+	camera_.matView = followCamera_->GetCamera().matView;
+	camera_.matProjection = followCamera_->GetCamera().matProjection;
 	camera_.TransferMatrix();
+
 	// skyBox
 	worldTransformSkyBox_.UpdateMatrix();
 	// lockOn
@@ -189,7 +199,7 @@ void GameScene::RandomRespawn()
 		texHandleEnemy_ = TextureManager::Load("resources/white.png");
 		enemy->Initialize(texHandleEnemy_);
 		enemy->SetPlayer(player_.get());
-		enemy->SetPosition(Vector3(float(distributionX(randomEngine)), float(distributionY(randomEngine)), 80.0f + railCamera_->GetWorldTransform().translate.z));
+		enemy->SetPosition(Vector3(float(distributionX(randomEngine)), float(distributionY(randomEngine)), 80.0f));
 		enemys_.push_back(std::move(enemy));
 		spawnTimer_ = 0;
 	}
