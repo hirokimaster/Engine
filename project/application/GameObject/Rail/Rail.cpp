@@ -1,35 +1,39 @@
 #include "Rail.h"
 
-void Rail::Initialize(const Vector3& position, const Vector3& rotate)
+void Rail::Initialize()
 {
-	// ワールドトランスフォーム
-	worldTransform_.Initialize();
-	worldTransform_.translate = position;
-	worldTransform_.rotate = rotate;
 
+	// レールの制御点
+	controlPoints_ = {
+
+		{0,0,0},
+		{0,0,160},
+		{0,0,240},
+		{0,0,300},
+		{0,0,360},
+
+	};
 }
 
 void Rail::Update()
 {
+	deltaTime_ += 1.0f / 60.0f;
+
+	float progress = ProgressCalc(deltaTime_, 1.0f);
+
+	RailPositionCalc(progress);
 
 }
 
-Vector3 Rail::GetWorldPosition() const
+void Rail::RailPositionCalc(float progress)
 {
-	// ワールド座標を入れる変数
-	Vector3 worldPos;
-	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = worldTransform_.matWorld.m[3][0];
-	worldPos.y = worldTransform_.matWorld.m[3][1];
-	worldPos.z = worldTransform_.matWorld.m[3][2];
+	float t = progress * (controlPoints_.size() - 3);
 
-	return worldPos;
-}
+	// 現在の位置
+	Vector3 railPosition = CatmullRomPosition(controlPoints_, t);
 
-
-void Rail::RailPositionCalc()
-{
-
+	// playerの位置を合わせる
+	player_->SetPosition(railPosition);
 }
 
 Vector3 Rail::CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t)
@@ -89,4 +93,13 @@ Vector3 Rail::CatmullRomPosition(const std::vector<Vector3>& points, float t)
 	const Vector3& p3 = points[index3];
 
 	return CatmullRomInterpolation(p0, p1, p2, p3, t_2);
+}
+
+float Rail::ProgressCalc(float time, float speed)
+{
+	float dist = time * speed;
+	float railLength = 360.0f;
+	float progress = dist / railLength;
+	// 0.0f ~ 1.0fの範囲にクランプする
+	return std::clamp(progress, 0.0f, 1.0f);
 }

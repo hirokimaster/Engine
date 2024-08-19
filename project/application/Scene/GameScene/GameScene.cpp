@@ -35,6 +35,8 @@ void GameScene::Initialize()
 
 	// rail
 	rail_ = std::make_unique<Rail>();
+	rail_->Initialize();
+	rail_->SetPlayer(player_.get());
 
 	/*------------------------
 			追従カメラ

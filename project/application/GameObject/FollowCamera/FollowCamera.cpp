@@ -22,11 +22,11 @@ void FollowCamera::Update()
 
 	}
 
-	XINPUT_STATE joyState;
+	/*XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
 		float kRotateSpeed = 0.0001f;
 		camera_.rotate.y += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * kRotateSpeed;
-	}
+	}*/
 
 	camera_.UpdateMatrix();
 }
