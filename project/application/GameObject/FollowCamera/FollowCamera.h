@@ -16,6 +16,11 @@ public:
 	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 回転
+	/// </summary>
+	void Rotate();
+
 #pragma region setter
 
 	void SetTarget(const WorldTransform* target) { target_ = target; }
