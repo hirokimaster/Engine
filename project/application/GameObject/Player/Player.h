@@ -92,7 +92,7 @@ public:
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
-	//void SetRailCamera(RailCamera* railCamera) { railCamera_ = railCamera; }
+	void SetPositionZ(float positionZ) { worldTransform_.translate.z = positionZ; }
 
 #pragma endregion
 

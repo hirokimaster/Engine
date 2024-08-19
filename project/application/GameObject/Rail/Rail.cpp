@@ -6,7 +6,7 @@ void Rail::Initialize()
 	// レールの制御点
 	controlPoints_ = {
 
-		{0,0,0},
+		{0,0,20},
 		{0,0,160},
 		{0,0,240},
 		{0,0,300},
@@ -33,7 +33,7 @@ void Rail::RailPositionCalc(float progress)
 	Vector3 railPosition = CatmullRomPosition(controlPoints_, t);
 
 	// playerの位置を合わせる
-	player_->SetPosition(railPosition);
+	player_->SetPositionZ(railPosition.z);
 }
 
 Vector3 Rail::CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t)
@@ -98,7 +98,7 @@ Vector3 Rail::CatmullRomPosition(const std::vector<Vector3>& points, float t)
 float Rail::ProgressCalc(float time, float speed)
 {
 	float dist = time * speed;
-	float railLength = 360.0f;
+	float railLength = 340.0f;
 	float progress = dist / railLength;
 	// 0.0f ~ 1.0fの範囲にクランプする
 	return std::clamp(progress, 0.0f, 1.0f);
