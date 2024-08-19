@@ -38,6 +38,11 @@ public:
 	void Arrangement(LevelData* levelData);
 
 	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw(Camera& camera);
@@ -61,6 +66,7 @@ public:
 private:
 	std::map<std::string, std::unique_ptr<Model>>  models_;
 	std::vector<std::unique_ptr<Object3DPlacer>> objects_;
+	std::list<std::unique_ptr<Enemy>> enemys_;
 	uint32_t texHandle_ = 0;
 	Camera camera_{};
 	Player* player_ = nullptr;

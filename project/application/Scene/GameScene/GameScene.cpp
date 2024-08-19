@@ -12,11 +12,6 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	/*postProcess_ = std::make_unique<PostProcess>();
-	postProcess_->Initialize();
-	GameManager::GetInstance()->SetPostProcess(postProcess_.get());
-	postProcess_->SetEffect(DepthOutline);*/
-
 	camera_.Initialize();
 	// lockOn
 	lockOn_ = std::make_unique<LockOn>();
@@ -75,6 +70,9 @@ void GameScene::Update()
 
 	//RandomRespawn();
 
+	// loader
+	loader_->Update();
+
 	// enemy
 	for (enemysItr_ = enemys_.begin();
 		enemysItr_ != enemys_.end(); ++enemysItr_) {
@@ -125,7 +123,6 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	//postProcess_->Draw();
 	// enemy
 	for (enemysItr_ = enemys_.begin();
 		enemysItr_ != enemys_.end(); ++enemysItr_) {
@@ -152,22 +149,6 @@ void GameScene::Draw()
 
 void GameScene::PostProcessDraw()
 {
-	//postProcess_->PreDraw();
-
-	//// enemy
-	//for (enemysItr_ = enemys_.begin();
-	//	enemysItr_ != enemys_.end(); ++enemysItr_) {
-
-	//	(*enemysItr_)->Draw(camera_);
-	//}
-	//// skyBox
-	//skyBox_->Draw(worldTransformSkyBox_, camera_);
-	//// player
-	//player_->Draw(camera_);
-	//// lockOn_(レティクル)
-	//lockOn_->Draw();
-
-	//postProcess_->PostDraw();
 }
 
 void GameScene::Collision()
