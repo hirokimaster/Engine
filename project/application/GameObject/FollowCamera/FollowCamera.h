@@ -25,6 +25,8 @@ public:
 
 	void SetTarget(const WorldTransform* target) { target_ = target; }
 
+	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
+
 #pragma endregion
 
 #pragma region getter
@@ -36,4 +38,5 @@ public:
 private:
 	Camera camera_;
 	const WorldTransform* target_ = nullptr;
+	LockOn* lockOn_ = nullptr;
 };
