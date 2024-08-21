@@ -23,13 +23,6 @@ void GameScene::Initialize()
 	player_->SetPosition({ 0,0,50.0f });
 	player_->SetLockOn(lockOn_.get());
 
-	// enemy
-	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
-	texHandleEnemy_ = TextureManager::Load("resources/white.png");
-	enemy->Initialize(texHandleEnemy_);
-	enemy->SetPlayer(player_.get());
-	enemys_.push_back(std::move(enemy));
-
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
 
@@ -58,8 +51,10 @@ void GameScene::Initialize()
 	uint32_t texhandle = TextureManager::Load("resources/uvChecker.png");
 	loader_ = std::make_unique<Loader>();
 	levelData_ = loader_->Load("level");
+	loader_->SetPlayer(player_.get());
 	loader_->SetTexHandle(texhandle);
 	loader_->Arrangement(levelData_);
+	
 
 	// 仮のUI
 	texHandleLockOn_ = TextureManager::Load("resources/LockOn.png");
@@ -77,26 +72,8 @@ void GameScene::Update()
 	player_->Update();
 	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition());
 
-	//RandomRespawn();
-
 	// loader
 	loader_->Update();
-
-	// enemy
-	for (enemysItr_ = enemys_.begin();
-		enemysItr_ != enemys_.end(); ++enemysItr_) {
-
-		(*enemysItr_)->Update();
-
-	}
-
-	// デスフラグが立ったら要素を削除
-	enemys_.remove_if([](std::unique_ptr<Enemy>& enemy) {
-		if (enemy->GetIsDead()) {
-			return true;
-		}
-			return false;
-		});
 
 	// rail
 	rail_->Update();
@@ -110,7 +87,7 @@ void GameScene::Update()
 	// skyBox
 	worldTransformSkyBox_.UpdateMatrix();
 	// lockOn
-	lockOn_->Update(enemys_, camera_);
+	lockOn_->Update(loader_->GetEnemys(), camera_);
 
 	Collision();
 
@@ -136,12 +113,6 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	// enemy
-	for (enemysItr_ = enemys_.begin();
-		enemysItr_ != enemys_.end(); ++enemysItr_) {
-
-		(*enemysItr_)->Draw(camera_);
-	}
 	// skyBox
 	//skyBox_->Draw(worldTransformSkyBox_, camera_);
 	loader_->Draw(camera_);
@@ -175,35 +146,16 @@ void GameScene::Collision()
 		collisionManager_->ColliderPush((*playerBulletsItr).get()); // playerbulletをリストに追加
 	}
 
-	for (enemysItr_ = enemys_.begin();
-		enemysItr_ != enemys_.end(); ++enemysItr_) {
+	for (auto enemysItr = loader_->GetEnemys().begin();
+		enemysItr != loader_->GetEnemys().end(); ++enemysItr) {
 
-		collisionManager_->ColliderPush((*enemysItr_).get()); // enemyをリストに登録
+		collisionManager_->ColliderPush((*enemysItr).get()); // enemyをリストに登録
 
-		for (auto enemyBulletsItr = (*enemysItr_)->GetBullets().begin();
-			enemyBulletsItr != (*enemysItr_)->GetBullets().end(); ++enemyBulletsItr) {
+		for (auto enemyBulletsItr = (*enemysItr)->GetBullets().begin();
+			enemyBulletsItr != (*enemysItr)->GetBullets().end(); ++enemyBulletsItr) {
 			collisionManager_->ColliderPush((*enemyBulletsItr).get()); // enemybulletをリストに追加
 		}
 	}
 
 	collisionManager_->CheckAllCollision(); // 判定
-}
-
-void GameScene::RandomRespawn()
-{
-	spawnTimer_++;
-	std::random_device seed;
-
-	if (spawnTimer_ >= 60) {
-		std::mt19937 randomEngine(seed());
-		std::uniform_real_distribution<float>distributionX(-12.0f, 12.0f);
-		std::uniform_real_distribution<float>distributionY(0.0f, 5.0f);
-		std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
-		texHandleEnemy_ = TextureManager::Load("resources/white.png");
-		enemy->Initialize(texHandleEnemy_);
-		enemy->SetPlayer(player_.get());
-		enemy->SetPosition(Vector3(float(distributionX(randomEngine)), float(distributionY(randomEngine)), 80.0f));
-		enemys_.push_back(std::move(enemy));
-		spawnTimer_ = 0;
-	}
 }

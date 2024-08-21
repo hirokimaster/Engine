@@ -117,17 +117,17 @@ void Loader::Update()
 		object->GetWorldTransform().UpdateMatrix();
 	}
 
-	/*for (auto& enemy : enemys_) {
+	for (auto& enemy : enemys_) {
 		enemy->Update();
-	}*/
+	}
 
 	// デスフラグが立ったら要素を削除
-	/*enemys_.remove_if([](std::unique_ptr<Enemy>& enemy) {
+	enemys_.remove_if([](std::unique_ptr<Enemy>& enemy) {
 		if (enemy->GetIsDead()) {
 			return true;
 		}
 		return false;
-		});*/
+		});
 }
 
 void Loader::Draw(Camera& camera)
@@ -136,9 +136,9 @@ void Loader::Draw(Camera& camera)
 		object->Draw(camera);
 	}
 
-	/*for (auto& enemy : enemys_) {
+	for (auto& enemy : enemys_) {
 		enemy->Draw(camera);
-	}*/
+	}
 }
 
 void Loader::UpdateCamera()

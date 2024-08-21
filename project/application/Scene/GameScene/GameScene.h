@@ -55,18 +55,11 @@ private:
 	/// </summary>
 	void Collision();
 
-	void RandomRespawn();
-
 private:
 	Camera camera_{};
 	// player
 	std::unique_ptr<Player> player_ = nullptr;
 	uint32_t texHandlePlayer_ = 0;
-	// enemy
-	std::list<std::unique_ptr<Enemy>> enemys_;
-	std::list<std::unique_ptr<Enemy>>::iterator enemysItr_;
-	uint32_t texHandleEnemy_ = 0;
-	float spawnTimer_ = 0.0f;
 
 	std::unique_ptr<CollisionManager> collisionManager_ = nullptr; // 衝突判定まとめ
 	std::unique_ptr<Rail> rail_ = nullptr; // レール

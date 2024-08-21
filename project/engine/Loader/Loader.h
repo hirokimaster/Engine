@@ -55,6 +55,8 @@ public:
 
 	const Camera& GetCamera() { return camera_; }
 
+	const std::list<std::unique_ptr<Enemy>>& GetEnemys() const{ return enemys_; }
+
 #pragma endregion
 
 #pragma region setter
