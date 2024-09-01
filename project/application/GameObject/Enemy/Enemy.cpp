@@ -26,7 +26,7 @@ void Enemy::Update()
 
 	// 時間で消滅
 	if (--deathTimer_ <= 0) {
-		//isDead_ = true;
+		isDead_ = true;
 	}
 
 #ifdef _DEBUG

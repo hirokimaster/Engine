@@ -55,7 +55,7 @@ void EnemyBullet::BulletErase()
 		isDead_ = true;
 	}
 
-	/*if (player_->GetWorldPosition().z - 5.0f  >= GetWorldPosition().z) {
+	/*if (player_->GetWorldPosition().z - 5.0f >= GetWorldPosition().z) {
 		isDead_ = true;
 	}*/
 }
@@ -102,9 +102,9 @@ void EnemyBullet::CurveBullet()
 	velocity_ = Normalize(velocity_);
 	velocity_ = 1.0f * velocity_;
 
-	// 移動
+	
 	worldTransform_.translate = worldTransform_.translate + (deltaTime_ * velocity_);
-
+	
 	timeElapsed_ += 1.0f / 60.0f;
 }
 
