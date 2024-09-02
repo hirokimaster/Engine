@@ -1,4 +1,3 @@
-
 #include "LockOn.h"
 
 void LockOn::Initialize()
@@ -6,7 +5,7 @@ void LockOn::Initialize()
 	texHandle2DReticle_ = TextureManager::Load("resources/reticle.png");
 	texHandleLockOnReticle_ = TextureManager::Load("resources/reticle2.png");
 	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, reticlePosition_));
-	spriteLockOnReticle_.reset(Sprite::Create(texHandleLockOnReticle_, { 640.0f,360.0f }));
+	spriteLockOnReticle_.reset(Sprite::Create(texHandle2DReticle_, { 640.0f,360.0f }));
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
@@ -158,18 +157,18 @@ void LockOn::ReticleRangeLimit()
 
 	// LockOnReticleの範囲制限
 	if (isLockOnMode_) {
-		if (spriteLockOnReticle_->GetPosition().x <= 150.0f) {
-			spriteLockOnReticle_->SetPosition({ 150.0f,spriteLockOnReticle_->GetPosition().y });
+		if (spriteLockOnReticle_->GetPosition().x <= 25.0f) {
+			spriteLockOnReticle_->SetPosition({ 25.0f,spriteLockOnReticle_->GetPosition().y });
 		}
-		else if (spriteLockOnReticle_->GetPosition().x >= 1130.0f) {
-			spriteLockOnReticle_->SetPosition({ 1130.0f, spriteLockOnReticle_->GetPosition().y });
+		else if (spriteLockOnReticle_->GetPosition().x >= 1255.0f) {
+			spriteLockOnReticle_->SetPosition({ 1255.0f, spriteLockOnReticle_->GetPosition().y });
 		}
 
-		if (spriteLockOnReticle_->GetPosition().y <= 100.0f) {
-			spriteLockOnReticle_->SetPosition({ spriteLockOnReticle_->GetPosition().x,100.0f });
+		if (spriteLockOnReticle_->GetPosition().y <= 25.0f) {
+			spriteLockOnReticle_->SetPosition({ spriteLockOnReticle_->GetPosition().x,25.0f });
 		}
-		else if (spriteLockOnReticle_->GetPosition().y >= 620.0f) {
-			spriteLockOnReticle_->SetPosition({ spriteLockOnReticle_->GetPosition().x, 620.0f });
+		else if (spriteLockOnReticle_->GetPosition().y >= 695.0f) {
+			spriteLockOnReticle_->SetPosition({ spriteLockOnReticle_->GetPosition().x, 695.0f });
 		}
 	}
 }
@@ -233,17 +232,37 @@ void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	// ロックオン目標
 	std::list<const Enemy*> targets;
 
-	// すべての敵に対して順にロックオン判定
-	for (const std::unique_ptr<Enemy>& enemy : enemies) {
-		// screen座標
-		Vector3 positionWorld = enemy->GetWorldPosition();
-		Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
+	if (isLockOnMode_) {
+		// すべての敵に対して順にロックオン判定
+		for (const std::unique_ptr<Enemy>& enemy : enemies) {
+			// screen座標
+			Vector3 positionWorld = enemy->GetWorldPosition();
+			Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
-		if (CheckReticleRange(positionScreen)) {
-			targets.push_back(enemy.get());
+			// すでにロックオンされているかチェック
+			bool alreadyLockedOn = std::find(target_.begin(), target_.end(), enemy.get()) != target_.end();
+
+			// 新たにロックオンするか、すでにロックオンされている場合は対象として残す
+			if (alreadyLockedOn || CheckReticleRange(positionScreen)) {
+				targets.push_back(enemy.get());
+			}
+		}
+	}
+	else {
+
+		// すべての敵に対して順にロックオン判定
+		for (const std::unique_ptr<Enemy>& enemy : enemies) {
+			// screen座標
+			Vector3 positionWorld = enemy->GetWorldPosition();
+			Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
+
+			if (CheckReticleRange(positionScreen)) {
+				targets.push_back(enemy.get());
+			}
 		}
 	}
 
+	
 	// ロックオン対象をリセット
 	target_.clear();
 
@@ -302,7 +321,7 @@ bool LockOn::CheckReticleRange(const Vector3& position)
 	float reticleRadius; // レティクルの範囲
 
 	if (isLockOnMode_) {
-		reticleRadius = 150.0f;
+		reticleRadius = 30.0f;
 	}
 	else {
 		reticleRadius = 30.0f;
