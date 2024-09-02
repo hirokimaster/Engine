@@ -6,6 +6,7 @@
 #include <vector>
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Rail/Rail.h"
+#include "application/GameObject/Player/PlayerParticle/PlayerParticle.h"
 
 class LockOn;
 
@@ -107,4 +108,5 @@ private:
 	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	Vector3 velocity_{};
+	std::unique_ptr<PlayerParticle> particle_;
 };

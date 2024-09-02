@@ -283,6 +283,9 @@
     <ClCompile Include="application\GameObject\FollowCamera\FollowCamera.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="application\GameObject\Player\PlayerParticle\PlayerParticle.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CreateResource\CreateResource.h">
@@ -452,6 +455,7 @@
     <ClInclude Include="application\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="application\Scene\ClearScene\ClearScene.h" />
     <ClInclude Include="application\GameObject\FollowCamera\FollowCamera.h" />
+    <ClInclude Include="application\GameObject\Player\PlayerParticle\PlayerParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">

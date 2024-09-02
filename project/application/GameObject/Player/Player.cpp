@@ -12,6 +12,9 @@ void Player::Initialize(uint32_t texHandle)
 	object_->SetColor({ 0.0f,0.0f,1.0f,1.0f });
 	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
 
+	particle_ = std::make_unique<PlayerParticle>();
+	particle_->Initialize();
+
 	SetCollosionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
 }
@@ -22,6 +25,10 @@ void Player::Update()
 	Attack(); // 攻撃
 	UpdateBullet(); // 弾の更新
 	Rotate(); // 回転
+	particle_->SetPosition(GetWorldPosition());
+	particle_->SetAreaMax({ GetWorldPosition().x + 0.1f, GetWorldPosition().y + 0.1f,GetWorldPosition().z - 0.5f });
+	particle_->SetAreaMin({ GetWorldPosition().x - 0.1f, GetWorldPosition().y - 0.1f,GetWorldPosition().z - 0.7f });
+	particle_->Update();
 	worldTransform_.UpdateMatrix();
 #ifdef _DEBUG
 	ImGui::Begin("PlayerRotate");
@@ -40,6 +47,8 @@ void Player::Draw(Camera& camera)
 		bulletsItr_ != bullets_.end(); ++bulletsItr_) {
 		(*bulletsItr_)->Draw(camera);
 	}
+
+	particle_->Draw(camera);
 
 	// UIの描画
 	DrawUI();
@@ -199,6 +208,8 @@ void Player::Rotate()
 	worldTransform_.translate.x += velocity.x * 0.4f;
 	worldTransform_.translate.y += velocity.y * 0.4f;
 	worldTransform_.translate.z += velocity.z * 0.4f;
+
+	particle_->SetVelocityXY({ -velocity.x,-velocity.y });
 
 }
 

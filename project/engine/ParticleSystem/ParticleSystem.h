@@ -64,6 +64,10 @@ public:
 
 	void SetNumInstance(uint32_t kNumMaxInstace) { kNumMaxInstance_ = kNumMaxInstace; }
 
+	void SetSrvIndex(uint32_t index) { index_ = index; }
+
+	void SetPosition(Vector3 position) { position_ = position; }
+
 #pragma endregion
 
 	/// <summary>
@@ -87,7 +91,7 @@ public:
 
 private:
 	Resource resource_ = {};
-	uint32_t kNumMaxInstance_ = 100;
+	uint32_t kNumMaxInstance_ = 10000;
 	descSize size_ = {};
 	ModelData modelData_;
 	std::unique_ptr<Model>model_;
@@ -95,4 +99,5 @@ private:
 	uint32_t texHandle_ = 0;
 	ParticleForGPU* instancingData_ = nullptr;
 	uint32_t index_ = 0;
+	static Vector3 position_;
 };

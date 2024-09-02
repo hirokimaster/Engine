@@ -6,6 +6,7 @@ C:\授業\2024年度前期\DirectXEngine\project\application\GameObject\LockOn\L
 C:\授業\2024年度前期\DirectXEngine\project\application\GameObject\ModelResources\ModelResources.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\ModelResources.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\GameObject\Player\Bullet\PlayerBullet.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\PlayerBullet.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\GameObject\Player\Player.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\Player.obj
+C:\授業\2024年度前期\DirectXEngine\project\application\GameObject\Player\PlayerParticle\PlayerParticle.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\PlayerParticle.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\GameObject\Rail\Rail.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\Rail.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\Scene\ClearScene\ClearScene.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\ClearScene.obj
 C:\授業\2024年度前期\DirectXEngine\project\application\Scene\Demo\Demo.cpp;C:\授業\2024年度前期\DirectXEngine\Generated\Obj\DirectX\Debug\Demo.obj
