@@ -106,4 +106,5 @@ private:
 	float shotTimer_ = 0.0f;
 	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
+	Vector3 velocity_{};
 };

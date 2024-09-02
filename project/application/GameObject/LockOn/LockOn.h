@@ -10,7 +10,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(Vector3 playerPosition);
 
 	/// <summary>
 	/// 更新
@@ -96,6 +96,8 @@ public:
 	Vector3 GetWorldPosition3DReticle()const; // reticleのworld座標
 
 	bool GetIsLockOnMode()const { return isLockOnMode_; } // ロックオンのフラグ
+
+	Vector3 GetWorldTransform() { return worldTransform3DReticle_.translate; }
 
 #pragma endregion
 

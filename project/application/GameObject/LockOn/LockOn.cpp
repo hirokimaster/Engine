@@ -1,6 +1,6 @@
 #include "LockOn.h"
 
-void LockOn::Initialize()
+void LockOn::Initialize(Vector3 playerPosition)
 {
 	texHandle2DReticle_ = TextureManager::Load("resources/reticle.png");
 	texHandleLockOnReticle_ = TextureManager::Load("resources/reticle2.png");
@@ -9,6 +9,7 @@ void LockOn::Initialize()
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
+	worldTransform3DReticle_.translate = playerPosition + 100.0f;
 }
 
 void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
@@ -133,7 +134,7 @@ void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector
 
 	// カメラから照準オブジェクトの距離
 	const float kDistanceTestObject = playerPosition.z + 100.0f;
-	worldTransform3DReticle_.translate = Multiply(kDistanceTestObject, mouseDirection);
+	worldTransform3DReticle_.translate = kDistanceTestObject * mouseDirection;
 	worldTransform3DReticle_.UpdateMatrix();
 }
 

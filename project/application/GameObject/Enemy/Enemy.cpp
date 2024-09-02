@@ -25,9 +25,9 @@ void Enemy::Update()
 	worldTransform_.UpdateMatrix();
 
 	// 時間で消滅
-	if (--deathTimer_ <= 0) {
+	/*if (--deathTimer_ <= 0) {
 		isDead_ = true;
-	}
+	}*/
 
 #ifdef _DEBUG
 

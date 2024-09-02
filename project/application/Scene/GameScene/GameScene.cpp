@@ -15,21 +15,16 @@ void GameScene::Initialize()
 	camera_.Initialize();
 	// lockOn
 	lockOn_ = std::make_unique<LockOn>();
-	lockOn_->Initialize();
 	// player
 	player_ = std::make_unique<Player>();
 	texHandlePlayer_ = TextureManager::Load("resources/white.png");
 	player_->Initialize(texHandlePlayer_);
 	player_->SetPosition({ 0,0,50.0f });
+	lockOn_->Initialize(player_->GetWorldTransform().translate);
 	player_->SetLockOn(lockOn_.get());
 
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
-
-	// rail
-	rail_ = std::make_unique<Rail>();
-	rail_->Initialize();
-	rail_->SetPlayer(player_.get());
 
 	/*------------------------
 			追従カメラ
@@ -74,9 +69,6 @@ void GameScene::Update()
 
 	// loader
 	loader_->Update();
-
-	// rail
-	rail_->Update();
 
 	// followCamera
 	followCamera_->Update();

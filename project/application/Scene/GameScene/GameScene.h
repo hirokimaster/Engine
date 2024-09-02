@@ -62,7 +62,6 @@ private:
 	uint32_t texHandlePlayer_ = 0;
 
 	std::unique_ptr<CollisionManager> collisionManager_ = nullptr; // 衝突判定まとめ
-	std::unique_ptr<Rail> rail_ = nullptr; // レール
 	std::unique_ptr<SkyBox> skyBox_ = nullptr; // スカイボックス(背景)
 	std::unique_ptr<LockOn> lockOn_ = nullptr; // ロックオン
 	WorldTransform worldTransformSkyBox_{};

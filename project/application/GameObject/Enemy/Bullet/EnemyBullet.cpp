@@ -54,10 +54,6 @@ void EnemyBullet::BulletErase()
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
-
-	/*if (player_->GetWorldPosition().z - 5.0f >= GetWorldPosition().z) {
-		isDead_ = true;
-	}*/
 }
 
 void EnemyBullet::OnCollision()
@@ -75,7 +71,7 @@ Vector3 EnemyBullet::RandomDirection()
 	return result;
 }
 
-Vector3 EnemyBullet::CalculateCurve(float dt)
+Vector3 EnemyBullet::CalculateCurve()
 {
 	// カーブの振幅と周波数を設定
 	float curveAmplitude = 0.8f;
@@ -88,23 +84,33 @@ Vector3 EnemyBullet::CalculateCurve(float dt)
 
 void EnemyBullet::CurveBullet()
 {
-	deltaTime_ += 1.0f / 60.0f;
+
 	// ターゲットへのベクトルを計算
 	Vector3 toTarget = player_->GetWorldPosition() - GetWorldPosition();
-	// 正規化
-	toTarget = Normalize(toTarget);
 
-	Vector3 curveVector = CalculateCurve(deltaTime_);
+	// 追尾を止める距離
+	float distanceToTarget = Length(toTarget);
+	float stopDistance = 10.0f;
 
-	// 現在の速度方向と目標方向を補間して新しい方向を決定
-	Vector3 desiredDirection = Normalize(toTarget + curveVector);
-	velocity_ = (1.0f - 0.1f) * velocity_ + 0.1f * desiredDirection;
-	velocity_ = Normalize(velocity_);
-	velocity_ = 1.0f * velocity_;
 
-	
-	worldTransform_.translate = worldTransform_.translate + (deltaTime_ * velocity_);
-	
+	// 一定の距離以上の場合追尾する
+	if (distanceToTarget > stopDistance) {
+		// 正規化
+		toTarget = Normalize(toTarget);
+
+		Vector3 curveVector = CalculateCurve();
+
+		// 今の速度方向と目標方向を補間して新しい方向を決める
+		Vector3 desiredDirection = Normalize(toTarget + curveVector);
+		velocity_ = (1.0f - 0.1f) * velocity_ + 0.1f * desiredDirection;
+		velocity_ = Normalize(velocity_);
+	}
+	else {
+		isDead_ = true;
+	}
+
+	// 移動
+	worldTransform_.translate = worldTransform_.translate + (timeElapsed_ * velocity_);
 	timeElapsed_ += 1.0f / 60.0f;
 }
 

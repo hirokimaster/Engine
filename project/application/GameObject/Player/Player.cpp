@@ -63,16 +63,6 @@ void Player::Move()
 		move.y -= kMoveSpeed_;
 	}
 
-	// ゲームパッドの状態を得る変数(XINPUT)
-	XINPUT_STATE joyState;
-
-	// ゲームパッド状態取得
-	if (Input::GetInstance()->GetJoystickState(joyState)) {
-		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kMoveSpeed_;
-		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kMoveSpeed_;
-	}
-
-	worldTransform_.translate = worldTransform_.translate + move;
 }
 
 void Player::Attack()
@@ -180,46 +170,35 @@ void Player::DrawUI()
 
 void Player::Rotate()
 {
-	// レティクルの方向ベクトルを求める
-	Vector3 reticlePosition = lockOn_->GetWorldPosition3DReticle();
-	Vector3 playerToReticle = reticlePosition - GetWorldPosition();
+	
+	Vector3 end = lockOn_->GetWorldTransform();
+	Vector3 start = worldTransform_.translate;
 
-	// 方向ベクトルがゼロの時は計算しない
-	if (Length(playerToReticle) == 0.0f) {
-		return;
-	}
+	Vector3 diff = end - start;
 
-	// 自機の前方ベクトル
-	Vector3 forward = { 0.0f, 0.0f, 1.0f };
+	diff = Normalize(diff);
 
-	// 正規化
-	Vector3 playerToReticleNorm = Normalize(playerToReticle);
+	Vector3 velocity = diff;
 
-	// 回転軸と角度を計算
-	Vector3 rotationAxis = Cross(forward, playerToReticleNorm);
-	float angle;
+	float t = 0.0f;
 
-	if (Length(rotationAxis) == 0.0f) {
-		// 軸がゼロベクトルなら、180度回転のケース
-		rotationAxis = { 0.0f, 1.0f, 0.0f }; // 任意の軸を選択
-		angle = std::numbers::pi_v<float>; // 180度回転
-	}
-	else {
-		// 正規化
-		rotationAxis = Normalize(rotationAxis);
+	// 引数で受け取った速度をメンバ変数に代入
+	velocity_ = SLerp(velocity, worldTransform_.translate, t);
 
-		float dotProduct = Dot(forward, playerToReticleNorm);
-		// -1.0 ～ 1.0の範囲にクランプする
-		float clampedDotProduct = std::clamp(dotProduct, -1.0f, 1.0f);
-		angle = std::acos(clampedDotProduct);
-	}
+	velocity_.x *= 0.1f;
+	velocity_.y *= 0.1f;
+	velocity_.z *= 0.1f;
 
-	// 回転を適用
-	worldTransform_.rotate.y = angle * rotationAxis.y;
-	worldTransform_.rotate.x = angle * rotationAxis.x;
+	// Y軸周り角度（Θy）
+	worldTransform_.rotate.y = std::atan2(velocity_.x, velocity_.z);
 
-	// Z軸回転はしないので0で
-	worldTransform_.rotate.z = 0.0f;
+	float velocityXZ = sqrt((velocity_.x * velocity_.x) + (velocity_.z * velocity_.z));
+	worldTransform_.rotate.x = std::atan2(-velocity_.y, velocityXZ);
+
+	// 座標移動(ベクトルの加算)
+	worldTransform_.translate.x += velocity.x * 0.4f;
+	worldTransform_.translate.y += velocity.y * 0.4f;
+	worldTransform_.translate.z += velocity.z * 0.4f;
 
 }
 

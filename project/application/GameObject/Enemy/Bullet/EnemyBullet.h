@@ -61,7 +61,7 @@ private:
 	/// </summary>
 	/// <param name="dt"></param>
 	/// <returns></returns>
-	Vector3 CalculateCurve(float dt);
+	Vector3 CalculateCurve();
 
 	/// <summary>
 	/// 

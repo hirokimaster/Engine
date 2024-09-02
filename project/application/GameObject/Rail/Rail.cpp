@@ -33,7 +33,7 @@ void Rail::RailPositionCalc(float progress)
 	Vector3 railPosition = CatmullRomPosition(controlPoints_, t);
 
 	// playerの位置を合わせる
-	player_->SetPositionZ(railPosition.z);
+	//player_->SetPositionZ(railPosition.z);
 }
 
 Vector3 Rail::CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t)
