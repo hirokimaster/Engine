@@ -21,7 +21,7 @@ void Enemy::Initialize(uint32_t texHandle)
 
 void Enemy::Update()
 {
-	BulletUpdate(); // 弾の更新処理
+	//BulletUpdate(); // 弾の更新処理
 	worldTransform_.UpdateMatrix();
 
 	// 時間で消滅
