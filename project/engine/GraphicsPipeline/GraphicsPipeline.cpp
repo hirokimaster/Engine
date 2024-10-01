@@ -23,18 +23,18 @@ void GraphicsPipeline::Initialize() {
 /// <param name="device"></param>
 /// <param name="descriptionRootSignature"></param>
 /// <param name="property"></param>
-void GraphicsPipeline::CreateRootSignature(Microsoft::WRL::ComPtr <ID3D12Device> device, D3D12_ROOT_SIGNATURE_DESC& descriptionRootSignature, Property& property) {
+void GraphicsPipeline::CreateRootSignature(Microsoft::WRL::ComPtr <ID3D12Device> device, D3D12_ROOT_SIGNATURE_DESC& descriptionRootSignature, GraphicsPipelineData& data) {
 
 	// シリアライズしてバイナリにする
-	HRESULT hr_ = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &property.signatureBlob_, &property.errorBlob_);
+	HRESULT hr_ = D3D12SerializeRootSignature(&descriptionRootSignature, D3D_ROOT_SIGNATURE_VERSION_1, &data.signatureBlob_, &data.errorBlob_);
 	if (FAILED(hr_)) {
-		Log(reinterpret_cast<char*>(property.errorBlob_->GetBufferPointer()));
+		Log(reinterpret_cast<char*>(data.errorBlob_->GetBufferPointer()));
 		assert(false);
 	}
 
 	// バイナリを元に生成
-	hr_ = device->CreateRootSignature(0, property.signatureBlob_->GetBufferPointer(), property.signatureBlob_->GetBufferSize(),
-		IID_PPV_ARGS(&property.rootSignature_));
+	hr_ = device->CreateRootSignature(0, data.signatureBlob_->GetBufferPointer(), data.signatureBlob_->GetBufferSize(),
+		IID_PPV_ARGS(&data.rootSignature_));
 	assert(SUCCEEDED(hr_));
 }
 
@@ -42,10 +42,10 @@ void GraphicsPipeline::SetBlendMode(D3D12_RENDER_TARGET_BLEND_DESC& blendDesc, B
 
 	// BlendState
 	switch (blendMode) {
-	case BlendNone:
+	case BlendMode::None:
 		blendDesc.BlendEnable = FALSE;
 
-	case BlendNormal:
+	case BlendMode::Normal:
 		blendDesc.BlendEnable = TRUE;
 		blendDesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
 		blendDesc.BlendOp = D3D12_BLEND_OP_ADD;
@@ -55,7 +55,7 @@ void GraphicsPipeline::SetBlendMode(D3D12_RENDER_TARGET_BLEND_DESC& blendDesc, B
 		blendDesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 		break;
 
-	case BlendAdd:
+	case BlendMode::Add:
 		blendDesc.BlendEnable = TRUE;
 		blendDesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
 		blendDesc.BlendOp = D3D12_BLEND_OP_ADD;
@@ -106,9 +106,9 @@ void GraphicsPipeline::CreatePipeline(PipelineState& pso) {
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName) {
+GraphicsPipelineData GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName) {
 
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -170,7 +170,7 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 
 
 	// rootSignature作成
-	CreateRootSignature(device,descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
@@ -194,7 +194,7 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNormal);
+	SetBlendMode(blendDesc, BlendMode::Normal);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -215,7 +215,7 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -243,10 +243,10 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -255,9 +255,9 @@ Property GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> 
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateSprite2D(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateSprite2D(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -315,7 +315,7 @@ Property GraphicsPipeline::CreateSprite2D(Microsoft::WRL::ComPtr<ID3D12Device> d
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
@@ -335,7 +335,7 @@ Property GraphicsPipeline::CreateSprite2D(Microsoft::WRL::ComPtr<ID3D12Device> d
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNormal);
+	SetBlendMode(blendDesc, BlendMode::Normal);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -356,7 +356,7 @@ Property GraphicsPipeline::CreateSprite2D(Microsoft::WRL::ComPtr<ID3D12Device> d
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -384,10 +384,10 @@ Property GraphicsPipeline::CreateSprite2D(Microsoft::WRL::ComPtr<ID3D12Device> d
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -396,8 +396,8 @@ Property GraphicsPipeline::CreateSprite2D(Microsoft::WRL::ComPtr<ID3D12Device> d
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName) {
-	Property property;
+GraphicsPipelineData GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName) {
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -455,7 +455,7 @@ Property GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> d
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
@@ -479,7 +479,7 @@ Property GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> d
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendAdd);
+	SetBlendMode(blendDesc, BlendMode::Add);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -500,7 +500,7 @@ Property GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> d
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -528,10 +528,10 @@ Property GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> d
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -540,9 +540,9 @@ Property GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> d
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreatePointLight(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreatePointLight(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -610,7 +610,7 @@ Property GraphicsPipeline::CreatePointLight(Microsoft::WRL::ComPtr<ID3D12Device>
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[4] = {};
@@ -638,7 +638,7 @@ Property GraphicsPipeline::CreatePointLight(Microsoft::WRL::ComPtr<ID3D12Device>
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNormal);
+	SetBlendMode(blendDesc, BlendMode::Normal);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -659,7 +659,7 @@ Property GraphicsPipeline::CreatePointLight(Microsoft::WRL::ComPtr<ID3D12Device>
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -687,10 +687,10 @@ Property GraphicsPipeline::CreatePointLight(Microsoft::WRL::ComPtr<ID3D12Device>
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -699,9 +699,9 @@ Property GraphicsPipeline::CreatePointLight(Microsoft::WRL::ComPtr<ID3D12Device>
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateSpotLight(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateSpotLight(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -769,7 +769,7 @@ Property GraphicsPipeline::CreateSpotLight(Microsoft::WRL::ComPtr<ID3D12Device> 
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[4] = {};
@@ -797,7 +797,7 @@ Property GraphicsPipeline::CreateSpotLight(Microsoft::WRL::ComPtr<ID3D12Device> 
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNormal);
+	SetBlendMode(blendDesc, BlendMode::Normal);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -818,7 +818,7 @@ Property GraphicsPipeline::CreateSpotLight(Microsoft::WRL::ComPtr<ID3D12Device> 
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -846,10 +846,10 @@ Property GraphicsPipeline::CreateSpotLight(Microsoft::WRL::ComPtr<ID3D12Device> 
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -858,9 +858,9 @@ Property GraphicsPipeline::CreateSpotLight(Microsoft::WRL::ComPtr<ID3D12Device> 
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateBloom(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateBloom(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -912,7 +912,7 @@ Property GraphicsPipeline::CreateBloom(Microsoft::WRL::ComPtr<ID3D12Device> devi
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
@@ -923,7 +923,7 @@ Property GraphicsPipeline::CreateBloom(Microsoft::WRL::ComPtr<ID3D12Device> devi
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNone);
+	SetBlendMode(blendDesc, BlendMode::None);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -944,7 +944,7 @@ Property GraphicsPipeline::CreateBloom(Microsoft::WRL::ComPtr<ID3D12Device> devi
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -965,10 +965,10 @@ Property GraphicsPipeline::CreateBloom(Microsoft::WRL::ComPtr<ID3D12Device> devi
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -977,9 +977,9 @@ Property GraphicsPipeline::CreateBloom(Microsoft::WRL::ComPtr<ID3D12Device> devi
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateGrayscale(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateGrayscale(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -1028,7 +1028,7 @@ Property GraphicsPipeline::CreateGrayscale(Microsoft::WRL::ComPtr<ID3D12Device> 
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
@@ -1039,7 +1039,7 @@ Property GraphicsPipeline::CreateGrayscale(Microsoft::WRL::ComPtr<ID3D12Device> 
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNone);
+	SetBlendMode(blendDesc, BlendMode::None);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -1060,7 +1060,7 @@ Property GraphicsPipeline::CreateGrayscale(Microsoft::WRL::ComPtr<ID3D12Device> 
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -1081,10 +1081,10 @@ Property GraphicsPipeline::CreateGrayscale(Microsoft::WRL::ComPtr<ID3D12Device> 
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -1093,9 +1093,9 @@ Property GraphicsPipeline::CreateGrayscale(Microsoft::WRL::ComPtr<ID3D12Device> 
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateVignette(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateVignette(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -1147,7 +1147,7 @@ Property GraphicsPipeline::CreateVignette(Microsoft::WRL::ComPtr<ID3D12Device> d
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
@@ -1158,7 +1158,7 @@ Property GraphicsPipeline::CreateVignette(Microsoft::WRL::ComPtr<ID3D12Device> d
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNone);
+	SetBlendMode(blendDesc, BlendMode::None);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -1179,7 +1179,7 @@ Property GraphicsPipeline::CreateVignette(Microsoft::WRL::ComPtr<ID3D12Device> d
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -1200,10 +1200,10 @@ Property GraphicsPipeline::CreateVignette(Microsoft::WRL::ComPtr<ID3D12Device> d
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -1212,9 +1212,9 @@ Property GraphicsPipeline::CreateVignette(Microsoft::WRL::ComPtr<ID3D12Device> d
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateGaussianBlur(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateGaussianBlur(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -1266,7 +1266,7 @@ Property GraphicsPipeline::CreateGaussianBlur(Microsoft::WRL::ComPtr<ID3D12Devic
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
@@ -1277,7 +1277,7 @@ Property GraphicsPipeline::CreateGaussianBlur(Microsoft::WRL::ComPtr<ID3D12Devic
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNone);
+	SetBlendMode(blendDesc, BlendMode::None);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -1298,7 +1298,7 @@ Property GraphicsPipeline::CreateGaussianBlur(Microsoft::WRL::ComPtr<ID3D12Devic
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -1319,10 +1319,10 @@ Property GraphicsPipeline::CreateGaussianBlur(Microsoft::WRL::ComPtr<ID3D12Devic
 	depthStencilDesc.DepthEnable = false;
 	
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -1331,9 +1331,9 @@ Property GraphicsPipeline::CreateGaussianBlur(Microsoft::WRL::ComPtr<ID3D12Devic
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateSkinningObject3D(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateSkinningObject3D(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -1399,7 +1399,7 @@ Property GraphicsPipeline::CreateSkinningObject3D(Microsoft::WRL::ComPtr<ID3D12D
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[5] = {};
@@ -1435,7 +1435,7 @@ Property GraphicsPipeline::CreateSkinningObject3D(Microsoft::WRL::ComPtr<ID3D12D
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNormal);
+	SetBlendMode(blendDesc, BlendMode::Normal);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -1456,7 +1456,7 @@ Property GraphicsPipeline::CreateSkinningObject3D(Microsoft::WRL::ComPtr<ID3D12D
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -1477,10 +1477,10 @@ Property GraphicsPipeline::CreateSkinningObject3D(Microsoft::WRL::ComPtr<ID3D12D
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -1489,9 +1489,9 @@ Property GraphicsPipeline::CreateSkinningObject3D(Microsoft::WRL::ComPtr<ID3D12D
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateLuminanceOutline(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateLuminanceOutline(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -1540,7 +1540,7 @@ Property GraphicsPipeline::CreateLuminanceOutline(Microsoft::WRL::ComPtr<ID3D12D
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
@@ -1551,7 +1551,7 @@ Property GraphicsPipeline::CreateLuminanceOutline(Microsoft::WRL::ComPtr<ID3D12D
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNormal);
+	SetBlendMode(blendDesc, BlendMode::Normal);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -1572,7 +1572,7 @@ Property GraphicsPipeline::CreateLuminanceOutline(Microsoft::WRL::ComPtr<ID3D12D
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -1593,10 +1593,10 @@ Property GraphicsPipeline::CreateLuminanceOutline(Microsoft::WRL::ComPtr<ID3D12D
 	depthStencilDesc.DepthEnable = false;
 	
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -1605,9 +1605,9 @@ Property GraphicsPipeline::CreateLuminanceOutline(Microsoft::WRL::ComPtr<ID3D12D
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateDepthOutline(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateDepthOutline(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -1681,7 +1681,7 @@ Property GraphicsPipeline::CreateDepthOutline(Microsoft::WRL::ComPtr<ID3D12Devic
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
@@ -1692,7 +1692,7 @@ Property GraphicsPipeline::CreateDepthOutline(Microsoft::WRL::ComPtr<ID3D12Devic
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNone);
+	SetBlendMode(blendDesc, BlendMode::None);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -1713,7 +1713,7 @@ Property GraphicsPipeline::CreateDepthOutline(Microsoft::WRL::ComPtr<ID3D12Devic
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -1734,10 +1734,10 @@ Property GraphicsPipeline::CreateDepthOutline(Microsoft::WRL::ComPtr<ID3D12Devic
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -1746,9 +1746,9 @@ Property GraphicsPipeline::CreateDepthOutline(Microsoft::WRL::ComPtr<ID3D12Devic
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateRadialBlur(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateRadialBlur(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -1802,7 +1802,7 @@ Property GraphicsPipeline::CreateRadialBlur(Microsoft::WRL::ComPtr<ID3D12Device>
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
@@ -1813,7 +1813,7 @@ Property GraphicsPipeline::CreateRadialBlur(Microsoft::WRL::ComPtr<ID3D12Device>
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNone);
+	SetBlendMode(blendDesc, BlendMode::None);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -1834,7 +1834,7 @@ Property GraphicsPipeline::CreateRadialBlur(Microsoft::WRL::ComPtr<ID3D12Device>
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -1855,15 +1855,21 @@ Property GraphicsPipeline::CreateRadialBlur(Microsoft::WRL::ComPtr<ID3D12Device>
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
-Property GraphicsPipeline::CreateDissolve(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+/// <summary>
+/// dissolve
+/// </summary>
+/// <param name="device"></param>
+/// <param name="shaderName"></param>
+/// <returns></returns>
+GraphicsPipelineData GraphicsPipeline::CreateDissolve(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -1927,7 +1933,7 @@ Property GraphicsPipeline::CreateDissolve(Microsoft::WRL::ComPtr<ID3D12Device> d
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
@@ -1938,7 +1944,7 @@ Property GraphicsPipeline::CreateDissolve(Microsoft::WRL::ComPtr<ID3D12Device> d
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNone);
+	SetBlendMode(blendDesc, BlendMode::None);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -1959,7 +1965,7 @@ Property GraphicsPipeline::CreateDissolve(Microsoft::WRL::ComPtr<ID3D12Device> d
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -1980,10 +1986,10 @@ Property GraphicsPipeline::CreateDissolve(Microsoft::WRL::ComPtr<ID3D12Device> d
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -1992,10 +1998,10 @@ Property GraphicsPipeline::CreateDissolve(Microsoft::WRL::ComPtr<ID3D12Device> d
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateRandom(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateRandom(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
 	
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -2048,7 +2054,7 @@ Property GraphicsPipeline::CreateRandom(Microsoft::WRL::ComPtr<ID3D12Device> dev
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
@@ -2059,7 +2065,7 @@ Property GraphicsPipeline::CreateRandom(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNone);
+	SetBlendMode(blendDesc, BlendMode::None);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -2080,7 +2086,7 @@ Property GraphicsPipeline::CreateRandom(Microsoft::WRL::ComPtr<ID3D12Device> dev
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -2101,10 +2107,10 @@ Property GraphicsPipeline::CreateRandom(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 
@@ -2114,9 +2120,9 @@ Property GraphicsPipeline::CreateRandom(Microsoft::WRL::ComPtr<ID3D12Device> dev
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateSkyBox(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateSkyBox(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -2175,7 +2181,7 @@ Property GraphicsPipeline::CreateSkyBox(Microsoft::WRL::ComPtr<ID3D12Device> dev
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2] = {};
@@ -2195,7 +2201,7 @@ Property GraphicsPipeline::CreateSkyBox(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNormal);
+	SetBlendMode(blendDesc, BlendMode::Normal);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -2216,7 +2222,7 @@ Property GraphicsPipeline::CreateSkyBox(Microsoft::WRL::ComPtr<ID3D12Device> dev
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -2244,15 +2250,21 @@ Property GraphicsPipeline::CreateSkyBox(Microsoft::WRL::ComPtr<ID3D12Device> dev
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;	
+	return pipelineData;	
 }
 
-Property GraphicsPipeline::CreateEnvironment(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+/// <summary>
+/// 環境マップ
+/// </summary>
+/// <param name="device"></param>
+/// <param name="shaderName"></param>
+/// <returns></returns>
+GraphicsPipelineData GraphicsPipeline::CreateEnvironment(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -2335,7 +2347,7 @@ Property GraphicsPipeline::CreateEnvironment(Microsoft::WRL::ComPtr<ID3D12Device
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[4] = {};
@@ -2363,7 +2375,7 @@ Property GraphicsPipeline::CreateEnvironment(Microsoft::WRL::ComPtr<ID3D12Device
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNone);
+	SetBlendMode(blendDesc, BlendMode::None);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -2384,7 +2396,7 @@ Property GraphicsPipeline::CreateEnvironment(Microsoft::WRL::ComPtr<ID3D12Device
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -2412,10 +2424,10 @@ Property GraphicsPipeline::CreateEnvironment(Microsoft::WRL::ComPtr<ID3D12Device
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /// <summary>
@@ -2424,9 +2436,9 @@ Property GraphicsPipeline::CreateEnvironment(Microsoft::WRL::ComPtr<ID3D12Device
 /// <param name="device"></param>
 /// <param name="shaderName"></param>
 /// <returns></returns>
-Property GraphicsPipeline::CreateLine(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+GraphicsPipelineData GraphicsPipeline::CreateLine(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
-	Property property;
+	GraphicsPipelineData pipelineData;
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -2481,7 +2493,7 @@ Property GraphicsPipeline::CreateLine(Microsoft::WRL::ComPtr<ID3D12Device> devic
 
 
 	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, property);
+	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
@@ -2505,7 +2517,7 @@ Property GraphicsPipeline::CreateLine(Microsoft::WRL::ComPtr<ID3D12Device> devic
 	// BlendState	
 	D3D12_RENDER_TARGET_BLEND_DESC blendDesc{};
 	blendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	SetBlendMode(blendDesc, BlendNormal);
+	SetBlendMode(blendDesc, BlendMode::Normal);
 
 	// RasterizerStateの設定
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -2526,7 +2538,7 @@ Property GraphicsPipeline::CreateLine(Microsoft::WRL::ComPtr<ID3D12Device> devic
 
 	// PSO
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC graphicsPipelineStateDesc{};
-	graphicsPipelineStateDesc.pRootSignature = property.rootSignature_.Get(); // RootSignature
+	graphicsPipelineStateDesc.pRootSignature = pipelineData.rootSignature_.Get(); // RootSignature
 	graphicsPipelineStateDesc.InputLayout = inputLayoutDesc; // InputLayout
 	graphicsPipelineStateDesc.VS = { vertexShaderBlob_->GetBufferPointer(), vertexShaderBlob_->GetBufferSize() }; // VertexShader
 	graphicsPipelineStateDesc.PS = { pixelShaderBlob_->GetBufferPointer(), pixelShaderBlob_->GetBufferSize() }; // PixelShader
@@ -2554,10 +2566,10 @@ Property GraphicsPipeline::CreateLine(Microsoft::WRL::ComPtr<ID3D12Device> devic
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&property.graphicsPipelineState_));
+	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
-	return property;
+	return pipelineData;
 }
 
 /*-------------------------------------------------

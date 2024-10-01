@@ -36,7 +36,7 @@ private:
 	void CreateVertex();
 
 private:
-	Property pipeline_{};
+	GraphicsPipelineData pipeline_{};
 	D3D12_INDEX_BUFFER_VIEW IBV_{};
 	D3D12_VERTEX_BUFFER_VIEW VBV_{};
 	Resource resource_ = {};

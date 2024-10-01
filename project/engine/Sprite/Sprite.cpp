@@ -133,11 +133,11 @@ void Sprite::Draw()
 	worldTransform_.translate.y = GetPosition().y;
 	worldTransform_.UpdateMatrix();
 
-	Property property = GraphicsPipeline::GetInstance()->GetPSO().Sprite2D;
+	GraphicsPipelineData pipelineData = GraphicsPipeline::GetInstance()->GetPSO().Sprite2D;
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
-	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property.rootSignature_.Get());
-	DirectXCommon::GetCommandList()->SetPipelineState(property.graphicsPipelineState_.Get()); // PSOを設定
+	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(pipelineData.rootSignature_.Get());
+	DirectXCommon::GetCommandList()->SetPipelineState(pipelineData.graphicsPipelineState_.Get()); // PSOを設定
 	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &VBV_); // VBVを設定	
 	DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_); // IBVの設定
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
