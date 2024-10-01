@@ -4,6 +4,12 @@
 #include "engine/ParticleSystem/ParticleSystem.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 
+// 振る舞い
+enum class Behavior {
+	kRoot,
+	kAttack,
+};
+
 class BossEnemy : public Collider {
 public:
 	/// <summary>
@@ -24,6 +30,11 @@ public:
 	/// </summary>
 	/// <param name="camera"></param>
 	void Draw(Camera& camera);
+
+	/// <summary>
+	/// 行動更新
+	/// </summary>
+	void BehaviorRootUpdate();
 
 private:
 	WorldTransform worldTransform_{};

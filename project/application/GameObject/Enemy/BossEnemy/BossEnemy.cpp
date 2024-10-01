@@ -24,3 +24,8 @@ void BossEnemy::Draw(Camera& camera)
 {
 	object_->Draw(camera);
 }
+
+void BossEnemy::BehaviorRootUpdate()
+{
+
+}

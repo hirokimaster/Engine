@@ -11,7 +11,7 @@ void EnemyBullet::Initialize(uint32_t texHandle, BulletType type)
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
 
-	if (type == Missile) {
+	if (type == BulletType::Missile) {
 		velocity_ = 1.2f * RandomDirection();
 	}
 	else {
@@ -24,7 +24,7 @@ void EnemyBullet::Initialize(uint32_t texHandle, BulletType type)
 
 void EnemyBullet::Update(BulletType type)
 {
-	if (type == Missile) {
+	if (type == BulletType::Missile) {
 		CurveBullet();
 	}
 	else {
