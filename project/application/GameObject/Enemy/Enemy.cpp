@@ -43,9 +43,8 @@ void Enemy::Draw(Camera& camera)
 	object_->Draw(camera);
 
 	// 弾の描画
-	for (bulletsItr_ = bullets_.begin();
-		bulletsItr_ != bullets_.end(); ++bulletsItr_) {
-		(*bulletsItr_)->Draw(camera);
+	for (const auto& bullet : bullets_) {
+		bullet->Draw(camera);
 	}
 }
 
@@ -94,9 +93,8 @@ void Enemy::BulletUpdate()
 	}
 
 	// 弾更新
-	for (bulletsItr_ = bullets_.begin();
-		bulletsItr_ != bullets_.end(); ++bulletsItr_) {
-		(*bulletsItr_)->Update(bulletType_);
+	for (const auto& bullet : bullets_) {
+		bullet->Update(bulletType_);
 	}
 
 	// デスフラグが立ったら要素を削除

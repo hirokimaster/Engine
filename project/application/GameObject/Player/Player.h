@@ -100,7 +100,6 @@ public:
 private:
 	const float kMoveSpeed_ = 0.2f; // 移動スピード
 	std::list<std::unique_ptr<PlayerBullet>> bullets_; // 弾のリスト
-	std::list<std::unique_ptr<PlayerBullet>>::iterator bulletsItr_; // 弾のイテレータ
 	uint32_t texHandleBullet_ = 0;
 	LockOn* lockOn_ = nullptr;
 	Vector2 screenPositionReticle_{};

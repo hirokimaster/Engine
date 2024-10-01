@@ -29,7 +29,7 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 		}
 		else {
 			// アンロック判定
-			for (auto itr = target_.begin(); itr != target_.end(); ) {
+			for (auto itr = target_.begin(); itr != target_.end();) {
 				if (UnLock(camera, *itr)) {
 					itr = target_.erase(itr);
 				}
@@ -103,8 +103,8 @@ void LockOn::Draw()
 		sprite2DReticle_->Draw();
 	}
 	
-	for (auto itr = sprite_.begin(); itr != sprite_.end(); ++itr) {
-		(*itr)->Draw();
+	for (const auto& sprite : sprite_) {
+		sprite->Draw();
 	}
 }
 

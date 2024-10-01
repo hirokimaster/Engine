@@ -43,9 +43,8 @@ void Player::Draw(Camera& camera)
 	object_->Draw(camera);
 
 	// 弾の描画
-	for (bulletsItr_ = bullets_.begin();
-		bulletsItr_ != bullets_.end(); ++bulletsItr_) {
-		(*bulletsItr_)->Draw(camera);
+	for (const auto& bullet : bullets_) {
+		bullet->Draw(camera);
 	}
 
 	particle_->Draw(camera);
@@ -152,9 +151,8 @@ void Player::Attack()
 void Player::UpdateBullet()
 {
 	// 弾更新
-	for (bulletsItr_ = bullets_.begin();
-		bulletsItr_ != bullets_.end(); ++bulletsItr_) {
-		(*bulletsItr_)->Update();
+	for (const auto& bullet : bullets_) {
+		bullet->Update();
 	}
 
 	// デスフラグが立ったら要素を削除

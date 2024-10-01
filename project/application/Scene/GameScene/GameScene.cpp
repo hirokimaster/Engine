@@ -133,19 +133,17 @@ void GameScene::Collision()
 
 	collisionManager_->ColliderPush(player_.get()); // playerをリストに追加
 
-	for (auto playerBulletsItr = player_->GetBullets().begin();
-		playerBulletsItr != player_->GetBullets().end(); ++playerBulletsItr) {
-		collisionManager_->ColliderPush((*playerBulletsItr).get()); // playerbulletをリストに追加
+	// playerBullet
+	for (const auto& playerBullet : player_->GetBullets()) {
+		collisionManager_->ColliderPush(playerBullet.get()); // playerBulletをリストに登録
 	}
 
-	for (auto enemysItr = loader_->GetEnemys().begin();
-		enemysItr != loader_->GetEnemys().end(); ++enemysItr) {
+	// enemy
+	for (const auto& enemy : loader_->GetEnemys()) {
+		collisionManager_->ColliderPush(enemy.get()); // enemyをリストに登録
 
-		collisionManager_->ColliderPush((*enemysItr).get()); // enemyをリストに登録
-
-		for (auto enemyBulletsItr = (*enemysItr)->GetBullets().begin();
-			enemyBulletsItr != (*enemysItr)->GetBullets().end(); ++enemyBulletsItr) {
-			collisionManager_->ColliderPush((*enemyBulletsItr).get()); // enemybulletをリストに追加
+		for (const auto& enemyBullet : enemy->GetBullets()) {
+			collisionManager_->ColliderPush(enemyBullet.get()); // enemybulletをリストに追加
 		}
 	}
 

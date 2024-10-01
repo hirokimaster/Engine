@@ -83,7 +83,6 @@ public:
 private:
 	bool isDead_ = false; // デスフラグ
 	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
-	std::list<std::unique_ptr<EnemyBullet>>::iterator bulletsItr_; // 弾のイテレータ
 	uint32_t texHandleBullet_ = 0; // bulletのtexHandle
 	float fireTimer_ = 120.0f; // 攻撃のタイマー
 	WorldTransform worldTransform_{};
