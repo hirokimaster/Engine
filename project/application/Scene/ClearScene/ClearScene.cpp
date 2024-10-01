@@ -10,10 +10,10 @@ ClearScene::~ClearScene()
 
 void ClearScene::Initialize()
 {
-	texHandleClear_ = TextureManager::Load("resources/clear.png");
+	texHandleClear_ = TextureManager::Load("resources/Scene/clear.png");
 	spriteClear_.reset(Sprite::Create(texHandleClear_));
 
-	texHandlePushA_ = TextureManager::Load("resources/pushA.png");
+	texHandlePushA_ = TextureManager::Load("resources/Scene/pushA.png");
 	spritePushA_.reset(Sprite::Create(texHandlePushA_, { 330.0f,450.0f }));
 }
 

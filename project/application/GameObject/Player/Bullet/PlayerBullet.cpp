@@ -4,7 +4,7 @@ void PlayerBullet::Initialize(uint32_t texHandle)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("cube.obj");
+	object_->SetModel("Player/cube.obj");
 	worldTransform_.Initialize();
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);

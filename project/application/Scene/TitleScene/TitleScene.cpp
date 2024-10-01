@@ -11,10 +11,10 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
-	texHandleTitle_ = TextureManager::Load("resources/title.png");
+	texHandleTitle_ = TextureManager::Load("resources/Scene/title.png");
 	spriteTitle_.reset(Sprite::Create(texHandleTitle_));
 
-	texHandlePushA_ = TextureManager::Load("resources/pushA.png");
+	texHandlePushA_ = TextureManager::Load("resources/Scene/pushA.png");
 	spritePushA_.reset(Sprite::Create(texHandlePushA_,{330.0f,450.0f}));
 }
 

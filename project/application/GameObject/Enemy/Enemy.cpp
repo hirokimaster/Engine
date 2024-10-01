@@ -5,15 +5,15 @@ void Enemy::Initialize(uint32_t texHandle)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("cube.obj");
+	object_->SetModel("Enemy/cube.obj");
 	worldTransform_.Initialize();
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
 
 	worldTransform_.translate = { 0,0,80.0f };
-	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
+	texHandleBullet_ = TextureManager::Load("resources/TempTexture/uvChecker.png"); // bulletの画像
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-	bulletType_ = Missile;
+	bulletType_ = Normal;
 
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
@@ -55,6 +55,7 @@ void Enemy::OnCollision()
 
 void Enemy::Fire()
 {
+	
 }
 
 void Enemy::BulletUpdate()

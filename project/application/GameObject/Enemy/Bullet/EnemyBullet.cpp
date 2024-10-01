@@ -5,7 +5,7 @@ void EnemyBullet::Initialize(uint32_t texHandle, BulletType type)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("cube.obj");
+	object_->SetModel("Enemy/cube.obj");
 	worldTransform_.Initialize();
 	worldTransform_.scale = { 0.5f,0.5f,0.5f };
 	object_->SetWorldTransform(worldTransform_);

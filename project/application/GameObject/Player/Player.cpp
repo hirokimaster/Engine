@@ -5,12 +5,12 @@ void Player::Initialize(uint32_t texHandle)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("cube.obj");
+	object_->SetModel("Player/cube.obj");
 	worldTransform_.Initialize(); ;
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
 	object_->SetColor({ 0.0f,0.0f,1.0f,1.0f });
-	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
+	texHandleBullet_ = TextureManager::Load("resources/TempTexture/uvChecker.png"); // bulletの画像
 
 	particle_ = std::make_unique<PlayerParticle>();
 	particle_->Initialize();
