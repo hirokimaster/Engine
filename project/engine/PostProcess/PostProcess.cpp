@@ -84,7 +84,7 @@ void PostProcess::CreateSRV()
 void PostProcess::CreateBuffer()
 {
 	// effectの種類で区別する
-	if (type_ == Bloom) {
+	if (type_ == PostEffectType::Bloom) {
 		bloom_ = CreateResource::CreateBufferResource(sizeof(BloomParam));
 		bloom_->Map(0, nullptr, reinterpret_cast<void**>(&bloomData_));
 		bloomData_->stepWidth = 0.001f;
@@ -92,35 +92,35 @@ void PostProcess::CreateBuffer()
 		bloomData_->lightStrength = 1.0f;
 		bloomData_->bloomThreshold = 0.2f;
 	}
-	else if (type_ == Vignette) {
+	else if (type_ == PostEffectType::Vignette) {
 		vignette_ = CreateResource::CreateBufferResource(sizeof(VignetteParam));
 		vignette_->Map(0, nullptr, reinterpret_cast<void**>(&vignetteData_));
 		vignetteData_->scale = 16.0f;
 		vignetteData_->exponent = 0.8f;
 	}
-	else if (type_ == GaussianBlur) {
+	else if (type_ == PostEffectType::GaussianBlur) {
 		gaussian_ = CreateResource::CreateBufferResource(sizeof(GaussianParam));
 		gaussian_->Map(0, nullptr, reinterpret_cast<void**>(&gaussianData_));
 		gaussianData_->sigma = 0.001f;
 		gaussianData_->stepWidth = 0.005f;
 	}
-	else if (type_ == DepthOutline) {
+	else if (type_ == PostEffectType::DepthOutline) {
 		depthOutline_ = CreateResource::CreateBufferResource(sizeof(ProjectionInverse));
 		depthOutline_->Map(0, nullptr, reinterpret_cast<void**>(&projection_));
 		camera_.Initialize();
 	}
-	else if (type_ == RadialBlur) {
+	else if (type_ == PostEffectType::RadialBlur) {
 		radialBlur_ = CreateResource::CreateBufferResource(sizeof(RadialParam));
 		radialBlur_->Map(0, nullptr, reinterpret_cast<void**>(&radialData_));
 		radialData_->center = Vector2(0.5f, 0.5f);
 		radialData_->blurWidth = 0.01f;
 	}
-	else if (type_ == Dissolve) {
+	else if (type_ == PostEffectType::Dissolve) {
 		dissolve_ = CreateResource::CreateBufferResource(sizeof(DissolveParam));
 		dissolve_->Map(0, nullptr, reinterpret_cast<void**>(&dissolveData_));
 		dissolveData_->threshold = 0.5f;
 	}
-	else if (type_ == Random) {
+	else if (type_ == PostEffectType::Random) {
 		random_ = CreateResource::CreateBufferResource(sizeof(RandomParam));
 		random_->Map(0, nullptr, reinterpret_cast<void**>(&randomData_));
 		randomData_->time = 0.0f;
@@ -129,58 +129,58 @@ void PostProcess::CreateBuffer()
 
 void PostProcess::CreatePipeLine()
 {
-	if (type_ == Bloom) {
+	if (type_ == PostEffectType::Bloom) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Bloom;
 	}
-	else if (type_ == Grayscale) {
+	else if (type_ == PostEffectType::Grayscale) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Grayscale;
 	}
-	else if (type_ == Vignette) {
+	else if (type_ == PostEffectType::Vignette) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Vignette;
 	}
-	else if (type_ == GaussianBlur) {
+	else if (type_ == PostEffectType::GaussianBlur) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().GaussianBlur;
 	}
-	else if (type_ == LuminanceOutline) {
+	else if (type_ == PostEffectType::LuminanceOutline) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().LuminanceOutline;
 	}
-	else if (type_ == DepthOutline) {
+	else if (type_ == PostEffectType::DepthOutline) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().DepthOutline;
 	}
-	else if (type_ == RadialBlur) {
+	else if (type_ == PostEffectType::RadialBlur) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().RadialBlur;
 	}
-	else if (type_ == Dissolve) {
+	else if (type_ == PostEffectType::Dissolve) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Dissolve;
 	}
-	else if (type_ == Random) {
+	else if (type_ == PostEffectType::Random) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Random;
 	}
 }
 
 void PostProcess::SetConstantBuffer()
 {
-	if (type_ == Bloom) {
+	if (type_ == PostEffectType::Bloom) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, bloom_->GetGPUVirtualAddress());
 	}
-	else if (type_ == Vignette) {
+	else if (type_ == PostEffectType::Vignette) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, vignette_->GetGPUVirtualAddress());
 	}
-	else if (type_ == GaussianBlur) {
+	else if (type_ == PostEffectType::GaussianBlur) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, gaussian_->GetGPUVirtualAddress());
 	}
-	else if (type_ == DepthOutline) {
+	else if (type_ == PostEffectType::DepthOutline) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, depthOutline_->GetGPUVirtualAddress());
 		DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(10));
 	}
-	else if (type_ == RadialBlur) {
+	else if (type_ == PostEffectType::RadialBlur) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, radialBlur_->GetGPUVirtualAddress());
 	}
-	else if (type_ == Dissolve) {
+	else if (type_ == PostEffectType::Dissolve) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, dissolve_->GetGPUVirtualAddress());
 		DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(maskTexHandle_));
 	}
-	else if (type_ == Random) {
+	else if (type_ == PostEffectType::Random) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, random_->GetGPUVirtualAddress());
 	}
 }
@@ -252,7 +252,7 @@ void PostProcess::PostDraw()
 
 void PostProcess::Draw()
 {
-	if (type_ == DepthOutline) {
+	if (type_ == PostEffectType::DepthOutline) {
 		PreDepthBarrier();
 		projection_->projectionInverse = Inverse(camera_.matProjection);
 	}
@@ -274,7 +274,7 @@ void PostProcess::Draw()
 	// 描画。(DrawCall/ドローコール)。3頂点で1つのインスタンス。インスタンスについては今後
 	DirectXCommon::GetCommandList()->DrawInstanced(3, 1, 0, 0);
 
-	if (type_ == DepthOutline) {
+	if (type_ == PostEffectType::DepthOutline) {
 		PostDepthBarrier();
 	}
 
@@ -284,7 +284,7 @@ void PostProcess::SetEffect(PostEffectType type)
 {
 	type_ = type;
 	// depthoutlineならそれ用のsrvも作る
-	if (type_ == DepthOutline) {
+	if (type_ == PostEffectType::DepthOutline) {
 		CreateDepthTextureSrv();
 	}
 

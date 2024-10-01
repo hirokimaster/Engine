@@ -58,7 +58,6 @@ private:
 	DirectionalLight* directionalLightData_ = nullptr;
 	uint32_t texHandle_ = 0;
 	Vector4 color_ = {};
-	Property property_{};
 	D3D12_INDEX_BUFFER_VIEW IBV_{};
 	uint32_t srvIndex_ = 0;
 	Skeleton skeleton_{};

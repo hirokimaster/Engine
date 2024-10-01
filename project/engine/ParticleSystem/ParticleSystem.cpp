@@ -106,11 +106,11 @@ void ParticleSystem::Draw(std::list<Particle>& particles, const Camera& camera) 
 		++particleItr;
 	}
 
-	Property property = GraphicsPipeline::GetInstance()->GetPSO().Particle;
+	GraphicsPipelineData pipelineData = GraphicsPipeline::GetInstance()->GetPSO().Particle;
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
-	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(property.rootSignature_.Get());
-	DirectXCommon::GetCommandList()->SetPipelineState(property.graphicsPipelineState_.Get()); // PSOを設定
+	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(pipelineData.rootSignature_.Get());
+	DirectXCommon::GetCommandList()->SetPipelineState(pipelineData.graphicsPipelineState_.Get()); // PSOを設定
 	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &VertexBufferView_); // VBVを設定
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

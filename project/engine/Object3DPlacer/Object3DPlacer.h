@@ -47,7 +47,7 @@ private:
 	Resource resource_ = {};
 	Material* materialData_ = nullptr;
 	DirectionalLight* directionalLightData_ = nullptr;
-	Property property_{};
+	GraphicsPipelineData pipelineData_{};
 	uint32_t texHandle_ = 0;
 	Vector4 color_ = {};
 	Lighting* lighting_{};

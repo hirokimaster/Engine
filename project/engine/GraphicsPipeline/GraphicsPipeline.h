@@ -7,7 +7,7 @@
 #include "engine/Math/Vector4.h"
 
 // 共通で使うやつ
-struct Property {
+struct GraphicsPipelineData {
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> graphicsPipelineState_ = nullptr;;
 	Microsoft::WRL::ComPtr<ID3DBlob> signatureBlob_ = nullptr;
@@ -16,35 +16,35 @@ struct Property {
 
 // pipelineState
 struct PipelineState {
-	Property Object3D;
-	Property Sprite2D;
-	Property Particle;
-	Property PointLight;
-	Property SpotLight;
-	Property BlinnPhongObject3D;
-	Property Bloom;
-	Property Grayscale;
-	Property Vignette;
-	Property GaussianBlur;
-	Property LuminanceOutline;
-	Property DepthOutline;
-	Property RadialBlur;
-	Property Dissolve;
-	Property SkinningObject3D;
-	Property SkyBox;
-	Property Environment;
-	Property Line;
-	Property Random;
+	GraphicsPipelineData Object3D;
+	GraphicsPipelineData Sprite2D;
+	GraphicsPipelineData Particle;
+	GraphicsPipelineData PointLight;
+	GraphicsPipelineData SpotLight;
+	GraphicsPipelineData BlinnPhongObject3D;
+	GraphicsPipelineData Bloom;
+	GraphicsPipelineData Grayscale;
+	GraphicsPipelineData Vignette;
+	GraphicsPipelineData GaussianBlur;
+	GraphicsPipelineData LuminanceOutline;
+	GraphicsPipelineData DepthOutline;
+	GraphicsPipelineData RadialBlur;
+	GraphicsPipelineData Dissolve;
+	GraphicsPipelineData SkinningObject3D;
+	GraphicsPipelineData SkyBox;
+	GraphicsPipelineData Environment;
+	GraphicsPipelineData Line;
+	GraphicsPipelineData Random;
 };
 
-enum Light {
+enum class Light {
 	None,
 	Point,
 	Spot,
 	Environment
 };
 
-enum PostEffectType {
+enum class PostEffectType {
 	Bloom,
 	Grayscale,
 	Vignette,
@@ -57,10 +57,10 @@ enum PostEffectType {
 };
 
 // BlendMode
-enum BlendMode {
-	BlendNone,
-	BlendNormal,
-	BlendAdd,
+enum class BlendMode {
+	None,
+	Normal,
+	Add
 };
 
 class GraphicsPipeline {
@@ -88,7 +88,7 @@ private:
 	/// <param name="device"></param>
 	/// <param name="descriptionRootSignature"></param>
 	/// <param name="property"></param>
-	static void CreateRootSignature(Microsoft::WRL::ComPtr <ID3D12Device> device, D3D12_ROOT_SIGNATURE_DESC& descriptionRootSignature, Property& property);
+	static void CreateRootSignature(Microsoft::WRL::ComPtr <ID3D12Device> device, D3D12_ROOT_SIGNATURE_DESC& descriptionRootSignature, GraphicsPipelineData& data);
 
 	/// <summary>
 	/// blendModeの設定
@@ -108,41 +108,41 @@ private:
 	/// <param name="device"></param>
 	/// <param name="shaderName"></param>
 	/// <returns></returns>
-	static Property CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateSprite2D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateSprite2D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateParticle(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateParticle(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreatePointLight(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreatePointLight(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateSpotLight(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateSpotLight(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateBloom(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateBloom(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateGrayscale(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateGrayscale(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateVignette(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateVignette(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateGaussianBlur(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateGaussianBlur(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateSkinningObject3D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateSkinningObject3D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateSkyBox(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateSkyBox(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateEnvironment(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateEnvironment(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateLine(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateLine(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateLuminanceOutline(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateLuminanceOutline(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateDepthOutline(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateDepthOutline(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateRadialBlur(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateRadialBlur(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateDissolve(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateDissolve(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
-	static Property CreateRandom(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static GraphicsPipelineData CreateRandom(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	PipelineState pso = {};
 
