@@ -12,7 +12,7 @@ void Line::Draw(WorldTransform worldTransform, Camera& camera)
 	// 頂点データ作成
 	CreateVertex();
 	// graphicsPipeline
-	Property pipeline = GraphicsPipeline::GetInstance()->GetPSO().Line;
+	GraphicsPipelineData pipeline = GraphicsPipeline::GetInstance()->GetPSO().Line;
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(pipeline.rootSignature_.Get());
 	DirectXCommon::GetCommandList()->SetPipelineState(pipeline.graphicsPipelineState_.Get()); // PSOを設定

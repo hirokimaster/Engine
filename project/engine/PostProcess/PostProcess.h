@@ -114,7 +114,7 @@ private:
 	GaussianParam* gaussianData_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> gaussian_;
 	PostEffectType type_;
-	Property pipeline_;
+	GraphicsPipelineData pipeline_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthTexBuff_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthOutline_;
 	ProjectionInverse* projection_ = nullptr;

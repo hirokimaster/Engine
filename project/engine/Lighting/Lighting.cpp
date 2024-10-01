@@ -6,15 +6,15 @@ void Lighting::Initialize(Light light)
 	resource_.cameraResource->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));
 	cameraData_->worldPosition = { 0.0f,10.0f,-60.0f };
 
-	if (light == Spot) {
+	if (light == Light::Spot) {
 		InitializeSpotLight();
 		light_ = light;
 	}
-	else if (light == Point) {
+	else if (light == Light::Point) {
 		InitializePointLight();
 		light_ = light;
 	}
-	else if (light == Environment) {
+	else if (light == Light::Environment) {
 		InitializeEnvironment();
 		light_ = light;
 	}
@@ -53,19 +53,19 @@ void Lighting::InitializeEnvironment()
 void Lighting::CreateCommand()
 {
 
-	if (light_ == Point) {
+	if (light_ == Light::Point) {
 		// カメラ用
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.cameraResource->GetGPUVirtualAddress());
 		// ポイントライト用
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(6, resource_.pointLightResource->GetGPUVirtualAddress());
 	}
-	else if (light_ == Spot) {
+	else if (light_ == Light::Spot) {
 		// カメラ用
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.cameraResource->GetGPUVirtualAddress());
 		// ポイントライト用
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(6, resource_.spotLightResource->GetGPUVirtualAddress());
 	}
-	else if (light_ == Environment) {
+	else if (light_ == Light::Environment) {
 		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(5, resource_.cameraResource->GetGPUVirtualAddress());
 		DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(6, SrvManager::GetInstance()->GetGPUHandle(index_));
 	}

@@ -56,7 +56,6 @@ private:
 	PointLight* pointLightData_ = nullptr;
 	SpotLight* spotLightData_ = nullptr;
 	CameraData* cameraData_ = nullptr;
-	Property property_{};
 	Light light_{};
 	uint32_t index_ = 0;
 };
