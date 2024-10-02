@@ -5,15 +5,15 @@ void Enemy::Initialize(uint32_t texHandle)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("cube.obj");
+	object_->SetModel("Enemy/cube.obj");
 	worldTransform_.Initialize();
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
 
 	worldTransform_.translate = { 0,0,80.0f };
-	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
+	texHandleBullet_ = TextureManager::Load("resources/TempTexture/uvChecker.png"); // bulletの画像
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-	bulletType_ = Missile;
+	bulletType_ = BulletType::Normal;
 
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
@@ -55,6 +55,7 @@ void Enemy::OnCollision()
 
 void Enemy::Fire()
 {
+	
 }
 
 void Enemy::BulletUpdate()
@@ -62,7 +63,7 @@ void Enemy::BulletUpdate()
 	//発射タイマーをデクリメント
 	--fireTimer_;
 
-	if (bulletType_ == Spiral) {
+	if (bulletType_ == BulletType::Spiral) {
 		isFire_ = true;
 	}
 
@@ -77,14 +78,14 @@ void Enemy::BulletUpdate()
 
 	if (fireTimer_ <= 0) {
 
-		if (bulletType_ == Radial) {
+		if (bulletType_ == BulletType::Radial) {
 			// 弾を発射
 			FireRadial(20);
 		}
-		else if (bulletType_ == Normal) {
+		else if (bulletType_ == BulletType::Normal) {
 			Fire();
 		}
-		else if (bulletType_ == Missile) {
+		else if (bulletType_ == BulletType::Missile) {
 			FireMissile(3);
 		}
 
@@ -123,7 +124,7 @@ void Enemy::FireRadial(uint32_t bulletCount)
 		Vector3 velocity = { cosf(angle) * kRadius, sinf(angle) * kRadius, kBulletSpeed };
 
 		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_, Radial);
+		bullet->Initialize(texHandleBullet_, BulletType::Radial);
 		bullet->SetVelocity(velocity);
 		bullet->SetPosition(GetWorldPosition());
 		bullets_.push_back(std::move(bullet));
@@ -157,7 +158,7 @@ void Enemy::FireSpiral(float spiralSpeed, uint32_t bulletCount, float delayBetwe
 
 		// 弾を生成し、初期化
 		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_,Spiral);
+		bullet->Initialize(texHandleBullet_,BulletType::Spiral);
 		bullet->SetVelocity(velocity);
 		bullet->SetPosition(GetWorldPosition());
 
@@ -175,7 +176,7 @@ void Enemy::FireMissile(uint32_t bulletCount)
 	for (uint32_t i = 0; i < bulletCount; ++i) {
 		// 弾を生成し、初期化
 		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_, Missile);
+		bullet->Initialize(texHandleBullet_, BulletType::Missile);
 		bullet->SetPlayer(player_);
 		bullet->SetPosition(GetWorldPosition());
 		bullets_.push_back(std::move(bullet));

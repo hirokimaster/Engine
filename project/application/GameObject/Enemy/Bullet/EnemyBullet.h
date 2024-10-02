@@ -3,7 +3,7 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include <random>
 
-enum BulletType {
+enum class BulletType {
 	Normal,
 	Spiral,
 	Missile,

@@ -5,12 +5,12 @@ void Player::Initialize(uint32_t texHandle)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("cube.obj");
+	object_->SetModel("Player/cube.obj");
 	worldTransform_.Initialize(); ;
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
 	object_->SetColor({ 0.0f,0.0f,1.0f,1.0f });
-	texHandleBullet_ = TextureManager::Load("resources/uvChecker.png"); // bulletの画像
+	texHandleBullet_ = TextureManager::Load("resources/TempTexture/uvChecker.png"); // bulletの画像
 
 	particle_ = std::make_unique<PlayerParticle>();
 	particle_->Initialize();
@@ -32,7 +32,7 @@ void Player::Update()
 	worldTransform_.UpdateMatrix();
 #ifdef _DEBUG
 	ImGui::Begin("PlayerRotate");
-	ImGui::Text("position [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.rotate.x,
+	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.rotate.x,
 		worldTransform_.rotate.y, worldTransform_.rotate.z);
 	ImGui::End();
 #endif
