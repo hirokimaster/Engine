@@ -32,7 +32,7 @@ void Player::Update()
 	worldTransform_.UpdateMatrix();
 #ifdef _DEBUG
 	ImGui::Begin("PlayerRotate");
-	ImGui::Text("position [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.rotate.x,
+	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.rotate.x,
 		worldTransform_.rotate.y, worldTransform_.rotate.z);
 	ImGui::End();
 #endif

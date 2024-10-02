@@ -15,6 +15,7 @@
 #include "application/GameObject/LockOn/LockOn.h"
 #include "engine/Loader/Loader.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
+#include "application/GameObject/Enemy/BossEnemy/BossEnemy.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -77,4 +78,7 @@ private:
 	uint32_t texHandleLockOn_ = 0;
 	uint32_t texHandleUnLock_ = 0;
 	uint32_t texHandleAttack_ = 0;
+
+	// bossEnemy
+	std::unique_ptr<BossEnemy> bossEnemy_ = nullptr;
 };
