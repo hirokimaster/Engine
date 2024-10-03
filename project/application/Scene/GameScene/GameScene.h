@@ -13,7 +13,7 @@
 #include "application/GameObject/Rail/Rail.h"
 #include "engine/Model/SkyBox/SkyBox.h"
 #include "application/GameObject/LockOn/LockOn.h"
-#include "engine/Loader/Loader.h"
+#include "application/Loader/Loader.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Enemy/BossEnemy/BossEnemy.h"
 

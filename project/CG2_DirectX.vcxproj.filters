@@ -325,7 +325,7 @@
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp">
       <Filter>Application\GameObject\ModelResouce</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Loader\Loader.cpp">
+    <ClCompile Include="application\Loader\Loader.cpp">
       <Filter>Application\Loader</Filter>
     </ClCompile>
     <ClCompile Include="application\GameObject\Rail\Rail.cpp">
@@ -489,7 +489,7 @@
     <ClInclude Include="engine\Model\SkyBox\SkyBox.h">
       <Filter>Engine\Model\SkyBox</Filter>
     </ClInclude>
-    <ClInclude Include="engine\Loader\Loader.h">
+    <ClInclude Include="application\Loader\Loader.h">
       <Filter>Application\Loader</Filter>
     </ClInclude>
     <ClInclude Include="application\GameObject\FollowCamera\FollowCamera.h">
