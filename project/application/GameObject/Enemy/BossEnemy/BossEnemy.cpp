@@ -51,10 +51,10 @@ void BossEnemy::Update()
 
 	worldTransform_.UpdateMatrix();
 
-	ImGui::Begin("bossPosition");
+	/*ImGui::Begin("bossPosition");
 	ImGui::Text("position [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.translate.x,
 		worldTransform_.translate.y, worldTransform_.translate.z);
-	ImGui::End();
+	ImGui::End();*/
 }
 
 void BossEnemy::Draw(Camera& camera)

@@ -25,7 +25,8 @@ void TitleScene::Initialize()
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 
 	texHandleTitle_ = TextureManager::Load("resources/Scene/title.png");
-	spriteTitle_.reset(Sprite::Create(texHandleTitle_));
+	spriteTitle_.reset(Sprite::Create(texHandleTitle_,{650.0f,170.0f}));
+	spriteTitle_->SetAnchorPoint({ 0.5f,0.5f });
 
 	texHandlePushA_ = TextureManager::Load("resources/UI/A.png");
 	spritePushA_.reset(Sprite::Create(texHandlePushA_, { 620.0f,500.0f }));
@@ -50,7 +51,7 @@ void TitleScene::Initialize()
 
 	followCamera_ = std::make_unique<FollowCamera>();
 	followCamera_->Initialize();
-	Vector3 offset = { -12.0f,0,13.0f };
+	Vector3 offset = { -12.0f,0.5f,13.0f };
 	Vector3 cameraRotate = { 0,std::numbers::pi_v<float> *3.0f / 4.0f ,0 };
 	followCamera_->SetOffset(offset);
 	followCamera_->SetRotate(cameraRotate);
@@ -61,9 +62,9 @@ void TitleScene::Update()
 {
 	++startATimer_;
 	// Aボタン押したらシーン遷移
-	/*if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
+	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
 		GameManager::GetInstance()->ChangeScene("GAME");
-	}*/
+	}
 
 	// 自機
 	Vector3 move = { 0,0,0.2f };
@@ -112,15 +113,14 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	//spriteTitle_->Draw();
-
-	//spriteWhite_->Draw();
+	spriteWhite_->Draw();
 
 	postProcess_->Draw();
 
 	if (startATimer_ % 40 >= 20) {
 		spritePushA_->Draw();
 	}
+
 }
 
 void TitleScene::PostProcessDraw()
@@ -131,6 +131,8 @@ void TitleScene::PostProcessDraw()
 	
 	particle_->Draw(camera_);
 	objectPlayer_->Draw(camera_);
+
+	spriteTitle_->Draw();
 	
 	
 	postProcess_->PostDraw();
