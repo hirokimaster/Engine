@@ -10,5 +10,6 @@ void ModelResources::LoadModel()
 {
 	ModelManager::GetInstance()->LoadObjModel("Player/cube.obj");
 	ModelManager::GetInstance()->LoadObjModel("Enemy/cube.obj");
-	//ModelManager::GetInstance()->LoadObjModel("Jet.obj");
+	ModelManager::GetInstance()->LoadObjModel("Player/Jet.obj");
+	ModelManager::GetInstance()->LoadObjModel("skydome/skydome.obj");
 }

@@ -331,6 +331,9 @@
     <ClCompile Include="application\GameObject\Rail\Rail.cpp">
       <Filter>Application\GameObject\Rail</Filter>
     </ClCompile>
+    <ClCompile Include="application\GameObject\Skydome\Skydome.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CreateResource\CreateResource.h">
@@ -528,6 +531,7 @@
     <ClInclude Include="application\GameObject\Enemy\BossEnemy\BossEnemy.h">
       <Filter>Application\GameObject\Enemy\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="application\GameObject\Skydome\Skydome.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">
