@@ -27,6 +27,10 @@ public:
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
+	void SetRotate(const Vector3& rotate) { camera_.rotate = rotate; }
+
+	void SetOffset(const Vector3& offset) { offset_ = offset; }
+
 #pragma endregion
 
 #pragma region getter
@@ -39,4 +43,5 @@ private:
 	Camera camera_;
 	const WorldTransform* target_ = nullptr;
 	LockOn* lockOn_ = nullptr;
+	Vector3 offset_{};
 };

@@ -31,6 +31,8 @@ void GameScene::Initialize()
 	--------------------------*/
 	followCamera_ = std::make_unique<FollowCamera>();
 	followCamera_->Initialize();
+	Vector3 offset = { 0,2.0f,-40.0f };
+	followCamera_->SetOffset(offset);
 	followCamera_->SetTarget(&player_->GetWorldTransform());
 	followCamera_->SetLockOn(lockOn_.get());
 
@@ -51,9 +53,9 @@ void GameScene::Initialize()
 	loader_->Arrangement(levelData_);
 
 	// bossEnemy
-	bossEnemy_ = std::make_unique<BossEnemy>();
+	/*bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->Initialize(texHandlePlayer_);
-	bossEnemy_->SetPlayer(player_.get());
+	bossEnemy_->SetPlayer(player_.get());*/
 
 	// 仮のUI
 	texHandleLockOn_ = TextureManager::Load("resources/UI/LockOn.png");
@@ -75,7 +77,7 @@ void GameScene::Update()
 	loader_->Update();
 
 	// bossEnemy
-	bossEnemy_->Update();
+	//bossEnemy_->Update();
 
 	// followCamera
 	followCamera_->Update();
@@ -91,9 +93,9 @@ void GameScene::Update()
 	Collision();
 
 	// 仮のクリア判定
-	/*if (player_->GetWorldPosition().z >= 250.0f) {
+	if (player_->GetWorldPosition().z >= 250.0f) {
 		GameManager::GetInstance()->ChangeScene("CLEAR");
-	}*/
+	}
 
 #ifdef _DEBUG
 	// カメラの座標
@@ -118,7 +120,7 @@ void GameScene::Draw()
 	// player
 	player_->Draw(camera_);
 	// bossEnemy
-	bossEnemy_->Draw(camera_);
+	//bossEnemy_->Draw(camera_);
 	// lockOn_(レティクル)
 	lockOn_->Draw();
 	// 仮UI
@@ -157,11 +159,11 @@ void GameScene::Collision()
 	}
 
 	// bossEnemy
-	collisionManager_->ColliderPush(bossEnemy_.get()); // bossをリストに追加
-	// bossEnemyBullet
-	for (const auto& bossEnemyBullet : bossEnemy_->GetBullets()) {
-		collisionManager_->ColliderPush(bossEnemyBullet.get()); // bossのbulletをリストに追加
-	}
+	//collisionManager_->ColliderPush(bossEnemy_.get()); // bossをリストに追加
+	//// bossEnemyBullet
+	//for (const auto& bossEnemyBullet : bossEnemy_->GetBullets()) {
+	//	collisionManager_->ColliderPush(bossEnemyBullet.get()); // bossのbulletをリストに追加
+	//}
 
 	collisionManager_->CheckAllCollision(); // 判定
 }

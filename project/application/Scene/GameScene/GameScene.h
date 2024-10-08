@@ -80,5 +80,5 @@ private:
 	uint32_t texHandleAttack_ = 0;
 
 	// bossEnemy
-	std::unique_ptr<BossEnemy> bossEnemy_ = nullptr;
+	//std::unique_ptr<BossEnemy> bossEnemy_ = nullptr;
 };
