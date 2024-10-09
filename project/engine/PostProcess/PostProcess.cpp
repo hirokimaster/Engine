@@ -68,7 +68,7 @@ void PostProcess::CreateSRV()
 	clearValue.Color[2] = clearColor[2];
 	clearValue.Color[3] = clearColor[3];
 	// Resourceの作成
-	HRESULT hr = device->CreateCommittedResource(
+	[[maybe_unused]] HRESULT hr = device->CreateCommittedResource(
 		&heapProperties, // Heapの設定
 		D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし。
 		&resourceDesc, // Resourceの設定

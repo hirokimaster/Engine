@@ -243,7 +243,7 @@ GraphicsPipelineData GraphicsPipeline::CreateObject3D(Microsoft::WRL::ComPtr <ID
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -384,7 +384,7 @@ GraphicsPipelineData GraphicsPipeline::CreateSprite2D(Microsoft::WRL::ComPtr<ID3
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -528,7 +528,7 @@ GraphicsPipelineData GraphicsPipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -687,7 +687,7 @@ GraphicsPipelineData GraphicsPipeline::CreatePointLight(Microsoft::WRL::ComPtr<I
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -846,7 +846,7 @@ GraphicsPipelineData GraphicsPipeline::CreateSpotLight(Microsoft::WRL::ComPtr<ID
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -965,7 +965,7 @@ GraphicsPipelineData GraphicsPipeline::CreateBloom(Microsoft::WRL::ComPtr<ID3D12
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -1081,7 +1081,7 @@ GraphicsPipelineData GraphicsPipeline::CreateGrayscale(Microsoft::WRL::ComPtr<ID
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -1200,7 +1200,7 @@ GraphicsPipelineData GraphicsPipeline::CreateVignette(Microsoft::WRL::ComPtr<ID3
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -1319,7 +1319,7 @@ GraphicsPipelineData GraphicsPipeline::CreateGaussianBlur(Microsoft::WRL::ComPtr
 	depthStencilDesc.DepthEnable = false;
 	
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -1477,7 +1477,7 @@ GraphicsPipelineData GraphicsPipeline::CreateSkinningObject3D(Microsoft::WRL::Co
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -1593,7 +1593,7 @@ GraphicsPipelineData GraphicsPipeline::CreateLuminanceOutline(Microsoft::WRL::Co
 	depthStencilDesc.DepthEnable = false;
 	
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -1734,7 +1734,7 @@ GraphicsPipelineData GraphicsPipeline::CreateDepthOutline(Microsoft::WRL::ComPtr
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -1855,7 +1855,7 @@ GraphicsPipelineData GraphicsPipeline::CreateRadialBlur(Microsoft::WRL::ComPtr<I
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -1986,7 +1986,7 @@ GraphicsPipelineData GraphicsPipeline::CreateDissolve(Microsoft::WRL::ComPtr<ID3
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -2107,7 +2107,7 @@ GraphicsPipelineData GraphicsPipeline::CreateRandom(Microsoft::WRL::ComPtr<ID3D1
 	depthStencilDesc.DepthEnable = false;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -2250,7 +2250,7 @@ GraphicsPipelineData GraphicsPipeline::CreateSkyBox(Microsoft::WRL::ComPtr<ID3D1
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;	
@@ -2424,7 +2424,7 @@ GraphicsPipelineData GraphicsPipeline::CreateEnvironment(Microsoft::WRL::ComPtr<
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;
@@ -2566,7 +2566,7 @@ GraphicsPipelineData GraphicsPipeline::CreateLine(Microsoft::WRL::ComPtr<ID3D12D
 	graphicsPipelineStateDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 実際に生成
-	HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
+	[[maybe_unused]] HRESULT hr = device->CreateGraphicsPipelineState(&graphicsPipelineStateDesc, IID_PPV_ARGS(&pipelineData.graphicsPipelineState_));
 	assert(SUCCEEDED(hr));
 
 	return pipelineData;

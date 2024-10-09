@@ -359,7 +359,7 @@ void DirectXCommon::CreateDepthBuffer()
 	depthClearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // フォーマット。Resourceと合わせる
 
 	// Resourceの生成
-	HRESULT hr = device_->CreateCommittedResource(
+	[[maybe_unused]] HRESULT hr = device_->CreateCommittedResource(
 		&heapProperties, // Heapの設定
 		D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし
 		&resourceDesc, // Resourceの設定

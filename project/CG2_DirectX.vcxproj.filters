@@ -277,12 +277,6 @@
     <ClCompile Include="engine\Object3DPlacer\Object3DPlacer.cpp">
       <Filter>Engine\Object3DPlacer</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Model\Primitive\PrimitiveType\Line.cpp">
-      <Filter>Engine\Model\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\Model\Primitive\Primitive.cpp">
-      <Filter>Engine\Model\Primitive</Filter>
-    </ClCompile>
     <ClCompile Include="application\Scene\Demo\Demo.cpp">
       <Filter>Application\Scene\Demo</Filter>
     </ClCompile>
@@ -470,15 +464,6 @@
     </ClInclude>
     <ClInclude Include="engine\Object3DPlacer\Object3DPlacer.h">
       <Filter>Engine\Object3DPlacer</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\Model\Primitive\IPrimitive.h">
-      <Filter>Engine\Model\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\Model\Primitive\PrimitiveType\Line.h">
-      <Filter>Engine\Model\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\Model\Primitive\Primitive.h">
-      <Filter>Engine\Model\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="application\Scene\Demo\Demo.h">
       <Filter>Application\Scene\Demo</Filter>
