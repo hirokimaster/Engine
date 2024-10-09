@@ -56,7 +56,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
@@ -81,7 +81,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -121,8 +121,6 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\DescriptorManager\SRVManager\SrvManager.cpp" />
     <ClCompile Include="engine\Lighting\Lighting.cpp" />
     <ClCompile Include="engine\ModelManager\ModelManager.cpp" />
-    <ClCompile Include="engine\Model\Primitive\Primitive.cpp" />
-    <ClCompile Include="engine\Model\Primitive\PrimitiveType\Line.cpp" />
     <ClCompile Include="engine\Model\SkyBox\SkyBox.cpp" />
     <ClCompile Include="engine\Object3DPlacer\Object3DPlacer.cpp" />
     <ClCompile Include="engine\PostProcess\PostProcess.cpp" />
@@ -167,9 +165,6 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\DescriptorManager\SRVManager\SrvManager.h" />
     <ClInclude Include="engine\Lighting\Lighting.h" />
     <ClInclude Include="engine\ModelManager\ModelManager.h" />
-    <ClInclude Include="engine\Model\Primitive\IPrimitive.h" />
-    <ClInclude Include="engine\Model\Primitive\Primitive.h" />
-    <ClInclude Include="engine\Model\Primitive\PrimitiveType\Line.h" />
     <ClInclude Include="engine\Model\SkyBox\SkyBox.h" />
     <ClInclude Include="engine\Object3DPlacer\Object3DPlacer.h" />
     <ClInclude Include="engine\PostProcess\PostProcess.h" />

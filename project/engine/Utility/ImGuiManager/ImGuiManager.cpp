@@ -12,7 +12,7 @@ ImGuiManager* ImGuiManager::GetInstance(){
 	return &instance;
 }
 
-void ImGuiManager::Initialize(WinApp* winApp, DirectXCommon* dxCommon){
+void ImGuiManager::Initialize([[maybe_unused]] WinApp* winApp, [[maybe_unused]] DirectXCommon* dxCommon){
 #ifdef _DEBUG
 	dxCommon_ = dxCommon;
 	IMGUI_CHECKVERSION();
