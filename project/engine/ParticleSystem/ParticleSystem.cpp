@@ -61,9 +61,9 @@ void ParticleSystem::CreateResource(ModelData modelData) {
 /// </summary>
 void ParticleSystem::CreateSrv() {
 	// srvの位置をtextureのsrvの位置から設定する
-	index_ = SrvManager::GetInstance()->GetIndex();
-	index_++;
-	SrvManager::GetInstance()->SetIndex(index_);
+	//index_ = SrvManager::GetInstance()->GetIndex();
+	//index_++;
+	//SrvManager::GetInstance()->SetIndex(index_);
 	SrvManager::GetInstance()->CreateInstancingSrv(resource_, index_);
 }
 
