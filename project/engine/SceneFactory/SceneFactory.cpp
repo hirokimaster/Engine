@@ -10,6 +10,12 @@ std::unique_ptr<IScene> SceneFactory::CreateScene(const std::string& sceneName)
 	else if (sceneName == "DEMO") {
 		newScene = std::make_unique<Demo>();
 	}
+	else if (sceneName == "TITLE") {
+		newScene = std::make_unique<TitleScene>();
+	}
+	else if (sceneName == "CLEAR") {
+		newScene = std::make_unique<ClearScene>();
+	}
 
 	return	newScene;
 }

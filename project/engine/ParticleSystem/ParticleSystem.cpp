@@ -1,5 +1,7 @@
 #include "ParticleSystem.h"
 
+Vector3 ParticleSystem::position_;
+
 /// <summary>
 /// 初期化
 /// </summary>
@@ -130,15 +132,18 @@ void ParticleSystem::Draw(std::list<Particle>& particles, const Camera& camera) 
 /// <returns></returns>
 Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine) {
 	std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
+	std::uniform_real_distribution<float> distVelocity(-4.0f, -1.0f);
 	std::uniform_real_distribution<float> distColor(0.0f, 1.0f);
-	std::uniform_real_distribution<float> distTime(1.0f, 3.0f);
+	std::uniform_real_distribution<float> distRotate(0.0f, 1.0f);
+	std::uniform_real_distribution<float> distScale(0.2f, 0.5f);
+	std::uniform_real_distribution<float> distTime(0.5f, 1.0f);
 	Particle particle;
 	particle.worldTransform.Initialize();
-	particle.worldTransform.scale = { 1.0f, 1.0f, 1.0f };
-	particle.worldTransform.rotate = { 0.0f,0.0f,0.0f };
-	particle.worldTransform.translate = { distribution(randomEngine),  distribution(randomEngine) , distribution(randomEngine) };
-	particle.velocity = { distribution(randomEngine) , distribution(randomEngine) , distribution(randomEngine) };
-	particle.color = { distColor(randomEngine) , distColor(randomEngine) , distColor(randomEngine), 1.0f };
+	particle.worldTransform.scale = {distScale(randomEngine),distScale(randomEngine) ,distScale(randomEngine)};
+	particle.worldTransform.rotate = { distRotate(randomEngine),distRotate(randomEngine) ,distRotate(randomEngine) };
+	particle.worldTransform.translate = position_;
+	particle.velocity = { 0.0f, 0.0f , distVelocity(randomEngine) };
+	particle.color = { 1.0f,1.0f,1.0f, distColor(randomEngine) };
 	particle.lifeTime = distTime(randomEngine);
 	particle.currentTime = 0;
 	return particle;
