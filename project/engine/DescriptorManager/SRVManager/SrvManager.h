@@ -2,6 +2,7 @@
 #include "engine/DescriptorManager/DescriptorManager.h"
 #include "engine/CreateResource/CreateResource.h"
 #include "engine/Model/Animation/Animation.h"
+#include <queue>
 #define MAX_SRV 128
 
 class SrvManager {
@@ -44,16 +45,14 @@ public:
 	void CreateDepthTextureSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resource, uint32_t index);
 
 	/// <summary>
-	///  animationのpalette用のsrv
+	/// 空いてる番号を取り出す
 	/// </summary>
-	/// <param name="skinCluster"></param>
-	/// <param name="skeleton"></param>
-	//void CreatePaletteSrv(SkinCluster& skinCluster,Skeleton& skeleton, uint32_t index);
+	void Allocate();
 
 	/// <summary>
-	/// srvのgpuhandleの位置をずらす
+	/// 使ってないインデックス解放する
 	/// </summary>
-	void ShiftIndex();
+	void Free(uint32_t index);
 
 #pragma region getter
 
@@ -81,6 +80,7 @@ private:
 	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV_[MAX_SRV];
 	D3D12_CPU_DESCRIPTOR_HANDLE instancingSrvHandleCPU_[MAX_SRV];
 	D3D12_GPU_DESCRIPTOR_HANDLE instancingSrvHandleGPU_[MAX_SRV];
-	uint32_t index_;
 
+	uint32_t index_; // srvのインデックス
+	std::queue<uint32_t> vacantIndices_; // 空きインデックスを管理
 };
