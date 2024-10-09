@@ -93,7 +93,7 @@ void GameScene::Update()
 	Collision();
 
 	// 仮のクリア判定
-	if (player_->GetWorldPosition().z >= 250.0f) {
+	if (player_->GetWorldPosition().z >= 1050.0f) {
 		GameManager::GetInstance()->ChangeScene("CLEAR");
 	}
 
