@@ -80,13 +80,19 @@ void SrvManager::Allocate()
 		vacantIndices_.pop(); // 使うのでコンテナから削除する
 	}
 	else {
-		++index_;
+		++freeIndex_;
+		index_ = freeIndex_;
 	}
 }
 
 void SrvManager::Free(uint32_t index)
 {
 	vacantIndices_.push(index);
+}
+
+void SrvManager::TextureHandleKeep(uint32_t index)
+{
+	textureHandleIndices_.push(index);
 }
 
 D3D12_GPU_DESCRIPTOR_HANDLE SrvManager::GetGPUHandle(uint32_t texHandle)

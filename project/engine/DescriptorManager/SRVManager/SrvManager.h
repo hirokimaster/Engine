@@ -54,11 +54,17 @@ public:
 	/// </summary>
 	void Free(uint32_t index);
 
+	/// <summary>
+	/// textureはtextureManagerで再利用するのでその番号を保存しておく
+	/// </summary>
+	void TextureHandleKeep(uint32_t index);
+
 #pragma region getter
 
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle(uint32_t texHandle);
 	D3D12_GPU_DESCRIPTOR_HANDLE GetInstancingGPUHandle(uint32_t texHandle);
 	uint32_t GetIndex() { return index_; }
+	std::queue<uint32_t> GetTextureHandleIndices() { return textureHandleIndices_; }
 
 #pragma endregion
 
@@ -82,5 +88,7 @@ private:
 	D3D12_GPU_DESCRIPTOR_HANDLE instancingSrvHandleGPU_[MAX_SRV];
 
 	uint32_t index_; // srvのインデックス
+	uint32_t freeIndex_;
 	std::queue<uint32_t> vacantIndices_; // 空きインデックスを管理
+	std::queue<uint32_t> textureHandleIndices_; // textureで使ってるインデックスを保存しておく場所
 };

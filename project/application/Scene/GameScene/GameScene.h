@@ -41,4 +41,6 @@ public: // メンバ関数
 	void PostProcessDraw()override;
 
 private:
+	uint32_t texHandle;
+	uint32_t texHandle2;
 };
