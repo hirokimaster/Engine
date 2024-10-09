@@ -3,8 +3,14 @@
 #include <Windows.h>
 #include <cstdint>
 #include <format>
+
+#pragma warning(push)
+// C4820の警告を無視する
+#pragma warning(disable:4820)
 #include <d3d12.h>
 #include <dxgi1_6.h>
+#pragma warning(pop)
+
 #include <cassert>
 #include <wrl.h>
 #pragma comment(lib, "d3d12.lib")

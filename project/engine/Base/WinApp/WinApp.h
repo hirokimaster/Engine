@@ -1,6 +1,13 @@
 #pragma once
 #pragma comment(lib, "winmm.lib")
+
+#pragma warning(push)
+// C4668の警告を無視する
+#pragma warning(disable:4668)
+#pragma warning(disable:5039)
 #include <Windows.h>
+#pragma warning(pop)
+
 #include <cstdint>
 
 class WinApp {
