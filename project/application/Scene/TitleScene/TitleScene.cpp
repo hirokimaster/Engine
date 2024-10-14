@@ -18,9 +18,19 @@ void TitleScene::Initialize()
 	param_.threshold = 0.0f;
 	postProcess_->SetDissolveParam(param_);
 	texHandleMask_ = TextureManager::Load("resources/TempTexture/noise9.png");
+	texHandleSceneMask_ = TextureManager::Load("resources/TempTexture/noise0.png");
 	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
-	postProcess_->SetMaskTexture(texHandleMask_);
 	spriteWhite_.reset(Sprite::Create(texHandleWhite_));
+
+	if (title_) {
+		param_.threshold = 1.0f;
+		postProcess_->SetMaskTexture(texHandleSceneMask_);
+	}
+	else {
+		param_.threshold = 0.0f;
+		postProcess_->SetMaskTexture(texHandleMask_);
+	}
+
 
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 
@@ -56,15 +66,18 @@ void TitleScene::Initialize()
 	followCamera_->SetOffset(offset);
 	followCamera_->SetRotate(cameraRotate);
 	followCamera_->SetTarget(&worldTransform_);
+
+	// シーン遷移用
+	sceneTimer_ = 60;
+	isTransition_ = false;
 }
 
 void TitleScene::Update()
 {
 	++startATimer_;
-	// Aボタン押したらシーン遷移
-	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
-		GameManager::GetInstance()->ChangeScene("GAME");
-	}
+
+	// シーン遷移
+	SceneTransition();
 
 	// 自機
 	Vector3 move = { 0,0,0.2f };
@@ -136,4 +149,41 @@ void TitleScene::PostProcessDraw()
 	
 	
 	postProcess_->PostDraw();
+}
+
+void TitleScene::SceneTransition()
+{
+	// Aボタン押したらシーン遷移
+	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
+		isTransition_ = true;
+		isDissolve_ = false;
+		isDissolve2_ = false;
+	}
+
+	if (isTransition_) {
+		postProcess_->SetDissolveParam(param_);
+		param_.threshold = 0.0f;
+		postProcess_->SetMaskTexture(texHandleSceneMask_);
+		--sceneTimer_;
+	}
+
+	if (sceneTimer_ <= 0) {
+		postProcess_->SetDissolveParam(param_);
+		param_.threshold += 0.01f;
+		isTransition_ = false;
+		if (param_.threshold >= 1.0f) {
+			GameManager::GetInstance()->ChangeScene("GAME");
+		}
+	}
+
+	// クリアシーンからタイトルに来た時
+	if (title_ && !isTransition_) {
+		postProcess_->SetDissolveParam(param_);
+		param_.threshold -= 0.01f;
+		if (param_.threshold <= 0.0f) {
+			param_.threshold = 0.0f;
+			postProcess_->SetMaskTexture(texHandleMask_);
+			title_ = false;
+		}
+	}
 }

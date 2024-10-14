@@ -56,6 +56,16 @@ private:
 	/// </summary>
 	void Collision();
 
+	/// <summary>
+	/// テクスチャ読み込む場所
+	/// </summary>
+	void LoadTextureFile();
+
+	/// <summary>
+	/// シーン遷移
+	/// </summary>
+	void SceneTransition();
+
 private:
 	Camera camera_{};
 	// player
@@ -67,7 +77,6 @@ private:
 	std::unique_ptr<LockOn> lockOn_ = nullptr; // ロックオン
 	WorldTransform worldTransformSkyBox_{};
 	uint32_t texHandleSkyBox_ = 0; // skyBoxのtexture
-	std::unique_ptr<PostProcess> postProcess_ = nullptr;
 	std::unique_ptr<Loader> loader_ = nullptr;
 	LevelData* levelData_ = nullptr;
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
@@ -81,4 +90,16 @@ private:
 
 	// bossEnemy
 	//std::unique_ptr<BossEnemy> bossEnemy_ = nullptr;
+
+	// シーン遷移用
+	bool isTransition_ = false;
+	uint32_t sceneTimer_ = 60;
+	bool isTransitionClear_ = false;
+
+	// postEffect用
+	uint32_t texHandleMask_ = 0;
+	DissolveParam param_{};
+	std::unique_ptr<Sprite> spriteWhite_;
+	uint32_t texHandleWhite_ = 0;
+	std::unique_ptr<PostProcess> postProcess_;
 };

@@ -12,12 +12,24 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
+	// テクスチャ読み込み
+	LoadTextureFile();
+
+	// postEffect
+	isTransition_ = true;
+	postProcess_ = std::make_unique<PostProcess>();
+	postProcess_->Initialize();
+	postProcess_->SetEffect(PostEffectType::Dissolve);
+	postProcess_->SetMaskTexture(texHandleMask_);
+	param_.threshold = 1.0f;
+	postProcess_->SetDissolveParam(param_);
+	spriteWhite_.reset(Sprite::Create(texHandleWhite_));
+
 	camera_.Initialize();
 	// lockOn
 	lockOn_ = std::make_unique<LockOn>();
 	// player
 	player_ = std::make_unique<Player>();
-	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
 	player_->Initialize(texHandlePlayer_);
 	player_->SetPosition({ 0,0,50.0f });
 	lockOn_->Initialize(player_->GetWorldTransform().translate);
@@ -58,10 +70,6 @@ void GameScene::Initialize()
 	bossEnemy_->SetPlayer(player_.get());*/
 
 	// 仮のUI
-	texHandleLockOn_ = TextureManager::Load("resources/UI/LockOn.png");
-	texHandleUnLock_ = TextureManager::Load("resources/UI/unLock.png");
-	texHandleAttack_ = TextureManager::Load("resources/UI/attack.png");
-
 	spriteLockOn_.reset(Sprite::Create(texHandleLockOn_, { 20.0f,100.0f }));
 	spriteUnLock_.reset(Sprite::Create(texHandleUnLock_, { 20.0f,100.0f }));
 	spriteAttack_.reset(Sprite::Create(texHandleAttack_, { 1000.0f , 100.0f }));
@@ -69,6 +77,9 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
+	// シーン遷移
+	SceneTransition();
+
 	// player
 	player_->Update();
 	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition());
@@ -93,8 +104,8 @@ void GameScene::Update()
 	Collision();
 
 	// 仮のクリア判定
-	if (player_->GetWorldPosition().z >= 1050.0f) {
-		GameManager::GetInstance()->ChangeScene("CLEAR");
+	if (player_->GetWorldPosition().z >= 120.0f) {
+		isTransitionClear_ = true;
 	}
 
 #ifdef _DEBUG
@@ -114,6 +125,15 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
+	spriteWhite_->Draw();
+
+	postProcess_->Draw();
+}
+
+void GameScene::PostProcessDraw()
+{
+	postProcess_->PreDraw();
+
 	// skyBox
 	//skyBox_->Draw(worldTransformSkyBox_, camera_);
 	loader_->Draw(camera_);
@@ -130,12 +150,11 @@ void GameScene::Draw()
 	else {
 		spriteLockOn_->Draw();
 	}
-	
-	spriteAttack_->Draw();
-}
 
-void GameScene::PostProcessDraw()
-{
+	spriteAttack_->Draw();
+
+	postProcess_->PostDraw();
+
 }
 
 void GameScene::Collision()
@@ -166,4 +185,38 @@ void GameScene::Collision()
 	//}
 
 	collisionManager_->CheckAllCollision(); // 判定
+}
+
+void GameScene::LoadTextureFile()
+{
+	texHandleMask_ = TextureManager::Load("resources/TempTexture/noise0.png");
+	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
+	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
+	texHandleLockOn_ = TextureManager::Load("resources/UI/LockOn.png");
+	texHandleUnLock_ = TextureManager::Load("resources/UI/unLock.png");
+	texHandleAttack_ = TextureManager::Load("resources/UI/attack.png");
+}
+
+void GameScene::SceneTransition()
+{
+	// ゲームシーンに来た時
+	if (isTransition_) {
+		postProcess_->SetDissolveParam(param_);
+		param_.threshold -= 0.01f;
+		if (param_.threshold <= 0.0f) {
+			isTransition_ = false;
+			param_.threshold = 0.0f;
+		}
+	}
+
+	// ゲームシーンからクリアへ
+	if (isTransitionClear_) {
+		postProcess_->SetDissolveParam(param_);
+		param_.threshold += 0.01f;
+		if (param_.threshold >= 1.2f) {
+			isTransitionClear_ = false;
+			title_ = true;
+			GameManager::GetInstance()->ChangeScene("TITLE");
+		}
+	}
 }

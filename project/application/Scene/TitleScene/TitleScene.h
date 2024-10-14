@@ -43,6 +43,13 @@ public:
 	void PostProcessDraw()override;
 
 private:
+
+	/// <summary>
+	/// シーン遷移
+	/// </summary>
+	void SceneTransition();
+
+private:
 	std::unique_ptr<PostProcess> postProcess_ = nullptr; // postProcess
 	std::unique_ptr<Sprite> spriteTitle_ = nullptr; // Titleのsprite
 	uint32_t texHandleTitle_ = 0;
@@ -62,4 +69,9 @@ private:
 	bool isDissolve_ = false;
 	bool isDissolve2_ = false;
 	uint32_t startATimer_ = 0;
+
+	// シーン遷移用
+	bool isTransition_ = false;
+	uint32_t sceneTimer_ = 60;
+	uint32_t texHandleSceneMask_ = 0;
 };
