@@ -32,20 +32,26 @@ void Demo::Initialize()
 	trans_.translate.y = -10.0f;
 	trans_.rotate.y = std::numbers::pi_v<float>;
 	camera_.Initialize();*/
-	camera_.Initialize();
+	/*camera_.Initialize();
 
 	texHandle_ = TextureManager::Load("resources/uvChecker.png");
 	loader_ = std::make_unique<Loader>();
 	levelData_ = loader_->Load("level");
 	loader_->SetTexHandle(texHandle_);
-	loader_->Arrangement(levelData_);
+	loader_->Arrangement(levelData_);*/
+
+	texHandle = TextureManager::Load("resources/white.png");
+	texHandle2 = TextureManager::Load("resources/monsterBall.png");
 }
 
 void Demo::Update()
 {
-	loader_->UpdateCamera();
+	if (Input::GetInstance()->PressedKey(DIK_W)) {
+		GameManager::GetInstance()->ChangeScene("GAME");
+	}
+	/*loader_->UpdateCamera();
 	camera_ = loader_->GetCamera();
-	camera_.TransferMatrix();
+	camera_.TransferMatrix();*/
 
 	//static int currentItem_ = 0;
 	//const char* item[9] = { "Grayscale", "Vignette", "Bloom","Gaussian","LuminanceOutline",
@@ -121,7 +127,7 @@ void Demo::Update()
 
 void Demo::Draw()
 {
-	loader_->Draw(camera_);
+	//loader_->Draw(camera_);
 	//postProcess_->Draw();
 }
 

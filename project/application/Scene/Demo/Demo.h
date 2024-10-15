@@ -55,10 +55,12 @@ private:
 	bool dFlag_1 = true;
 	bool dFlag_2 = false;
 	DissolveParam DissolvePram_{};*/
-	std::unique_ptr<Loader> loader_;
+	/*std::unique_ptr<Loader> loader_;
 	LevelData* levelData_ = nullptr;
 	uint32_t texHandle_ = 0;
-	Camera camera_;
+	Camera camera_;*/
+	uint32_t texHandle;
+	uint32_t texHandle2;
 };
 
 

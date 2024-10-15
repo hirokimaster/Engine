@@ -1,25 +1,30 @@
 #include "ParticleSystem.h"
 
+ParticleSystem::ParticleSystem()
+{
+}
+
+ParticleSystem::~ParticleSystem()
+{
+	// デストラクタが呼ばれたらinstancing用のSRVがあるとこ解放する
+	SrvManager::GetInstance()->Free(index_);
+}
+
 /// <summary>
 /// 初期化
 /// </summary>
-/// <param name="filename"></param>
-void ParticleSystem::Initialize(const std::string& filename) {
+void ParticleSystem::Initialize() {
 
-	model_ = std::make_unique<Model>();
-	modelData_ = model_->LoadObjFile("resources", filename);
 	// リソース作成
-	CreateResource(modelData_);
+	CreateBuffer();
 	// instancing用のSRV作成
 	CreateSrv();
-
 }
 
 /// <summary>
 /// リソース作成
 /// </summary>
-/// <param name="modelData"></param>
-void ParticleSystem::CreateResource(ModelData modelData) {
+void ParticleSystem::CreateBuffer() {
 
 	// Instancing用のTransformationMatrixResourceを作る
 	resource_.instancingResource = CreateResource::CreateBufferResource(sizeof(ParticleForGPU) * kNumMaxInstance_);
@@ -32,20 +37,6 @@ void ParticleSystem::CreateResource(ModelData modelData) {
 		instancingData_[index].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
-	// VertexResource
-	resource_.vertexResource = CreateResource::CreateBufferResource(sizeof(VertexData) * modelData.vertices.size());
-	// VertexBufferView
-	VertexBufferView_.BufferLocation = resource_.vertexResource->GetGPUVirtualAddress();
-	// 使用するリソースのサイズは頂点サイズ
-	VertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData.vertices.size());
-	// 1頂点あたりのサイズ
-	VertexBufferView_.StrideInBytes = sizeof(VertexData);
-
-	// 頂点リソースにデータを書き込む
-	VertexData* vertexData = nullptr;
-	// 書き込むためのアドレスを取得
-	resource_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexData));
-	std::memcpy(vertexData, modelData.vertices.data(), sizeof(VertexData) * modelData.vertices.size()); // 頂点データをリソースにコピー
 	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
 	// データを書き込む
 	Material* materialData = nullptr;
@@ -59,9 +50,8 @@ void ParticleSystem::CreateResource(ModelData modelData) {
 /// </summary>
 void ParticleSystem::CreateSrv() {
 	// srvの位置をtextureのsrvの位置から設定する
+	SrvManager::GetInstance()->Allocate();
 	index_ = SrvManager::GetInstance()->GetIndex();
-	index_++;
-	SrvManager::GetInstance()->SetIndex(index_);
 	SrvManager::GetInstance()->CreateInstancingSrv(resource_, index_);
 }
 
@@ -111,16 +101,18 @@ void ParticleSystem::Draw(std::list<Particle>& particles, const Camera& camera) 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要
 	DirectXCommon::GetCommandList()->SetGraphicsRootSignature(pipelineData.rootSignature_.Get());
 	DirectXCommon::GetCommandList()->SetPipelineState(pipelineData.graphicsPipelineState_.Get()); // PSOを設定
-	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &VertexBufferView_); // VBVを設定
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 	// instancing用のCBufferの場所を設定
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(1, SrvManager::GetInstance()->GetInstancingGPUHandle(index_));
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(2, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
-	// 描画。(DrawCall/ドローコール)。
-	DirectXCommon::GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), numInstance, 0, 0);
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, index_); // structuredBuffer
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, texHandle_); // texture
+	
+	// モデルがあるなら描画する
+	if (model_) {
+		model_->Draw();
+	}
 }
 
 /// <summary>

@@ -48,7 +48,7 @@ private:
 
 private: // メンバ変数
 
-	Microsoft::WRL::ComPtr<ID3D12Resource>texResource[128];
+	Microsoft::WRL::ComPtr<ID3D12Resource>texResource[1024];
 	std::unordered_map<std::string, uint32_t> fileHandleMap;
 	DirectX::TexMetadata metadata_[128];
 	ID3D12Resource* intermediateResource_;

@@ -14,9 +14,8 @@ uint32_t TextureManager::Load(const std::string& fileName) {
 	}
 
 	// 新しいのならindexをずらして新しく作る
+	SrvManager::GetInstance()->Allocate();
 	uint32_t newIndex = SrvManager::GetInstance()->GetIndex();
-	newIndex++;
-	SrvManager::GetInstance()->ShiftIndex();
 	TextureManager::GetInstance()->fileHandleMap[fileName] = newIndex;
 	LoadTexture(fileName, newIndex);
 
