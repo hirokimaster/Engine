@@ -3,7 +3,6 @@
 #include "engine/CreateResource/CreateResource.h"
 #include "engine/Model/Animation/Animation.h"
 #include <queue>
-#define MAX_SRV 128
 
 class SrvManager {
 public:
@@ -54,23 +53,18 @@ public:
 	/// </summary>
 	void Free(uint32_t index);
 
-	/// <summary>
-	/// textureはtextureManagerで再利用するのでその番号を保存しておく
-	/// </summary>
-	void TextureHandleKeep(uint32_t index);
-
 #pragma region getter
 
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle(uint32_t texHandle);
-	D3D12_GPU_DESCRIPTOR_HANDLE GetInstancingGPUHandle(uint32_t texHandle);
 	uint32_t GetIndex() { return index_; }
-	std::queue<uint32_t> GetTextureHandleIndices() { return textureHandleIndices_; }
 
 #pragma endregion
 
 #pragma region setter
 
     uint32_t SetIndex(uint32_t index) { return index_ = index; }
+
+	void SetGraphicsRootDescriptorTable(UINT rootParameterIndex, uint32_t srvIndex);
 
 #pragma endregion
 
@@ -81,14 +75,13 @@ private:
 	SrvManager& operator=(const SrvManager&) = delete;
 
 private:
+	// 最大SRV数
+	static const uint32_t kMaxSRVCount = 1024;
 
-	D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV_[MAX_SRV];
-	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV_[MAX_SRV];
-	D3D12_CPU_DESCRIPTOR_HANDLE instancingSrvHandleCPU_[MAX_SRV];
-	D3D12_GPU_DESCRIPTOR_HANDLE instancingSrvHandleGPU_[MAX_SRV];
+	D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandle_[kMaxSRVCount];
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandle_[kMaxSRVCount];
 
-	uint32_t index_; // srvのインデックス
-	uint32_t freeIndex_;
+	uint32_t index_ = 0; // srvのインデックス
+	uint32_t beforeIndex_ = 0; // 前のインデックスを入れとく
 	std::queue<uint32_t> vacantIndices_; // 空きインデックスを管理
-	std::queue<uint32_t> textureHandleIndices_; // textureで使ってるインデックスを保存しておく場所
 };

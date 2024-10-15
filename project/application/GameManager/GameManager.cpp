@@ -24,18 +24,7 @@ void GameManager::Update() {
 }
 
 void GameManager::Initialize()
-{
-	// シーンのはじめ(シーンが切り替わった時)srvを全部解放する(texture以外)
-	uint32_t srvIndex = SrvManager::GetInstance()->GetIndex();
-	std::queue<uint32_t> textureHandleIndices = SrvManager::GetInstance()->GetTextureHandleIndices();
-	for (uint32_t i = 1; i < srvIndex; ++i) {
-		for (uint32_t j = 0; textureHandleIndices.size(); ++j) {
-			if (~i == j) {
-				SrvManager::GetInstance()->Free(i);
-			}
-		}
-	}
-	
+{	
 	scene_->Initialize();
 }
 
