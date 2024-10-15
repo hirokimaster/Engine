@@ -130,10 +130,6 @@ void TitleScene::Draw()
 
 	postProcess_->Draw();
 
-	if (startATimer_ % 40 >= 20) {
-		spritePushA_->Draw();
-	}
-
 }
 
 void TitleScene::PostProcessDraw()
@@ -146,6 +142,10 @@ void TitleScene::PostProcessDraw()
 	objectPlayer_->Draw(camera_);
 
 	spriteTitle_->Draw();
+
+	if (startATimer_ % 40 >= 20) {
+		spritePushA_->Draw();
+	}
 	
 	
 	postProcess_->PostDraw();

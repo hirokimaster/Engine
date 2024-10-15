@@ -104,7 +104,7 @@ void GameScene::Update()
 	Collision();
 
 	// 仮のクリア判定
-	if (player_->GetWorldPosition().z >= 120.0f) {
+	if (player_->GetWorldPosition().z >= 1050.0f) {
 		isTransitionClear_ = true;
 	}
 
@@ -216,7 +216,7 @@ void GameScene::SceneTransition()
 		if (param_.threshold >= 1.2f) {
 			isTransitionClear_ = false;
 			title_ = true;
-			GameManager::GetInstance()->ChangeScene("TITLE");
+			GameManager::GetInstance()->ChangeScene("CLEAR");
 		}
 	}
 }
