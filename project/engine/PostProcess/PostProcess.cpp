@@ -77,7 +77,7 @@ void PostProcess::CreateSRV()
 		IID_PPV_ARGS(&texBuff_)); // 作成するResourceポインタへのポインタ
 	assert(SUCCEEDED(hr));
 
-	SrvManager::GetInstance()->CreatePostProcessSrv(texBuff_.Get(), index_);
+	SrvManager::GetInstance()->CreatePostProcessSrv(texBuff_.Get(), 1);
 
 }
 
@@ -266,7 +266,7 @@ void PostProcess::Draw()
 	// 形状を設定。PSOに設定しているものとはまた別。同じものを設定すると考えておけば良い
 	DirectXCommon::GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// srvの設定
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(0, SrvManager::GetInstance()->GetGPUHandle(index_));
+	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(0, SrvManager::GetInstance()->GetGPUHandle(1));
 
 	// effectの種類によって変えてる
 	SetConstantBuffer();

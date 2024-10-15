@@ -10,6 +10,8 @@ protected:
 	// ステージナンバー
 	static int stageNo_;
 
+	static bool title_;
+
 public:
 
 	virtual void Initialize() = 0;

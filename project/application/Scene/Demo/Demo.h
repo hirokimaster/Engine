@@ -7,7 +7,7 @@
 #include "engine/Model/Animation/ModelAnimation.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameManager/GameManager.h"
-#include "engine/Loader/Loader.h"
+#include "application/Loader/Loader.h"
 
 class Demo : public IScene {
 public: // メンバ関数
