@@ -6,6 +6,8 @@ PostProcess::PostProcess()
 
 PostProcess::~PostProcess()
 {
+	// 呼ばれたら使ってるsrvのdiscriptorを解放する
+	SrvManager::GetInstance()->Free(index_);
 }
 
 void PostProcess::Initialize()
