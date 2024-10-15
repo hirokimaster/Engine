@@ -12,9 +12,6 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	// テクスチャ読み込み
-	LoadTextureFile();
-
 	// postEffect
 	isTransition_ = true;
 	postProcess_ = std::make_unique<PostProcess>();
@@ -24,6 +21,9 @@ void GameScene::Initialize()
 	param_.threshold = 1.0f;
 	postProcess_->SetDissolveParam(param_);
 	spriteWhite_.reset(Sprite::Create(texHandleWhite_));
+
+	// テクスチャ読み込み
+	LoadTextureFile();
 
 	camera_.Initialize();
 	// lockOn

@@ -5,8 +5,8 @@ void PlayerParticle::Initialize()
 	texHandle_ = TextureManager::Load("resources/Player/smoke.png");
 	particle_ = std::make_unique<ParticleSystem>();
 	randomEngine_ = particle_->random();
-	particle_->SetSrvIndex(100);
-	particle_->Initialize("Player/plane.obj");
+	particle_->Initialize();
+	particle_->SetModel("Player/plane.obj");
 	particle_->SetTexHandle(texHandle_);
 
 	emit_.count = 2;

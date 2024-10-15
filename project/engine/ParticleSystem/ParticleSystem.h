@@ -75,8 +75,6 @@ public:
 
 	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
 
-	void SetSrvIndex(uint32_t index) { index_ = index; }
-
 	void SetPosition(Vector3 position) { position_ = position; }
 
 #pragma endregion
