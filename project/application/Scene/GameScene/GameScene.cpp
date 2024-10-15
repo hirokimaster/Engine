@@ -11,8 +11,6 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	texHandle = TextureManager::Load("resources/monsterBall.png");
-	texHandle2 = TextureManager::Load("resources/white.png");
 }
 
 void GameScene::Update()
