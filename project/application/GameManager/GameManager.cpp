@@ -24,7 +24,7 @@ void GameManager::Update() {
 }
 
 void GameManager::Initialize()
-{
+{	
 	scene_->Initialize();
 }
 

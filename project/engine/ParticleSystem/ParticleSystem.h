@@ -6,7 +6,7 @@
 #include "engine/Camera/Camera.h"
 #include "engine/TextureManager/TextureManager.h"
 #include "engine/DescriptorManager/DescriptorManager.h"
-#include "engine/Model/Model.h"
+#include "engine/ModelManager/ModelManager.h"
 #include <random>
 #include <numbers>
 #include "engine/Input/Input.h"
@@ -36,15 +36,24 @@ class ParticleSystem {
 public:
 
 	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	ParticleSystem();
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~ParticleSystem();
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(const std::string& filename);
+	void Initialize();
 
 	/// <summary>
 	/// リソース作成
 	/// </summary>
-	/// <param name="modelData"></param>
-	void CreateResource(ModelData modelData);
+	void CreateBuffer();
 
 	/// <summary>
 	/// instancing用のSRVの作成
@@ -63,6 +72,8 @@ public:
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 
 	void SetNumInstance(uint32_t kNumMaxInstace) { kNumMaxInstance_ = kNumMaxInstace; }
+
+	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
 
 	void SetSrvIndex(uint32_t index) { index_ = index; }
 
@@ -94,7 +105,7 @@ private:
 	uint32_t kNumMaxInstance_ = 10000;
 	descSize size_ = {};
 	ModelData modelData_;
-	std::unique_ptr<Model>model_;
+	Model* model_ = nullptr;
 	D3D12_VERTEX_BUFFER_VIEW VertexBufferView_{};
 	uint32_t texHandle_ = 0;
 	ParticleForGPU* instancingData_ = nullptr;

@@ -11,8 +11,8 @@ PostProcess::~PostProcess()
 void PostProcess::Initialize()
 {
 	// srvを作るところを今使ってるところの隣にずらす
-	//SrvManager::GetInstance()->ShiftIndex();
-	//index_ = SrvManager::GetInstance()->GetIndex();
+	SrvManager::GetInstance()->Allocate();
+	index_ = SrvManager::GetInstance()->GetIndex();
 	CreateSRV();
 	CreateRTV();
 

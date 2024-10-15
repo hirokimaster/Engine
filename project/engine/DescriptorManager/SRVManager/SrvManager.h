@@ -2,7 +2,7 @@
 #include "engine/DescriptorManager/DescriptorManager.h"
 #include "engine/CreateResource/CreateResource.h"
 #include "engine/Model/Animation/Animation.h"
-#define MAX_SRV 128
+#include <queue>
 
 class SrvManager {
 public:
@@ -44,21 +44,18 @@ public:
 	void CreateDepthTextureSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resource, uint32_t index);
 
 	/// <summary>
-	///  animationのpalette用のsrv
+	/// 空いてる番号を取り出す
 	/// </summary>
-	/// <param name="skinCluster"></param>
-	/// <param name="skeleton"></param>
-	//void CreatePaletteSrv(SkinCluster& skinCluster,Skeleton& skeleton, uint32_t index);
+	void Allocate();
 
 	/// <summary>
-	/// srvのgpuhandleの位置をずらす
+	/// 使ってないインデックス解放する
 	/// </summary>
-	void ShiftIndex();
+	void Free(uint32_t index);
 
 #pragma region getter
 
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle(uint32_t texHandle);
-	D3D12_GPU_DESCRIPTOR_HANDLE GetInstancingGPUHandle(uint32_t texHandle);
 	uint32_t GetIndex() { return index_; }
 
 #pragma endregion
@@ -66,6 +63,8 @@ public:
 #pragma region setter
 
     uint32_t SetIndex(uint32_t index) { return index_ = index; }
+
+	void SetGraphicsRootDescriptorTable(UINT rootParameterIndex, uint32_t srvIndex);
 
 #pragma endregion
 
@@ -76,11 +75,13 @@ private:
 	SrvManager& operator=(const SrvManager&) = delete;
 
 private:
+	// 最大SRV数
+	static const uint32_t kMaxSRVCount = 1024;
 
-	D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV_[MAX_SRV];
-	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV_[MAX_SRV];
-	D3D12_CPU_DESCRIPTOR_HANDLE instancingSrvHandleCPU_[MAX_SRV];
-	D3D12_GPU_DESCRIPTOR_HANDLE instancingSrvHandleGPU_[MAX_SRV];
-	uint32_t index_ = 1;
+	D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandle_[kMaxSRVCount];
+	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandle_[kMaxSRVCount];
 
+	uint32_t index_ = 0; // srvのインデックス
+	uint32_t beforeIndex_ = 0; // 前のインデックスを入れとく
+	std::queue<uint32_t> vacantIndices_; // 空きインデックスを管理
 };
