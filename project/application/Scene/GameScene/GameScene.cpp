@@ -17,13 +17,13 @@ void GameScene::Initialize()
 	postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
 	postProcess_->SetEffect(PostEffectType::Dissolve);
-	postProcess_->SetMaskTexture(texHandleMask_);
 	param_.threshold = 1.0f;
 	postProcess_->SetDissolveParam(param_);
-	spriteWhite_.reset(Sprite::Create(texHandleWhite_));
 
 	// テクスチャ読み込み
 	LoadTextureFile();
+	postProcess_->SetMaskTexture(texHandleMask_);
+	spriteWhite_.reset(Sprite::Create(texHandleWhite_));
 
 	camera_.Initialize();
 	// lockOn
