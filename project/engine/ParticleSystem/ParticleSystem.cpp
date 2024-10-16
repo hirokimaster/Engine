@@ -113,7 +113,7 @@ void ParticleSystem::Draw(std::list<Particle>& particles, const Camera& camera) 
 	
 	// モデルがあるなら描画する
 	if (model_) {
-		model_->Draw();
+		model_->Draw(numInstance);
 	}
 }
 

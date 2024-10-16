@@ -93,6 +93,15 @@ void Model::Draw()
 	DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
 }
 
+void Model::Draw(uint32_t numInstance)
+{
+	DirectXCommon::GetCommandList()->IASetVertexBuffers(0, 1, &VBV_); // VBVを設定
+	DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
+
+	// 描画。(DrawCall/ドローコール)。
+	DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), numInstance, 0, 0, 0);
+}
+
 
 ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string& filename)
 {
