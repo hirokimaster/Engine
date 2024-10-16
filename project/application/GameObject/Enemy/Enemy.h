@@ -4,6 +4,12 @@
 #include "engine/TextureManager/TextureManager.h"
 #include "engine/ParticleSystem/ParticleSystem.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
+#include "application/GameObject/Enemy/PhaseState/EnemyStateSortie.h"
+
+// 行動フェーズ
+enum class Phase {
+	Sortie
+};
 
 class Player;
 
@@ -30,6 +36,11 @@ public:
 
 	static const uint32_t kFireInterval_ = 60; // 発射間隔
 
+	/// <summary>
+	/// 移動処理
+	/// </summary>
+	void Move();
+
 private:
 
 	/// <summary>
@@ -47,13 +58,24 @@ private:
 	/// </summary>
 	void BulletUpdate();
 
-	// 360度弾幕
+	/// <summary>
+	/// 360度に広がってく弾幕
+	/// </summary>
+	/// <param name="bulletCount"></param>
 	void FireRadial(uint32_t bulletCount);
 
-	// 螺旋弾幕
+	/// <summary>
+	/// 螺旋状の弾幕
+	/// </summary>
+	/// <param name="spiralSpeed"></param>
+	/// <param name="bulletCount"></param>
+	/// <param name="delayBetweenBullets"></param>
 	void FireSpiral(float spiralSpeed, uint32_t bulletCount, float delayBetweenBullets);
 
-	// ミサイル
+	/// <summary>
+	/// ミサイル
+	/// </summary>
+	/// <param name="bulletCount"></param>
 	void FireMissile(uint32_t bulletCount);
 
 public:
@@ -78,6 +100,8 @@ public:
 
 	void SetBulletType(BulletType type) { bulletType_ = type; }
 
+	void SetVelocity(Vector3 velocity) { velocity_ = velocity; }
+
 #pragma endregion
 
 private:
@@ -94,5 +118,7 @@ private:
 	bool isFire_ = false;
 	float spiralTimer_ = 180.0f;
 	BulletType bulletType_{};
+	std::unique_ptr<IPhaseStateEnemy> phaseState_; // 行動フェーズ（状態）
+	Vector3 velocity_{}; // 移動ベクトル
 };
 

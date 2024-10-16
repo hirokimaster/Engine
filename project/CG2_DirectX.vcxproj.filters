@@ -328,6 +328,9 @@
     <ClCompile Include="application\GameObject\Skydome\Skydome.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateSortie.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\CreateResource\CreateResource.h">
@@ -517,6 +520,8 @@
       <Filter>Application\GameObject\Enemy\Boss</Filter>
     </ClInclude>
     <ClInclude Include="application\GameObject\Skydome\Skydome.h" />
+    <ClInclude Include="application\GameObject\Enemy\PhaseState\IPhaseState\IPhaseStateEnemy.h" />
+    <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateSortie.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\ShaderFile\Object3d.PS.hlsl">

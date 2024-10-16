@@ -15,12 +15,17 @@ void Enemy::Initialize(uint32_t texHandle)
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 	bulletType_ = BulletType::Normal;
 
+	// 最初の状態
+	phaseState_ = std::make_unique<EnemyStateSortie>()
+		;
+	// 当たり判定の属性設定
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
 }
 
 void Enemy::Update()
 {
+	//phaseState_->Update(this); // 状態ごとの更新処理
 	//BulletUpdate(); // 弾の更新処理
 	worldTransform_.UpdateMatrix();
 
@@ -181,6 +186,12 @@ void Enemy::FireMissile(uint32_t bulletCount)
 		bullet->SetPosition(GetWorldPosition());
 		bullets_.push_back(std::move(bullet));
 	}
+}
+
+void Enemy::Move()
+{
+	// 移動
+	worldTransform_.translate = worldTransform_.translate + velocity_;
 }
 
 Vector3 Enemy::GetWorldPosition() const

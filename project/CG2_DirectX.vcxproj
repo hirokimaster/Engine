@@ -113,6 +113,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\GameObject\Enemy\BossEnemy\BossEnemy.cpp" />
     <ClCompile Include="application\GameObject\Enemy\Bullet\EnemyBullet.cpp" />
     <ClCompile Include="application\GameObject\Enemy\Enemy.cpp" />
+    <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateSortie.cpp" />
     <ClCompile Include="application\GameObject\FollowCamera\FollowCamera.cpp" />
     <ClCompile Include="application\GameObject\LockOn\LockOn.cpp" />
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp" />
@@ -169,6 +170,8 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\GameObject\Enemy\BossEnemy\BossEnemy.h" />
     <ClInclude Include="application\GameObject\Enemy\Bullet\EnemyBullet.h" />
     <ClInclude Include="application\GameObject\Enemy\Enemy.h" />
+    <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateSortie.h" />
+    <ClInclude Include="application\GameObject\Enemy\PhaseState\IPhaseState\IPhaseStateEnemy.h" />
     <ClInclude Include="application\GameObject\FollowCamera\FollowCamera.h" />
     <ClInclude Include="application\GameObject\LockOn\LockOn.h" />
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
