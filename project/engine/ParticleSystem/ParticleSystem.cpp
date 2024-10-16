@@ -7,7 +7,7 @@ ParticleSystem::ParticleSystem()
 ParticleSystem::~ParticleSystem()
 {
 	// デストラクタが呼ばれたらinstancing用のSRVがあるとこ解放する
-	SrvManager::GetInstance()->Free(index_);
+	SrvManager::GetInstance()->StructuredBufIndexFree(index_);
 }
 
 /// <summary>
@@ -50,8 +50,8 @@ void ParticleSystem::CreateBuffer() {
 /// </summary>
 void ParticleSystem::CreateSrv() {
 	// srvの位置をtextureのsrvの位置から設定する
-	SrvManager::GetInstance()->Allocate();
-	index_ = SrvManager::GetInstance()->GetIndex();
+	SrvManager::GetInstance()->StructuredBufIndexAllocate();
+	index_ = SrvManager::GetInstance()->GetStructuredBufIndex();
 	SrvManager::GetInstance()->CreateInstancingSrv(resource_, index_);
 }
 

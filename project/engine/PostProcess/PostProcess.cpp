@@ -7,14 +7,14 @@ PostProcess::PostProcess()
 PostProcess::~PostProcess()
 {
 	// 呼ばれたら使ってるsrvのdiscriptorを解放する
-	SrvManager::GetInstance()->Free(index_);
+	SrvManager::GetInstance()->StructuredBufIndexFree(index_);
 }
 
 void PostProcess::Initialize()
 {
 	// srvを作るところを今使ってるところの隣にずらす
-	SrvManager::GetInstance()->Allocate();
-	index_ = SrvManager::GetInstance()->GetIndex();
+	SrvManager::GetInstance()->StructuredBufIndexAllocate();
+	index_ = SrvManager::GetInstance()->GetStructuredBufIndex();
 	CreateSRV();
 	CreateRTV();
 

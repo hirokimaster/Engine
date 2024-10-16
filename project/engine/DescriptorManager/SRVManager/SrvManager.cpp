@@ -81,6 +81,8 @@ void SrvManager::Allocate()
 	}
 	else {
 		++beforeIndex_;
+		// 512番からはstructuredBuffer用の場所なので超えたら止める
+		assert(beforeIndex_ > 511);
 		index_ = beforeIndex_;
 	}
 }
@@ -88,6 +90,26 @@ void SrvManager::Allocate()
 void SrvManager::Free(uint32_t index)
 {
 	vacantIndices_.push(index);
+}
+
+void SrvManager::StructuredBufIndexAllocate()
+{
+	// 空き番号があるか確認(あったらそこから使う)
+	if (!vacantStructuredBufIndices_.empty()) {
+		structuredBufIndex_ = vacantIndices_.front(); // 先頭から取る
+		vacantStructuredBufIndices_.pop(); // 使うのでコンテナから削除する
+	}
+	else {
+		++beforestructuredBufIndex_;
+		// 最大数を超えたら止める
+		assert(beforestructuredBufIndex_ > kMaxSRVCount);
+		structuredBufIndex_ = beforestructuredBufIndex_;
+	}
+}
+
+void SrvManager::StructuredBufIndexFree(uint32_t index)
+{
+	vacantStructuredBufIndices_.push(index);
 }
 
 D3D12_GPU_DESCRIPTOR_HANDLE SrvManager::GetGPUHandle(uint32_t texHandle)
