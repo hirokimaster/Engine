@@ -293,3 +293,20 @@ void ModelAnimation::CreateBuffer()
 	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
 
 }
+
+void ModelAnimation::CreateUAV()
+{
+	D3D12_UNORDERED_ACCESS_VIEW_DESC uavDesc{};
+	uavDesc.Format = DXGI_FORMAT_UNKNOWN;
+	uavDesc.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
+	uavDesc.Buffer.FirstElement = 0;
+	uavDesc.Buffer.NumElements = modelData_.vertices.size();
+	uavDesc.Buffer.CounterOffsetInBytes = 0;
+	uavDesc.Buffer.Flags = D3D12_BUFFER_UAV_FLAG_NONE;
+	uavDesc.Buffer.StructureByteStride = sizeof(VertexData);
+
+	DirectXCommon::GetInstance()->GetDevice()->CreateUnorderedAccessView(
+		resource_.
+	)
+
+}

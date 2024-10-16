@@ -20,6 +20,15 @@ struct Particle {
 	float currentTime;
 };
 
+struct ParticleCS {
+	Vector3 translate;
+	Vector3 scale;
+	float lifeTime;
+	Vector3 velocity;
+	float currentTime;
+	Vector3 color;
+};
+
 struct Emitter {
 	WorldTransform worldransform; //!<エミッタのtransform
 	uint32_t count; //!< 発生数

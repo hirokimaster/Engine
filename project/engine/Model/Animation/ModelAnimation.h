@@ -8,6 +8,21 @@
 class ModelAnimation : public Model{
 public:
 
+	struct Vertex {
+		Vector4 position;
+		Vector2 texcoord;
+		Vector3 normal;
+	};
+
+	struct VertexInfluence {
+		Vector4 weight;
+		int32_t index[4];
+	};
+
+	struct SkininngInformation {
+		uint32_t numVertices;
+	};
+
 	// 初期化
 	void Initialize(const std::string& fileName);
 	// 描画
@@ -47,6 +62,11 @@ private: // ここでしか使わない関数
 
 	// bufferを作る場所
 	void CreateBuffer();
+
+	/// <summary>
+	/// uav作成
+	/// </summary>
+	void CreateUAV();
 
 private:
 	Animation animation_{};
