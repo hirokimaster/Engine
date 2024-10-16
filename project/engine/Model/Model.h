@@ -64,6 +64,12 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// instancing用の描画
+	/// </summary>
+	/// <param name="numInstance"></param>
+	void Draw(uint32_t numInstance);
+
 #pragma region Setter
 
 	
