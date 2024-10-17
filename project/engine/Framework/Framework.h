@@ -1,3 +1,9 @@
+/**
+* @file Framework.h
+* @brief 汎用データの初期化を行う（ゲームの固有処理は書かない）
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Base/WinApp/WinApp.h"
 #include "engine/Base/DX/DirectXCommon.h"

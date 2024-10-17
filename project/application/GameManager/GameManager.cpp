@@ -1,3 +1,9 @@
+/**
+* @file GameManager.cpp
+* @brief ゲームやシーンのマネージャ
+* @author 仁平 琉乃
+*/
+
 #include "GameManager.h"
 #include "application/Scene/GameScene/GameScene.h"
 #include <cassert>

@@ -1,3 +1,9 @@
+/**
+* @file DirectXCommon.h
+* @brief DirectX12の初期化
+* @author 仁平 琉乃
+*/
+
 #pragma once
 
 #include <Windows.h>

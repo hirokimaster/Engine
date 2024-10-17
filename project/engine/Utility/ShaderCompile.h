@@ -1,3 +1,9 @@
+/**
+* @file ShaderCompile.cpp
+* @brief シェーダーを読み込むための関数
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Base/DX/DirectXCommon.h"
 #include <dxcapi.h>

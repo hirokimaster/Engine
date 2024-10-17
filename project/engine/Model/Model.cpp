@@ -1,3 +1,9 @@
+/**
+* @file Model.cpp
+* @brief モデルの読み込み、モデルの形状についてのクラス
+* @author 仁平 琉乃
+*/
+
 #include "Model.h"
 
 Model::~Model()

@@ -1,3 +1,9 @@
+/**
+* @file Object3DPlacer.h
+* @brief モデルの位置決め、配置を行うクラス
+* @author 仁平 琉乃
+*/
+
 #include "Object3DPlacer.h"
 
 void Object3DPlacer::Initialize()

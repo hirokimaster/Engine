@@ -1,3 +1,9 @@
+/**
+* @file DirectXCommon.cpp
+* @brief DirectX12の初期化
+* @author 仁平 琉乃
+*/
+
 #include "DirectXCommon.h"
 #include "engine/Utility/StringUtility.h"
 #include "engine/PostProcess/PostProcess.h"

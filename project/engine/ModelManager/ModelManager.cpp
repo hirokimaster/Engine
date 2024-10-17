@@ -1,3 +1,9 @@
+/**
+* @file ModelManager.cpp
+* @brief モデルの読み込み、生成を行う。一度生成したら同じインスタンスを使いまわせる
+* @author 仁平 琉乃
+*/
+
 #include "ModelManager.h"
 
 ModelManager* ModelManager::GetInstance()

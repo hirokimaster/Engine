@@ -1,3 +1,9 @@
+/**
+* @file Loader.cpp
+* @brief Blenderから出力したjsonファイルの読み込み。それを基にオブジェクトを配置
+* @author 仁平 琉乃
+*/
+
 #include "Loader.h"
 
 LevelData* Loader::Load(const std::string& fileName)

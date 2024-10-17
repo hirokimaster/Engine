@@ -1,3 +1,9 @@
+/**
+* @file Animation.h
+* @brief アニメーションを読み込む際に使う構造体まとめ
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Math/Mathfunction.h"
 #include "engine/Model/Model.h"

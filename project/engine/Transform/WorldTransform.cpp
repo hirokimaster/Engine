@@ -1,3 +1,9 @@
+/**
+* @file WorldTransform.cpp
+* @brief ワールド座標を作る
+* @author 仁平 琉乃
+*/
+
 #include "WorldTransform.h"
 
 void WorldTransform::Initialize()

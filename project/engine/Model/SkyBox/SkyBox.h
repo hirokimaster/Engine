@@ -1,3 +1,9 @@
+/**
+* @file SkyBox.h
+* @brief スカイボックスの生成
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/GraphicsPipeline/GraphicsPipeline.h"
 #include "engine/DescriptorManager/SRVManager/SrvManager.h"

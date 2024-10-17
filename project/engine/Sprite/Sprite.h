@@ -1,3 +1,9 @@
+/**
+* @file Sprite.h
+* @brief スプライトの初期化、生成
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Base/DX/DirectXCommon.h"
 #include "engine/Utility/StringUtility.h"

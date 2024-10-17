@@ -1,3 +1,9 @@
+/**
+* @file Camera.h
+* @brief カメラの初期化、生成
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Math/Mathfunction.h"
 #include "engine/CreateResource/CreateResource.h"

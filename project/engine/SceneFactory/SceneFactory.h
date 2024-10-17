@@ -1,3 +1,9 @@
+/**
+* @file SceneFactory.h
+* @brief シーンの生成を行うクラス
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "AbstractSceneFactory.h"
 #include "application/Scene/GameScene/GameScene.h"
