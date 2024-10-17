@@ -9,8 +9,8 @@
 LevelData* Loader::Load(const std::string& fileName)
 {
 	// 連結してフルパスを得る
-	const std::string fullpath = "resources/" + fileName + ".json";
-
+	const std::string fullpath = "resources/LevelEditorObj/" + fileName + ".json";
+  
 	// ファイルストリーム
 	std::ifstream file;
 
@@ -69,31 +69,16 @@ LevelData* Loader::Load(const std::string& fileName)
 			objectData.translate.z = (float)transform["translation"][1];
 			// 回転角
 			objectData.rotate.x = (float)transform["rotation"][0];
-			objectData.rotate.y = (float)transform["rotation"][2];
+      
+			objectData.rotate.y = ((float)transform["rotation"][2] - std::numbers::pi_v<float>);
+
 			objectData.rotate.z = (float)transform["rotation"][1];
 			// スケーリング
 			objectData.scale.x = (float)transform["scaling"][0];
 			objectData.scale.y = (float)transform["scaling"][2];
 			objectData.scale.z = (float)transform["scaling"][1];
 			// modelのロード
-			ModelManager::GetInstance()->LoadObjModel(objectData.fileName + ".obj");
-		}
-		// camera
-		if (type.compare("CAMERA") == 0) {
-			// トランスフォームのパラメータ読み込み
-			nlohmann::json& transform = object["transform"];
-			// 平行移動
-			camera_.translate.x = (float)transform["translation"][0];
-			camera_.translate.y = (float)transform["translation"][2];
-			camera_.translate.z = (float)transform["translation"][1];
-			// 回転角
-			camera_.rotate.x = -((float)transform["rotation"][0] - std::numbers::pi_v<float> / 2.0f);
-			camera_.rotate.y = -(float)transform["rotation"][2];
-			camera_.rotate.z = -(float)transform["rotation"][1];
-			// スケーリング
-			camera_.scale.x = (float)transform["scaling"][0];
-			camera_.scale.y = (float)transform["scaling"][2];
-			camera_.scale.z = (float)transform["scaling"][1];
+			ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
 
 		}
 
@@ -108,25 +93,59 @@ LevelData* Loader::Load(const std::string& fileName)
 
 void Loader::Arrangement(LevelData* levelData)
 {
+
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData->objects) {
 
 		// モデルを指定して3Dオブジェクトを生成
-		std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
-		newObject->Initialize();
-		newObject->SetModel(objectData.fileName + ".obj");
-		newObject->SetTexHandle(texHandle_);
-		newObject->SetPosition(objectData.translate);
-		newObject->SetRotate(objectData.rotate);
-		newObject->SetScale(objectData.scale);
-		objects_.push_back(std::move(newObject));
+		if (objectData.fileName == "enemy") {
+			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+			newEnemy->Initialize(texHandle_);
+			newEnemy->SetPlayer(player_);
+			newEnemy->SetPosition(objectData.translate);
+			enemys_.push_back(std::move(newEnemy));
+		}
+		else {
+			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
+			newObject->Initialize();
+			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
+			newObject->SetTexHandle(texHandle_);
+			newObject->SetPosition(objectData.translate);
+			newObject->SetRotate(objectData.rotate);
+			newObject->SetScale(objectData.scale);
+			objects_.push_back(std::move(newObject));
+		}
 	}
+}
+
+void Loader::Update()
+{
+	// 行列の更新
+	for (auto& object : objects_) {
+		object->GetWorldTransform().UpdateMatrix();
+	}
+
+	for (auto& enemy : enemys_) {
+		enemy->Update();
+	}
+
+	// デスフラグが立ったら要素を削除
+	enemys_.remove_if([](std::unique_ptr<Enemy>& enemy) {
+		if (enemy->GetIsDead()) {
+			return true;
+		}
+		return false;
+		});
 }
 
 void Loader::Draw(Camera& camera)
 {
 	for (auto& object : objects_) {
 		object->Draw(camera);
+	}
+
+	for (auto& enemy : enemys_) {
+		enemy->Draw(camera);
 	}
 }
 

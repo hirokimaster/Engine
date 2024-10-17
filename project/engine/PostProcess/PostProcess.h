@@ -112,7 +112,7 @@ private:
 	D3D12_RESOURCE_BARRIER depthBarrier_{};
 	D3D12_VIEWPORT viewport{};
 	D3D12_RECT scissorRect{};
-	uint32_t index_;
+	uint32_t index_ = 0;
 	BloomParam* bloomData_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> bloom_;
 	VignetteParam* vignetteData_ = nullptr;

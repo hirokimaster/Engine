@@ -43,6 +43,7 @@ public:
 	void SetPosition(Vector3 position) { worldTransform_.translate = position; }
 	void SetRotate(Vector3 rotate) { worldTransform_.rotate = rotate; }
 	void SetScale(Vector3 scale) { worldTransform_.scale = scale; }
+	WorldTransform& GetWorldTransform() { return worldTransform_; }
 	Material SetMaterialProperty(Material materialdata) { return *materialData_ = materialdata; }
 	// directionalLightの設定
 	DirectionalLight SetLightingProperty(DirectionalLight directionalLight) { return *directionalLightData_ = directionalLight; }

@@ -10,6 +10,8 @@ protected:
 	// ステージナンバー
 	static int stageNo_;
 
+	static bool title_;
+
 public:
 	/// <summary>
 	/// 初期化

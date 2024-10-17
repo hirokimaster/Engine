@@ -15,6 +15,7 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "engine/ModelManager/ModelManager.h"
 #include <numbers>
+#include "application/GameObject/Enemy/Enemy.h"
 
 // レベルデータ
 struct LevelData {
@@ -43,23 +44,41 @@ public:
 	void Arrangement(LevelData* levelData);
 
 	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw(Camera& camera);
 
-	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
-
+	/// <summary>
+	/// カメラの更新
+	/// </summary>
 	void UpdateCamera();
 
 #pragma region getter
 
 	const Camera& GetCamera() { return camera_; }
 
+	const std::list<std::unique_ptr<Enemy>>& GetEnemys() const{ return enemys_; }
+
+#pragma endregion
+
+#pragma region setter
+
+	void SetPlayer(Player* player) { player_ = player; }
+
+	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
+
 #pragma endregion
 
 private:
 	std::map<std::string, std::unique_ptr<Model>>  models_;
 	std::vector<std::unique_ptr<Object3DPlacer>> objects_;
+	std::list<std::unique_ptr<Enemy>> enemys_;
 	uint32_t texHandle_ = 0;
 	Camera camera_{};
+	Player* player_ = nullptr;
 };

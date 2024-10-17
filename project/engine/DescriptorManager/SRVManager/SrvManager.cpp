@@ -88,7 +88,7 @@ void SrvManager::Allocate()
 	else {
 		++beforeIndex_;
 		// 512番からはstructuredBuffer用の場所なので超えたら止める
-		assert(beforeIndex_ > 511);
+		//assert(beforeIndex_ > 511);
 		index_ = beforeIndex_;
 	}
 }
@@ -102,13 +102,13 @@ void SrvManager::StructuredBufIndexAllocate()
 {
 	// 空き番号があるか確認(あったらそこから使う)
 	if (!vacantStructuredBufIndices_.empty()) {
-		structuredBufIndex_ = vacantIndices_.front(); // 先頭から取る
+		structuredBufIndex_ = vacantStructuredBufIndices_.front(); // 先頭から取る
 		vacantStructuredBufIndices_.pop(); // 使うのでコンテナから削除する
 	}
 	else {
 		++beforestructuredBufIndex_;
 		// 最大数を超えたら止める
-		assert(beforestructuredBufIndex_ > kMaxSRVCount);
+		//assert(beforestructuredBufIndex_ > kMaxSRVCount);
 		structuredBufIndex_ = beforestructuredBufIndex_;
 	}
 }

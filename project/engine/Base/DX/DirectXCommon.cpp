@@ -86,6 +86,7 @@ void DirectXCommon::PreDraw() {
 	
 	// 指定した色で画面全体をクリアする
 	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
+	//float clearColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	commandList_->ClearRenderTargetView(rtvHandles[backBufferIndex_], clearColor, 0, nullptr);
 
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeaps[] = { DescriptorManager::GetInstance()->GetSRV()};

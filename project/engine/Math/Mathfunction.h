@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Matrix4x4.h"
+#include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
 #include <cassert>
@@ -77,6 +78,9 @@ Matrix4x4 InverseTranspose(const Matrix4x4& m);
 // 転置行列
 Matrix4x4 Transpose(const Matrix4x4& m);
 
+Matrix4x4 MakeViewportMatrix(
+	float left, float top, float width, float heght, float minDepth, float maxDepth);
+
 // 正規化
 Vector3 Normalize(const Vector3& v);
 
@@ -85,6 +89,8 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 
 // ノルム
 float Length(const Vector3& v);
+
+float Length(const Vector2& v);
 
 // ベクトル減算
 Vector3 Subtract(const Vector3& v1, const Vector3& v2);
@@ -110,6 +116,11 @@ Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
 // 球面補間
 Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);
 
+// ベクトル変換
+Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
+
+Matrix4x4 MakeRotateMatrix(const Vector3& radian);
+
 /*---------------------------------------
 		   Quaternion
 -----------------------------------------*/
@@ -134,6 +145,8 @@ Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
 Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
 // 球面線形補間
 Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
+// 回転を計算
+Quaternion CalculateRotationQuaternion(const Vector3& from, const Vector3& to);
 
 // 演算子のオーバーロード
 Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b);
@@ -144,3 +157,4 @@ Vector3 operator-(const Vector3& a, const float& b);
 Vector3 operator*(const float& a, const Vector3& b);
 Vector3 operator/(const Vector3& a, const float& b);
 Vector3 operator*(const Vector3& vec, const Matrix4x4& mat);
+Vector2 operator-(const Vector2& v1, const Vector2& v2);
