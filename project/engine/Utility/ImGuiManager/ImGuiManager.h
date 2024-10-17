@@ -1,3 +1,9 @@
+/**
+* @file ImGuiManager.h
+* @brief ImGuiを使えるようにする(debug用)
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #ifdef _DEBUG
 #include <d3d12.h>

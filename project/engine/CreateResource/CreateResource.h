@@ -1,3 +1,10 @@
+/**
+* @file CreateResource.h
+* @brief バッファリソースの作成
+* @author 仁平 琉乃
+*/
+
+
 #pragma once
 #include "engine/Base/DX/DirectXCommon.h"
 #include "engine/Math/Mathfunction.h"

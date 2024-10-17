@@ -1,3 +1,9 @@
+/**
+* @file PostProcess.h
+* @brief ポストエフェクトを使う、管理するクラス
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Sprite/Sprite.h"
 #include "engine/DescriptorManager/DescriptorManager.h"

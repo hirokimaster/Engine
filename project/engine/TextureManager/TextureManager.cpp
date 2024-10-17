@@ -1,3 +1,9 @@
+/**
+* @file TextureManager.cpp
+* @brief テクスチャの読み込み、管理を行うクラス
+* @author 仁平 琉乃
+*/
+
 #include "TextureManager.h"
 
 TextureManager* TextureManager::GetInstance() {

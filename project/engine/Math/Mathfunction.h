@@ -1,3 +1,9 @@
+/**
+* @file Mathfunction.h
+* @brief 数学関数まとめ（グローバル関数）
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "Matrix4x4.h"
 #include "Vector2.h"

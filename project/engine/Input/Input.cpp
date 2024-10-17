@@ -1,3 +1,9 @@
+/**
+* @file Input.cpp
+* @brief キーボード、コントローラの入力
+* @author 仁平 琉乃
+*/
+
 #include "Input.h"
 
 Input* Input::GetInstance() {

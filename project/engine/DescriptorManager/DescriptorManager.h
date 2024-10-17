@@ -1,3 +1,9 @@
+/**
+* @file DescriptorManager.h
+* @brief ディスクリプタヒープの管理マネージャ
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Base/DX/DirectXCommon.h"
 #include <DirectXTex.h>

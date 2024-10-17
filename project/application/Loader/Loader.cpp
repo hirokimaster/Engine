@@ -1,10 +1,16 @@
+/**
+* @file Loader.cpp
+* @brief Blenderから出力したjsonファイルの読み込み。それを基にオブジェクトを配置
+* @author 仁平 琉乃
+*/
+
 #include "Loader.h"
 
 LevelData* Loader::Load(const std::string& fileName)
 {
 	// 連結してフルパスを得る
 	const std::string fullpath = "resources/LevelEditorObj/" + fileName + ".json";
-
+  
 	// ファイルストリーム
 	std::ifstream file;
 
@@ -63,7 +69,9 @@ LevelData* Loader::Load(const std::string& fileName)
 			objectData.translate.z = (float)transform["translation"][1];
 			// 回転角
 			objectData.rotate.x = (float)transform["rotation"][0];
+      
 			objectData.rotate.y = ((float)transform["rotation"][2] - std::numbers::pi_v<float>);
+
 			objectData.rotate.z = (float)transform["rotation"][1];
 			// スケーリング
 			objectData.scale.x = (float)transform["scaling"][0];
@@ -71,6 +79,7 @@ LevelData* Loader::Load(const std::string& fileName)
 			objectData.scale.z = (float)transform["scaling"][1];
 			// modelのロード
 			ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
+
 		}
 
 		// オブジェクト走査を再帰関数にまとめ、再帰関数で枝を走査する
@@ -84,12 +93,11 @@ LevelData* Loader::Load(const std::string& fileName)
 
 void Loader::Arrangement(LevelData* levelData)
 {
-	
+
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData->objects) {
 
 		// モデルを指定して3Dオブジェクトを生成
-
 		if (objectData.fileName == "enemy") {
 			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 			newEnemy->Initialize(texHandle_);

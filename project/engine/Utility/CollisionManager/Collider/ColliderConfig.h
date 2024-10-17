@@ -1,3 +1,9 @@
+/**
+* @file ColliderConfig.h
+* @brief 衝突判定の属性つける
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include <cstdint>
 

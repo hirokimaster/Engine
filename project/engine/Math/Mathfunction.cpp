@@ -1,3 +1,10 @@
+/**
+* @file Mathfunction.h
+* @brief 数学関数まとめ（グローバル関数）
+* @author 仁平 琉乃
+*/
+
+
 #include "Mathfunction.h"
 #include <cmath>
 

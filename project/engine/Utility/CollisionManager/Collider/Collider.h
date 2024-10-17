@@ -1,3 +1,9 @@
+/**
+* @file Collider.h
+* @brief 衝突判定を行いたいクラスに継承させる
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Math/Vector3.h"
 #include <stdint.h>

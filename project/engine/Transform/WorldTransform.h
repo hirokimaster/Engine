@@ -1,3 +1,9 @@
+/**
+* @file WorldTransform.h
+* @brief ワールド座標を作る
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Base/DX/DirectXCommon.h"
 #include "engine/Math/Mathfunction.h"

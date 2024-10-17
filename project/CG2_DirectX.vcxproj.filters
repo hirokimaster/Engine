@@ -286,6 +286,7 @@
     <ClCompile Include="engine\Model\SkyBox\SkyBox.cpp">
       <Filter>Engine\Model\SkyBox</Filter>
     </ClCompile>
+    <ClCompile Include="application\Loader\Loader.cpp">
     <ClCompile Include="application\GameObject\Enemy\Enemy.cpp">
       <Filter>Application\GameObject\Enemy</Filter>
     </ClCompile>
@@ -480,6 +481,7 @@
     <ClInclude Include="engine\Model\SkyBox\SkyBox.h">
       <Filter>Engine\Model\SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="application\Loader\Loader.h" />
     <ClInclude Include="application\Loader\Loader.h">
       <Filter>Application\Loader</Filter>
     </ClInclude>

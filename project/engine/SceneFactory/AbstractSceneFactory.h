@@ -1,3 +1,9 @@
+/**
+* @file AbstractSceneFactory.h
+* @brief SceneFactoryの基底クラス
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/Scene/IScene/IScene.h"
 #include <string>

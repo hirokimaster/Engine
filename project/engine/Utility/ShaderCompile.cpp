@@ -1,3 +1,9 @@
+/**
+* @file ShaderCompile.h
+* @brief シェーダーを読み込むための関数
+* @author 仁平 琉乃
+*/
+
 #include "ShaderCompile.h"
 #include "StringUtility.h"
 

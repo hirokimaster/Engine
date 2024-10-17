@@ -1,3 +1,9 @@
+/**
+* @file ParticleSystem.h
+* @brief パーティクルの初期化、生成を行うクラス(CPUParticle)
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #pragma once
 #include "engine/GraphicsPipeline/GraphicsPipeline.h"

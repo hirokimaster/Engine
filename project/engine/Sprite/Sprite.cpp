@@ -1,3 +1,9 @@
+/**
+* @file Sprite.cpp
+* @brief スプライトの初期化、生成
+* @author 仁平 琉乃
+*/
+
 #include "Sprite.h"
 #include "engine/Math/Vector4.h"
 

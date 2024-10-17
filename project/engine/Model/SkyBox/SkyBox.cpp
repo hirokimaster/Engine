@@ -1,3 +1,9 @@
+/**
+* @file SkyBox.cpp
+* @brief スカイボックスの生成
+* @author 仁平 琉乃
+*/
+
 #include "SkyBox.h"
 
 void SkyBox::Initialize()
