@@ -12,5 +12,5 @@ public:
 
 private:
 
-	Vector3 velocity_{}; // 速度ベクトル
+	//Vector3 velocity_; // 速度ベクトル
 };

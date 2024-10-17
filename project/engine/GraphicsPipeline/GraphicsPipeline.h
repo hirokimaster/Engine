@@ -111,7 +111,8 @@ private:
 	/// <param name="pso"></param>
 	static void CreatePipeline(PipelineState& pso);
 
-#pragma region シェーダ読み込み、グラフィックスパイプライン生成
+// シェーダ読み込み、グラフィックスパイプライン生成
+#pragma region 
 
 	/// <summary>
 	///  object3D
