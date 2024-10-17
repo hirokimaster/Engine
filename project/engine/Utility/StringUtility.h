@@ -1,3 +1,9 @@
+/**
+* @file StringUtility.h
+* @brief 出力にログを出す
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include <string>
 #include <Windows.h>

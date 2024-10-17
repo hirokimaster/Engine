@@ -1,3 +1,9 @@
+/**
+* @file Lighting.h
+* @brief オブジェクトへのライティングの適用
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Model/Model.h"
 #include "engine/DescriptorManager/SRVManager/SrvManager.h"

@@ -1,3 +1,9 @@
+/**
+* @file Engine.h
+* @brief フレームワークとゲームマネージャを呼び出す
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Framework/Framework.h"
 

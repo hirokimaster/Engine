@@ -1,3 +1,9 @@
+/**
+* @file Engine.cpp
+* @brief フレームワークとゲームマネージャを呼び出す
+* @author 仁平 琉乃
+*/
+
 #include "Engine.h"
 
 /// <summary>

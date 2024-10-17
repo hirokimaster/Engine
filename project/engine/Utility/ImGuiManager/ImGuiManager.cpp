@@ -1,3 +1,9 @@
+/**
+* @file ImGuiManager.cpp
+* @brief ImGuiを使えるようにする(debug用)
+* @author 仁平 琉乃
+*/
+
 #include "ImGuiManager.h"
 
 #ifdef _DEBUG

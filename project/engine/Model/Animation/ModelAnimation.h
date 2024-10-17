@@ -1,3 +1,9 @@
+/**
+* @file ModelAnimation.h
+* @brief アニメーションを含むGLTFモデルの読み込み、配置
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Model/Animation/Animation.h"
 #include "engine/Model/Model.h"

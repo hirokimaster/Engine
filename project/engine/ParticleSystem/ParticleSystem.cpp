@@ -1,3 +1,9 @@
+/**
+* @file ParticleSystem.cpp
+* @brief パーティクルの初期化、生成を行うクラス(CPUParticle)
+* @author 仁平 琉乃
+*/
+
 #include "ParticleSystem.h"
 
 ParticleSystem::ParticleSystem()

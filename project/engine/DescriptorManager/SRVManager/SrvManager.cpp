@@ -1,3 +1,9 @@
+/**
+* @file SrvManager.cpp
+* @brief シェーダーリソースビュー管理マネージャ
+* @author 仁平 琉乃
+*/
+
 #include "SrvManager.h"
 
 SrvManager* SrvManager::GetInstance()

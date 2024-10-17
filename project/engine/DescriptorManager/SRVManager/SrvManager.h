@@ -1,3 +1,9 @@
+/**
+* @file SrvManager.h
+* @brief シェーダーリソースビュー管理マネージャ
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/DescriptorManager/DescriptorManager.h"
 #include "engine/CreateResource/CreateResource.h"

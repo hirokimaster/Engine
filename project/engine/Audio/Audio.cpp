@@ -1,3 +1,9 @@
+/**
+* @file Audio.cpp
+* @brief オーディオの読み込み、再生
+* @author 仁平 琉乃
+*/
+
 #include "Audio.h"
 
 Audio* Audio::GetInstance()

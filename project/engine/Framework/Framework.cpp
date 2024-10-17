@@ -1,3 +1,9 @@
+/**
+* @file Framework.cpp
+* @brief 汎用データの初期化を行う（ゲームの固有処理は書かない）
+* @author 仁平 琉乃
+*/
+
 #include "Framework.h"
 
 void Framework::Initialize()

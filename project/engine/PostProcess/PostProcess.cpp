@@ -1,3 +1,9 @@
+/**
+* @file PostProcess.cpp
+* @brief ポストエフェクトを使う、管理するクラス
+* @author 仁平 琉乃
+*/
+
 #include "PostProcess.h"
 
 PostProcess::PostProcess()

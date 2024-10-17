@@ -1,3 +1,9 @@
+/**
+* @file CollisionManager.h
+* @brief 衝突判定を管理するクラス
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/Math/Mathfunction.h"

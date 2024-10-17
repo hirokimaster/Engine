@@ -1,3 +1,9 @@
+/**
+* @file Audio.h
+* @brief オーディオの読み込み、再生
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include <string>
 #include <cstdint>

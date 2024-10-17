@@ -1,3 +1,9 @@
+/**
+* @file WinApp.cpp
+* @brief WinDowsApplicationの初期化
+* @author 仁平 琉乃
+*/
+
 #include "WinApp.h"
 #include <string>
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"

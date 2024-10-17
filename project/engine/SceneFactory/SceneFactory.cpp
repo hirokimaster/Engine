@@ -1,3 +1,9 @@
+/**
+* @file SceneFactory.cpp
+* @brief シーンの生成を行うクラス
+* @author 仁平 琉乃
+*/
+
 #include "SceneFactory.h"
 
 std::unique_ptr<IScene> SceneFactory::CreateScene(const std::string& sceneName)

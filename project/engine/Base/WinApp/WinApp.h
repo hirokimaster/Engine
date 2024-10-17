@@ -1,3 +1,9 @@
+/**
+* @file WinApp.h
+* @brief WinDowsApplicationの初期化
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #pragma comment(lib, "winmm.lib")
 #include <Windows.h>

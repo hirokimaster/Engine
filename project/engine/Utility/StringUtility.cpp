@@ -1,3 +1,9 @@
+/**
+* @file StringUtility.cpp
+* @brief 出力にログを出す
+* @author 仁平 琉乃
+*/
+
 #include "StringUtility.h"
 
 // ConvertString

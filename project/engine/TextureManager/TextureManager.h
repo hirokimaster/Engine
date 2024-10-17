@@ -1,3 +1,9 @@
+/**
+* @file TextureManager.h
+* @brief テクスチャの読み込み、管理を行うクラス
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include <array>
 #include <d3dx12.h>

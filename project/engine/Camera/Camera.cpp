@@ -1,3 +1,10 @@
+/**
+* @file Camera.cpp
+* @brief カメラの初期化、生成
+* @author 仁平 琉乃
+*/
+
+
 #include "Camera.h"
 
 void Camera::Initialize() {

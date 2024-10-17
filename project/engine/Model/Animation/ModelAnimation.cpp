@@ -1,3 +1,9 @@
+/**
+* @file ModelAnimation.cpp
+* @brief アニメーションを含むGLTFモデルの読み込み、配置
+* @author 仁平 琉乃
+*/
+
 #include "ModelAnimation.h"
 
 void ModelAnimation::Initialize(const std::string& fileName)

@@ -1,3 +1,9 @@
+/**
+* @file Lighting.cpp
+* @brief オブジェクトへのライティングの適用
+* @author 仁平 琉乃
+*/
+
 #include "Lighting.h"
 
 void Lighting::Initialize(Light light)

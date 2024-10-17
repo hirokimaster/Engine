@@ -1,3 +1,9 @@
+/**
+* @file Input.h
+* @brief キーボード、コントローラの入力
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include"engine/Base/WinApp/WinApp.h"
 #include <cassert>

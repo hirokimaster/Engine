@@ -1,3 +1,9 @@
+/**
+* @file ModelManager.h
+* @brief モデルの読み込み、生成を行う。一度生成したら同じインスタンスを使いまわせる
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Math/Vector2.h"
 #include <fstream>

@@ -1,3 +1,9 @@
+/**
+* @file CreateResource.cpp
+* @brief バッファリソースの作成
+* @author 仁平 琉乃
+*/
+
 #include "CreateResource.h"
 
 // Resource作成

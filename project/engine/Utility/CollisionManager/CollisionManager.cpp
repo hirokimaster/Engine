@@ -1,3 +1,9 @@
+/**
+* @file CollisionManager.cpp
+* @brief 衝突判定を管理するクラス
+* @author 仁平 琉乃
+*/
+
 #include "CollisionManager.h"
 
 void CollisionManager::CheckAllCollision() {
