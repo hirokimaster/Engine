@@ -4,6 +4,10 @@
 class EnemyStateSortie : public IPhaseStateEnemy {
 public:
 
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	/// <param name="pEnemy"></param>
 	void Update(Enemy* pEnemy)override;
 
 private:

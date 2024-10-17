@@ -47,8 +47,9 @@ public:
 	/// </summary>
 	void Draw(Camera& camera);
 
-	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
-
+	/// <summary>
+	/// カメラの更新
+	/// </summary>
 	void UpdateCamera();
 
 #pragma region getter
@@ -62,6 +63,8 @@ public:
 #pragma region setter
 
 	void SetPlayer(Player* player) { player_ = player; }
+
+	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 
 #pragma endregion
 

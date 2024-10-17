@@ -4,10 +4,20 @@
 class PlayerParticle {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
 
+	/// <summary>
+	/// 更新処理
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="camera"></param>
 	void Draw(const Camera& camera);
 
 #pragma region setter

@@ -3,9 +3,15 @@
 
 class ModelResources {
 public:
-	// シングルトン
+	/// <summary>
+	/// シングルトンインスタンス取得
+	/// </summary>
+	/// <returns></returns>
 	static ModelResources* GetInstance();
-	// model読み込む場所
+	
+	/// <summary>
+	/// モデル読み込む場所
+	/// </summary>
 	void LoadModel();
 
 private:
