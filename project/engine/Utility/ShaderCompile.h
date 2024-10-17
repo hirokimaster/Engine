@@ -6,7 +6,15 @@
 class ShaderCompile {
 public: // メンバ関数
 
-	// CompileShader関数
+	/// <summary>
+	/// シェーダーをコンパイルする
+	/// </summary>
+	/// <param name="filePath"></param>
+	/// <param name="profile"></param>
+	/// <param name="dxcUtils"></param>
+	/// <param name="dxcCompiler"></param>
+	/// <param name="includeHandler"></param>
+	/// <returns></returns>
 	IDxcBlob* CompileShader(
 		// CompilerするShaderファイルへのパス
 		const std::wstring& filePath,

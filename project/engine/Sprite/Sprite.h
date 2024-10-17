@@ -13,11 +13,24 @@
 class Sprite {
 public: // メンバ関数
 
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	Sprite() = default;
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~Sprite();
 
+	/// <summary>
+	/// 静的初期化
+	/// </summary>
 	static void StaticInitialize();
 
+	/// <summary>
+	/// 静的更新処理
+	/// </summary>
 	static void StaticUpdate();
 
 	/// <summary>

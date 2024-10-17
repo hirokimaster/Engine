@@ -103,13 +103,36 @@ struct RandomParam {
 
 class CreateResource {
 public:
-	// Resource作成
+
+	/// <summary>
+	/// resource作成
+	/// </summary>
+	/// <param name="sizeInBytes"></param>
+	/// <returns></returns>
 	static Microsoft::WRL::ComPtr<ID3D12Resource> CreateBufferResource(size_t sizeInBytes);
 
+	/// <summary>
+	/// 中間リソース作成
+	/// </summary>
+	/// <param name="sizeInBytes"></param>
+	/// <returns></returns>
 	static ID3D12Resource* CreateIntermediateResource(size_t sizeInBytes);
-	// IBV
+
+	/// <summary>
+	/// indexBufferView作成
+	/// </summary>
+	/// <param name="resource"></param>
+	/// <param name="sizeInBytes"></param>
+	/// <returns></returns>
 	static D3D12_INDEX_BUFFER_VIEW CreateIndexBufferView(Microsoft::WRL::ComPtr<ID3D12Resource> resource, size_t sizeInBytes);
-	// VBV
+	
+	/// <summary>
+	/// vertexBufferView作成
+	/// </summary>
+	/// <param name="resource"></param>
+	/// <param name="sizeInBytes"></param>
+	/// <param name="size"></param>
+	/// <returns></returns>
 	static D3D12_VERTEX_BUFFER_VIEW CreateVertexBufferView(Microsoft::WRL::ComPtr<ID3D12Resource> resource, size_t sizeInBytes, int size);
 
 };

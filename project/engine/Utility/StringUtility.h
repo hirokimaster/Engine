@@ -2,10 +2,28 @@
 #include <string>
 #include <Windows.h>
 
-// string->wstring
+/// <summary>
+/// stringからwstring
+/// </summary>
+/// <param name="str"></param>
+/// <returns></returns>
 std::wstring ConvertString(const std::string& str);
-// wstring->string
+
+/// <summary>
+/// wstringからstring
+/// </summary>
+/// <param name="str"></param>
+/// <returns></returns>
 std::string  ConvertString(const std::wstring& str);
 
+/// <summary>
+/// log出す
+/// </summary>
+/// <param name="message"></param>
 void Log(const std::string& message);
+
+/// <summary>
+/// log出す
+/// </summary>
+/// <param name="message"></param>
 void Log(const std::wstring& message);

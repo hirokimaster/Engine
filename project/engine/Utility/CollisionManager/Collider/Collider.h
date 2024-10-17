@@ -7,17 +7,27 @@
 class Collider {
 public:
 
-	float GetRadious() { return radious_; }
-	void SetRadious(float radious) { radious_ = radious; }
-
-	virtual Vector3 GetWorldPosition() const = 0;
+	/// <summary>
+	/// 当たった時
+	/// </summary>
 	virtual void OnCollision() = 0;
 
-	uint32_t GetCollosionAttribute() const { return collisionAttribute_; }
-	void SetCollosionAttribute(uint32_t collisionAttribute) { collisionAttribute_ = collisionAttribute; }
+#pragma region getter
 
+	float GetRadious() { return radious_; }
+  virtual Vector3 GetWorldPosition() const = 0;
+	uint32_t GetCollosionAttribute() const { return collisionAttribute_; }
 	uint32_t GetCollisionMask() const { return CollisionMask_; }
+
+#pragma endregion
+
+#pragma region setter
+
+	void SetRadious(float radious) { radious_ = radious; }
+	void SetCollosionAttribute(uint32_t collisionAttribute) { collisionAttribute_ = collisionAttribute; }
 	void SetCollisionMask(uint32_t collisionMask) { CollisionMask_ = collisionMask; }
+
+#pragma endregion
 
 private:
 

@@ -94,8 +94,18 @@ public:
 	/// <returns></returns>
 	std::list<Particle> Emission(const Emitter& emitter, std::mt19937& randomEngine);
 
+	/// <summary>
+	/// 範囲
+	/// </summary>
+	/// <param name="aabb"></param>
+	/// <param name="point"></param>
+	/// <returns></returns>
 	bool IsCollision(const AABB& aabb, const Vector3& point);
 
+	/// <summary>
+	/// ランダム
+	/// </summary>
+	/// <returns></returns>
 	std::mt19937 random();
 
 private:

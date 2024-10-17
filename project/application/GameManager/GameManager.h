@@ -30,7 +30,7 @@ public:
 	/// <summary>
 	/// ポストエフェクト描画
 	/// </summary>
-	void PostProcessDraw(); 
+	void PostProcessDraw();
 
 	/// <summary>
 	/// 終了処理

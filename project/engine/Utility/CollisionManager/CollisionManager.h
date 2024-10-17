@@ -4,14 +4,42 @@
 
 class CollisionManager {
 public:
+	/// <summary>
+	/// 当たり判定チェック
+	/// </summary>
 	void CheckAllCollision();
 
+	/// <summary>
+	/// コライダーリストに追加
+	/// </summary>
+	/// <param name="collider"></param>
 	void ColliderPush(Collider* collider) { colliders_.push_back(collider); }
+
+	/// <summary>
+	/// コライダーリストをクリア
+	/// </summary>
 	void ColliderClear() { colliders_.clear(); }
 
 private:
+	/// <summary>
+	/// 衝突フィルタリング
+	/// </summary>
+	/// <param name="cA"></param>
+	/// <param name="cB"></param>
 	void CheckCollisionPair(Collider* cA, Collider* cB);
+
+	/// <summary>
+	/// 球同士の当たり判定
+	/// </summary>
+	/// <param name="v1"></param>
+	/// <param name="v1Radious"></param>
+	/// <param name="v2"></param>
+	/// <param name="v2Radious"></param>
+	/// <returns></returns>
 	bool CheckBallCollision(Vector3 v1, float v1Radious, Vector3 v2, float v2Radious);
+
+private:
+
 
 	std::list<Collider*> colliders_;
 };
