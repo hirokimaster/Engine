@@ -75,6 +75,8 @@ public:
 
 	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
 
+	void SetPosition(Vector3 position) { position_ = position; }
+
 #pragma endregion
 
 	/// <summary>
@@ -108,7 +110,7 @@ public:
 
 private:
 	Resource resource_ = {};
-	uint32_t kNumMaxInstance_ = 100;
+	uint32_t kNumMaxInstance_ = 10000;
 	descSize size_ = {};
 	ModelData modelData_;
 	Model* model_ = nullptr;
@@ -116,4 +118,5 @@ private:
 	uint32_t texHandle_ = 0;
 	ParticleForGPU* instancingData_ = nullptr;
 	uint32_t index_ = 0;
+	static Vector3 position_;
 };
