@@ -25,7 +25,8 @@ public:
 	/// <param name="isAnimation"></param>
 	void Draw(Camera& camera, bool isAnimation);
 
-	// setter
+#pragma region setter
+
 	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
 	void SetAnimModel(const std::string& fileName) { modelAnimation_ = ModelManager::Create(fileName); }
 	void SetAnimationTime(float animationTime) { modelAnimation_->SetAnimationTime(animationTime); }
@@ -33,13 +34,14 @@ public:
 	void SetColor(const Vector4& color) { materialData_->color = color; }
 	void SetLight(Lighting* lighting) { lighting_ = lighting; }
 	void SetWorldTransform(WorldTransform worldTransform) { worldTransform_ = worldTransform; }
-	void SetPosition(Vector3 position) { worldTransform_.translate = position;}
+	void SetPosition(Vector3 position) { worldTransform_.translate = position; }
 	void SetRotate(Vector3 rotate) { worldTransform_.rotate = rotate; }
 	void SetScale(Vector3 scale) { worldTransform_.scale = scale; }
 	Material SetMaterialProperty(Material materialdata) { return *materialData_ = materialdata; }
 	// directionalLightの設定
 	DirectionalLight SetLightingProperty(DirectionalLight directionalLight) { return *directionalLightData_ = directionalLight; }
 
+#pragma endregion
 
 private:
 	Model* model_ = nullptr;

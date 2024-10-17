@@ -66,7 +66,10 @@ enum class BlendMode {
 class GraphicsPipeline {
 public:
 
-	// シングルトンインスタンスの取得
+	/// <summary>
+	/// シングルトンインスタンスの取得
+	/// </summary>
+	/// <returns></returns>
 	static GraphicsPipeline* GetInstance();
 
 	/// <summary>
@@ -102,47 +105,162 @@ private:
 	/// <param name="pso"></param>
 	static void CreatePipeline(PipelineState& pso);
 
+#pragma region シェーダ読み込み、グラフィックスパイプライン生成
+
 	/// <summary>
-	///  パイプラインの種類
+	///  object3D
 	/// </summary>
 	/// <param name="device"></param>
 	/// <param name="shaderName"></param>
 	/// <returns></returns>
 	static GraphicsPipelineData CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// sprite2D
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateSprite2D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// particle
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateParticle(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// pointlight
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreatePointLight(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// spotlight
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateSpotLight(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// bloom
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateBloom(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// grayscale
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateGrayscale(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// vignette
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateVignette(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// gaussianBlur
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateGaussianBlur(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// skinningObject3D
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateSkinningObject3D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// skyBox
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateSkyBox(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// enviroment
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateEnvironment(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// line
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateLine(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// luminanceOutline
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateLuminanceOutline(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// depthOutline
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateDepthOutline(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// radialBlur
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateRadialBlur(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// dissolve
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateDissolve(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
+	/// <summary>
+	/// random
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
 	static GraphicsPipelineData CreateRandom(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+#pragma endregion
+
+private:
+
+	GraphicsPipeline() = default;
+	~GraphicsPipeline() = default;
+	GraphicsPipeline(const GraphicsPipeline&) = default;
+	const GraphicsPipeline& operator=(const GraphicsPipeline&) = delete;
+
+private: // メンバ変数
 
 	PipelineState pso = {};
 

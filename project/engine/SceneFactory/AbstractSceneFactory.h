@@ -4,8 +4,15 @@
 
 class AbstractSceneFactory {
 public:
-	// 仮想デストラクタ
+	/// <summary>
+	/// 仮想デストラクタ
+	/// </summary>
 	virtual ~AbstractSceneFactory() = default;
-	// シーン生成
+	
+	/// <summary>
+	/// シーン生成
+	/// </summary>
+	/// <param name="sceneName"></param>
+	/// <returns></returns>
 	virtual std::unique_ptr<IScene> CreateScene(const std::string& sceneName) = 0;
 };

@@ -31,13 +31,18 @@ public: // メンバ関数
 	/// </summary>
 	void TerminateGameWindow();
 
+#pragma region getter
+
 	// ウィンドウハンドルの取得
 	HWND GetHwnd() const { return hwnd_; }
 
 	// ウィンドウクラスの取得
 	WNDCLASS GetWc() const { return wc; }
 
-private: // メンバ関数
+#pragma endregion
+
+
+private:
 	WinApp() = default;
 	~WinApp() = default;
 	WinApp(const WinApp&) = delete;

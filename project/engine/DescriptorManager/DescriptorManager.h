@@ -18,9 +18,18 @@ public:
 	/// <returns></returns>
 	static DescriptorManager* GetInstance();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Initialize();
 
-	// descriptorheap生成
+	/// <summary>
+	/// discriptorHeap作成
+	/// </summary>
+	/// <param name="type"></param>
+	/// <param name="numDescriptors"></param>
+	/// <param name="shaderVisible"></param>
+	/// <returns></returns>
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> CreateDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE type, UINT numDescriptors, bool shaderVisible);
 
 #pragma region Getter & Setter
