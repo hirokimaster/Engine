@@ -12,13 +12,39 @@
 
 class Framework {
 public:
+	/// <summary>
+	///	 デストラクタ
+	/// </summary>
 	virtual ~Framework() = default;
+
+	/// <summary>
+	///  初期化
+	/// </summary>
 	virtual void Initialize();
+
+	/// <summary>
+	///  終了処理
+	/// </summary>
 	virtual void Finalize();
+
+	/// <summary>
+	///  更新処理
+	/// </summary>
 	virtual void Update();
+
+	/// <summary>
+	///  描画
+	/// </summary>
 	virtual void Draw() = 0;
+
+	/// <summary>
+	///  ポストエフェクト描画
+	/// </summary>
 	virtual void PostProcessDraw();
 
+	/// <summary>
+	///  ループ
+	/// </summary>
 	void Run();
 
 private:

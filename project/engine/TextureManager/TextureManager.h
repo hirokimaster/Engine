@@ -24,11 +24,15 @@ public:
 	/// </summary>
 	static uint32_t Load(const std::string& fileName);
 
+#pragma region getter
 
-	// get
 	const DirectX::TexMetadata& GetMetaData(uint32_t textureIndex);
 
-	// 中間リソースの破棄
+#pragma endregion
+
+	/// <summary>
+	/// 中間リソースの破棄
+	/// </summary>
 	static void Release();
 
 private:
@@ -37,12 +41,35 @@ private:
 	TextureManager(const TextureManager&) = delete;
 	TextureManager& operator=(const TextureManager&) = delete;
 
+private: // クラス内で使う関数
+
+	/// <summary>
+	/// texture読み込み
+	/// </summary>
+	/// <param name="filePath"></param>
+	/// <returns></returns>
 	static DirectX::ScratchImage LoadTexture(const std::string& filePath);
 
+	/// <summary>
+	/// texture読み込み
+	/// </summary>
+	/// <param name="filePath"></param>
+	/// <param name="index"></param>
 	static void  LoadTexture(const std::string& filePath, uint32_t index);
 
+	/// <summary>
+	/// textureResource作成
+	/// </summary>
+	/// <param name="metadata"></param>
+	/// <returns></returns>
 	static ID3D12Resource* CreateTextureResource(const DirectX::TexMetadata& metadata);
 
+	/// <summary>
+	/// textureDataのアップロード
+	/// </summary>
+	/// <param name="texture"></param>
+	/// <param name="mipImages"></param>
+	/// <returns></returns>
 	[[nodiscard]] static ID3D12Resource* UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages);
 
 

@@ -20,22 +20,11 @@ class PostProcess;
 class DirectXCommon {
 public : // メンバ関数
 
-	// シングルトンインスタンスの取得
+	/// <summary>
+	/// シングルトンインスタンスの取得
+	/// </summary>
+	/// <returns></returns>
 	static DirectXCommon* GetInstance();
-
-	// デバイスの取得
-	ID3D12Device* GetDevice(){ return device_.Get(); }
-
-	// 描画コマンドリストの取得
-	static ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); }
-
-	DXGI_SWAP_CHAIN_DESC1 GetBufferCount() { return swapChainDesc; }
-
-	// depthBufferの取得
-	ID3D12Resource* GetDepthBuffer() { return depthBuffer_.Get(); }
-
-	// postProcessの設定
-	void SetPostProcess(PostProcess* postProcess) { postProcess_ = postProcess; }
 
 	/// <summary>
 	/// 初期化
@@ -77,13 +66,38 @@ public : // メンバ関数
 	/// 深度バッファ生成
 	void CreateDepthBuffer();
 
+#pragma region getter
+
+	// デバイスの取得
+	ID3D12Device* GetDevice() { return device_.Get(); }
+
+	// 描画コマンドリストの取得
+	static ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); }
+
+	// bufferCountを取得
+	DXGI_SWAP_CHAIN_DESC1 GetBufferCount() { return swapChainDesc; }
+
+	// depthBufferの取得
+	ID3D12Resource* GetDepthBuffer() { return depthBuffer_.Get(); }
+
+#pragma endregion
+
+#pragma region setter
+
+	// postProcessの設定
+	void SetPostProcess(PostProcess* postProcess) { postProcess_ = postProcess; }
+
+#pragma endregion
 
 
-private: // メンバ関数
+
+private:
 	DirectXCommon() = default;
 	~DirectXCommon() = default;
 	DirectXCommon(const DirectXCommon&) = delete;
 	const DirectXCommon& operator=(const DirectXCommon&) = delete;
+
+private:
 
 	// FPS固定初期化
 	void InitializeFixFPS();
