@@ -4,6 +4,8 @@
 class EnemyStateSortie : public IPhaseStateEnemy {
 public:
 
+	~EnemyStateSortie();
+
 	/// <summary>
 	/// 更新処理
 	/// </summary>
@@ -11,6 +13,4 @@ public:
 	void Update(Enemy* pEnemy)override;
 
 private:
-
-	//Vector3 velocity_; // 速度ベクトル
 };

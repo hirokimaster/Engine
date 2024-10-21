@@ -25,7 +25,7 @@ void Enemy::Initialize(uint32_t texHandle)
 
 void Enemy::Update()
 {
-	//phaseState_->Update(this); // 状態ごとの更新処理
+	phaseState_->Update(this); // 状態ごとの更新処理
 	//BulletUpdate(); // 弾の更新処理
 	worldTransform_.UpdateMatrix();
 
@@ -186,6 +186,11 @@ void Enemy::FireMissile(uint32_t bulletCount)
 		bullet->SetPosition(GetWorldPosition());
 		bullets_.push_back(std::move(bullet));
 	}
+}
+
+void Enemy::ChangeState(std::unique_ptr<IPhaseStateEnemy> newState)
+{
+	phaseState_ = std::move(newState);
 }
 
 void Enemy::Move()

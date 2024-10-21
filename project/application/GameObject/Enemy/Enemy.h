@@ -6,11 +6,6 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Enemy/PhaseState/EnemyStateSortie.h"
 
-// 行動フェーズ
-enum class Phase {
-	Sortie
-};
-
 class Player;
 
 class Enemy : public Collider {
@@ -77,6 +72,12 @@ private:
 	/// </summary>
 	/// <param name="bulletCount"></param>
 	void FireMissile(uint32_t bulletCount);
+
+	/// <summary>
+	/// 状態を変える
+	/// </summary>
+	/// <param name="newState"></param>
+	void ChangeState(std::unique_ptr<IPhaseStateEnemy> newState);
 
 public:
 
