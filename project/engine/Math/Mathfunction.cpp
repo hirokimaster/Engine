@@ -546,7 +546,16 @@ Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t) {
 	return p;
 };
 
-
+// 回転値をラジアンで正規化する関数
+float NormalizeRotation(float rotation) {
+	while (rotation > std::numbers::pi_v<float>) {
+		rotation -= 2.0f * std::numbers::pi_v<float>;
+	}
+	while (rotation < -std::numbers::pi_v<float>) {
+		rotation += 2.0f * std::numbers::pi_v<float>;
+	}
+	return rotation;
+}
 
 
 Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t) {

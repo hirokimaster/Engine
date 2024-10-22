@@ -10,6 +10,7 @@
 #include "Vector3.h"
 #include "Vector4.h"
 #include <cassert>
+#include <numbers>
 
 struct AABB {
 	Vector3 min; // 最小点
@@ -112,6 +113,8 @@ float Dot(const Vector3& v1, const Vector3& v2);
 
 // 線形補間
 Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
+
+float NormalizeRotation(float rotation);
 
 // 球面補間
 Vector3 SLerp(const Vector3& v1, const Vector3& v2, float t);

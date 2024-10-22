@@ -16,6 +16,7 @@
 #include "application/Loader/Loader.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Enemy/BossEnemy/BossEnemy.h"
+#include "application/GameObject/Skydome/Skydome.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -66,6 +67,11 @@ private:
 	/// </summary>
 	void SceneTransition();
 
+	/// <summary>
+	/// ゲーム開始
+	/// </summary>
+	void StartGame();
+
 private:
 	Camera camera_{};
 	// player
@@ -102,4 +108,18 @@ private:
 	std::unique_ptr<Sprite> spriteWhite_;
 	uint32_t texHandleWhite_ = 0;
 	std::unique_ptr<PostProcess> postProcess_;
+	// 天球
+	std::unique_ptr<Skydome> skydome_ = nullptr;
+
+	// カメラワーク用
+	// 初期のカメラのオフセットと回転
+	Vector3 offsetStart_ = { -12.0f, 0.5f, 13.0f };
+	Vector3 cameraRotateStart_ = { 0, std::numbers::pi_v<float> *3.0f / 4.0f, 0 };
+	// 目的のカメラのオフセットと回転
+	Vector3 offsetEnd_ = { 0, 5.0f, -40.0f };
+	Vector3 cameraRotateEnd_ = { 0, 0, 0 };
+	float t = 0.0f;
+	std::unique_ptr<Sprite> spriteEngage_ = nullptr;
+	uint32_t texHandleEngage_ = 0;
+	Vector4 engageColor_ = { 1.0f,1.0f,1.0f,1.0f };
 };

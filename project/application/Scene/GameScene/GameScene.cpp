@@ -43,10 +43,13 @@ void GameScene::Initialize()
 	--------------------------*/
 	followCamera_ = std::make_unique<FollowCamera>();
 	followCamera_->Initialize();
-	Vector3 offset = { 0,2.0f,-40.0f };
-	followCamera_->SetOffset(offset);
+	followCamera_->SetOffset(offsetStart_);
+	followCamera_->SetRotate(cameraRotateStart_);
 	followCamera_->SetTarget(&player_->GetWorldTransform());
 	followCamera_->SetLockOn(lockOn_.get());
+	t = 0.0f;
+	spriteEngage_.reset(Sprite::Create(texHandleEngage_, { 650.0f,250.0f }));
+	spriteEngage_->SetAnchorPoint({ 0.5f,0.5f });
 
 	// skyBox
 	/*skyBox_ = std::make_unique<SkyBox>();
@@ -64,6 +67,11 @@ void GameScene::Initialize()
 	loader_->SetTexHandle(texhandle);
 	loader_->Arrangement(levelData_);
 
+
+	// 天球
+	skydome_ = std::make_unique<Skydome>();
+	skydome_->Initialize();
+
 	// bossEnemy
 	/*bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->Initialize(texHandlePlayer_);
@@ -80,6 +88,9 @@ void GameScene::Update()
 	// シーン遷移
 	SceneTransition();
 
+	// ゲームスタート演出
+	StartGame();
+	
 	// player
 	player_->Update();
 	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition());
@@ -104,9 +115,12 @@ void GameScene::Update()
 	Collision();
 
 	// 仮のクリア判定
-	if (player_->GetWorldPosition().z >= 1050.0f) {
+	if (player_->GetWorldPosition().z >= 300.0f) {
 		isTransitionClear_ = true;
 	}
+
+	// 天球
+	skydome_->Update();
 
 #ifdef _DEBUG
 	// カメラの座標
@@ -125,7 +139,11 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	spriteWhite_->Draw();
+	
+	if (isTransition_) {
+		spriteWhite_->Draw();
+
+	}
 
 	postProcess_->Draw();
 }
@@ -133,6 +151,8 @@ void GameScene::Draw()
 void GameScene::PostProcessDraw()
 {
 	postProcess_->PreDraw();
+
+	skydome_->Draw(camera_);
 
 	// skyBox
 	//skyBox_->Draw(worldTransformSkyBox_, camera_);
@@ -153,6 +173,10 @@ void GameScene::PostProcessDraw()
 
 	spriteAttack_->Draw();
 
+	if (engageColor_.w > 0.0f && t >= 0.7f) {
+		spriteEngage_->Draw();
+
+	}
 	postProcess_->PostDraw();
 
 }
@@ -195,6 +219,7 @@ void GameScene::LoadTextureFile()
 	texHandleLockOn_ = TextureManager::Load("resources/UI/LockOn.png");
 	texHandleUnLock_ = TextureManager::Load("resources/UI/unLock.png");
 	texHandleAttack_ = TextureManager::Load("resources/UI/attack.png");
+	texHandleEngage_ = TextureManager::Load("resources/UI/engage.png");
 }
 
 void GameScene::SceneTransition()
@@ -220,3 +245,30 @@ void GameScene::SceneTransition()
 		}
 	}
 }
+
+void GameScene::StartGame()
+{
+	if (!isTransition_ && t <= 1.0f) {
+		Vector3 currentOffset = Lerp(offsetStart_, offsetEnd_, t);
+
+		// 回転の補間
+		Vector3 currentCameraRotate = Lerp(cameraRotateStart_, cameraRotateEnd_, t);
+		currentCameraRotate.y = NormalizeRotation(currentCameraRotate.y);  // 必要なら正規化
+
+		followCamera_->SetOffset(currentOffset);
+		followCamera_->SetRotate(currentCameraRotate);
+
+		t += 0.02f;
+	}
+
+	if (t >= 1.0f) {
+		t = 1.0f;
+		spriteEngage_->SetColor(engageColor_);
+		engageColor_.w -= 0.03f;
+	}
+
+	if (engageColor_.w <= 0.0f) {
+		engageColor_.w = 0.0f;
+	}
+}
+

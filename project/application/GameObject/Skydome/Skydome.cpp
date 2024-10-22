@@ -7,7 +7,7 @@ void Skydome::Initialize()
 {
 
 	worldTransform_.Initialize();
-	worldTransform_.scale = { 300.0f,300.0f,300.0f };
+	worldTransform_.scale = { 1000.0f,1000.0f,1000.0f };
 	texHandle_ = TextureManager::GetInstance()->Load("resources/skydome/sky2.png");
 
 	object_ = std::make_unique<Object3DPlacer>();
