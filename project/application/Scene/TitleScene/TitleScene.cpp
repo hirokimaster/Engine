@@ -126,7 +126,7 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	//spriteWhite_->Draw();
+	spriteWhite_->Draw();
 
 	postProcess_->Draw();
 
