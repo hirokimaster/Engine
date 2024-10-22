@@ -126,9 +126,15 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	spriteWhite_->Draw();
+	//spriteWhite_->Draw();
 
 	postProcess_->Draw();
+
+	spriteTitle_->Draw();
+
+	if (startATimer_ % 40 >= 20) {
+		spritePushA_->Draw();
+	}
 
 }
 
@@ -140,24 +146,19 @@ void TitleScene::PostProcessDraw()
 	
 	particle_->Draw(camera_);
 	objectPlayer_->Draw(camera_);
-
-	spriteTitle_->Draw();
-
-	if (startATimer_ % 40 >= 20) {
-		spritePushA_->Draw();
-	}
-	
 	
 	postProcess_->PostDraw();
 }
 
 void TitleScene::SceneTransition()
 {
-	// Aボタン押したらシーン遷移
+	// Aボタンが押されたらシーン遷移処理を開始する
 	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
-		isTransition_ = true;
-		isDissolve_ = false;
-		isDissolve2_ = false;
+		if (!isTransition_) {  // シーン遷移がまだ始まっていない場合のみ
+			isTransition_ = true;
+			isDissolve_ = false;
+			isDissolve2_ = false;
+		}
 	}
 
 	if (isTransition_) {

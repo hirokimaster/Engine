@@ -91,6 +91,7 @@ Vector3 Transform(const Vector3& vector, const Matrix4x4& matrix);
 // ノルム
 float Length(const Vector3& v);
 
+// ノルム(二次元)
 float Length(const Vector2& v);
 
 // ベクトル減算
@@ -114,6 +115,7 @@ float Dot(const Vector3& v1, const Vector3& v2);
 // 線形補間
 Vector3 Lerp(const Vector3& v1, const Vector3& v2, float t);
 
+// 1軸の正規化
 float NormalizeRotation(float rotation);
 
 // 球面補間

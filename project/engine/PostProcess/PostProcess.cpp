@@ -69,12 +69,12 @@ void PostProcess::CreateSRV()
 	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
 	heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
 	D3D12_CLEAR_VALUE clearValue{};
-	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
+	const Vector4 clearColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	clearValue.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	clearValue.Color[0] = clearColor[0];
-	clearValue.Color[1] = clearColor[1];
-	clearValue.Color[2] = clearColor[2];
-	clearValue.Color[3] = clearColor[3];
+	clearValue.Color[0] = clearColor.x;
+	clearValue.Color[1] = clearColor.y;
+	clearValue.Color[2] = clearColor.z;
+	clearValue.Color[3] = clearColor.w;
 	// Resourceの作成
 	[[maybe_unused]] HRESULT hr = device->CreateCommittedResource(
 		&heapProperties, // Heapの設定
@@ -238,7 +238,7 @@ void PostProcess::PreDraw()
 	// レンダーターゲットをセット
 	DirectXCommon::GetCommandList()->OMSetRenderTargets(1, &rtvHandles_, false, &dsvHandle);
 	// 全画面クリア
-	float clearColor[] = { 0.1f, 0.25f, 0.5f, 1.0f };
+	float clearColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	DirectXCommon::GetCommandList()->ClearRenderTargetView(rtvHandles_, clearColor, 0, nullptr);
 	// 深度バッファのクリア
 	DirectXCommon::GetCommandList()->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
