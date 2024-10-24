@@ -134,7 +134,7 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {
 
-	//spriteWhite_->Draw();
+	spriteWhite_->Draw();
 
 	postProcess_->Draw();
 
@@ -161,15 +161,18 @@ void TitleScene::PostProcessDraw()
 
 void TitleScene::SceneTransition()
 {
-	// Aボタンが押されたらシーン遷移処理を開始する
-	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
-		if (!isTransition_) {  // シーン遷移がまだ始まっていない場合のみ
-			isTransition_ = true;
-			isDissolve_ = false;
-			isDissolve2_ = false;
+
+	if (sceneTimer_ >= 60) {
+		// Aボタンが押されたらシーン遷移処理を開始する
+		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
+			if (!isTransition_) {  // シーン遷移がまだ始まっていない場合のみ
+				isTransition_ = true;
+				isDissolve_ = false;
+				isDissolve2_ = false;
+			}
 		}
 	}
-
+	
 	if (isTransition_) {
 		postProcess_->SetDissolveParam(param_);
 		param_.threshold = 0.0f;
