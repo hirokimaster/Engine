@@ -50,6 +50,7 @@ void GraphicsPipeline::SetBlendMode(D3D12_RENDER_TARGET_BLEND_DESC& blendDesc, B
 	switch (blendMode) {
 	case BlendMode::None:
 		blendDesc.BlendEnable = FALSE;
+		break;
 
 	case BlendMode::Normal:
 		blendDesc.BlendEnable = TRUE;
