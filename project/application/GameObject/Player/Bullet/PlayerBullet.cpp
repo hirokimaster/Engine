@@ -1,3 +1,9 @@
+/**
+* @file PlayerBullet.cpp
+* @brief プレイヤー（自機）の弾
+* @author 仁平 琉乃
+*/
+
 #include "PlayerBullet.h"
 
 void PlayerBullet::Initialize(uint32_t texHandle)

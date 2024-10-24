@@ -1,3 +1,9 @@
+/**
+* @file IScene.h
+* @brief シーンの基底クラス
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include <memory>
 

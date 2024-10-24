@@ -1,3 +1,9 @@
+/**
+* @file EnemyBullet.h
+* @brief 敵の弾
+* @author 仁平 琉乃
+*/
+
 #include "EnemyBullet.h"
 #include "application/GameObject/Player/Player.h"
 

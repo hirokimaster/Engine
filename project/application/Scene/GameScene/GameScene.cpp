@@ -1,3 +1,8 @@
+/**
+* @file GameScene.cpp
+* @brief ゲームシーン
+* @author 仁平 琉乃
+*/
 
 #include "GameScene.h"
 #include "engine/ModelManager/ModelManager.h"

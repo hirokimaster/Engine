@@ -1,3 +1,9 @@
+/**
+* @file ModelResources.h
+* @brief モデルの読み込みをまとめる
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/ModelManager/ModelManager.h"
 

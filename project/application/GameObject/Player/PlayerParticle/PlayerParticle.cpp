@@ -1,3 +1,9 @@
+/**
+* @file PlayerParticle.cpp
+* @brief プレイヤー（自機）のパーティクル
+* @author 仁平 琉乃
+*/
+
 #include "PlayerParticle.h"
 
 void PlayerParticle::Initialize()

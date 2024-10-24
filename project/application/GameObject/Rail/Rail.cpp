@@ -1,3 +1,9 @@
+/**
+* @file Rail.cpp
+* @brief レールを生成
+* @author 仁平 琉乃
+*/
+
 #include "Rail.h"
 
 void Rail::Initialize()

@@ -1,3 +1,9 @@
+/**
+* @file EnemyBullet.h
+* @brief 敵の弾
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"

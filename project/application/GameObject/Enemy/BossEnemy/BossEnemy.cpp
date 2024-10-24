@@ -1,3 +1,9 @@
+/**
+* @file BossEnemy.cpp
+* @brief ボス敵の生成、挙動
+* @author 仁平 琉乃
+*/
+
 #include "BossEnemy.h"
 
 void BossEnemy::Initialize(uint32_t texHandle)

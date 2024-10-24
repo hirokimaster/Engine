@@ -1,3 +1,9 @@
+/**
+* @file LockOn.cpp
+* @brief プレイヤーのロックオン機能、レティクル
+* @author 仁平 琉乃
+*/
+
 #include "LockOn.h"
 
 void LockOn::Initialize(Vector3 playerPosition)

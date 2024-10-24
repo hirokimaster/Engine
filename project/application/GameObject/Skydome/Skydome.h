@@ -1,3 +1,9 @@
+/**
+* @file Skydome.h
+* @brief 天球生成
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include <memory>
 #include "engine/Transform/WorldTransform.h"

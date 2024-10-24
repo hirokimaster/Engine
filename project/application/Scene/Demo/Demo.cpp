@@ -1,3 +1,9 @@
+/**
+* @file Demo.cpp
+* @brief デモシーン
+* @author 仁平 琉乃
+*/
+
 #include "Demo.h"
 #include "engine/ModelManager/ModelManager.h"
 

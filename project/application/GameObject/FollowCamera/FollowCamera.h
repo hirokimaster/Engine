@@ -1,3 +1,9 @@
+/**
+* @file FollowCamera.h
+* @brief 追従カメラ
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Transform/WorldTransform.h"
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"

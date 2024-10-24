@@ -1,3 +1,9 @@
+/**
+* @file PlayerParticle.h
+* @brief プレイヤー（自機）のパーティクル
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/ParticleSystem/ParticleSystem.h"
 

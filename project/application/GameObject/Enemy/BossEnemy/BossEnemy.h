@@ -1,3 +1,9 @@
+/**
+* @file BossEnemy.h
+* @brief ボス敵の生成、挙動
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/TextureManager/TextureManager.h"

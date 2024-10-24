@@ -1,3 +1,9 @@
+/**
+* @file TitleScene.cpp
+* @brief タイトルシーン
+* @author 仁平 琉乃
+*/
+
 #include "TitleScene.h"
 
 TitleScene::TitleScene()
@@ -12,6 +18,7 @@ void TitleScene::Initialize()
 {
 
 	postProcess_ = std::make_unique<PostProcess>();
+	//GameManager::GetInstance()->SetPostProcess(postProcess_.get());
 	postProcess_->Initialize();
 	postProcess_->SetEffect(PostEffectType::Dissolve);
 
@@ -126,15 +133,10 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	spriteWhite_->Draw();
+
+	//spriteWhite_->Draw();
 
 	postProcess_->Draw();
-
-	spriteTitle_->Draw();
-
-	if (startATimer_ % 40 >= 20) {
-		spritePushA_->Draw();
-	}
 
 }
 
@@ -146,8 +148,15 @@ void TitleScene::PostProcessDraw()
 	
 	particle_->Draw(camera_);
 	objectPlayer_->Draw(camera_);
+
+	spriteTitle_->Draw();
+
+	if (startATimer_ % 40 >= 20) {
+		spritePushA_->Draw();
+	}
 	
 	postProcess_->PostDraw();
+
 }
 
 void TitleScene::SceneTransition()

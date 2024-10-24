@@ -1,3 +1,9 @@
+/**
+* @file LockOn.h
+* @brief プレイヤーのロックオン機能、レティクル
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/GameObject/Enemy/Enemy.h"
 #include "engine/Sprite/Sprite.h"

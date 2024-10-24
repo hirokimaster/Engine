@@ -1,3 +1,9 @@
+/**
+* @file Player.cpp
+* @brief プレイヤー（自機）の生成、挙動
+* @author 仁平 琉乃
+*/
+
 #include "Player.h"
 #include "application/GameObject/LockOn/LockOn.h"
 

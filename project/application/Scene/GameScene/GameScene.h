@@ -1,3 +1,9 @@
+/**
+* @file GameScene.h
+* @brief ゲームシーン
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/Scene/IScene/IScene.h"
 #include "engine/Sprite/Sprite.h"

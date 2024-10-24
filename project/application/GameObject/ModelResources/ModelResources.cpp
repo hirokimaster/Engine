@@ -1,3 +1,9 @@
+/**
+* @file ModelResources.cpp
+* @brief モデルの読み込みをまとめる
+* @author 仁平 琉乃
+*/
+
 #include "ModelResources.h"
 
 ModelResources* ModelResources::GetInstance()

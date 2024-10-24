@@ -1,3 +1,9 @@
+/**
+* @file Enemy.cpp
+* @brief 敵の生成、挙動
+* @author 仁平 琉乃
+*/
+
 #include "Enemy.h"
 #include "application/GameObject/Player/Player.h"
 

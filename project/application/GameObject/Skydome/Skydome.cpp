@@ -1,3 +1,8 @@
+/**
+* @file Skydome.cpp
+* @brief 天球生成
+* @author 仁平 琉乃
+*/
 
 #include "Skydome.h"
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"

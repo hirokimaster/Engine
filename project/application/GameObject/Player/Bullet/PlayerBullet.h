@@ -1,3 +1,9 @@
+/**
+* @file PlayerBullet.h
+* @brief プレイヤー（自機）の弾
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "application/GameObject/LockOn/LockOn.h"

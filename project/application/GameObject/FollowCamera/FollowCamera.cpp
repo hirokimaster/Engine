@@ -1,3 +1,9 @@
+/**
+* @file FollowCamera.cpp
+* @brief 追従カメラ
+* @author 仁平 琉乃
+*/
+
 #include "FollowCamera.h"
 
 void FollowCamera::Initialize()
