@@ -73,7 +73,7 @@ void TextureManager::LoadTexture(const std::string& filePath, uint32_t index)
 }
 
 
-ID3D12Resource* TextureManager::CreateTextureResource(const DirectX::TexMetadata& metadata) {
+Microsoft::WRL::ComPtr<ID3D12Resource> TextureManager::CreateTextureResource(const DirectX::TexMetadata& metadata) {
 
 	Microsoft::WRL::ComPtr<ID3D12Device> device = DirectXCommon::GetInstance()->GetDevice();
 
@@ -89,10 +89,8 @@ ID3D12Resource* TextureManager::CreateTextureResource(const DirectX::TexMetadata
 	// 利用するHeapの設定
 	D3D12_HEAP_PROPERTIES heapProperties{};
 	heapProperties.Type = D3D12_HEAP_TYPE_DEFAULT; // default
-	//heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_WRITE_BACK; // WriteBackポリシーでCPUアクセス可能
-	//heapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_L0; // プロセッサの近くに配置
 	// Resourceの作成
-	ID3D12Resource* resource = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> resource = nullptr;
 	[[maybe_unused]] HRESULT hr = device->CreateCommittedResource(
 		&heapProperties, // Heapの設定
 		D3D12_HEAP_FLAG_NONE, // Heapの特殊な設定。特になし。
@@ -107,13 +105,13 @@ ID3D12Resource* TextureManager::CreateTextureResource(const DirectX::TexMetadata
 }
 
 [[nodiscard]]
-ID3D12Resource* TextureManager::UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages) {
+Microsoft::WRL::ComPtr<ID3D12Resource> TextureManager::UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages) {
 
 	std::vector<D3D12_SUBRESOURCE_DATA> subresource;
 	DirectX::PrepareUpload(DirectXCommon::GetInstance()->GetDevice(), mipImages.GetImages(), mipImages.GetImageCount(), mipImages.GetMetadata(), subresource);
 	uint64_t intermediateSize = GetRequiredIntermediateSize(texture.Get(), 0, UINT(subresource.size()));
-	ID3D12Resource* intermediateResource = CreateResource::CreateIntermediateResource(intermediateSize);
-	UpdateSubresources(DirectXCommon::GetCommandList(), texture.Get(), intermediateResource, 0, 0, UINT(subresource.size()), subresource.data());
+	Microsoft::WRL::ComPtr<ID3D12Resource> intermediateResource = CreateResource::CreateIntermediateResource(intermediateSize);
+	UpdateSubresources(DirectXCommon::GetCommandList(), texture.Get(), intermediateResource.Get(), 0, 0, UINT(subresource.size()), subresource.data());
 	// texture転送後は利用できるよう、STATE_COPY_DESTからSTATE_GENERIC_READへ変更する
 	D3D12_RESOURCE_BARRIER barrier{};
 	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
@@ -124,16 +122,10 @@ ID3D12Resource* TextureManager::UploadTextureData(Microsoft::WRL::ComPtr<ID3D12R
 	barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
 	DirectXCommon::GetCommandList()->ResourceBarrier(1, &barrier);
 
-	return intermediateResource;
+	return intermediateResource.Get();
 }
 
 const DirectX::TexMetadata& TextureManager::GetMetaData(uint32_t textureIndex)
 {
-	
 	return metadata_[textureIndex];
-}
-
-void TextureManager::Release()
-{
-	TextureManager::GetInstance()->intermediateResource_->Release();
 }

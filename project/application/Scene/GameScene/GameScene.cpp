@@ -128,7 +128,7 @@ void GameScene::Update()
 	skydome_->Update();
 
 	// ダメージエフェクト
-	DamegeEffect();
+	//DamegeEffect();
 
 #ifdef _DEBUG
 	// カメラの座標

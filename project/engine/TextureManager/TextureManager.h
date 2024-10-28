@@ -36,11 +36,6 @@ public:
 
 #pragma endregion
 
-	/// <summary>
-	/// 中間リソースの破棄
-	/// </summary>
-	static void Release();
-
 private:
 	TextureManager() = default;
 	~TextureManager() = default;
@@ -68,7 +63,7 @@ private: // クラス内で使う関数
 	/// </summary>
 	/// <param name="metadata"></param>
 	/// <returns></returns>
-	static ID3D12Resource* CreateTextureResource(const DirectX::TexMetadata& metadata);
+	static Microsoft::WRL::ComPtr<ID3D12Resource> CreateTextureResource(const DirectX::TexMetadata& metadata);
 
 	/// <summary>
 	/// textureDataのアップロード
@@ -76,13 +71,13 @@ private: // クラス内で使う関数
 	/// <param name="texture"></param>
 	/// <param name="mipImages"></param>
 	/// <returns></returns>
-	[[nodiscard]] static ID3D12Resource* UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages);
+	[[nodiscard]] static Microsoft::WRL::ComPtr<ID3D12Resource> UploadTextureData(Microsoft::WRL::ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages);
 
 
 private: // メンバ変数
 
 	Microsoft::WRL::ComPtr<ID3D12Resource>texResource[1024];
 	std::unordered_map<std::string, uint32_t> fileHandleMap;
-	DirectX::TexMetadata metadata_[128];
-	ID3D12Resource* intermediateResource_;
+	DirectX::TexMetadata metadata_[1024];
+	Microsoft::WRL::ComPtr<ID3D12Resource> intermediateResource_;
 };

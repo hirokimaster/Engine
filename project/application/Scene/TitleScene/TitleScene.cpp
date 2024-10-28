@@ -77,7 +77,7 @@ void TitleScene::Initialize()
 	// シーン遷移用
 	sceneTimer_ = 60;
 	isTransition_ = false;
-	isDissolve_ = false;
+	//isDissolve_ = false;
 }
 
 void TitleScene::Update()

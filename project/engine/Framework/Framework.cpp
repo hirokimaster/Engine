@@ -35,8 +35,6 @@ void Framework::Initialize()
 
 void Framework::Finalize()
 {
-	// textureの中間リソース破棄
-	TextureManager::Release();
 	//gameManager_->Finalize();
 	imguiManager_->Finalize();
 	// ゲームウィンドウ破棄

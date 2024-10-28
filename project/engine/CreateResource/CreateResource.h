@@ -123,7 +123,7 @@ public:
 	/// </summary>
 	/// <param name="sizeInBytes"></param>
 	/// <returns></returns>
-	static ID3D12Resource* CreateIntermediateResource(size_t sizeInBytes);
+	static Microsoft::WRL::ComPtr<ID3D12Resource> CreateIntermediateResource(size_t sizeInBytes);
 
 	/// <summary>
 	/// indexBufferView作成
