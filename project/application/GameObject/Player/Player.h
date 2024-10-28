@@ -83,6 +83,8 @@ public:
 
 	Vector3 GetRotate()const { return worldTransform_.rotate; }
 
+	bool GetIsHitEnemyFire() { return isHitEnemyFire_; }
+
 	/// <summary>
 	/// ワールドトランスフォームを取得
 	/// </summary>
@@ -114,4 +116,8 @@ private:
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	Vector3 velocity_{};
 	std::unique_ptr<PlayerParticle> particle_;
+	bool isDead_ = false;
+	bool isHitEnemyFire_ = false;
+	const uint32_t kMaxHp_ = 3;
+	uint32_t hp_ = 0;
 };

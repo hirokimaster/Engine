@@ -127,6 +127,40 @@ void GameScene::Update()
 	// 天球
 	skydome_->Update();
 
+	// プレイヤーがダメージを受けたら
+	if (player_->GetIsHitEnemyFire()) {
+		isPlayerIncurDamage_ = true;
+	}
+
+	if (isPlayerIncurDamage_) {
+		--effectTime_;
+	}
+
+	if (effectTime_ > 0.0f && isPlayerIncurDamage_) {
+
+		VignetteParam param = {
+			.scale = 60.0f,
+			.exponent = 0.3f
+		};
+
+		postProcess_->SetEffect(PostEffectType::Vignette);
+		postProcess_->SetVignetteParam(param);
+	}
+
+	if (effectTime_ < 0.0f) {
+		isPlayerIncurDamage_ = false;
+	}
+
+	if (!isPlayerIncurDamage_) {
+		effectTime_ = 10.0f;
+	}
+
+	if (!isPlayerIncurDamage_ && param_.threshold <= 0.0f) {
+		postProcess_->SetEffect(PostEffectType::Dissolve);
+		postProcess_->SetDissolveParam(param_);
+		param_.threshold = 0.0f;
+	}
+
 #ifdef _DEBUG
 	// カメラの座標
 	ImGui::Begin("Camera");
@@ -138,17 +172,14 @@ void GameScene::Update()
 	ImGui::Text("position [x: %.3f ] [y: %.3f] [z: %.3f]", player_->GetWorldPosition().x,
 		player_->GetWorldPosition().y, player_->GetWorldPosition().z);
 	ImGui::End();
+
 #endif
 
 }
 
 void GameScene::Draw()
 {
-	
-	if (isTransition_) {
-		spriteWhite_->Draw();
-
-	}
+	spriteWhite_->Draw();
 
 	postProcess_->Draw();
 }

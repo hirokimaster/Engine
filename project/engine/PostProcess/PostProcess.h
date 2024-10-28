@@ -54,6 +54,8 @@ public:
 
 	RandomParam SetRandomParam(RandomParam param) {return *randomData_ = param;}
 
+	VignetteParam SetVignetteParam(VignetteParam param) { return *vignetteData_ = param; }
+
 	void SetMaskTexture(uint32_t texHandle) {maskTexHandle_ = texHandle; }
 
 	void SetCamera(Camera camera) { camera = camera_; }

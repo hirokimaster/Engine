@@ -23,6 +23,11 @@ void Player::Initialize(uint32_t texHandle)
 
 	SetCollosionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
+
+	// 体力
+	hp_ = kMaxHp_;
+	// 死亡フラグ
+	isDead_ = false;
 }
 
 void Player::Update()
@@ -36,11 +41,24 @@ void Player::Update()
 	particle_->SetAreaMin({ GetWorldPosition().x - 0.1f, GetWorldPosition().y - 0.1f,GetWorldPosition().z - 0.7f });
 	particle_->Update();
 	worldTransform_.UpdateMatrix();
+
+	// 敵の攻撃を食らったら
+	const uint32_t kDamage = 1; // 敵からの攻撃ダメージ
+	if (isHitEnemyFire_) {
+		hp_ -= kDamage;
+		isHitEnemyFire_ = false;
+	}
+
 #ifdef _DEBUG
 	ImGui::Begin("PlayerRotate");
 	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.rotate.x,
 		worldTransform_.rotate.y, worldTransform_.rotate.z);
 	ImGui::End();
+
+	ImGui::Begin("playerHp");
+	ImGui::Text("hp %d", hp_);
+	ImGui::End();
+
 #endif
 }
 
@@ -173,7 +191,7 @@ void Player::UpdateBullet()
 
 void Player::OnCollision()
 {
-
+	isHitEnemyFire_ = true; // 敵の攻撃が当たった
 }
 
 void Player::DrawUI()

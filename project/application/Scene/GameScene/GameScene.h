@@ -114,6 +114,8 @@ private:
 	std::unique_ptr<Sprite> spriteWhite_;
 	uint32_t texHandleWhite_ = 0;
 	std::unique_ptr<PostProcess> postProcess_;
+	bool isPlayerIncurDamage_ = false;
+	float effectTime_ = 20.0f;
 	// 天球
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 
