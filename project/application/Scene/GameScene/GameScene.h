@@ -78,6 +78,11 @@ private:
 	/// </summary>
 	void StartGame();
 
+	/// <summary>
+	/// ダメージ食らったときのエフェクト
+	/// </summary>
+	void DamegeEffect();
+
 private:
 	Camera camera_{};
 	// player
@@ -115,7 +120,7 @@ private:
 	uint32_t texHandleWhite_ = 0;
 	std::unique_ptr<PostProcess> postProcess_;
 	bool isPlayerIncurDamage_ = false;
-	float effectTime_ = 20.0f;
+	float effectTime_ = 30.0f;
 	// 天球
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 
