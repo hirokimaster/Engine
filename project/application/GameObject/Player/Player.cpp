@@ -20,6 +20,8 @@ void Player::Initialize(uint32_t texHandle)
 
 	particle_ = std::make_unique<PlayerParticle>();
 	particle_->Initialize();
+	explosionParticle_ = std::make_unique<ExplosionParticle>();
+	explosionParticle_->Initialize();
 
 	SetCollosionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
@@ -28,6 +30,7 @@ void Player::Initialize(uint32_t texHandle)
 	hp_ = kMaxHp_;
 	// 死亡フラグ
 	isDead_ = false;
+	deadTimer_ = 60.0f;
 }
 
 void Player::Update()
@@ -49,6 +52,21 @@ void Player::Update()
 		isHitEnemyFire_ = false;
 	}
 
+	if (hp_ <= 2) {
+		isDead_ = true;
+	}
+
+	if (isDead_) {
+		--deadTimer_;
+	}
+
+	if (deadTimer_ <= 30.0f) {
+		explosionParticle_->Update();
+	}
+	else {
+		explosionParticle_->SetPosition(GetWorldPosition());
+	}
+
 #ifdef _DEBUG
 	ImGui::Begin("PlayerRotate");
 	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.rotate.x,
@@ -64,17 +82,28 @@ void Player::Update()
 
 void Player::Draw(Camera& camera)
 {
-	object_->Draw(camera);
+	// 生きてるときだけ
+	if (!isDead_) {
+		object_->Draw(camera);
 
-	// 弾の描画
-	for (const auto& bullet : bullets_) {
-		bullet->Draw(camera);
+		// 弾の描画
+		for (const auto& bullet : bullets_) {
+			bullet->Draw(camera);
+		}
 	}
 
-	particle_->Draw(camera);
+	if (deadTimer_ >= 30.0f) {
+		particle_->Draw(camera);
+	}
+	
 
 	// UIの描画
 	DrawUI();
+
+	// 死んだときの爆発
+	if (deadTimer_ <= 30.0f) {
+		explosionParticle_->Draw(camera);
+	}
 }
 
 void Player::Move()

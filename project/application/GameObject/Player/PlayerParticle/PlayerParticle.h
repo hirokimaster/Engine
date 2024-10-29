@@ -50,4 +50,5 @@ private:
 	AccelerationField accelerationField{};
 	Vector3 areaMin_{};
 	Vector3 areaMax_{};
+	DistributionParam distributionParam_{};
 };

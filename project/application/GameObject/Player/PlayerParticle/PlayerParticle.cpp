@@ -14,6 +14,14 @@ void PlayerParticle::Initialize()
 	particle_->Initialize();
 	particle_->SetModel("Player/plane.obj");
 	particle_->SetTexHandle(texHandle_);
+	distributionParam_ = { 
+	{ -4.0f, -1.0f }, // velocity
+	{ 0.0f, 1.0f },   // color
+	{ 0.0f, 1.0f },   // rotate
+	{ 0.2f, 0.5f },   // scale
+	{ 0.5f, 1.0f }	  // lifeTime
+	};
+	particle_->SetDistributionParam(distributionParam_);
 
 	emit_.count = 2;
 	emit_.frequency = 0.01f;
@@ -38,6 +46,9 @@ void PlayerParticle::Update()
 		particleItr != particles_.end(); ++particleItr) {
 		(*particleItr).velocity.x = velocity_.x;
 		(*particleItr).velocity.y = velocity_.y;
+		(*particleItr).color.x = 1.0f;
+		(*particleItr).color.y = 1.0f;
+		(*particleItr).color.z = 1.0f;
 	}
 
 	for (std::list<Particle>::iterator particleItr = particles_.begin();

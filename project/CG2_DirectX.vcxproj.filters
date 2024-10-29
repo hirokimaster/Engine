@@ -84,7 +84,7 @@
     <ClCompile Include="Engine\Base\WinApp\WinApp.cpp" />
     <ClCompile Include="Engine\Transform\WorldTransform.cpp" />
     <ClCompile Include="application\GameObject\Enemy\PhaseState\IPhaseState\IPhaseStateEnemy.cpp" />
-    <ClCompile Include="application\GameObject\Effect\Effect.cpp" />
+    <ClCompile Include="application\GameObject\Player\PlayerParticle\ExplosionParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
@@ -152,7 +152,7 @@
     <ClInclude Include="Engine\Camera\Camera.h" />
     <ClInclude Include="Engine\Base\WinApp\WinApp.h" />
     <ClInclude Include="Engine\Transform\WorldTransform.h" />
-    <ClInclude Include="application\GameObject\Effect\Effect.h" />
+    <ClInclude Include="application\GameObject\Player\PlayerParticle\ExplosionParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli" />

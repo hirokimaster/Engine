@@ -38,6 +38,14 @@ struct AccelerationField {
 	AABB area; //!< 範囲
 };
 
+struct DistributionParam {
+	Vector2 velocity;
+	Vector2 color;
+	Vector2 rotate;
+	Vector2 scale;
+	Vector2 lifeTime;
+};
+
 class ParticleSystem {
 public:
 
@@ -83,6 +91,10 @@ public:
 
 	void SetPosition(Vector3 position) { position_ = position; }
 
+	void SetDistributionParam(const DistributionParam& param) { distParam_ = param; }
+
+	void SetParticleParam(const Particle& param) { particle_ = param; }
+
 #pragma endregion
 
 	/// <summary>
@@ -90,7 +102,7 @@ public:
 	/// </summary>
 	/// <param name="randomEngine"></param>
 	/// <returns></returns>
-	static Particle MakeNewParticle(std::mt19937& randomEngine);
+	Particle MakeNewParticle(std::mt19937& randomEngine);
 
 	/// <summary>
 	/// emit関数
@@ -125,4 +137,6 @@ private:
 	ParticleForGPU* instancingData_ = nullptr;
 	uint32_t index_ = 0;
 	static Vector3 position_;
+	Particle particle_{};
+	DistributionParam distParam_{};
 };

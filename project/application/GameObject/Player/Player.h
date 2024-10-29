@@ -13,6 +13,7 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Rail/Rail.h"
 #include "application/GameObject/Player/PlayerParticle/PlayerParticle.h"
+#include "application/GameObject/Player/PlayerParticle/ExplosionParticle.h"
 
 class LockOn;
 
@@ -85,6 +86,12 @@ public:
 
 	bool GetIsHitEnemyFire() { return isHitEnemyFire_; }
 
+	bool GetIsDead() { return isDead_; }
+
+	uint32_t GetHp() { return hp_; }
+
+	float GetDeadTimer() { return deadTimer_; }
+
 	/// <summary>
 	/// ワールドトランスフォームを取得
 	/// </summary>
@@ -120,4 +127,6 @@ private:
 	bool isHitEnemyFire_ = false;
 	const uint32_t kMaxHp_ = 3;
 	uint32_t hp_ = 0;
+	std::unique_ptr<ExplosionParticle> explosionParticle_ = nullptr;
+	float deadTimer_ = 60.0f;
 };

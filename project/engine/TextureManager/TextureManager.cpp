@@ -68,7 +68,7 @@ void TextureManager::LoadTexture(const std::string& filePath, uint32_t index)
 
 	// SRV作成
 	TextureManager::GetInstance()->texResource[index] = CreateTextureResource(TextureManager::GetInstance()->metadata_[index]);
-	TextureManager::GetInstance()->intermediateResource_ = UploadTextureData(TextureManager::GetInstance()->texResource[index].Get(), mipImages);
+	TextureManager::GetInstance()->intermediateResource_[index] = UploadTextureData(TextureManager::GetInstance()->texResource[index].Get(), mipImages);
 	SrvManager::GetInstance()->CreateTextureSrv(TextureManager::GetInstance()->texResource[index], TextureManager::GetInstance()->metadata_[index], index);
 }
 

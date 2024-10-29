@@ -86,6 +86,14 @@ void GameScene::Initialize()
 	spriteLockOn_.reset(Sprite::Create(texHandleLockOn_, { 20.0f,100.0f }));
 	spriteUnLock_.reset(Sprite::Create(texHandleUnLock_, { 20.0f,100.0f }));
 	spriteAttack_.reset(Sprite::Create(texHandleAttack_, { 1000.0f , 100.0f }));
+
+	// ゲームオーバー用
+	texColor_ = { 1.0f,1.0f,1.0f,0.0f };
+	spriteYes_.reset(Sprite::Create(texHandleYes_, { 400.0f,400.0f }, texColor_));
+	spriteYes2_.reset(Sprite::Create(texHandleYes2_, { 400.0f,400.0f }, texColor_));
+	spriteNo_.reset(Sprite::Create(texHandleNo_, { 750.0f,400.0f }, texColor_));
+	spriteNo2_.reset(Sprite::Create(texHandleNo2_, { 750.0f,400.0f }, texColor_));
+	spriteContinue_.reset(Sprite::Create(texHandleContinue_, { 450.0f,250.0f }, texColor_));
 }
 
 void GameScene::Update()
@@ -121,14 +129,18 @@ void GameScene::Update()
 
 	// 仮のクリア判定
 	if (player_->GetWorldPosition().z >= 300.0f) {
-		isTransitionClear_ = true;
+		//isTransitionClear_ = true;
 	}
 
 	// 天球
 	skydome_->Update();
 
 	// ダメージエフェクト
-	//DamegeEffect();
+	DamegeEffect();
+
+	// ゲームオーバー
+	GameOver();
+
 
 #ifdef _DEBUG
 	// カメラの座標
@@ -151,6 +163,23 @@ void GameScene::Draw()
 	spriteWhite_->Draw();
 
 	postProcess_->Draw();
+
+	if (selectNo_ >= 1) {
+		spriteNo_->Draw();
+	}
+	else {
+		spriteNo2_->Draw();
+	}
+
+	if (selectNo_ <= 0) {
+		spriteYes_->Draw();
+	}
+	else {
+		spriteYes2_->Draw();
+	}
+
+	spriteContinue_->Draw();
+	
 }
 
 void GameScene::PostProcessDraw()
@@ -225,6 +254,13 @@ void GameScene::LoadTextureFile()
 	texHandleUnLock_ = TextureManager::Load("resources/UI/unLock.png");
 	texHandleAttack_ = TextureManager::Load("resources/UI/attack.png");
 	texHandleEngage_ = TextureManager::Load("resources/UI/engage.png");
+
+	// ゲームオーバー用
+	texHandleYes_ = TextureManager::Load("resources/UI/yes.png");
+	texHandleYes2_ = TextureManager::Load("resources/UI/yes2.png");
+	texHandleNo_ = TextureManager::Load("resources/UI/no.png");
+	texHandleNo2_ = TextureManager::Load("resources/UI/no2.png");
+	texHandleContinue_ = TextureManager::Load("resources/UI/continue.png");
 }
 
 void GameScene::SceneTransition()
@@ -312,5 +348,47 @@ void GameScene::DamegeEffect()
 		postProcess_->SetDissolveParam(param_);
 		param_.threshold = 0.0f;
 	}
+}
+
+void GameScene::GameOver()
+{
+	// 追従をやめる
+	if (player_->GetDeadTimer() <= 0.0f) {
+		followCamera_->SetTarget(nullptr);
+		followCamera_->StartShake(10.0f, 1.0f); // シェイクさせる
+		spriteContinue_->SetColor(texColor_);
+		spriteYes_->SetColor(texColor_);
+		spriteYes2_->SetColor(texColor_);
+		spriteNo_->SetColor(texColor_);
+		spriteNo2_->SetColor(texColor_);
+		texColor_.w += 0.05f;
+		postProcess_->SetEffect(PostEffectType::GaussianBlur);
+	}
+
+	if (texColor_.w >= 2.0f) {
+		spriteYes_->SetColor(texColor_);
+		spriteYes2_->SetColor(texColor_);
+		spriteNo_->SetColor(texColor_);
+		spriteNo2_->SetColor(texColor_);
+		texColor_.w = 2.0f;
+	}
+
+	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_DPAD_LEFT) && selectNo_ == 1) {
+		selectNo_ -= 1;
+	}
+	else if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_DPAD_RIGHT) && selectNo_ == 0) {
+		selectNo_ += 1;
+	}
+
+	if (texColor_.w >= 2.0f) {
+		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A) && selectNo_ >= 1) {
+			GameManager::GetInstance()->ChangeScene("TITLE");
+		}
+
+		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A) && selectNo_ <= 0) {
+			Initialize();
+		}
+	}
+
 }
 

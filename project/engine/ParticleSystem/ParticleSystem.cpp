@@ -129,21 +129,23 @@ void ParticleSystem::Draw(std::list<Particle>& particles, const Camera& camera) 
 /// <param name="randomEngine"></param>
 /// <returns></returns>
 Particle ParticleSystem::MakeNewParticle(std::mt19937& randomEngine) {
-	std::uniform_real_distribution<float> distribution(-1.0f, 1.0f);
-	std::uniform_real_distribution<float> distVelocity(-4.0f, -1.0f);
-	std::uniform_real_distribution<float> distColor(0.0f, 1.0f);
-	std::uniform_real_distribution<float> distRotate(0.0f, 1.0f);
-	std::uniform_real_distribution<float> distScale(0.2f, 0.5f);
-	std::uniform_real_distribution<float> distTime(0.5f, 1.0f);
+	std::uniform_real_distribution<float> distVelocity(distParam_.velocity.x, distParam_.velocity.y);
+	std::uniform_real_distribution<float> distColor(distParam_.color.x, distParam_.color.y);
+	std::uniform_real_distribution<float> distRotate(distParam_.rotate.x, distParam_.rotate.y);
+	std::uniform_real_distribution<float> distScale(distParam_.scale.x, distParam_.scale.y);
+	std::uniform_real_distribution<float> distTime(distParam_.lifeTime.x, distParam_.lifeTime.y);
 	Particle particle;
-	particle.worldTransform.Initialize();
-	particle.worldTransform.scale = {distScale(randomEngine),distScale(randomEngine) ,distScale(randomEngine)};
-	particle.worldTransform.rotate = { distRotate(randomEngine),distRotate(randomEngine) ,distRotate(randomEngine) };
-	particle.worldTransform.translate = position_;
-	particle.velocity = { 0.0f, 0.0f , distVelocity(randomEngine) };
-	particle.color = { 1.0f,1.0f,1.0f, distColor(randomEngine) };
-	particle.lifeTime = distTime(randomEngine);
-	particle.currentTime = 0;
+	particle_.worldTransform.Initialize();
+	particle_.worldTransform.scale = {distScale(randomEngine),distScale(randomEngine) ,distScale(randomEngine)};
+	particle_.worldTransform.rotate = { distRotate(randomEngine),distRotate(randomEngine) ,distRotate(randomEngine) };
+	particle_.worldTransform.translate = position_;
+	particle_.velocity = { distVelocity(randomEngine), distVelocity(randomEngine) , distVelocity(randomEngine) };
+	particle_.color = { distColor(randomEngine),distColor(randomEngine),distColor(randomEngine), distColor(randomEngine) };
+	particle_.lifeTime = distTime(randomEngine);
+	particle_.currentTime = 0;
+
+	particle = particle_;
+	
 	return particle;
 }
 

@@ -83,6 +83,11 @@ private:
 	/// </summary>
 	void DamegeEffect();
 
+	/// <summary>
+	/// ゲームオーバー
+	/// </summary>
+	void GameOver();
+
 private:
 	Camera camera_{};
 	// player
@@ -135,4 +140,20 @@ private:
 	std::unique_ptr<Sprite> spriteEngage_ = nullptr;
 	uint32_t texHandleEngage_ = 0;
 	Vector4 engageColor_ = { 1.0f,1.0f,1.0f,1.0f };
+
+	// ゲームオーバー用
+	bool isGameOver_ = false;
+
+	std::unique_ptr<Sprite> spriteYes_;
+	std::unique_ptr<Sprite> spriteYes2_;
+	std::unique_ptr<Sprite> spriteNo_;
+	std::unique_ptr<Sprite> spriteNo2_;
+	std::unique_ptr<Sprite> spriteContinue_;
+	uint32_t texHandleYes_ = 0;
+	uint32_t texHandleYes2_ = 0;
+	uint32_t texHandleNo_ = 0;
+	uint32_t texHandleNo2_ = 0;
+	uint32_t texHandleContinue_ = 0;
+	Vector4 texColor_{};
+	uint32_t selectNo_ = 0;
 };

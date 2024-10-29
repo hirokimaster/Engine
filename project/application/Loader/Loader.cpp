@@ -113,6 +113,7 @@ void Loader::Arrangement(LevelData* levelData)
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
+			newObject->SetMaterialProperty({ .color = {0.3f,0.3f,0.3f,1.0f} });
 			objects_.push_back(std::move(newObject));
 		}
 	}

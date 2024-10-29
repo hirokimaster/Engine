@@ -9,6 +9,7 @@
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"
 #include <algorithm>
 #include "application/GameObject/LockOn/LockOn.h"
+#include <random>
 
 class FollowCamera {
 public:
@@ -26,6 +27,23 @@ public:
 	/// 回転
 	/// </summary>
 	void Rotate();
+
+	/// <summary>
+	/// シェイク開始
+	/// </summary>
+	/// <param name="intensity"></param>
+	/// <param name="duration"></param>
+	void StartShake(float intensity, float duration);
+
+private:
+
+	/// <summary>
+	/// シェイク適用
+	/// </summary>
+	void ApplyShake();
+
+public:
+
 
 #pragma region setter
 
@@ -50,4 +68,9 @@ private:
 	const WorldTransform* target_ = nullptr;
 	LockOn* lockOn_ = nullptr;
 	Vector3 offset_{};
+
+	float shakeIntensity_ = 0.0f;
+	float shakeDuration_ = 0.0f;
+	float shakeTimeElapsed_ = 0.0f;
+	const float deltaTime_ = 1.0f / 60.0f;
 };

@@ -79,5 +79,5 @@ private: // メンバ変数
 	Microsoft::WRL::ComPtr<ID3D12Resource>texResource[1024];
 	std::unordered_map<std::string, uint32_t> fileHandleMap;
 	DirectX::TexMetadata metadata_[1024];
-	Microsoft::WRL::ComPtr<ID3D12Resource> intermediateResource_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> intermediateResource_[1024];
 };
