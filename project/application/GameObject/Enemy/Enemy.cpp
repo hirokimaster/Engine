@@ -19,11 +19,11 @@ void Enemy::Initialize(uint32_t texHandle)
 	worldTransform_.translate = { 0,0,80.0f };
 	texHandleBullet_ = TextureManager::Load("resources/TempTexture/uvChecker.png"); // bulletの画像
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-	bulletType_ = BulletType::Normal;
+	bulletType_ = BulletType::Missile;
 
 	// 最初の状態
-	phaseState_ = std::make_unique<EnemyStateSortie>()
-		;
+	phaseState_ = std::make_unique<EnemyStateSortie>();
+
 	// 当たり判定の属性設定
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
@@ -31,6 +31,7 @@ void Enemy::Initialize(uint32_t texHandle)
 
 void Enemy::Update()
 {
+	phaseState_->SetPlayer(player_);
 	phaseState_->Update(this); // 状態ごとの更新処理
 	//BulletUpdate(); // 弾の更新処理
 	worldTransform_.UpdateMatrix();
@@ -97,7 +98,7 @@ void Enemy::BulletUpdate()
 			Fire();
 		}
 		else if (bulletType_ == BulletType::Missile) {
-			FireMissile(3);
+			FireMissile(1);
 		}
 
 		// 発射タイマーの初期化

@@ -24,11 +24,6 @@ public:
 	void Update();
 
 	/// <summary>
-	/// 回転
-	/// </summary>
-	void Rotate();
-
-	/// <summary>
 	/// シェイク開始
 	/// </summary>
 	/// <param name="intensity"></param>

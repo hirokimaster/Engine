@@ -13,4 +13,6 @@ public:
 	void Update(Enemy* pEnemy)override;
 
 private:
+
+	bool isFollow_ = true; // 追従してるか
 };

@@ -333,6 +333,7 @@ void GameScene::DamegeEffect()
 
 		postProcess_->SetEffect(PostEffectType::Vignette);
 		postProcess_->SetVignetteParam(param);
+		followCamera_->StartShake(0.1f, 0.4f); // シェイクさせる
 	}
 
 	if (effectTime_ < 0.0f) {
@@ -355,7 +356,6 @@ void GameScene::GameOver()
 	// 追従をやめる
 	if (player_->GetDeadTimer() <= 0.0f) {
 		followCamera_->SetTarget(nullptr);
-		followCamera_->StartShake(10.0f, 1.0f); // シェイクさせる
 		spriteContinue_->SetColor(texColor_);
 		spriteYes_->SetColor(texColor_);
 		spriteYes2_->SetColor(texColor_);

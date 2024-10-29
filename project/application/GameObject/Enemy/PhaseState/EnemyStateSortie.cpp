@@ -9,18 +9,22 @@ void EnemyStateSortie::Update(Enemy* pEnemy)
 {
 	// 速度ベクトル
 	Vector3 velocity = { 0.0f,0.0f,0.0f };
+	const float kMoveSpeed = 1.0f;
 
-	// 座標から見て右か左で速度を変える
-	// 右なら
-	if (pEnemy->GetWorldPosition().x > 0.0f) {
-		velocity = { 0.0f,0.0f,0.0f };
+	// プレイヤーに向かって移動する
+	Vector3 diff = player_->GetWorldPosition() - pEnemy->GetWorldPosition(); // プレイヤーとの差分ベクトルを求める
+	Vector3 distanceLimit = { 2.0f,2.0f,2.0f }; // この距離をこえたら向かうのをやめる
+	if (Length(diff) >= Length(distanceLimit) && isFollow_) {
+		diff = Normalize(diff); // 正規化
+		velocity = Normalize(diff); // 正規化
+		velocity = kMoveSpeed * diff; // 差分ベクトルに速度をかける
+		pEnemy->SetVelocity(velocity);
 	}
-	// 左なら
-	else if (pEnemy->GetWorldPosition().x < 0.0f) {
-		velocity = { 0.0f,0.0f,0.0f };
+	else {
+		isFollow_ = false;
+		velocity = { 0.0f,0.0f,kMoveSpeed };
+		pEnemy->SetVelocity(velocity);
 	}
-
-	pEnemy->SetVelocity(velocity);
 	// 移動
 	pEnemy->Move();
 }

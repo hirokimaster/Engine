@@ -18,7 +18,6 @@ void TitleScene::Initialize()
 {
 
 	postProcess_ = std::make_unique<PostProcess>();
-	//GameManager::GetInstance()->SetPostProcess(postProcess_.get());
 	postProcess_->Initialize();
 	postProcess_->SetEffect(PostEffectType::Dissolve);
 
@@ -82,6 +81,7 @@ void TitleScene::Initialize()
 
 void TitleScene::Update()
 {
+	// spriteの点滅用のタイマー
 	++startATimer_;
 
 	// シーン遷移
