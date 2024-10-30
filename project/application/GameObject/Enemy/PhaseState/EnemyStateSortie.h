@@ -1,3 +1,9 @@
+/**
+* @file EnemyStateSortie.h
+* @brief 敵の生成、挙動
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/GameObject/Enemy/PhaseState/IPhaseState/IPhaseStateEnemy.h"
 
