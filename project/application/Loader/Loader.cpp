@@ -94,22 +94,36 @@ LevelData* Loader::Load(const std::string& fileName)
 void Loader::Arrangement(LevelData* levelData)
 {
 
+	uint32_t texHandle = TextureManager::Load("resources/TempTexture/noise0.png");
+	uint32_t texHandle2 = TextureManager::Load("resources/TempTexture/tairu.jpg");
+
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData->objects) {
 
 		// モデルを指定して3Dオブジェクトを生成
 		if (objectData.fileName == "enemy") {
 			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
-			newEnemy->Initialize(texHandle_);
+			newEnemy->Initialize(texHandle);
 			newEnemy->SetPlayer(player_);
 			newEnemy->SetPosition(objectData.translate);
 			enemys_.push_back(std::move(newEnemy));
+		}
+		else if (objectData.fileName == "ground") {
+			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
+			newObject->Initialize();
+			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
+			newObject->SetTexHandle(texHandle);
+			newObject->SetPosition(objectData.translate);
+			newObject->SetRotate(objectData.rotate);
+			newObject->SetScale(objectData.scale);
+			newObject->SetMaterialProperty({ .color = {0.3f,0.3f,0.3f,1.0f} });
+			objects_.push_back(std::move(newObject));
 		}
 		else {
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
-			newObject->SetTexHandle(texHandle_);
+			newObject->SetTexHandle(texHandle2);
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);

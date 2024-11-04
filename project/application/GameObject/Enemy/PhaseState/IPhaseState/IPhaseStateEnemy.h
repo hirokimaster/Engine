@@ -1,6 +1,6 @@
 #pragma once
-#include "application/GameObject/Player/Player.h"
 
+class Player;
 class Enemy;
 
 class IPhaseStateEnemy {
@@ -21,7 +21,7 @@ public:
 	/// playerのポインタを設定する
 	/// </summary>
 	/// <param name="player"></param>
-	virtual void SetPlayer(Player* player);
+	virtual void SetPlayer(Player* player) { player_ = player; }
 
 protected:
 	// playerのポインタを借りる

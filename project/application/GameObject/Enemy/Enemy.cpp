@@ -17,12 +17,12 @@ void Enemy::Initialize(uint32_t texHandle)
 	object_->SetTexHandle(texHandle);
 
 	worldTransform_.translate = { 0,0,80.0f };
-	texHandleBullet_ = TextureManager::Load("resources/TempTexture/uvChecker.png"); // bulletの画像
+	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-	bulletType_ = BulletType::Missile;
+	bulletType_ = BulletType::Normal;
 
 	// 最初の状態
-	phaseState_ = std::make_unique<EnemyStateSortie>();
+	phaseState_ = std::make_unique<EnemyStateFire>();
 
 	// 当たり判定の属性設定
 	SetCollosionAttribute(kCollisionAttributeEnemy);
@@ -33,13 +33,13 @@ void Enemy::Update()
 {
 	phaseState_->SetPlayer(player_);
 	phaseState_->Update(this); // 状態ごとの更新処理
-	//BulletUpdate(); // 弾の更新処理
+	BulletUpdate(); // 弾の更新処理
 	worldTransform_.UpdateMatrix();
 
 	// 時間で消滅
-	/*if (--deathTimer_ <= 0) {
+	if (--deathTimer_ <= 0) {
 		isDead_ = true;
-	}*/
+	}
 
 #ifdef _DEBUG
 
@@ -67,43 +67,25 @@ void Enemy::OnCollision()
 
 void Enemy::Fire()
 {
-	
+	// 弾の速度
+	const float kBulletSpeed = 0.05f;
+
+	Vector3 playerWorldPos = player_->GetWorldPosition(); // 自キャラのワールド座標を取得
+	Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
+	Vector3 diff = Subtract(playerWorldPos, enemyWorldPos); // 差分ベクトルを求める
+	Normalize(diff); // 正規化
+	Vector3 velocity = Multiply(kBulletSpeed, diff); // ベクトルの速度
+
+	// 弾を生成して初期化
+	std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+	bullet->SetPosition(GetWorldPosition());
+	bullet->SetVelocity(velocity);
+	// 弾をセット
+	bullets_.push_back(std::move(bullet));
 }
 
 void Enemy::BulletUpdate()
 {
-	//発射タイマーをデクリメント
-	--fireTimer_;
-
-	if (bulletType_ == BulletType::Spiral) {
-		isFire_ = true;
-	}
-
-	if (isFire_) {
-		FireSpiral(0.5f, 60, 0.05f);
-		--spiralTimer_;
-	}
-
-	if (spiralTimer_ <= 0.0f) {
-		isFire_ = false;
-	}
-
-	if (fireTimer_ <= 0) {
-
-		if (bulletType_ == BulletType::Radial) {
-			// 弾を発射
-			FireRadial(20);
-		}
-		else if (bulletType_ == BulletType::Normal) {
-			Fire();
-		}
-		else if (bulletType_ == BulletType::Missile) {
-			FireMissile(1);
-		}
-
-		// 発射タイマーの初期化
-		fireTimer_ = kFireInterval_;
-	}
 
 	// 弾更新
 	for (const auto& bullet : bullets_) {
@@ -170,7 +152,7 @@ void Enemy::FireSpiral(float spiralSpeed, uint32_t bulletCount, float delayBetwe
 
 		// 弾を生成し、初期化
 		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_,BulletType::Spiral);
+		bullet->Initialize(texHandleBullet_, BulletType::Spiral);
 		bullet->SetVelocity(velocity);
 		bullet->SetPosition(GetWorldPosition());
 

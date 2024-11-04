@@ -65,7 +65,7 @@ void GameScene::Initialize()
 	worldTransformSkyBox_.scale = { 500.0f,500.0f,500.0f };*/
 
 	// loader
-	uint32_t texhandle = TextureManager::Load("resources/TempTexture/uvChecker.png");
+	uint32_t texhandle = TextureManager::Load("resources/TempTexture/white.png");
 	loader_ = std::make_unique<Loader>();
 	levelData_ = loader_->Load("level");
 	loader_->SetPlayer(player_.get());

@@ -11,12 +11,12 @@ void Player::Initialize(uint32_t texHandle)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("Player/cube.obj");
+	object_->SetModel("Player/Jet.obj");
 	worldTransform_.Initialize(); ;
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
 	object_->SetColor({ 0.0f,0.0f,1.0f,1.0f });
-	texHandleBullet_ = TextureManager::Load("resources/TempTexture/uvChecker.png"); // bulletの画像
+	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 
 	particle_ = std::make_unique<PlayerParticle>();
 	particle_->Initialize();
@@ -134,7 +134,7 @@ void Player::Attack()
 	// 処理
 	if (Input::GetInstance()->PressedKey(DIK_SPACE)) {
 		// 弾の速度
-		const float kBulletSpeed = 1.0f;
+		const float kBulletSpeed = 3.0f;
 		Vector3 velocity = { 0,0,kBulletSpeed };
 		// 弾を生成し、初期化
 		std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();

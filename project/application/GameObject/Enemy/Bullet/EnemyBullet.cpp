@@ -95,12 +95,12 @@ void EnemyBullet::CurveBullet()
 	Vector3 toTarget = player_->GetWorldPosition() - GetWorldPosition();
 
 	// 追尾を止める距離
-	float distanceToTarget = Length(toTarget);
-	float stopDistance = 10.0f;
+	//float distanceToTarget = Length(toTarget);
+	//float stopDistance = 10.0f;
 
 
 	// 一定の距離以上の場合追尾する
-	if (distanceToTarget > stopDistance) {
+	//if (distanceToTarget > stopDistance) {
 		// 正規化
 		toTarget = Normalize(toTarget);
 
@@ -110,10 +110,10 @@ void EnemyBullet::CurveBullet()
 		Vector3 desiredDirection = Normalize(toTarget + curveVector);
 		velocity_ = (1.0f - 0.1f) * velocity_ + 0.1f * desiredDirection;
 		velocity_ = Normalize(velocity_);
-	}
-	else {
-		isDead_ = true;
-	}
+	//}
+	//else {
+		//isDead_ = true;
+	//}
 
 	// 移動
 	worldTransform_.translate = worldTransform_.translate + (timeElapsed_ * velocity_);
