@@ -10,7 +10,7 @@ LevelData* Loader::Load(const std::string& fileName)
 {
 	// 連結してフルパスを得る
 	const std::string fullpath = "resources/LevelEditorObj/" + fileName + ".json";
-  
+
 	// ファイルストリーム
 	std::ifstream file;
 
@@ -69,7 +69,7 @@ LevelData* Loader::Load(const std::string& fileName)
 			objectData.translate.z = (float)transform["translation"][1];
 			// 回転角
 			objectData.rotate.x = (float)transform["rotation"][0];
-      
+
 			objectData.rotate.y = ((float)transform["rotation"][2] - std::numbers::pi_v<float>);
 
 			objectData.rotate.z = (float)transform["rotation"][1];
@@ -77,6 +77,40 @@ LevelData* Loader::Load(const std::string& fileName)
 			objectData.scale.x = (float)transform["scaling"][0];
 			objectData.scale.y = (float)transform["scaling"][2];
 			objectData.scale.z = (float)transform["scaling"][1];
+
+			// modelのロード
+			ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
+
+		}
+		else if (type.compare("CURVE") == 0) {
+			// 要素追加
+			levelData->objects.emplace_back(LevelData::ObjectData{});
+			// 今追加した要素の参照を得る
+			LevelData::ObjectData& objectData = levelData->objects.back();
+
+			if (object.contains("file_name")) {
+				// ファイル名
+				objectData.fileName = object["file_name"];
+			}
+
+			nlohmann::json& controlPoints = object["control_points"];
+
+			if (controlPoints.is_array() && controlPoints.size() == 2) {
+				// start
+				if (controlPoints[0].contains("start")) {
+					objectData.controlPointStart.x = (float)controlPoints[0]["start"][0];
+					objectData.controlPointStart.y = (float)controlPoints[0]["start"][2];
+					objectData.controlPointStart.z = (float)controlPoints[0]["start"][1];
+				}
+
+				// end
+				if (controlPoints[1].contains("end")) {
+					objectData.controlPointEnd.x = (float)controlPoints[1]["end"][0];
+					objectData.controlPointEnd.y = (float)controlPoints[1]["end"][2];
+					objectData.controlPointEnd.z = (float)controlPoints[1]["end"][1];
+				}
+			}
+
 			// modelのロード
 			ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
 
@@ -95,7 +129,7 @@ void Loader::Arrangement(LevelData* levelData)
 {
 
 	uint32_t texHandle = TextureManager::Load("resources/TempTexture/noise0.png");
-	uint32_t texHandle2 = TextureManager::Load("resources/TempTexture/tairu.jpg");
+	uint32_t texHandleSibahu = TextureManager::Load("resources/TempTexture/sibahu.jpg");
 
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData->objects) {
@@ -105,14 +139,16 @@ void Loader::Arrangement(LevelData* levelData)
 			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 			newEnemy->Initialize(texHandle);
 			newEnemy->SetPlayer(player_);
-			newEnemy->SetPosition(objectData.translate);
+			newEnemy->SetPosition(objectData.controlPointStart);
+			newEnemy->SetStartPosition(objectData.controlPointStart);
+			newEnemy->SetEndPosition(objectData.controlPointEnd);
 			enemys_.push_back(std::move(newEnemy));
 		}
-		else if (objectData.fileName == "ground") {
+		else if (objectData.fileName == "mount") {
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
-			newObject->SetTexHandle(texHandle);
+			newObject->SetTexHandle(texHandleSibahu);
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
@@ -123,7 +159,7 @@ void Loader::Arrangement(LevelData* levelData)
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
-			newObject->SetTexHandle(texHandle2);
+			newObject->SetTexHandle(texHandleSibahu);
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);

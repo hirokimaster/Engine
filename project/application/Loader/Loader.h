@@ -25,6 +25,8 @@ struct LevelData {
 		Vector3 translate;
 		Vector3 rotate;
 		Vector3 scale;
+		Vector3 controlPointStart;
+		Vector3 controlPointEnd;
 	};
 	// オブジェクトのコンテナ
 	std::vector<ObjectData>objects;

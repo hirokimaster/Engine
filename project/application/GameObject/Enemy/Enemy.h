@@ -109,6 +109,10 @@ public:
 
 	void SetVelocity(Vector3 velocity) { velocity_ = velocity; }
 
+	void SetStartPosition(Vector3 start) { startPosition_ = start; }
+
+	void SetEndPosition(Vector3 end) { endPosition_ = end; }
+
 #pragma endregion
 
 private:
@@ -124,5 +128,7 @@ private:
 	BulletType bulletType_{};
 	std::unique_ptr<IPhaseStateEnemy> phaseState_; // 行動フェーズ（状態）
 	Vector3 velocity_{}; // 移動ベクトル
+	Vector3 startPosition_{}; // スポーンする座標
+	Vector3 endPosition_{}; // でできた後の最終座標
 };
 
