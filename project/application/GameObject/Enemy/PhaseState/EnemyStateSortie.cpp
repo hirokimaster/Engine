@@ -33,8 +33,4 @@ void EnemyStateSortie::Update(Enemy* pEnemy)
 			pEnemy->ChangeState(std::make_unique<EnemyStateFire>());
 		}
 	}
-
-	ImGui::Begin("sortie");
-	ImGui::Text("isSortie = %d", isSortie_);
-	ImGui::End();
 }

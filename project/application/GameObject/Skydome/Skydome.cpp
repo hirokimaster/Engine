@@ -36,11 +36,6 @@ void Skydome::Update()
 {
 	worldTransform_.UpdateMatrix();
 
-	ImGui::Begin("uv");
-	ImGui::DragFloat2("scale", &uvTransform_.scale.x, 0.1f, 0.0f, 1000.0f);
-	ImGui::DragFloat2("translate", &uvTransform_.translate.x, 0.1f, 0.0f, 1000.0f);
-	ImGui::DragFloat3("rotate", &worldTransform_.rotate.x, 0.1f, 0.0f, 100.0f);
-	ImGui::End();
 	object_->SetUVTransform(uvTransform_);
 
 }
