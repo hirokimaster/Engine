@@ -123,6 +123,7 @@ private:
 	std::unique_ptr<PostProcess> postProcess_;
 	bool isPlayerIncurDamage_ = false;
 	float effectTime_ = 30.0f;
+	bool isGameStart_ = false;
 	// 天球
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 

@@ -81,6 +81,9 @@ void GameScene::Initialize()
 	spriteNo_.reset(Sprite::Create(texHandleNo_, { 750.0f,400.0f }, texColor_));
 	spriteNo2_.reset(Sprite::Create(texHandleNo2_, { 750.0f,400.0f }, texColor_));
 	spriteContinue_.reset(Sprite::Create(texHandleContinue_, { 450.0f,250.0f }, texColor_));
+
+	// ゲームスタート
+	isGameStart_ = false;
 }
 
 void GameScene::Update()
@@ -90,16 +93,13 @@ void GameScene::Update()
 
 	// ゲームスタート演出
 	StartGame();
-	
+
 	// player
 	player_->Update();
-	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition());
+	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition(), isGameStart_);
 
 	// loader
 	loader_->Update();
-
-	// bossEnemy
-	//bossEnemy_->Update();
 
 	// followCamera
 	followCamera_->Update();
@@ -113,8 +113,8 @@ void GameScene::Update()
 	Collision();
 
 	// 仮のクリア判定
-	if (player_->GetWorldPosition().z >= 300.0f) {
-		//isTransitionClear_ = true;
+	if (player_->GetWorldPosition().z >= 700.0f) {
+		isTransitionClear_ = true;
 	}
 
 	// 天球
@@ -164,7 +164,7 @@ void GameScene::Draw()
 	}
 
 	spriteContinue_->Draw();
-	
+
 }
 
 void GameScene::PostProcessDraw()
@@ -176,9 +176,12 @@ void GameScene::PostProcessDraw()
 	loader_->Draw(camera_);
 	// player
 	player_->Draw(camera_);
-	
+
+
 	// lockOn_(レティクル)
 	lockOn_->Draw();
+
+
 	// 仮UI
 	if (lockOn_->GetIsLockOnMode()) {
 		spriteUnLock_->Draw();
@@ -278,6 +281,7 @@ void GameScene::StartGame()
 	}
 
 	if (t >= 1.0f) {
+		isGameStart_ = true;
 		t = 1.0f;
 		spriteEngage_->SetColor(engageColor_);
 		engageColor_.w -= 0.03f;

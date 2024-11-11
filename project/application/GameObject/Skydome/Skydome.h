@@ -35,9 +35,5 @@ private:
 	std::unique_ptr<Object3DPlacer> object_;
 	uint32_t texHandle_ = 0;
 	Material material_{};
-	UVTransform uvTransform_{
-		{3.5f,3.5f,1.0f},
-		{0.0f,0.0f,0.0f},
-		{0.0f,0.0f,0.0f},
-	};
+	UVTransform uvTransform_{};
 };

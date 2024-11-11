@@ -10,7 +10,7 @@ void LockOn::Initialize(Vector3 playerPosition)
 {
 	texHandle2DReticle_ = TextureManager::Load("resources/Player/reticle.png");
 	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, reticlePosition_));
-	spriteLockOnReticle_.reset(Sprite::Create(texHandle2DReticle_, { 640.0f,360.0f }));
+	spriteLockOnReticle_.reset(Sprite::Create(texHandle2DReticle_, { 640.0f,380.0f }));
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
@@ -46,7 +46,7 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 	}
 	else {
-		
+
 		// lockOnModeにする
 		if (Input::GetInstance()->GetJoystickState(joyState)) {
 
@@ -102,7 +102,7 @@ void LockOn::Draw()
 	else {
 		sprite2DReticle_->Draw();
 	}
-	
+
 	for (const auto& sprite : sprite_) {
 		sprite->Draw();
 	}
@@ -150,7 +150,7 @@ void LockOn::ReticleRangeLimit()
 	}
 
 	if (sprite2DReticle_->GetPosition().y <= 25.0f) {
-		sprite2DReticle_->SetPosition({ sprite2DReticle_->GetPosition().x,25.0f});
+		sprite2DReticle_->SetPosition({ sprite2DReticle_->GetPosition().x,25.0f });
 	}
 	else if (sprite2DReticle_->GetPosition().y >= 695.0f) {
 		sprite2DReticle_->SetPosition({ sprite2DReticle_->GetPosition().x, 695.0f });
@@ -186,7 +186,7 @@ Vector3 LockOn::GetWorldPosition3DReticle() const
 	return worldPos;
 }
 
-void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition)
+void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, bool isGameStart)
 {
 	POINT mousePosition;
 	// マウス座標(スクリーン座標)を取得する
@@ -206,24 +206,26 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition)
 		spriteLockOnReticle_->SetPosition(spritePosition);
 	}
 
-	XINPUT_STATE joyState{};
+	if (isGameStart) {
+		XINPUT_STATE joyState{};
 
-	// ジョイスティック状態取得
-	if (Input::GetInstance()->GetJoystickState(joyState)) {
-		spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 12.0f;
-		spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 12.0f;
-		// スプライトの座標変更を反映
-		if (isLockOnMode_) {
-			spriteLockOnReticle_->SetPosition(spritePosition);
-			sprite2DReticle_->SetPosition(spritePosition);
+		// ジョイスティック状態取得
+		if (Input::GetInstance()->GetJoystickState(joyState)) {
+			spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 12.0f;
+			spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 12.0f;
+			// スプライトの座標変更を反映
+			if (isLockOnMode_) {
+				spriteLockOnReticle_->SetPosition(spritePosition);
+				sprite2DReticle_->SetPosition(spritePosition);
+			}
+			else {
+				sprite2DReticle_->SetPosition(spritePosition);
+			}
+
+			screenPositionReticle_ = spritePosition;
 		}
-		else {
-			sprite2DReticle_->SetPosition(spritePosition);
-		}
-		
-		screenPositionReticle_ = spritePosition;
 	}
-
+	
 	// レティクル
 	Reticle(camera, Vector2((float)spritePosition.x, (float)spritePosition.y), playerPosition);
 }
@@ -236,37 +238,35 @@ void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	for (const std::unique_ptr<Enemy>& enemy : enemies) {
 		if (enemy->GetIsSortie()) {
 			if (isLockOnMode_) {
-				// すべての敵に対して順にロックオン判定
-				for (const std::unique_ptr<Enemy>& enemy2 : enemies) {
-					// screen座標
-					Vector3 positionWorld = enemy2->GetWorldPosition();
-					Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
-					// すでにロックオンされているかチェック
-					bool alreadyLockedOn = std::find(target_.begin(), target_.end(), enemy2.get()) != target_.end();
+				// screen座標
+				Vector3 positionWorld = enemy->GetWorldPosition();
+				Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
-					// 新たにロックオンするか、すでにロックオンされている場合は対象として残す
-					if (alreadyLockedOn || CheckReticleRange(positionScreen)) {
-						targets.push_back(enemy2.get());
-					}
+				// すでにロックオンされているかチェック
+				bool alreadyLockedOn = std::find(target_.begin(), target_.end(), enemy.get()) != target_.end();
+
+				// 新たにロックオンするか、すでにロックオンされている場合は対象として残す
+				if (alreadyLockedOn || CheckReticleRange(positionScreen)) {
+					targets.push_back(enemy.get());
 				}
+
 			}
 			else {
 
-				// すべての敵に対して順にロックオン判定
-				for (const std::unique_ptr<Enemy>& enemy3 : enemies) {
-					// screen座標
-					Vector3 positionWorld = enemy3->GetWorldPosition();
-					Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
-					if (CheckReticleRange(positionScreen)) {
-						targets.push_back(enemy3.get());
-					}
+				// screen座標
+				Vector3 positionWorld = enemy->GetWorldPosition();
+				Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
+
+				if (CheckReticleRange(positionScreen)) {
+					targets.push_back(enemy.get());
 				}
+
 			}
 		}
 	}
-	
+
 	// ロックオン対象をリセット
 	target_.clear();
 
@@ -330,7 +330,7 @@ bool LockOn::CheckReticleRange(const Vector3& position)
 	else {
 		reticleRadius = 30.0f;
 	}
-	
+
 	Vector2 reticleCenter = screenPositionReticle_;
 
 	Vector2 enemyPosition = Vector2(position.x, position.y); // enemyのスクリーン座標

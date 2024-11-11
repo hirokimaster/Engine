@@ -67,6 +67,17 @@ void Player::Update()
 		explosionParticle_->SetPosition(GetWorldPosition());
 	}
 
+	// 行動限界
+	// 移動限界
+	const float kMoveLimitX = 23.0f;
+	const float kMoveLimitY = 12.5f;
+
+	// 範囲を超えない処理
+	worldTransform_.translate.x = max(worldTransform_.translate.x, -kMoveLimitX);
+	worldTransform_.translate.x = min(worldTransform_.translate.x, kMoveLimitX);
+	worldTransform_.translate.y = max(worldTransform_.translate.y, -kMoveLimitY);
+	worldTransform_.translate.y = min(worldTransform_.translate.y, kMoveLimitY);
+
 #ifdef _DEBUG
 	ImGui::Begin("PlayerRotate");
 	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.rotate.x,
@@ -149,7 +160,7 @@ void Player::Attack()
 
 		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 			// 弾の速度
-			const float kBulletSpeed = 1.0f;
+			const float kBulletSpeed = 2.0f;
 			Vector3 velocity = { 0,0,kBulletSpeed };
 			std::list<Vector3> lockOnVelocity;
 			// 自機から照準オブジェクトのベクトル

@@ -35,7 +35,7 @@ public:
 	/// </summary>
 	/// <param name="camera"></param>
 	/// <param name="playerPosition"></param>
-	void UpdateReticle(const Camera& camera, const Vector3& playerPosition);
+	void UpdateReticle(const Camera& camera, const Vector3& playerPosition, bool isGameStart);
 
 private:
 
