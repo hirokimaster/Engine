@@ -79,5 +79,4 @@ private:
 	// シーン遷移用
 	bool isTransition_ = false;
 	uint32_t sceneTimer_ = 60;
-	uint32_t texHandleSceneMask_ = 0;
 };

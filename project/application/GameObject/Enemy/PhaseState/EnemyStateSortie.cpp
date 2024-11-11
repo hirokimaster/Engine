@@ -14,5 +14,27 @@ EnemyStateSortie::~EnemyStateSortie()
 
 void EnemyStateSortie::Update(Enemy* pEnemy)
 {
-	pEnemy;
+	Vector3 playerPosition = player_->GetWorldPosition();
+	Vector3 enemyPosition = pEnemy->GetWorldPosition();
+	float diffZ = enemyPosition.z - playerPosition.z;
+	if (diffZ <= 0.0f) {
+		isSortie_ = true;
+		pEnemy->SetIsSortie(true);
+	}
+
+	if (isSortie_) {
+		if (t_ <= 1.0f) {
+			Vector3 sortiePosition = Lerp(pEnemy->GetStartPosition(), pEnemy->GetEndPosition(), t_);
+			pEnemy->SetPosition(sortiePosition);
+			t_ += 0.01f;
+		}
+		else {
+			isSortie_ = false;
+			//pEnemy->ChangeState(std::unique_ptr<EnemyStateFire>());
+		}
+	}
+
+	ImGui::Begin("sortie");
+	ImGui::Text("isSortie = %d", isSortie_);
+	ImGui::End();
 }

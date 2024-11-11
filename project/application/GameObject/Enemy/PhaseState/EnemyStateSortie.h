@@ -19,6 +19,6 @@ public:
 	void Update(Enemy* pEnemy)override;
 
 private:
-
-	bool isFollow_ = true; // 追従してるか
+	bool isSortie_ = false;	// 出撃してるか
+	float t_ = 0.0f; // 媒介変数
 };

@@ -63,11 +63,6 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 		}
 	}
 
-	// ロックオンモードになったとき検索をし始める
-	if (isLockOnMode_) {
-		//Search(enemies, camera);
-	}
-
 	Search(enemies, camera);
 
 	for (auto itr = target_.begin(); itr != target_.end(); ++itr) {
@@ -238,36 +233,39 @@ void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	// ロックオン目標
 	std::list<const Enemy*> targets;
 
-	if (isLockOnMode_) {
-		// すべての敵に対して順にロックオン判定
-		for (const std::unique_ptr<Enemy>& enemy : enemies) {
-			// screen座標
-			Vector3 positionWorld = enemy->GetWorldPosition();
-			Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
+	for (const std::unique_ptr<Enemy>& enemy : enemies) {
+		if (enemy->GetIsSortie()) {
+			if (isLockOnMode_) {
+				// すべての敵に対して順にロックオン判定
+				for (const std::unique_ptr<Enemy>& enemy2 : enemies) {
+					// screen座標
+					Vector3 positionWorld = enemy2->GetWorldPosition();
+					Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
-			// すでにロックオンされているかチェック
-			bool alreadyLockedOn = std::find(target_.begin(), target_.end(), enemy.get()) != target_.end();
+					// すでにロックオンされているかチェック
+					bool alreadyLockedOn = std::find(target_.begin(), target_.end(), enemy2.get()) != target_.end();
 
-			// 新たにロックオンするか、すでにロックオンされている場合は対象として残す
-			if (alreadyLockedOn || CheckReticleRange(positionScreen)) {
-				targets.push_back(enemy.get());
+					// 新たにロックオンするか、すでにロックオンされている場合は対象として残す
+					if (alreadyLockedOn || CheckReticleRange(positionScreen)) {
+						targets.push_back(enemy2.get());
+					}
+				}
+			}
+			else {
+
+				// すべての敵に対して順にロックオン判定
+				for (const std::unique_ptr<Enemy>& enemy3 : enemies) {
+					// screen座標
+					Vector3 positionWorld = enemy3->GetWorldPosition();
+					Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
+
+					if (CheckReticleRange(positionScreen)) {
+						targets.push_back(enemy3.get());
+					}
+				}
 			}
 		}
 	}
-	else {
-
-		// すべての敵に対して順にロックオン判定
-		for (const std::unique_ptr<Enemy>& enemy : enemies) {
-			// screen座標
-			Vector3 positionWorld = enemy->GetWorldPosition();
-			Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
-
-			if (CheckReticleRange(positionScreen)) {
-				targets.push_back(enemy.get());
-			}
-		}
-	}
-
 	
 	// ロックオン対象をリセット
 	target_.clear();

@@ -97,6 +97,12 @@ public:
 
 	BulletType GetBulletType() { return bulletType_; }
 
+	Vector3 GetStartPosition() { return startPosition_; }
+
+	Vector3 GetEndPosition() { return endPosition_; }
+
+	bool GetIsSortie() { return isSortie_; }
+
 #pragma endregion
 
 #pragma region setter
@@ -112,6 +118,8 @@ public:
 	void SetStartPosition(Vector3 start) { startPosition_ = start; }
 
 	void SetEndPosition(Vector3 end) { endPosition_ = end; }
+
+	void SetIsSortie(bool isSortie) { isSortie_ = isSortie; }
 
 #pragma endregion
 
@@ -130,5 +138,6 @@ private:
 	Vector3 velocity_{}; // 移動ベクトル
 	Vector3 startPosition_{}; // スポーンする座標
 	Vector3 endPosition_{}; // でできた後の最終座標
+	bool isSortie_ = false;
 };
 

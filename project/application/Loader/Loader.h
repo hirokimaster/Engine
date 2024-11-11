@@ -83,4 +83,9 @@ private:
 	uint32_t texHandle_ = 0;
 	Camera camera_{};
 	Player* player_ = nullptr;
+	UVTransform uvTransform_{
+		{3.0f,3.0f,1.0f},
+		{0.0f,0.0f,0.0f},
+		{0.0f,0.0f,0.0f},
+	};
 };

@@ -23,18 +23,16 @@ void TitleScene::Initialize()
 
 	param_.threshold = 0.0f;
 	postProcess_->SetDissolveParam(param_);
-	texHandleMask_ = TextureManager::Load("resources/TempTexture/noise9.png");
-	texHandleSceneMask_ = TextureManager::Load("resources/TempTexture/noise0.png");
+	texHandleMask_ = TextureManager::Load("resources/TempTexture/noise0.png");
 	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
 	spriteWhite_.reset(Sprite::Create(texHandleWhite_));
+	postProcess_->SetMaskTexture(texHandleMask_);
 
 	if (title_) {
 		param_.threshold = 1.0f;
-		postProcess_->SetMaskTexture(texHandleSceneMask_);
 	}
 	else {
 		param_.threshold = 0.0f;
-		postProcess_->SetMaskTexture(texHandleMask_);
 	}
 
 
@@ -76,7 +74,6 @@ void TitleScene::Initialize()
 	// シーン遷移用
 	sceneTimer_ = 60;
 	isTransition_ = false;
-	//isDissolve_ = false;
 }
 
 void TitleScene::Update()
@@ -177,7 +174,6 @@ void TitleScene::SceneTransition()
 	if (isTransition_) {
 		postProcess_->SetDissolveParam(param_);
 		param_.threshold = 0.0f;
-		postProcess_->SetMaskTexture(texHandleSceneMask_);
 		--sceneTimer_;
 	}
 
@@ -196,7 +192,6 @@ void TitleScene::SceneTransition()
 		param_.threshold -= 0.01f;
 		if (param_.threshold <= 0.0f) {
 			param_.threshold = 0.0f;
-			postProcess_->SetMaskTexture(texHandleMask_);
 			title_ = false;
 		}
 	}

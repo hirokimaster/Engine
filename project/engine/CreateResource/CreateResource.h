@@ -11,6 +11,7 @@
 #include "engine/Math/Vector4.h"
 #include "engine/Math/Vector3.h"
 #include "engine/Math/Vector2.h"
+#include "engine/Math/Matrix3x3.h"
 
 struct Resource {
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertexResource;
@@ -33,6 +34,8 @@ struct VertexData {
 struct Material {
 	Vector4 color;
 	int32_t enableLighting;
+	float padding[3];
+	Matrix4x4 uvTransform;
 	float shininess;
 	float environmentCoefficient;
 };

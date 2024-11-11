@@ -47,8 +47,13 @@ public:
 	Material SetMaterialProperty(Material materialdata) { return *materialData_ = materialdata; }
 	// directionalLightの設定
 	DirectionalLight SetLightingProperty(DirectionalLight directionalLight) { return *directionalLightData_ = directionalLight; }
+	void SetUVTransform(UVTransform uvTransform) { uvTransform_ = uvTransform; }
 
 #pragma endregion
+
+private:
+
+	void CreateUVTransformMatrix();
 
 private:
 	Model* model_ = nullptr;
@@ -61,4 +66,9 @@ private:
 	Vector4 color_ = {};
 	Lighting* lighting_{};
 	WorldTransform worldTransform_{};
+	UVTransform uvTransform_{
+		{1.0f,1.0f,1.0f},
+		{0.0f,0.0f,0.0f},
+		{0.0f,0.0f,0.0f},
+	};
 };

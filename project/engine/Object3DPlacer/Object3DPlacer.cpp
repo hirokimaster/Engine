@@ -14,6 +14,7 @@ void Object3DPlacer::Initialize()
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
 	materialData_->enableLighting = true;
 	materialData_->shininess = 20.0f;
+	materialData_->uvTransform = MakeIdentityMatrix();
 	materialData_->environmentCoefficient = 1.0f;
 
 	// 平行光源用のリソース
@@ -27,6 +28,7 @@ void Object3DPlacer::Initialize()
 
 void Object3DPlacer::Draw(Camera& camera)
 {
+	CreateUVTransformMatrix();
 
 	if (lighting_ == nullptr) {
 		pipelineData_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
@@ -56,7 +58,6 @@ void Object3DPlacer::Draw(Camera& camera)
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 
 	// wvp用のCBufferの場所を設定
-	//worldTransform.TransferMatrix(resource_.wvpResource, camera);
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
@@ -96,4 +97,12 @@ void Object3DPlacer::Draw(Camera& camera, bool isAnimation)
 	if (modelAnimation_) {
 		modelAnimation_->Draw(isAnimation);
 	}
+}
+
+void Object3DPlacer::CreateUVTransformMatrix()
+{
+	Matrix4x4 uvTransformMatrix = MakeScaleMatrix(uvTransform_.scale);
+	uvTransformMatrix = Multiply(uvTransformMatrix, MakeRotateZMatrix(uvTransform_.rotate.z));
+	uvTransformMatrix = Multiply(uvTransformMatrix, MakeTranslateMatrix(uvTransform_.translate));
+	materialData_->uvTransform = uvTransformMatrix;
 }

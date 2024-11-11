@@ -294,7 +294,7 @@ void GameScene::StartGame()
 
 		// 回転の補間
 		Vector3 currentCameraRotate = Lerp(cameraRotateStart_, cameraRotateEnd_, t);
-		currentCameraRotate.y = NormalizeRotation(currentCameraRotate.y);  // 必要なら正規化
+		currentCameraRotate.y = NormalizeRotation(currentCameraRotate.y);
 
 		followCamera_->SetOffset(currentOffset);
 		followCamera_->SetRotate(currentCameraRotate);

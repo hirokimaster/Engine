@@ -13,7 +13,7 @@ void Skydome::Initialize()
 
 	worldTransform_.Initialize();
 	worldTransform_.scale = { 1000.0f,1000.0f,1000.0f };
-	texHandle_ = TextureManager::GetInstance()->Load("resources/skydome/sky2.png");
+	texHandle_ = TextureManager::GetInstance()->Load("resources/skydome/sky.jpg");
 
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
@@ -23,12 +23,18 @@ void Skydome::Initialize()
 	material_.color = { 1.0f,1.0f,1.0f,1.0f };
 	material_.enableLighting = false;
 	object_->SetMaterialProperty(material_);
+	object_->SetUVTransform(uvTransform_);
 
 }
 
 void Skydome::Update()
 {
 	worldTransform_.UpdateMatrix();
+
+	ImGui::Begin("uv");
+	ImGui::DragFloat2("scale", &uvTransform_.scale.x, 0.01f, 0.0f, 1000.0f);
+	ImGui::End();
+	object_->SetUVTransform(uvTransform_);
 
 }
 

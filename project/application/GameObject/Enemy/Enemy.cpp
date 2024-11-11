@@ -22,7 +22,7 @@ void Enemy::Initialize(uint32_t texHandle)
 	bulletType_ = BulletType::Normal;
 
 	// 最初の状態
-	phaseState_ = std::make_unique<EnemyStateFire>();
+	phaseState_ = std::make_unique<EnemyStateSortie>();
 
 	// 当たり判定の属性設定
 	SetCollosionAttribute(kCollisionAttributeEnemy);
@@ -31,10 +31,10 @@ void Enemy::Initialize(uint32_t texHandle)
 
 void Enemy::Update()
 {
+	worldTransform_.UpdateMatrix();
 	phaseState_->SetPlayer(player_);
 	phaseState_->Update(this); // 状態ごとの更新処理
 	BulletUpdate(); // 弾の更新処理
-	worldTransform_.UpdateMatrix();
 
 	// 時間で消滅
 	if (--deathTimer_ <= 0) {
@@ -52,7 +52,11 @@ void Enemy::Update()
 
 void Enemy::Draw(Camera& camera)
 {
-	object_->Draw(camera);
+	// 出撃するまで出さない
+	if(isSortie_){
+		object_->Draw(camera);
+	}
+	
 
 	// 弾の描画
 	for (const auto& bullet : bullets_) {
