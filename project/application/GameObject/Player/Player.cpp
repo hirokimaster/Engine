@@ -52,7 +52,7 @@ void Player::Update()
 		isHitEnemyFire_ = false;
 	}
 
-	if (hp_ <= 2) {
+	if (hp_ <= 0) {
 		isDead_ = true;
 	}
 

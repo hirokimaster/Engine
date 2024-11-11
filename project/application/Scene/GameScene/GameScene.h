@@ -110,9 +110,6 @@ private:
 	uint32_t texHandleUnLock_ = 0;
 	uint32_t texHandleAttack_ = 0;
 
-	// bossEnemy
-	//std::unique_ptr<BossEnemy> bossEnemy_ = nullptr;
-
 	// シーン遷移用
 	bool isTransition_ = false;
 	uint32_t sceneTimer_ = 60;
