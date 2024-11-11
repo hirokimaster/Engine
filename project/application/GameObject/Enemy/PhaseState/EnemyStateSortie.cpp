@@ -30,7 +30,7 @@ void EnemyStateSortie::Update(Enemy* pEnemy)
 		}
 		else {
 			isSortie_ = false;
-			//pEnemy->ChangeState(std::unique_ptr<EnemyStateFire>());
+			pEnemy->ChangeState(std::make_unique<EnemyStateFire>());
 		}
 	}
 

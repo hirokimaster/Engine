@@ -19,7 +19,6 @@ void Enemy::Initialize(uint32_t texHandle)
 	worldTransform_.translate = { 0,0,80.0f };
 	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-	bulletType_ = BulletType::Normal;
 
 	// 最初の状態
 	phaseState_ = std::make_unique<EnemyStateSortie>();
@@ -33,6 +32,7 @@ void Enemy::Update()
 {
 	worldTransform_.UpdateMatrix();
 	phaseState_->SetPlayer(player_);
+
 	phaseState_->Update(this); // 状態ごとの更新処理
 	BulletUpdate(); // 弾の更新処理
 
@@ -53,10 +53,10 @@ void Enemy::Update()
 void Enemy::Draw(Camera& camera)
 {
 	// 出撃するまで出さない
-	if(isSortie_){
+	if (isSortie_) {
 		object_->Draw(camera);
 	}
-	
+
 
 	// 弾の描画
 	for (const auto& bullet : bullets_) {
@@ -82,6 +82,7 @@ void Enemy::Fire()
 
 	// 弾を生成して初期化
 	std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+	bullet->Initialize(texHandleBullet_);
 	bullet->SetPosition(GetWorldPosition());
 	bullet->SetVelocity(velocity);
 	// 弾をセット
@@ -93,7 +94,7 @@ void Enemy::BulletUpdate()
 
 	// 弾更新
 	for (const auto& bullet : bullets_) {
-		bullet->Update(bulletType_);
+		bullet->Update();
 	}
 
 	// デスフラグが立ったら要素を削除
@@ -105,80 +106,6 @@ void Enemy::BulletUpdate()
 		return false;
 		});
 
-}
-
-void Enemy::FireRadial(uint32_t bulletCount)
-{
-	// 弾の速度
-	const float kBulletSpeed = -0.5f;
-
-	// 弾幕の角度範囲
-	float angleStep = 360.0f / bulletCount;
-
-	const float kRadius = 0.1f; // 半径
-
-	for (uint32_t i = 0; i < bulletCount; ++i) {
-		float angle = i * angleStep * (std::numbers::pi_v<float> / 180.0f);
-		Vector3 velocity = { cosf(angle) * kRadius, sinf(angle) * kRadius, kBulletSpeed };
-
-		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_, BulletType::Radial);
-		bullet->SetVelocity(velocity);
-		bullet->SetPosition(GetWorldPosition());
-		bullets_.push_back(std::move(bullet));
-	}
-}
-
-void Enemy::FireSpiral(float spiralSpeed, uint32_t bulletCount, float delayBetweenBullets)
-{
-	static uint32_t bulletIndex = 0; // 弾のインデックス
-	static float timeLastShot = 0.0f; // 発射間隔に使う
-
-	// 弾発射タイミングの制御
-	timeLastShot += deltaTime_; // deltaTimeはフレームごとの時間差分
-
-	if (timeLastShot >= delayBetweenBullets)
-	{
-		timeLastShot = 0.0f;
-
-		// 弾の速度
-		const float kBulletSpeed = -1.0f;
-
-		// 螺旋の角度
-		float angle = bulletIndex * spiralSpeed;
-
-		// 速度ベクトルの計算
-		float x = std::cos(angle);
-		float y = std::sin(angle);
-		Vector3 velocity = { x, y, 7.0f };
-		velocity = Normalize(velocity);
-		velocity.z = kBulletSpeed * velocity.z;
-
-		// 弾を生成し、初期化
-		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_, BulletType::Spiral);
-		bullet->SetVelocity(velocity);
-		bullet->SetPosition(GetWorldPosition());
-
-		// 弾をリストに追加
-		bullets_.push_back(std::move(bullet));
-
-		// 次の弾の角度とインデックスを更新
-		bulletIndex = (bulletIndex + 1) % bulletCount;
-	}
-
-}
-
-void Enemy::FireMissile(uint32_t bulletCount)
-{
-	for (uint32_t i = 0; i < bulletCount; ++i) {
-		// 弾を生成し、初期化
-		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_, BulletType::Missile);
-		bullet->SetPlayer(player_);
-		bullet->SetPosition(GetWorldPosition());
-		bullets_.push_back(std::move(bullet));
-	}
 }
 
 void Enemy::ChangeState(std::unique_ptr<IPhaseStateEnemy> newState)

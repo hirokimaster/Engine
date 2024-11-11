@@ -91,7 +91,7 @@ void BossEnemy::UsuallyFire()
 	Vector3 velocity = kBulletSpeed * diff; // 速度ベクトル
 	// 弾の生成
 	std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-	bullet->Initialize(texHandleBullet_, BulletType::Normal);
+	bullet->Initialize(texHandleBullet_);
 	bullet->SetPosition(GetWorldPosition());
 	bullet->SetVelocity(velocity);
 	bullets_.push_back(std::move(bullet));
@@ -101,7 +101,7 @@ void BossEnemy::UpdateBullet()
 {
 	// 弾の更新
 	for (const auto& bullet : bullets_) {
-		bullet->Update(BulletType::Normal);
+		bullet->Update();
 	}
 
 	// デスフラグの立ったやつを消す

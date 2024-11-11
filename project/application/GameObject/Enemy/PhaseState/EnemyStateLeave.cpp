@@ -16,13 +16,16 @@ void EnemyStateLeave::Update(Enemy* pEnemy)
 
 	// 2つの移動量の選択肢を定義
 	std::vector<Vector3> velocities = {
-		{ -0.2f, 0.2f, 0.2f }, // 1つ目の移動量
-		{ 0.2f, 0.2f, 0.2f } // 2つ目の移動量
+		{ -0.5f, 0.1f, 0.2f }, // 1つ目の移動量
+		{ 0.5f, 0.1f, 0.2f } // 2つ目の移動量
 	};
 
 	// ランダムに選択して移動量を設定
-	uint32_t randomIndex = dist(gen);
-	pEnemy->SetVelocity(velocities[randomIndex]);
-
+	if (!isSetvelocity_) {
+		uint32_t randomIndex = dist(gen);
+		pEnemy->SetVelocity(velocities[randomIndex]);
+		isSetvelocity_ = true;
+	}
+	
 	pEnemy->Move();
 }

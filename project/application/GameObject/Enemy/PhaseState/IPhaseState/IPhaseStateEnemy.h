@@ -21,7 +21,7 @@ public:
 	/// playerのポインタを設定する
 	/// </summary>
 	/// <param name="player"></param>
-	virtual void SetPlayer(Player* player) { player_ = player; }
+	virtual void SetPlayer(Player* player) { player_ = player; };
 
 protected:
 	// playerのポインタを借りる

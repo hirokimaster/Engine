@@ -17,9 +17,9 @@ public:
 
 	void Update(Enemy* pEnemy)override;
 
-private:
-
 	const uint32_t kFireInterval_ = 60;
+
+private:
 
 	uint32_t fireTimer_ = 60;
 

@@ -9,23 +9,22 @@ EnemyStateFire::~EnemyStateFire()
 
 void EnemyStateFire::Update(Enemy* pEnemy)
 {
+	Vector3 playerPosition = player_->GetWorldPosition();
+	Vector3 enemyPosition = pEnemy->GetWorldPosition();
+	float diffZ = enemyPosition.z - playerPosition.z;
+
 	// 発射タイマーをデクリメント
 	--fireTimer_;
 
 	if (fireTimer_ <= 0) {
 		// 弾を発射
-		//pEnemy->Fire();
+		pEnemy->Fire();
 		// 発射タイマーの初期化
 		fireTimer_ = kFireInterval_;
 	}
 
-	pEnemy;
-
-	//playerとの距離がこの位置に達したら離脱する
-	/*float diff = pEnemy->GetWorldPosition().z - player_->GetWorldPosition().z;
-	const float limitDist = 0.0f;
-	if (diff < limitDist) {
+	if (diffZ <= 50.0f) {
 		pEnemy->ChangeState(std::make_unique<EnemyStateLeave>());
-	}*/
+	}
 
 }
