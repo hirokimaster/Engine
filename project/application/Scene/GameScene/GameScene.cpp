@@ -77,11 +77,9 @@ void GameScene::Initialize()
 	// ゲームオーバー用
 	texColor_ = { 1.0f,1.0f,1.0f,0.0f };
 	spriteYes_.reset(Sprite::Create(texHandleYes_, { 400.0f,400.0f }, texColor_));
-	spriteYes2_.reset(Sprite::Create(texHandleYes2_, { 400.0f,400.0f }, texColor_));
 	spriteNo_.reset(Sprite::Create(texHandleNo_, { 750.0f,400.0f }, texColor_));
-	spriteNo2_.reset(Sprite::Create(texHandleNo2_, { 750.0f,400.0f }, texColor_));
 	spriteContinue_.reset(Sprite::Create(texHandleContinue_, { 450.0f,250.0f }, texColor_));
-
+	
 	// ゲームスタート
 	isGameStart_ = false;
 }
@@ -149,19 +147,9 @@ void GameScene::Draw()
 
 	postProcess_->Draw();
 
-	if (selectNo_ >= 1) {
-		spriteNo_->Draw();
-	}
-	else {
-		spriteNo2_->Draw();
-	}
+	spriteNo_->Draw();
 
-	if (selectNo_ <= 0) {
-		spriteYes_->Draw();
-	}
-	else {
-		spriteYes2_->Draw();
-	}
+	spriteYes_->Draw();
 
 	spriteContinue_->Draw();
 
@@ -235,9 +223,7 @@ void GameScene::LoadTextureFile()
 
 	// ゲームオーバー用
 	texHandleYes_ = TextureManager::Load("resources/UI/yes.png");
-	texHandleYes2_ = TextureManager::Load("resources/UI/yes2.png");
 	texHandleNo_ = TextureManager::Load("resources/UI/no.png");
-	texHandleNo2_ = TextureManager::Load("resources/UI/no2.png");
 	texHandleContinue_ = TextureManager::Load("resources/UI/continue.png");
 }
 
@@ -337,18 +323,14 @@ void GameScene::GameOver()
 		followCamera_->SetTarget(nullptr);
 		spriteContinue_->SetColor(texColor_);
 		spriteYes_->SetColor(texColor_);
-		spriteYes2_->SetColor(texColor_);
 		spriteNo_->SetColor(texColor_);
-		spriteNo2_->SetColor(texColor_);
 		texColor_.w += 0.05f;
 		postProcess_->SetEffect(PostEffectType::GaussianBlur);
 	}
 
 	if (texColor_.w >= 2.0f) {
 		spriteYes_->SetColor(texColor_);
-		spriteYes2_->SetColor(texColor_);
 		spriteNo_->SetColor(texColor_);
-		spriteNo2_->SetColor(texColor_);
 		texColor_.w = 2.0f;
 	}
 
@@ -357,6 +339,27 @@ void GameScene::GameOver()
 	}
 	else if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_DPAD_RIGHT) && selectNo_ == 0) {
 		selectNo_ += 1;
+	}
+
+	static float scaleTimer = 0.0f;
+	const float scaleSpeed = 2.0f; 
+	const float scaleRange = 0.2f;
+
+	// spriteNo,Yesのアニメーション
+	scaleTimer += scaleSpeed * 1.0f / 60.0f;
+	float scaleValue = 1.0f + scaleRange * sin(scaleTimer);
+
+	if (selectNo_ == 0) {
+		spriteYes_->SetScale({ scaleValue, scaleValue, scaleValue });
+		spriteNo_->SetScale({ 1.0f, 1.0f, 1.0f });
+	}
+	else if (selectNo_ == 1) {
+		spriteNo_->SetScale({ scaleValue, scaleValue, scaleValue });
+		spriteYes_->SetScale({ 1.0f, 1.0f, 1.0f });
+	}
+	else {
+		spriteYes_->SetScale({ 1.0f, 1.0f, 1.0f });
+		spriteNo_->SetScale({ 1.0f, 1.0f, 1.0f });
 	}
 
 	if (texColor_.w >= 2.0f) {

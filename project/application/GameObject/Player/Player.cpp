@@ -224,8 +224,6 @@ void Player::Rotate()
 	worldTransform_.translate.y += velocity.y * 0.4f;
 	worldTransform_.translate.z += velocity.z * 0.4f;
 
-	particle_->SetVelocityXY({ -velocity.x,-velocity.y });
-
 }
 
 void Player::IncurDamage()

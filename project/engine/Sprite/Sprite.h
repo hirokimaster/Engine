@@ -83,6 +83,8 @@ public: // メンバ関数
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 	// サイズの設定
 	void SetSize(const Vector2& size) { size_ = size; }
+	// スケールの変更
+	void SetScale(const Vector3& scale) { worldTransform_.scale = scale; }
 #pragma endregion
 
 	/// <summary>

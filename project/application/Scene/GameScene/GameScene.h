@@ -143,14 +143,10 @@ private:
 	bool isGameOver_ = false;
 
 	std::unique_ptr<Sprite> spriteYes_;
-	std::unique_ptr<Sprite> spriteYes2_;
 	std::unique_ptr<Sprite> spriteNo_;
-	std::unique_ptr<Sprite> spriteNo2_;
 	std::unique_ptr<Sprite> spriteContinue_;
 	uint32_t texHandleYes_ = 0;
-	uint32_t texHandleYes2_ = 0;
 	uint32_t texHandleNo_ = 0;
-	uint32_t texHandleNo2_ = 0;
 	uint32_t texHandleContinue_ = 0;
 	Vector4 texColor_{};
 	uint32_t selectNo_ = 0;
