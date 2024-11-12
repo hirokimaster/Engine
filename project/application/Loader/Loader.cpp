@@ -144,7 +144,7 @@ void Loader::Arrangement(LevelData* levelData)
 			newEnemy->SetEndPosition(objectData.controlPointEnd);
 			enemys_.push_back(std::move(newEnemy));
 		}
-		else if (objectData.fileName == "mount") {
+		else if (objectData.fileName == "road") {			
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
