@@ -17,7 +17,7 @@ void EnemyBullet::Initialize(uint32_t texHandle)
 	worldTransform_.scale = { 0.5f,0.5f,0.5f };
 	object_->SetTexHandle(texHandle);
 
-	SetCollosionAttribute(kCollisionAttributeEnemy);
+	SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
 }
 
