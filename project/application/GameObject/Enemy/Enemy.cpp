@@ -25,7 +25,7 @@ void Enemy::Initialize(uint32_t texHandle)
 
 	// 当たり判定の属性設定
 	SetCollosionAttribute(kCollisionAttributeEnemy);
-	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
+	SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
 }
 
 void Enemy::Update()

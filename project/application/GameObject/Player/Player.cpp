@@ -22,7 +22,7 @@ void Player::Initialize(uint32_t texHandle)
 	explosionParticle_->Initialize();
 
 	SetCollosionAttribute(kCollisionAttributePlayer);
-	SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
+	SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
 
 	// 体力
 	hp_ = kMaxHp_;
