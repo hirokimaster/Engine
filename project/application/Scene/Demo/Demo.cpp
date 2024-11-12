@@ -17,133 +17,51 @@ Demo::~Demo()
 
 void Demo::Initialize()
 {
-	/*ModelManager::LoadGLTFModel("Walk.gltf");
+	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 
-	postProcess_ = std::make_unique<PostProcess>();
-	postProcess_->Initialize();
-	postProcess_->SetEffect(Grayscale);
-	GameManager::GetInstance()->SetPostProcess(postProcess_.get());
+	// 自機モデル
+	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
+	objectPlayer_ = std::make_unique<Object3DPlacer>();
+	objectPlayer_->Initialize();
+	objectPlayer_->SetModel("Player/Jet.obj");
+	objectPlayer_->SetTexHandle(texHandlePlayer_);
+	worldTransform_.Initialize();
+	objectPlayer_->SetWorldTransform(worldTransform_);
+	particle_ = std::make_unique<PlayerParticle>();
+	particle_->Initialize();
 
-	texHandle_ = TextureManager::Load("resources/taiyou.jpg");
-	maskTex_ = TextureManager::Load("resources/noise0.png");
-	texHandleUV_ = TextureManager::Load("resources/uvChecker.png");
-	sprite_.reset(Sprite::Create(texHandle_));
-	object_ = std::make_unique<Object3DPlacer>();
-	object_->Initialize();
-	object_->SetModel("Walk.gltf");
-	object_->SetTexHandle(texHandleUV_);
-	trans_.Initialize();
-	trans_.scale = { 10.0f,10.0f,10.0f };
-	trans_.translate.x = 15.0f;
-	trans_.translate.y = -10.0f;
-	trans_.rotate.y = std::numbers::pi_v<float>;
-	camera_.Initialize();*/
-	/*camera_.Initialize();
+	camera_.Initialize();
+	camera_.translate.z = -20.0f;
 
-	texHandle_ = TextureManager::Load("resources/uvChecker.png");
-	loader_ = std::make_unique<Loader>();
-	levelData_ = loader_->Load("level");
-	loader_->SetTexHandle(texHandle_);
-	loader_->Arrangement(levelData_);*/
-
-	texHandle = TextureManager::Load("resources/white.png");
-	texHandle2 = TextureManager::Load("resources/monsterBall.png");
 }
 
 void Demo::Update()
 {
-	if (Input::GetInstance()->PressedKey(DIK_W)) {
-		GameManager::GetInstance()->ChangeScene("GAME");
-	}
-	/*loader_->UpdateCamera();
-	camera_ = loader_->GetCamera();
-	camera_.TransferMatrix();*/
+	worldTransform_.UpdateMatrix();
+	particle_->SetPosition(worldTransform_.translate + particleOffset_);
+	particle_->SetAreaMax({ worldTransform_.translate.x + 0.1f, worldTransform_.translate.y + 0.1f,worldTransform_.translate.z - 0.5f });
+	particle_->SetAreaMin({ worldTransform_.translate.x - 0.1f, worldTransform_.translate.y - 0.1f,worldTransform_.translate.z - 0.7f });
+	particle_->Update();
 
-	//static int currentItem_ = 0;
-	//const char* item[9] = { "Grayscale", "Vignette", "Bloom","Gaussian","LuminanceOutline",
-	//	"DepthOutline","RadialBlur","Dissolve","Random" };
+	ImGui::Begin("particle");
+	ImGui::DragFloat3("particleOffset", &particleOffset_.x, 0.01f, -100.0f, 100.0f);
+	ImGui::End();
 
-	//ImGui::Begin("Effect");
-	//if (ImGui::Combo("Type", &currentItem_, item, IM_ARRAYSIZE(item))) {
-	//	if (currentItem_ == 0) {
-	//		postProcess_->SetEffect(Grayscale);
-	//	}
-	//	else if (currentItem_ == 1) {
-	//		postProcess_->SetEffect(Vignette);
-	//	}
-	//	else if (currentItem_ == 2) {
-	//		postProcess_->SetEffect(Bloom);
-	//	}
-	//	else if (currentItem_ == 3) {
-	//		postProcess_->SetEffect(GaussianBlur);
-	//	}
-	//	else if (currentItem_ == 4) {
-	//		postProcess_->SetEffect(LuminanceOutline);
-	//	}
-	//	else if (currentItem_ == 5) {
-	//		postProcess_->SetEffect(DepthOutline);
-	//	}
-	//	else if (currentItem_ == 6) {
-	//		postProcess_->SetEffect(RadialBlur);
-	//	}
-	//	else if (currentItem_ == 7) {
-	//		postProcess_->SetEffect(Dissolve);
-	//		postProcess_->SetMaskTexture(maskTex_);
+	// カメラの座標
+	ImGui::Begin("Camera");
+	ImGui::SliderFloat3("CmeraTranslation ", &camera_.translate.x, -50.0f, 50.0f);
+	ImGui::SliderFloat3("CmeraRotate ", &worldTransform_.rotate.x, 0.0f, 10.0f);
+	ImGui::End();
 
-	//	}
-	//	else if (currentItem_ == 8) {
-	//		postProcess_->SetEffect(Random);
-	//	}
-
-	//}
-
-	////	ImGui::DragFloat("RandomTime", &time_, 0.1f, 0.0f, 100.0f);
-
-	//ImGui::End();
-
-	//postProcess_->SetRandomParam(param_);
-	//param_.time += 1.0f / 120.0f;
-
-
-	//postProcess_->SetDissolveParam(DissolvePram_);
-
-	//if (DissolvePram_.threshold >= 1.0f) {
-	//	dFlag_2 = true;
-	//	dFlag_1 = false;
-	//}
-
-	//if (DissolvePram_.threshold <= 0.0f) {
-	//	dFlag_1 = true;
-	//	dFlag_2 = false;
-	//}
-
-	//if (dFlag_1) {
-	//	DissolvePram_.threshold += 0.01f;
-	//}
-
-	//if (dFlag_2) {
-	//	DissolvePram_.threshold -= 0.01f;
-	//}
-
-
-
-	//trans_.UpdateMatrix();
-	//camera_.UpdateMatrix();
+	camera_.UpdateMatrix();
 }
 
 void Demo::Draw()
 {
-	//loader_->Draw(camera_);
-	//postProcess_->Draw();
+	objectPlayer_->Draw(camera_);
+	particle_->Draw(camera_);
 }
 
 void Demo::PostProcessDraw()
 {
-	/*postProcess_->PreDraw();
-
-	object_->Draw(trans_, camera_);
-	sprite_->Draw();
-
-
-	postProcess_->PostDraw();*/
 }

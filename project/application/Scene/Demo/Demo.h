@@ -14,6 +14,8 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameManager/GameManager.h"
 #include "application/Loader/Loader.h"
+#include "application/GameObject/ModelResources/ModelResources.h"
+#include "application/GameObject/Player/PlayerParticle/PlayerParticle.h"
 
 class Demo : public IScene {
 public: // メンバ関数
@@ -49,24 +51,12 @@ public: // メンバ関数
 
 private:
 
-	/*uint32_t texHandle_ = 0;
-	uint32_t texHandleUV_ = 0;
-	uint32_t maskTex_ = 0;
-	std::unique_ptr<PostProcess> postProcess_ = nullptr;
-	std::unique_ptr<Sprite> sprite_ = nullptr;
-	std::unique_ptr<Object3DPlacer> object_ = nullptr;
+	std::unique_ptr<Object3DPlacer> objectPlayer_ = nullptr;
+	uint32_t texHandlePlayer_ = 0;
 	Camera camera_{};
-	WorldTransform trans_{};
-	RandomParam param_{};
-	bool dFlag_1 = true;
-	bool dFlag_2 = false;
-	DissolveParam DissolvePram_{};*/
-	/*std::unique_ptr<Loader> loader_;
-	LevelData* levelData_ = nullptr;
-	uint32_t texHandle_ = 0;
-	Camera camera_;*/
-	uint32_t texHandle;
-	uint32_t texHandle2;
+	WorldTransform worldTransform_{};
+	std::unique_ptr<PlayerParticle> particle_;
+	Vector3 particleOffset_ = { 0,0.5f,-4.0f };
 };
 
 

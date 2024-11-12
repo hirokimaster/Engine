@@ -63,6 +63,24 @@ void PlayerParticle::Update()
 		(*particleItr).worldTransform.UpdateMatrix();
 
 	}
+
+#ifdef _DEBUG
+
+	particle_->SetDistributionParam(distributionParam_);
+
+	ImGui::Begin("param");
+
+	ImGui::DragFloat2("velo", &distributionParam_.velocity.x, 0.01f, -100.0f, 100.0f);
+	ImGui::DragFloat2("color", &distributionParam_.color.x, 0.01f, 0.0f, 5.0f);
+	ImGui::DragFloat2("rotate", &distributionParam_.rotate.x, 0.01f, -100.0f, 100.0f);
+	ImGui::DragFloat2("scale", &distributionParam_.scale.x, 0.01f, -100.0f, 100.0f);
+	ImGui::DragFloat2("lifeTime", &distributionParam_.lifeTime.x, 0.01f, 0.0f, 100.0f);
+	ImGui::DragFloat("frequency", &emit_.frequency, 0.01f, -100.0f, 100.0f);
+	ImGui::DragFloat("frequencyTime", &emit_.frequencyTime, 0.01f, -100.0f, 100.0f);
+
+	ImGui::End();
+
+#endif
 }
 
 void PlayerParticle::Draw(const Camera& camera)

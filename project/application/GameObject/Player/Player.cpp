@@ -11,15 +11,13 @@ void Player::Initialize(uint32_t texHandle)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("Player/cube.obj");
+	object_->SetModel("Player/Jet.obj");
 	worldTransform_.Initialize(); ;
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
 	object_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 
-	particle_ = std::make_unique<PlayerParticle>();
-	particle_->Initialize();
 	explosionParticle_ = std::make_unique<ExplosionParticle>();
 	explosionParticle_->Initialize();
 
@@ -38,34 +36,10 @@ void Player::Update()
 	Move(); // 移動
 	Attack(); // 攻撃
 	UpdateBullet(); // 弾の更新
-	Rotate(); // 回転
-	particle_->SetPosition(GetWorldPosition());
-	particle_->SetAreaMax({ GetWorldPosition().x + 0.1f, GetWorldPosition().y + 0.1f,GetWorldPosition().z - 0.5f });
-	particle_->SetAreaMin({ GetWorldPosition().x - 0.1f, GetWorldPosition().y - 0.1f,GetWorldPosition().z - 0.7f });
-	particle_->Update();
 	worldTransform_.UpdateMatrix();
 
-	// 敵の攻撃を食らったら
-	const uint32_t kDamage = 1; // 敵からの攻撃ダメージ
-	if (isHitEnemyFire_) {
-		hp_ -= kDamage;
-		isHitEnemyFire_ = false;
-	}
-
-	if (hp_ <= 0) {
-		isDead_ = true;
-	}
-
-	if (isDead_) {
-		--deadTimer_;
-	}
-
-	if (deadTimer_ <= 30.0f) {
-		explosionParticle_->Update();
-	}
-	else {
-		explosionParticle_->SetPosition(GetWorldPosition());
-	}
+	// ダメージ
+	IncurDamage();
 
 	// 行動限界
 	// 移動限界
@@ -87,7 +61,6 @@ void Player::Update()
 	ImGui::Begin("playerHp");
 	ImGui::Text("hp %d", hp_);
 	ImGui::End();
-
 #endif
 }
 
@@ -103,11 +76,6 @@ void Player::Draw(Camera& camera)
 		}
 	}
 
-	if (deadTimer_ >= 30.0f) {
-		particle_->Draw(camera);
-	}
-	
-
 	// UIの描画
 	DrawUI();
 
@@ -119,22 +87,7 @@ void Player::Draw(Camera& camera)
 
 void Player::Move()
 {
-	Vector3 move{ 0,0,0 }; // 移動ベクトル
-
-	if (Input::GetInstance()->PushKey(DIK_A)) {
-		move.x -= kMoveSpeed_;
-	}
-	else if (Input::GetInstance()->PushKey(DIK_D)) {
-		move.x += kMoveSpeed_;
-	}
-
-	if (Input::GetInstance()->PushKey(DIK_W)) {
-		move.y += kMoveSpeed_;
-	}
-	else if (Input::GetInstance()->PushKey(DIK_S)) {
-		move.y -= kMoveSpeed_;
-	}
-
+	Rotate();
 }
 
 void Player::Attack()
@@ -273,6 +226,31 @@ void Player::Rotate()
 
 	particle_->SetVelocityXY({ -velocity.x,-velocity.y });
 
+}
+
+void Player::IncurDamage()
+{
+	// 敵の攻撃を食らったら
+	const uint32_t kDamage = 1; // 敵からの攻撃ダメージ
+	if (isHitEnemyFire_) {
+		hp_ -= kDamage;
+		isHitEnemyFire_ = false;
+	}
+
+	if (hp_ <= 0) {
+		isDead_ = true;
+	}
+
+	if (isDead_) {
+		--deadTimer_;
+	}
+
+	if (deadTimer_ <= 30.0f) {
+		explosionParticle_->Update();
+	}
+	else {
+		explosionParticle_->SetPosition(GetWorldPosition());
+	}
 }
 
 Vector3 Player::GetWorldPosition() const
