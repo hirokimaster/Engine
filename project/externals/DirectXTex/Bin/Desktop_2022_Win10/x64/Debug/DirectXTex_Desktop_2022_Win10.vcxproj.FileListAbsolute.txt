@@ -1,0 +1,1 @@
+C:\授業\2024年度前期\DirectXEngine\project\externals\DirectXTex\Bin\Desktop_2022_Win10\x64\Debug\DirectXTex.lib
