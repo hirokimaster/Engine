@@ -53,8 +53,6 @@ void GameScene::Initialize()
 	followCamera_->SetTarget(&player_->GetWorldTransform());
 	followCamera_->SetLockOn(lockOn_.get());
 	t = 0.0f;
-	spriteEngage_.reset(Sprite::Create(texHandleEngage_, { 650.0f,250.0f }));
-	spriteEngage_->SetAnchorPoint({ 0.5f,0.5f });
 
 	// loader
 	uint32_t texhandle = TextureManager::Load("resources/TempTexture/white.png");
@@ -180,10 +178,6 @@ void GameScene::PostProcessDraw()
 
 	spriteAttack_->Draw();
 
-	if (engageColor_.w > 0.0f && t >= 0.7f) {
-		spriteEngage_->Draw();
-
-	}
 	postProcess_->PostDraw();
 
 }
@@ -219,8 +213,7 @@ void GameScene::LoadTextureFile()
 	texHandleLockOn_ = TextureManager::Load("resources/UI/LockOn.png");
 	texHandleUnLock_ = TextureManager::Load("resources/UI/unLock.png");
 	texHandleAttack_ = TextureManager::Load("resources/UI/attack.png");
-	texHandleEngage_ = TextureManager::Load("resources/UI/engage.png");
-
+	
 	// ゲームオーバー用
 	texHandleYes_ = TextureManager::Load("resources/UI/yes.png");
 	texHandleNo_ = TextureManager::Load("resources/UI/no.png");
@@ -269,12 +262,6 @@ void GameScene::StartGame()
 	if (t >= 1.0f) {
 		isGameStart_ = true;
 		t = 1.0f;
-		spriteEngage_->SetColor(engageColor_);
-		engageColor_.w -= 0.03f;
-	}
-
-	if (engageColor_.w <= 0.0f) {
-		engageColor_.w = 0.0f;
 	}
 }
 

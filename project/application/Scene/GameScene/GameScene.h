@@ -135,8 +135,7 @@ private:
 	Vector3 offsetEnd_ = { 0, 5.0f, -40.0f };
 	Vector3 cameraRotateEnd_ = { 0, 0, 0 };
 	float t = 0.0f;
-	std::unique_ptr<Sprite> spriteEngage_ = nullptr;
-	uint32_t texHandleEngage_ = 0;
+	
 	Vector4 engageColor_ = { 1.0f,1.0f,1.0f,1.0f };
 
 	// ゲームオーバー用
