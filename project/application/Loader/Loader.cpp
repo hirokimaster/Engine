@@ -144,7 +144,7 @@ void Loader::Arrangement(LevelData* levelData)
 			newEnemy->SetEndPosition(objectData.controlPointEnd);
 			enemys_.push_back(std::move(newEnemy));
 		}
-		else if (objectData.fileName == "road") {			
+		else if (objectData.fileName == "ground") {			
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
@@ -175,7 +175,9 @@ void Loader::Update()
 	// 行列の更新
 	for (auto& object : objects_) {
 		object->GetWorldTransform().UpdateMatrix();
+		object->SetUVTransform(uvTransform_);
 	}
+
 
 	for (auto& enemy : enemys_) {
 		enemy->Update();
