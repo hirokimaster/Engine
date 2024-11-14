@@ -39,6 +39,10 @@ void GameScene::Initialize()
 	player_->SetPosition({ 0,0,50.0f });
 	lockOn_->Initialize(player_->GetWorldTransform().translate);
 	player_->SetLockOn(lockOn_.get());
+	// rail
+	rail_ = std::make_unique<Rail>();
+	rail_->Initialize();
+	rail_->SetPlayer(player_.get());
 
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
@@ -93,6 +97,7 @@ void GameScene::Update()
 	// player
 	player_->Update();
 	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition(), isGameStart_);
+	rail_->Update();
 
 	// loader
 	loader_->Update();

@@ -41,27 +41,8 @@ void Player::Update()
 	// ダメージ
 	IncurDamage();
 
-	// 行動限界
-	// 移動限界
-	const float kMoveLimitX = 23.0f;
-	const float kMoveLimitY = 12.5f;
-
-	// 範囲を超えない処理
-	worldTransform_.translate.x = max(worldTransform_.translate.x, -kMoveLimitX);
-	worldTransform_.translate.x = min(worldTransform_.translate.x, kMoveLimitX);
-	worldTransform_.translate.y = max(worldTransform_.translate.y, -kMoveLimitY);
-	worldTransform_.translate.y = min(worldTransform_.translate.y, kMoveLimitY);
-
-#ifdef _DEBUG
-	ImGui::Begin("PlayerRotate");
-	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.rotate.x,
-		worldTransform_.rotate.y, worldTransform_.rotate.z);
-	ImGui::End();
-
-	ImGui::Begin("playerHp");
-	ImGui::Text("hp %d", hp_);
-	ImGui::End();
-#endif
+	// imgui
+	DebugDraw();
 }
 
 void Player::Draw(Camera& camera)
@@ -87,7 +68,20 @@ void Player::Draw(Camera& camera)
 
 void Player::Move()
 {
-	Rotate();
+
+	Vector3 move = { 0,0,0 }; // 移動ベクトル
+	const float kMoveSpeed = 0.2f;
+
+	// ゲームパッドの状態を得る変数(XINPUT)
+	XINPUT_STATE joyState;
+
+	// ゲームパッド状態取得
+	if (Input::GetInstance()->GetJoystickState(joyState)) {
+		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kMoveSpeed;
+		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kMoveSpeed;
+	}
+
+	worldTransform_.translate = worldTransform_.translate + move;
 }
 
 void Player::Attack()
@@ -194,36 +188,6 @@ void Player::DrawUI()
 
 void Player::Rotate()
 {
-	
-	Vector3 end = lockOn_->GetWorldTransform();
-	Vector3 start = worldTransform_.translate;
-
-	Vector3 diff = end - start;
-
-	diff = Normalize(diff);
-
-	Vector3 velocity = diff;
-
-	float t = 0.0f;
-
-	// 引数で受け取った速度をメンバ変数に代入
-	velocity_ = SLerp(velocity, worldTransform_.translate, t);
-
-	velocity_.x *= 0.1f;
-	velocity_.y *= 0.1f;
-	velocity_.z *= 0.1f;
-
-	// Y軸周り角度（Θy）
-	worldTransform_.rotate.y = std::atan2(velocity_.x, velocity_.z);
-
-	float velocityXZ = sqrt((velocity_.x * velocity_.x) + (velocity_.z * velocity_.z));
-	worldTransform_.rotate.x = std::atan2(-velocity_.y, velocityXZ);
-
-	// 座標移動(ベクトルの加算)
-	worldTransform_.translate.x += velocity.x * 0.4f;
-	worldTransform_.translate.y += velocity.y * 0.4f;
-	worldTransform_.translate.z += velocity.z * 0.4f;
-
 }
 
 void Player::IncurDamage()
@@ -249,6 +213,20 @@ void Player::IncurDamage()
 	else {
 		explosionParticle_->SetPosition(GetWorldPosition());
 	}
+}
+
+void Player::DebugDraw()
+{
+#ifdef _DEBUG
+	ImGui::Begin("PlayerRotate");
+	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.rotate.x,
+		worldTransform_.rotate.y, worldTransform_.rotate.z);
+	ImGui::End();
+
+	ImGui::Begin("playerHp");
+	ImGui::Text("hp %d", hp_);
+	ImGui::End();
+#endif
 }
 
 Vector3 Player::GetWorldPosition() const

@@ -77,6 +77,13 @@ private: // クラス内でしか使わない
 	/// </summary>
 	void IncurDamage();
 
+
+	/// <summary>
+	/// デバック描画(ImGui)
+	/// </summary>
+	void DebugDraw();
+
+
 public:
 
 #pragma region getter
@@ -123,10 +130,8 @@ private:
 	uint32_t texHandleBullet_ = 0;
 	LockOn* lockOn_ = nullptr;
 	Vector2 screenPositionReticle_{};
-	float shotTimer_ = 0.0f;
 	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
-	Vector3 velocity_{};
 	bool isDead_ = false;
 	bool isHitEnemyFire_ = false;
 	const uint32_t kMaxHp_ = 3;

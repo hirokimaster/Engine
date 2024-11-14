@@ -43,16 +43,6 @@ void Demo::Update()
 	particle_->SetAreaMin({ worldTransform_.translate.x - 0.1f, worldTransform_.translate.y - 0.1f,worldTransform_.translate.z - 0.7f });
 	particle_->Update();
 
-	ImGui::Begin("particle");
-	ImGui::DragFloat3("particleOffset", &particleOffset_.x, 0.01f, -100.0f, 100.0f);
-	ImGui::End();
-
-	// カメラの座標
-	ImGui::Begin("Camera");
-	ImGui::SliderFloat3("CmeraTranslation ", &camera_.translate.x, -50.0f, 50.0f);
-	ImGui::SliderFloat3("CmeraRotate ", &worldTransform_.rotate.x, 0.0f, 10.0f);
-	ImGui::End();
-
 	camera_.UpdateMatrix();
 }
 
