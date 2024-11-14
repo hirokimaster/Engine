@@ -34,6 +34,7 @@ void Player::Initialize(uint32_t texHandle)
 void Player::Update()
 {
 	Move(); // 移動
+	Rotate(); // 回転
 	Attack(); // 攻撃
 	UpdateBullet(); // 弾の更新
 	worldTransform_.UpdateMatrix();
@@ -188,6 +189,33 @@ void Player::DrawUI()
 
 void Player::Rotate()
 {
+	Vector3 rotate = { 0,0,0 };
+	const float kRotateSpeedZ = 0.01f;
+	const float kRotateSpeedX = 0.005f;
+	const float kRotateLimitZ = 0.7f;
+	const float kRotateLimitX = 0.15f;
+	
+	// ゲームパッドの状態を得る変数(XINPUT)
+	XINPUT_STATE joyState;
+
+
+	// ゲームパッド状態取得
+	if (Input::GetInstance()->GetJoystickState(joyState)) {
+		rotate.z -= (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kRotateSpeedZ;
+		rotate.x -= (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kRotateSpeedX;
+	}
+
+
+	// 回転を適用
+	worldTransform_.rotate = worldTransform_.rotate + rotate;
+
+	// z軸に制限をかける
+	worldTransform_.rotate.z = std::clamp(worldTransform_.rotate.z, -kRotateLimitZ, kRotateLimitZ);
+	// x軸に制限をかける
+	worldTransform_.rotate.x = std::clamp(worldTransform_.rotate.x, -kRotateLimitX, kRotateLimitX);
+	// y軸は回転させないので0にしとく
+	worldTransform_.rotate.y = 0.0f;
+
 }
 
 void Player::IncurDamage()
