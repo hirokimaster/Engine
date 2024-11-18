@@ -16,6 +16,7 @@ ClearScene::~ClearScene()
 
 void ClearScene::Initialize()
 {
+	isTransition_ = true;
 	texHandleClear_ = TextureManager::Load("resources/Scene/clear.png");
 	spriteClear_.reset(Sprite::Create(texHandleClear_, { 640.0f,260.0f }));
 	spriteClear_->SetAnchorPoint({ 0.5f,0.5f });
@@ -24,7 +25,7 @@ void ClearScene::Initialize()
 	spritePushA_.reset(Sprite::Create(texHandlePushA_, { 620.0f,500.0f }));
 
 	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
-	spriteColor_ = { 1.0f,1.0f,1.0f,0.0f };
+	spriteColor_ = { 1.0f,1.0f,1.0f,1.0f };
 	spriteFade_.reset(Sprite::Create(texHandleWhite_));
 	spriteFade_->SetColor(spriteColor_);
 
@@ -69,10 +70,14 @@ void ClearScene::Update()
 
 	spriteClear_->SetScale({ scaleValue,scaleValue,scaleValue });
 
-	spriteFade_->SetColor(spriteColor_);
-	spriteColor_.w -= 0.01f;
+	if (isTransition_) {
+		spriteFade_->SetColor(spriteColor_);
+		spriteColor_.w -= 0.01f;
+	}
+	
 	if (spriteColor_.w <= 0.0f) {
-		spriteColor_ = { 1.0f,1.0f,1.0f,1.0f };
+		isTransition_ = false;
+		spriteColor_ = { 1.0f,1.0f,1.0f,0.0f };
 	}
 
 	// 自機
@@ -102,5 +107,7 @@ void ClearScene::Draw()
 	if (animationTimer_ % 40 >= 20) {
 		spritePushA_->Draw();
 	}
+
+	spriteFade_->Draw();
 
 }

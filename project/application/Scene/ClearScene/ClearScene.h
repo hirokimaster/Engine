@@ -54,4 +54,5 @@ private:
 	Vector4 spriteColor_{};
 	uint32_t texHandleWhite_ = 0;
 	std::unique_ptr<Skydome> skydome_ = nullptr;
+	bool isTransition_;
 };
