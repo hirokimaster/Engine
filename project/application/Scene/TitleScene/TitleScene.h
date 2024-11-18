@@ -74,7 +74,7 @@ private:
 	uint32_t texHandleWhite_ = 0;
 	bool isDissolve_ = false;
 	bool isDissolve2_ = false;
-	uint32_t startATimer_ = 0;
+	uint32_t animationTimer_ = 0;
 
 	// シーン遷移用
 	bool isTransition_ = false;

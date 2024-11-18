@@ -79,7 +79,7 @@ void TitleScene::Initialize()
 void TitleScene::Update()
 {
 	// spriteの点滅用のタイマー
-	++startATimer_;
+	++animationTimer_;
 
 	// シーン遷移
 	SceneTransition();
@@ -149,7 +149,7 @@ void TitleScene::PostProcessDraw()
 
 	spriteTitle_->Draw();
 
-	if (startATimer_ % 40 >= 20) {
+	if (animationTimer_ % 40 >= 20) {
 		spritePushA_->Draw();
 	}
 	

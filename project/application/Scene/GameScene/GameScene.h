@@ -120,6 +120,8 @@ private:
 	uint32_t texHandleMask_ = 0;
 	DissolveParam param_{};
 	std::unique_ptr<Sprite> spriteWhite_;
+	std::unique_ptr<Sprite> spriteFade_;
+	Vector4 spriteColor_{};
 	uint32_t texHandleWhite_ = 0;
 	std::unique_ptr<PostProcess> postProcess_;
 	bool isPlayerIncurDamage_ = false;
