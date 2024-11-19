@@ -113,6 +113,11 @@ private: // ここでしか使わない関数
 	/// </summary>
 	void CreateBuffer();
 
+	/// <summary>
+	///  UAV作成
+	/// </summary>
+	void CreateUAV();
+
 private:
 	Animation animation_{};
 	Matrix4x4 localMatrix_{};
@@ -128,4 +133,5 @@ private:
 	Skeleton skeleton_{};
 	SkinCluster skinCluster_{};
 	float animationTime_ = 0.0f;
+	Microsoft::WRL::ComPtr<ID3D12Resource> uavResource_ = nullptr;
 };

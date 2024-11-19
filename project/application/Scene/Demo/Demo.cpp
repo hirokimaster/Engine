@@ -23,12 +23,10 @@ void Demo::Initialize()
 	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
 	objectPlayer_ = std::make_unique<Object3DPlacer>();
 	objectPlayer_->Initialize();
-	objectPlayer_->SetModel("Player/Jet.obj");
+	objectPlayer_->SetAnimModel("TempModel/player.gltf");
 	objectPlayer_->SetTexHandle(texHandlePlayer_);
 	worldTransform_.Initialize();
 	objectPlayer_->SetWorldTransform(worldTransform_);
-	particle_ = std::make_unique<PlayerParticle>();
-	particle_->Initialize();
 
 	camera_.Initialize();
 	camera_.translate.z = -20.0f;
@@ -37,19 +35,16 @@ void Demo::Initialize()
 
 void Demo::Update()
 {
+	animTimer_ += 1.0f / 60.0f;
+	objectPlayer_->SetAnimationTime(animTimer_);
 	worldTransform_.UpdateMatrix();
-	particle_->SetPosition(worldTransform_.translate + particleOffset_);
-	particle_->SetAreaMax({ worldTransform_.translate.x + 0.1f, worldTransform_.translate.y + 0.1f,worldTransform_.translate.z - 0.5f });
-	particle_->SetAreaMin({ worldTransform_.translate.x - 0.1f, worldTransform_.translate.y - 0.1f,worldTransform_.translate.z - 0.7f });
-	particle_->Update();
 
 	camera_.UpdateMatrix();
 }
 
 void Demo::Draw()
 {
-	objectPlayer_->Draw(camera_);
-	particle_->Draw(camera_);
+	objectPlayer_->Draw(camera_,true);
 }
 
 void Demo::PostProcessDraw()

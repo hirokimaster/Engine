@@ -55,8 +55,7 @@ private:
 	uint32_t texHandlePlayer_ = 0;
 	Camera camera_{};
 	WorldTransform worldTransform_{};
-	std::unique_ptr<PlayerParticle> particle_;
-	Vector3 particleOffset_ = { 0,0.5f,-4.0f };
+	float animTimer_ = 0;
 };
 
 

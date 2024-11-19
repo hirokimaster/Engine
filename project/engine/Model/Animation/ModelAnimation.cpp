@@ -299,3 +299,27 @@ void ModelAnimation::CreateBuffer()
 	std::memcpy(index, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
 
 }
+
+void ModelAnimation::CreateUAV()
+{
+
+	Microsoft::WRL::ComPtr <ID3D12Device> device = DirectXCommon::GetInstance()->GetDevice();
+
+	uavResource_ = CreateResource::CreateUAVResource(sizeof(Vertex) * 1024);
+
+	D3D12_UNORDERED_ACCESS_VIEW_DESC uavDesc = {};
+	uavDesc.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
+	uavDesc.Buffer.FirstElement = 0;
+	uavDesc.Buffer.NumElements = 256;
+	uavDesc.Buffer.StructureByteStride = 0;
+	uavDesc.Buffer.CounterOffsetInBytes = 0;
+	uavDesc.Format = DXGI_FORMAT_UNKNOWN;
+
+	device->CreateUnorderedAccessView(
+		uavResource_.Get(), // UAV対象のリソース
+		nullptr,           // オプション: カウンタバッファ
+		&uavDesc,          // UAVビューの詳細設定
+
+	);
+
+}

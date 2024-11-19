@@ -27,6 +27,7 @@
     <FxCompile Include="resources\ShaderFile\Sprite2D.VS.hlsl" />
     <FxCompile Include="resources\ShaderFile\Vignette.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\Skinning.CS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Particle.CS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application\GameManager\GameManager.cpp" />
@@ -89,6 +90,7 @@
     <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateFire.cpp" />
     <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateLeave.cpp" />
     <ClCompile Include="engine\ComputePipeline\ComputePipeline.cpp" />
+    <ClCompile Include="engine\ParticleSystem\GPUParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
@@ -160,6 +162,7 @@
     <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateFire.h" />
     <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateLeave.h" />
     <ClInclude Include="engine\ComputePipeline\ComputePipeline.h" />
+    <ClInclude Include="engine\ParticleSystem\GPUParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli" />

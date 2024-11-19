@@ -129,6 +129,13 @@ public:
 	static Microsoft::WRL::ComPtr<ID3D12Resource> CreateIntermediateResource(size_t sizeInBytes);
 
 	/// <summary>
+	/// uav用のリソース作成
+	/// </summary>
+	/// <param name="sizeInBytes"></param>
+	/// <returns></returns>
+	static Microsoft::WRL::ComPtr<ID3D12Resource> CreateUAVResource(size_t sizeInBytes);
+
+	/// <summary>
 	/// indexBufferView作成
 	/// </summary>
 	/// <param name="resource"></param>

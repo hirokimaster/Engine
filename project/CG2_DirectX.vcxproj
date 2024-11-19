@@ -142,6 +142,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\ModelManager\ModelManager.cpp" />
     <ClCompile Include="engine\Model\SkyBox\SkyBox.cpp" />
     <ClCompile Include="engine\Object3DPlacer\Object3DPlacer.cpp" />
+    <ClCompile Include="engine\ParticleSystem\GPUParticle.cpp" />
     <ClCompile Include="engine\PostProcess\PostProcess.cpp" />
     <ClCompile Include="engine\Utility\CollisionManager\CollisionManager.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
@@ -205,6 +206,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\ModelManager\ModelManager.h" />
     <ClInclude Include="engine\Model\SkyBox\SkyBox.h" />
     <ClInclude Include="engine\Object3DPlacer\Object3DPlacer.h" />
+    <ClInclude Include="engine\ParticleSystem\GPUParticle.h" />
     <ClInclude Include="engine\PostProcess\PostProcess.h" />
     <ClInclude Include="engine\Utility\CollisionManager\Collider\Collider.h" />
     <ClInclude Include="engine\Utility\CollisionManager\Collider\ColliderConfig.h" />
@@ -315,6 +317,12 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <FxCompile Include="resources\ShaderFile\Object3d.VS.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\Particle.CS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="resources\ShaderFile\Particle.PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

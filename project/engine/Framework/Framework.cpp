@@ -14,14 +14,19 @@ void Framework::Initialize()
 	win_ = WinApp::GetInstance();
 	dxCommon_ = DirectXCommon::GetInstance();
 	audio_ = Audio::GetInstance();
+	input_ = Input::GetInstance();
+	graphicsPipeline_ = GraphicsPipeline::GetInstance();
+	computePipeline_ = ComputePipeline::GetInstance();
 
 	// ウィンドウの作成
 	win_->CreateGameWindow(L"空駆");
 	// DirectX初期化
 	dxCommon_->Initialize(win_);
-	Input::Initialize();
+	
+	input_->Initialize();
 	audio_->Initialize();
-	GraphicsPipeline::Initialize();
+	graphicsPipeline_->Initialize();
+	computePipeline_->Initialize();
 
 	// ImGuiの初期化
 	imguiManager_ = ImGuiManager::GetInstance();

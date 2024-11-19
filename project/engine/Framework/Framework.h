@@ -15,6 +15,7 @@
 #include "engine/Audio/Audio.h"
 #include "application/GameManager/GameManager.h"
 #include "engine/SceneFactory/SceneFactory.h"
+#include "engine/ComputePipeline/ComputePipeline.h"
 
 class Framework {
 public:
@@ -54,10 +55,13 @@ public:
 	void Run();
 
 private:
-	WinApp* win_;
-	DirectXCommon* dxCommon_;
-	Audio* audio_;
-	ImGuiManager* imguiManager_;
+	WinApp* win_ = nullptr;
+	DirectXCommon* dxCommon_ = nullptr;
+	Audio* audio_ = nullptr;
+	ImGuiManager* imguiManager_ = nullptr;
 	GameManager* gameManager_ = nullptr;
+	Input* input_ = nullptr;
+	GraphicsPipeline* graphicsPipeline_ = nullptr;
+	ComputePipeline* computePipeline_ = nullptr;
 	std::unique_ptr<AbstractSceneFactory> sceneFactory_ = nullptr;
 };
