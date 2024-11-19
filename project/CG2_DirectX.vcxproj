@@ -132,6 +132,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\Scene\IScene\IScene.cpp" />
     <ClCompile Include="application\Scene\TitleScene\TitleScene.cpp" />
     <ClCompile Include="application\Loader\Loader.cpp" />
+    <ClCompile Include="engine\ComputePipeline\ComputePipeline.cpp" />
     <ClCompile Include="engine\Model\Animation\ModelAnimation.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
     <ClCompile Include="Engine\Base\DX\DirectXCommon.cpp" />
@@ -193,6 +194,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\Scene\IScene\IScene.h" />
     <ClInclude Include="application\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="application\Loader\Loader.h" />
+    <ClInclude Include="engine\ComputePipeline\ComputePipeline.h" />
     <ClInclude Include="engine\Model\Animation\Animation.h" />
     <ClInclude Include="engine\Model\Animation\ModelAnimation.h" />
     <ClInclude Include="Engine\Audio\Audio.h" />
@@ -359,6 +361,14 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <FxCompile Include="resources\ShaderFile\Random.PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\Skinning.CS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
