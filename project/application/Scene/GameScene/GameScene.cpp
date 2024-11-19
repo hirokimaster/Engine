@@ -118,7 +118,7 @@ void GameScene::Update()
 	Collision();
 
 	// 仮のクリア判定
-	if (player_->GetWorldPosition().z >= 50.0f) {
+	if (player_->GetWorldPosition().z >= 600.0f) {
 		isTransitionClear_ = true;
 	}
 
@@ -160,6 +160,17 @@ void GameScene::Draw()
 
 	spriteContinue_->Draw();
 
+
+	// 仮UI
+	if (lockOn_->GetIsLockOnMode()) {
+		spriteUnLock_->Draw();
+	}
+	else {
+		spriteLockOn_->Draw();
+	}
+
+	spriteAttack_->Draw();
+
 }
 
 void GameScene::PostProcessDraw()
@@ -177,15 +188,6 @@ void GameScene::PostProcessDraw()
 	lockOn_->Draw();
 
 
-	// 仮UI
-	if (lockOn_->GetIsLockOnMode()) {
-		spriteUnLock_->Draw();
-	}
-	else {
-		spriteLockOn_->Draw();
-	}
-
-	spriteAttack_->Draw();
 
 	spriteFade_->Draw();
 
@@ -272,6 +274,12 @@ void GameScene::StartGame()
 
 	if (t >= 1.0f) {
 		isGameStart_ = true;
+		RadialParam param = {
+			.center = Vector2(0.5f,0.5f),
+			.blurWidth = 0.001f,
+		};
+		postProcess_->SetEffect(PostEffectType::RadialBlur);
+		postProcess_->SetRadialParam(param);
 		t = 1.0f;
 	}
 }
@@ -305,12 +313,6 @@ void GameScene::DamegeEffect()
 
 	if (!isPlayerIncurDamage_) {
 		effectTime_ = 10.0f;
-	}
-
-	if (!isPlayerIncurDamage_ && param_.threshold <= 0.0f) {
-		postProcess_->SetEffect(PostEffectType::Dissolve);
-		postProcess_->SetDissolveParam(param_);
-		param_.threshold = 0.0f;
 	}
 }
 

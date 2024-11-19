@@ -190,8 +190,8 @@ void Player::DrawUI()
 void Player::Rotate()
 {
 	Vector3 rotate = { 0,0,0 };
-	const float kRotateSpeedZ = 0.01f;
-	const float kRotateSpeedX = 0.005f;
+	const float kRotateSpeedZ = 0.05f;
+	const float kRotateSpeedX = 0.05f;
 	const float kRotateLimitZ = 0.7f;
 	const float kRotateLimitX = 0.15f;
 	

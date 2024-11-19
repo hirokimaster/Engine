@@ -135,7 +135,7 @@ private:
 	Vector3 offsetStart_ = { -12.0f, 0.5f, 13.0f };
 	Vector3 cameraRotateStart_ = { 0, std::numbers::pi_v<float> *3.0f / 4.0f, 0 };
 	// 目的のカメラのオフセットと回転
-	Vector3 offsetEnd_ = { 0, 5.0f, -40.0f };
+	Vector3 offsetEnd_ = { 0, 2.0f, -25.0f };
 	Vector3 cameraRotateEnd_ = { 0, 0, 0 };
 	float t = 0.0f;
 	

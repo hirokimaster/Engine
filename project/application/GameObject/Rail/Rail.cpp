@@ -13,10 +13,13 @@ void Rail::Initialize()
 	controlPoints_ = {
 
 		{0,0,20},
-		{0,0,160},
-		{0,0,240},
-		{0,0,300},
-		{0,0,360},
+		{0,0,120},
+		{0,0,220},
+		{0,0,320},
+		{0,0,420},
+		{0,0,520},
+		{0,0,620},
+		{0,0,720},
 		
 	};
 }
@@ -25,7 +28,7 @@ void Rail::Update()
 {
 	deltaTime_ += 1.0f / 60.0f;
 
-	float progress = ProgressCalc(deltaTime_, 1.0f);
+	float progress = ProgressCalc(deltaTime_, 3.0f);
 
 	RailPositionCalc(progress);
 
@@ -104,7 +107,7 @@ Vector3 Rail::CatmullRomPosition(const std::vector<Vector3>& points, float t)
 float Rail::ProgressCalc(float time, float speed)
 {
 	float dist = time * speed;
-	float railLength = 340.0f;
+	float railLength = 900.0f;
 	float progress = dist / railLength;
 	// 0.0f ~ 1.0fの範囲にクランプする
 	return std::clamp(progress, 0.0f, 1.0f);
