@@ -2,12 +2,14 @@
 
 void GPUParticle::Initialize()
 {
-	// uav作成
-	CreateUAV();
 	// srv作成
 	CreateSRV();
+	// uav作成
+	CreateUAV();
 	// bufferResource作成
 	CreateBuffer();
+
+	commandList_ = DirectXCommon::GetInstance()->GetCommandList();
 }
 
 void GPUParticle::Draw(const Camera& camera)
@@ -15,15 +17,18 @@ void GPUParticle::Draw(const Camera& camera)
 	// perView更新
 	PerViewUpdate(camera);
 
-	commandList_ = DirectXCommon::GetInstance()->GetCommandList();
-	computePipeline_ = ComputePipeline::GetInstance()->GetPipelineType().particle;
 	graphicsPipeline_ = GraphicsPipeline::GetInstance()->GetPSO().gpuParticle;
-	// compute
+	computePipeline_ = ComputePipeline::GetInstance()->GetPipelineType().particle;
+
+	DirectXCommon::GetInstance()->TransitionResourceBarrier(uavResource_.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+	// dispatch
 	commandList_->SetComputeRootSignature(computePipeline_.rootSignature.Get());
 	commandList_->SetPipelineState(computePipeline_.computePipelineState.Get());
 	// uav設定
 	commandList_->SetComputeRootDescriptorTable(0, gpuDescHandle_);
 	commandList_->Dispatch(1, 1, 1);
+	DirectXCommon::GetInstance()->TransitionResourceBarrier(uavResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
+
 
 	// graphics
 	commandList_->SetGraphicsRootSignature(graphicsPipeline_.rootSignature_.Get());
@@ -36,49 +41,45 @@ void GPUParticle::Draw(const Camera& camera)
 	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, texHandle_); // texture
 
 	// drawCall
-	if (model_) {
-		model_->Draw(1024);
-	}
+	if (model_){
+		model_->Draw(kMaxInstance_);
+    }
 }
 
 void GPUParticle::CreateUAV()
 {
 
 	Microsoft::WRL::ComPtr<ID3D12Device> device = DirectXCommon::GetInstance()->GetDevice();
-	// uavのresource作成
-	uavResource_ = CreateResource::CreateUAVResource(sizeof(ParticleCS) * 1024);
 
 	// uav作成
 	D3D12_UNORDERED_ACCESS_VIEW_DESC uavDesc{};
 	uavDesc.Format = DXGI_FORMAT_UNKNOWN;
 	uavDesc.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
 	uavDesc.Buffer.FirstElement = 0;
-	uavDesc.Buffer.NumElements = UINT(model_->GetModelData().vertices.size());
+	uavDesc.Buffer.NumElements = 1024;
 	uavDesc.Buffer.CounterOffsetInBytes = 0;
 	uavDesc.Buffer.Flags = D3D12_BUFFER_UAV_FLAG_NONE;
-	uavDesc.Buffer.StructureByteStride = sizeof(VertexData);
+	uavDesc.Buffer.StructureByteStride = sizeof(ParticleCS);
 
 	// srvと同じHeapに配置するのでsrvのマネージャからhandleの位置をずらす
-	SrvManager::GetInstance()->StructuredBufIndexAllocate();
-	uavIndex_ = SrvManager::GetInstance()->GetStructuredBufIndex();
+	SrvManager::GetInstance()->UavAllocate();
+	uavIndex_ = SrvManager::GetInstance()->GetUavIndex();
 
 	cpuDescHandle_ = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
-		DescriptorManager::GetInstance()->GetDescSize().SRV, SrvManager::GetInstance()->GetStructuredBufIndex());
+		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
 	gpuDescHandle_ = DescriptorManager::GetInstance()->GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
-		DescriptorManager::GetInstance()->GetDescSize().SRV, SrvManager::GetInstance()->GetStructuredBufIndex());
+		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
 	device->CreateUnorderedAccessView(uavResource_.Get(), nullptr, &uavDesc, cpuDescHandle_);
-
+	
 }
 
 void GPUParticle::CreateSRV()
 {
-	srvResource_ = CreateResource::CreateBufferResource(sizeof(ParticleCS) * 1024);
-	// 書き込むためのアドレスを取得
-	srvResource_->Map(0, nullptr, reinterpret_cast<void**>(&particleData_));
+	uavResource_ = CreateResource::CreateRWStructuredBufferResource(sizeof(ParticleCS) * kMaxInstance_);
 	// srvの位置をtextureのsrvの位置から設定する
 	SrvManager::GetInstance()->StructuredBufIndexAllocate();
 	srvIndex_ = SrvManager::GetInstance()->GetStructuredBufIndex();
-	SrvManager::GetInstance()->CreateInstancingSrv(srvResource_.Get(), srvIndex_);
+	SrvManager::GetInstance()->CreateStructuredBufferSrv(uavResource_.Get(), kMaxInstance_, sizeof(ParticleCS), srvIndex_);
 }
 
 void GPUParticle::CreateBuffer()

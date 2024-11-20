@@ -36,6 +36,13 @@ public:
 	void CreateInstancingSrv(Microsoft::WRL::ComPtr<ID3D12Resource>,uint32_t index);
 
 	/// <summary>
+	/// structuredbuffer用
+	/// </summary>
+	/// <param name=""></param>
+	/// <param name="index"></param>
+	void CreateStructuredBufferSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resource, uint32_t num, uint32_t size, uint32_t index);
+
+	/// <summary>
 	/// postProcess用のsrv
 	/// </summary>
 	/// <param name="resource"></param>
@@ -70,11 +77,22 @@ public:
 	/// <param name="index"></param>
 	void StructuredBufIndexFree(uint32_t index);
 
+	/// <summary>
+	/// 空いてる番号を取り出す(uav)
+	/// </summary>
+	void UavAllocate();
+
+	/// <summary>
+	/// 使ってないインデックス解放する(texture用のsrv)
+	/// </summary>
+	void UavFree(uint32_t index);
+
 #pragma region getter
 
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle(uint32_t texHandle);
 	uint32_t GetIndex() { return index_; }
 	uint32_t GetStructuredBufIndex() { return structuredBufIndex_; }
+	uint32_t GetUavIndex() { return uavIndex_; }
 
 #pragma endregion
 
@@ -99,13 +117,18 @@ private:
 	D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandle_[kMaxSRVCount];
 	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandle_[kMaxSRVCount];
 
-	// texture用のsrvを作る場所を0～511まで
+	// texture用のsrvを作る場所を0～300まで
 	uint32_t index_ = 0; // srvのインデックス
 	uint32_t beforeIndex_ = 0; // 前のインデックスを入れとく
 	std::queue<uint32_t> vacantIndices_; // 空きインデックスを管理
 
-	// structuredBuffer用のsrvを作る場所を512～1024まで
+	// structuredBuffer用のsrvを作る場所を301～663まで
 	uint32_t structuredBufIndex_ = 0;
-	uint32_t beforestructuredBufIndex_ = 511;
+	uint32_t beforestructuredBufIndex_ = 300;
 	std::queue<uint32_t> vacantStructuredBufIndices_;
+
+	// uavを作る場所を664～1024
+	uint32_t uavIndex_ = 0;
+	uint32_t beforeUavIndex_ = 663;
+	std::queue<uint32_t> vacantUavIndices_;
 };

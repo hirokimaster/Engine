@@ -136,6 +136,13 @@ public:
 	static Microsoft::WRL::ComPtr<ID3D12Resource> CreateUAVResource(size_t sizeInBytes);
 
 	/// <summary>
+	/// structuredBuffer
+	/// </summary>
+	/// <param name="sizeInBytes"></param>
+	/// <returns></returns>
+	static Microsoft::WRL::ComPtr<ID3D12Resource> CreateRWStructuredBufferResource(size_t sizeInBytes);
+
+	/// <summary>
 	/// indexBufferView作成
 	/// </summary>
 	/// <param name="resource"></param>

@@ -72,6 +72,11 @@ public : // メンバ関数
 	/// 深度バッファ生成
 	void CreateDepthBuffer();
 
+	/// <summary>
+	/// resourceバリアー遷移
+	/// </summary>
+	void TransitionResourceBarrier(Microsoft::WRL::ComPtr<ID3D12Resource> resource, D3D12_RESOURCE_STATES beforeState, D3D12_RESOURCE_STATES afterState);
+
 #pragma region getter
 
 	// デバイスの取得

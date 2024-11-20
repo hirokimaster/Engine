@@ -7,6 +7,8 @@
 #include "engine/GraphicsPipeline/GraphicsPipeline.h"
 #include "engine/ComputePipeline/ComputePipeline.h"
 
+static const uint32_t kMaxInstance_ = 1024;
+
 struct ParticleCS {
 	Vector3 translate;
 	Vector3 scale;
@@ -74,4 +76,5 @@ private:
 	ComputePipelineData computePipeline_;
 	GraphicsPipelineData graphicsPipeline_;
 	uint32_t texHandle_ = 0;
+	D3D12_RESOURCE_BARRIER barrier_{};
 };

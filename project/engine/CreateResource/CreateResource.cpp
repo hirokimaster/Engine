@@ -92,6 +92,35 @@ Microsoft::WRL::ComPtr<ID3D12Resource> CreateResource::CreateUAVResource(size_t 
 	return Resource;
 }
 
+Microsoft::WRL::ComPtr<ID3D12Resource> CreateResource::CreateRWStructuredBufferResource(size_t sizeInBytes)
+{
+	Microsoft::WRL::ComPtr <ID3D12Device> device = DirectXCommon::GetInstance()->GetDevice();
+
+	// 頂点リソース用のヒープの設定
+	D3D12_HEAP_PROPERTIES HeapProperties{};
+	HeapProperties.Type = D3D12_HEAP_TYPE_DEFAULT; // UploadHeapを使う
+	// 頂点リソースの設定
+	D3D12_RESOURCE_DESC ResourceDesc{};
+	// バッファリソース。テクスチャの場合はまた別の設定をする
+	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+    ResourceDesc.Width = sizeInBytes; // リソースのサイズ。	
+	// バッファの場合はこれらは1にする決まり
+	ResourceDesc.Height = 1;
+	ResourceDesc.DepthOrArraySize = 1;
+	ResourceDesc.MipLevels = 1;
+	ResourceDesc.SampleDesc.Count = 1;
+	ResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+	// バッファの場合はこれにする決まり
+	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	// 実際に頂点リソースを作る
+	Microsoft::WRL::ComPtr<ID3D12Resource> Resource = nullptr;
+	[[maybe_unused]] HRESULT hr = device.Get()->CreateCommittedResource(&HeapProperties, D3D12_HEAP_FLAG_NONE, &ResourceDesc,
+		D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(&Resource));
+	assert(SUCCEEDED(hr));
+
+	return Resource;
+}
+
 // IBV
 D3D12_INDEX_BUFFER_VIEW CreateResource::CreateIndexBufferView(Microsoft::WRL::ComPtr<ID3D12Resource> resource, size_t sizeInBytes){
 

@@ -31,8 +31,8 @@ void SrvManager::CreateTextureSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resourc
 	}
 	
 	// SRVを作成するDescriptorHeapの場所を決める
-	cpuDescHandle_[index] = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index + 1);
-	gpuDescHandle_[index] = DescriptorManager::GetInstance()->GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index + 1);
+	cpuDescHandle_[index] = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index);
+	gpuDescHandle_[index] = DescriptorManager::GetInstance()->GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index);
 
 	// SRVの生成
 	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(resource.Get(), &srvDesc, cpuDescHandle_[index]);
@@ -48,8 +48,23 @@ void SrvManager::CreateInstancingSrv(Microsoft::WRL::ComPtr<ID3D12Resource> reso
 	instancingSrvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
 	instancingSrvDesc.Buffer.NumElements = 100;
 	instancingSrvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);
-	cpuDescHandle_[index] = DescriptorManager::GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index + 1);
-	gpuDescHandle_[index] = DescriptorManager::GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index + 1);
+	cpuDescHandle_[index] = DescriptorManager::GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index);
+	gpuDescHandle_[index] = DescriptorManager::GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index);
+	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(resource.Get(), &instancingSrvDesc, cpuDescHandle_[index]);
+}
+
+void SrvManager::CreateStructuredBufferSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resource, uint32_t num, uint32_t size, uint32_t index)
+{
+	D3D12_SHADER_RESOURCE_VIEW_DESC instancingSrvDesc{};
+	instancingSrvDesc.Format = DXGI_FORMAT_UNKNOWN;
+	instancingSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	instancingSrvDesc.ViewDimension = D3D12_SRV_DIMENSION_BUFFER;
+	instancingSrvDesc.Buffer.FirstElement = 0;
+	instancingSrvDesc.Buffer.Flags = D3D12_BUFFER_SRV_FLAG_NONE;
+	instancingSrvDesc.Buffer.NumElements = num;
+	instancingSrvDesc.Buffer.StructureByteStride = UINT(size);
+	cpuDescHandle_[index] = DescriptorManager::GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index);
+	gpuDescHandle_[index] = DescriptorManager::GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index);
 	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(resource.Get(), &instancingSrvDesc, cpuDescHandle_[index]);
 }
 
@@ -87,8 +102,6 @@ void SrvManager::Allocate()
 	}
 	else {
 		++beforeIndex_;
-		// 512番からはstructuredBuffer用の場所なので超えたら止める
-		//assert(beforeIndex_ > 511);
 		index_ = beforeIndex_;
 	}
 }
@@ -116,6 +129,24 @@ void SrvManager::StructuredBufIndexAllocate()
 void SrvManager::StructuredBufIndexFree(uint32_t index)
 {
 	vacantStructuredBufIndices_.push(index);
+}
+
+void SrvManager::UavAllocate()
+{
+	// 空き番号があるか確認(あったらそこから使う)
+	if (!vacantUavIndices_.empty()) {
+		uavIndex_ = vacantUavIndices_.front(); // 先頭から取る
+		vacantUavIndices_.pop(); // 使うのでコンテナから削除する
+	}
+	else {
+		++beforeUavIndex_;
+		uavIndex_ = beforeUavIndex_;
+	}
+}
+
+void SrvManager::UavFree(uint32_t index)
+{
+	vacantUavIndices_.push(index);
 }
 
 D3D12_GPU_DESCRIPTOR_HANDLE SrvManager::GetGPUHandle(uint32_t texHandle)

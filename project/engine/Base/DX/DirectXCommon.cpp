@@ -384,6 +384,19 @@ void DirectXCommon::CreateDepthBuffer()
 
 }
 
+void DirectXCommon::TransitionResourceBarrier(Microsoft::WRL::ComPtr<ID3D12Resource> resource, D3D12_RESOURCE_STATES beforeState, D3D12_RESOURCE_STATES afterState)
+{
+	if (beforeState != afterState) {
+		D3D12_RESOURCE_BARRIER rBarrier = {};
+		rBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+		rBarrier.Transition.pResource = resource.Get();
+		rBarrier.Transition.StateBefore = beforeState;
+		rBarrier.Transition.StateAfter = afterState;
+		rBarrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+		commandList_->ResourceBarrier(1, &rBarrier);
+	}
+}
+
 void DirectXCommon::InitializeFixFPS()
 {
 	// 現在時間を記録する
