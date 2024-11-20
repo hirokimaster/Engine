@@ -41,6 +41,7 @@ struct PipelineState {
 	GraphicsPipelineData Environment;
 	GraphicsPipelineData Line;
 	GraphicsPipelineData Random;
+	GraphicsPipelineData gpuParticle;
 };
 
 enum class Light {
@@ -257,6 +258,14 @@ private:
 	/// <param name="shaderName"></param>
 	/// <returns></returns>
 	static GraphicsPipelineData CreateRandom(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	/// <summary>
+	/// random
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
+	static GraphicsPipelineData CreateGPUParticle(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 #pragma endregion
 

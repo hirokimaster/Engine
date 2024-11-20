@@ -33,7 +33,7 @@ public:
 	/// <param name="resource"></param>
 	/// <param name="metadata"></param>
 	/// <param name="index"></param>
-	void CreateInstancingSrv(Resource& resource,uint32_t index);
+	void CreateInstancingSrv(Microsoft::WRL::ComPtr<ID3D12Resource>,uint32_t index);
 
 	/// <summary>
 	/// postProcess用のsrv

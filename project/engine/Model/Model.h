@@ -77,9 +77,9 @@ public:
 	/// <param name="numInstance"></param>
 	void Draw(uint32_t numInstance);
 
-#pragma region Setter
+#pragma region getter
 
-	
+	ModelData GetModelData() { return modelData_; }
 
 #pragma endregion
 

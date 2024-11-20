@@ -15,7 +15,7 @@ struct ComputePipelineData {
 	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob = nullptr;
 };
 struct ComputePipelineType {
-	ComputePipelineData skinning;
+	ComputePipelineData particle;
 };
 
 class ComputePipeline {
@@ -55,7 +55,7 @@ private:
 	/// <param name="device"></param>
 	/// <param name="shaderName"></param>
 	/// <returns></returns>
-	static ComputePipelineData CreateSkinning(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+	static ComputePipelineData CreateParticle(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 private:
 

@@ -12,12 +12,6 @@ struct Particle
     float32_t4 color;
 };
 
-struct PerView
-{
-    float32_t4x4 viewProjection;
-    float32_t4x4 billboardMatrix;
-};
-
 RWStructuredBuffer<Particle> gParticles : register(u0);
 
 [numthreads(1024, 1, 1)]
@@ -28,5 +22,7 @@ void main(uint32_t3 DTid : SV_DispatchThreadID )
     {
         // particle構造体の全要素を0で埋めるという書き方
         gParticles[particleIndex] = (Particle)0;
+        gParticles[particleIndex].scale = float32_t3(0.5f, 0.5f, 0.5f);
+        gParticles[particleIndex].color = float32_t4(1.0f, 1.0f, 1.0f, 1.0f);
     }
 }

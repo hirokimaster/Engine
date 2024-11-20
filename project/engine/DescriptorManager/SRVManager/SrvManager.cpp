@@ -38,7 +38,7 @@ void SrvManager::CreateTextureSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resourc
 	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(resource.Get(), &srvDesc, cpuDescHandle_[index]);
 }
 
-void SrvManager::CreateInstancingSrv(Resource& resource, uint32_t index)
+void SrvManager::CreateInstancingSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resource, uint32_t index)
 {
 	D3D12_SHADER_RESOURCE_VIEW_DESC instancingSrvDesc{};
 	instancingSrvDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -50,7 +50,7 @@ void SrvManager::CreateInstancingSrv(Resource& resource, uint32_t index)
 	instancingSrvDesc.Buffer.StructureByteStride = sizeof(ParticleForGPU);
 	cpuDescHandle_[index] = DescriptorManager::GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index + 1);
 	gpuDescHandle_[index] = DescriptorManager::GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(), DescriptorManager::GetInstance()->GetDescSize().SRV, index + 1);
-	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(resource.instancingResource.Get(), &instancingSrvDesc, cpuDescHandle_[index]);
+	DirectXCommon::GetInstance()->GetDevice()->CreateShaderResourceView(resource.Get(), &instancingSrvDesc, cpuDescHandle_[index]);
 }
 
 void SrvManager::CreatePostProcessSrv(Microsoft::WRL::ComPtr<ID3D12Resource> resource, uint32_t index)

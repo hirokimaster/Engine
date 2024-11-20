@@ -80,12 +80,13 @@ Microsoft::WRL::ComPtr<ID3D12Resource> CreateResource::CreateUAVResource(size_t 
 	resourceDesc.DepthOrArraySize = 1;
 	resourceDesc.MipLevels = 1;
 	resourceDesc.SampleDesc.Count = 1;
+	resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
 	// バッファの場合はこれにする決まり
     resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	// 実際に頂点リソースを作る
+	// uavリソースを作る
 	Microsoft::WRL::ComPtr<ID3D12Resource> Resource = nullptr;
 	[[maybe_unused]] HRESULT hr = device.Get()->CreateCommittedResource(&uploadHeapProperties, D3D12_HEAP_FLAG_NONE, &resourceDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&Resource));
+		D3D12_RESOURCE_STATE_COMMON, nullptr, IID_PPV_ARGS(&Resource));
 	assert(SUCCEEDED(hr));
 
 	return Resource;

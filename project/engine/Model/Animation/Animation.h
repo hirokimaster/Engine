@@ -80,25 +80,3 @@ struct SkinCluster {
 	std::span<WellForGPU> mappedPalette;
 	std::pair<D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE> paletteSrvHandle;
 };
-
-struct int4 {
-	int32_t x;
-	int32_t y;
-	int32_t z;
-	int32_t w;
-};
-
-struct Vertex {
-	Vector4 position;
-	Vector2 texcoord;
-	Vector3 normal;
-};
-
-struct VertexInfluence {
-	Vector4 weight;
-	int4 index;
-};
-
-struct SkinningInformation {
-	uint32_t numVertices;
-};

@@ -16,6 +16,7 @@
 #include "application/Loader/Loader.h"
 #include "application/GameObject/ModelResources/ModelResources.h"
 #include "application/GameObject/Player/PlayerParticle/PlayerParticle.h"
+#include "engine/ParticleSystem/GPUParticle.h"
 
 class Demo : public IScene {
 public: // メンバ関数
@@ -50,12 +51,9 @@ public: // メンバ関数
 	void PostProcessDraw()override;
 
 private:
-
-	std::unique_ptr<Object3DPlacer> objectPlayer_ = nullptr;
-	uint32_t texHandlePlayer_ = 0;
-	Camera camera_{};
-	WorldTransform worldTransform_{};
-	float animTimer_ = 0;
+	Camera camera_;
+	std::unique_ptr<GPUParticle> particle_;
+	uint32_t texHandle_ = 0;
 };
 
 

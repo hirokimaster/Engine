@@ -28,6 +28,7 @@
     <FxCompile Include="resources\ShaderFile\Vignette.PS.hlsl" />
     <FxCompile Include="resources\ShaderFile\Skinning.CS.hlsl" />
     <FxCompile Include="resources\ShaderFile\Particle.CS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\GPUParticle.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application\GameManager\GameManager.cpp" />

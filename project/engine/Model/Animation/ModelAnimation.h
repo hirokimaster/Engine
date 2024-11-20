@@ -113,11 +113,6 @@ private: // ここでしか使わない関数
 	/// </summary>
 	void CreateBuffer();
 
-	/// <summary>
-	///  UAV作成
-	/// </summary>
-	void CreateUAV();
-
 private:
 	Animation animation_{};
 	Matrix4x4 localMatrix_{};

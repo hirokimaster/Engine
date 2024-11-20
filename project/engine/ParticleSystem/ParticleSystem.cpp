@@ -60,7 +60,7 @@ void ParticleSystem::CreateSrv() {
 	// srvの位置をtextureのsrvの位置から設定する
 	SrvManager::GetInstance()->StructuredBufIndexAllocate();
 	index_ = SrvManager::GetInstance()->GetStructuredBufIndex();
-	SrvManager::GetInstance()->CreateInstancingSrv(resource_, index_);
+	SrvManager::GetInstance()->CreateInstancingSrv(resource_.instancingResource, index_);
 }
 
 /// <summary>

@@ -18,7 +18,7 @@ void ComputePipeline::Initialize()
 void ComputePipeline::CreatePipeline(ComputePipelineType& type)
 {
 	Microsoft::WRL::ComPtr <ID3D12Device> device = DirectXCommon::GetInstance()->GetDevice();
-	type.skinning = CreateSkinning(device, L"Skinning");
+	type.particle = CreateParticle(device, L"Particle");
 }
 
 void ComputePipeline::CreateRootSignature(Microsoft::WRL::ComPtr<ID3D12Device> device, D3D12_ROOT_SIGNATURE_DESC& descriptionRootSignature, ComputePipelineData& computeState)
@@ -36,11 +36,11 @@ void ComputePipeline::CreateRootSignature(Microsoft::WRL::ComPtr<ID3D12Device> d
 	assert(SUCCEEDED(hr_));
 }
 
-ComputePipelineData ComputePipeline::CreateSkinning(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
+ComputePipelineData ComputePipeline::CreateParticle(Microsoft::WRL::ComPtr<ID3D12Device> device, const std::wstring& shaderName)
 {
 	ComputePipelineData computeState{};
 
-	HRESULT hr;
+	[[maybe_unused]] HRESULT hr;
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
 	IDxcCompiler3* dxcCompiler = nullptr;
@@ -55,58 +55,34 @@ ComputePipelineData ComputePipeline::CreateSkinning(Microsoft::WRL::ComPtr<ID3D1
 	assert(SUCCEEDED(hr));
 
 	D3D12_ROOT_SIGNATURE_DESC descriptionRootSignature{};
-	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-
-	// rootSignature作成
-	CreateRootSignature(device, descriptionRootSignature, computeState);
+	descriptionRootSignature.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE;;
 
 	// DescriptorRange
 	// uav
-	D3D12_DESCRIPTOR_RANGE descriptorRange[2] = {};
+	D3D12_DESCRIPTOR_RANGE descriptorRange[1] = {};
 	descriptorRange[0].BaseShaderRegister = 0; // 0から始まる
 	descriptorRange[0].NumDescriptors = 1; // 数は1つ
 	descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV; // UAVを使う
 	descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
-	// srv
-	descriptorRange[1].BaseShaderRegister = 1; // 1から始まる
-	descriptorRange[1].NumDescriptors = 1; // 数は1つ
-	descriptorRange[1].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; // SRVを使う
-	descriptorRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
 	// RootParameter作成
-	D3D12_ROOT_PARAMETER rootParameters[5] = {};
-	// gOutputVertices (u0)
-	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-	rootParameters[0].DescriptorTable.pDescriptorRanges = &descriptorRange[0];
-	rootParameters[0].DescriptorTable.NumDescriptorRanges = 1;
-	// gMatrixPalette  (t0)
-	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-	rootParameters[1].DescriptorTable.pDescriptorRanges = &descriptorRange[1];
-	rootParameters[1].DescriptorTable.NumDescriptorRanges = 1;
-	// gInputVertices  (t1)
-	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-	rootParameters[2].DescriptorTable.pDescriptorRanges = &descriptorRange[1];
-	rootParameters[2].DescriptorTable.NumDescriptorRanges = 1;
-	// gInfluences (t2)
-	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-	rootParameters[3].DescriptorTable.pDescriptorRanges = &descriptorRange[1];
-	rootParameters[3].DescriptorTable.NumDescriptorRanges = 1;
-	// gSkinningInformation	(b0)
-	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptortableを使う
-	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // PixelShaderで使う
-	rootParameters[4].Descriptor.ShaderRegister = 0;
+	D3D12_ROOT_PARAMETER rootParameters[1] = {};
+	// gParticle (u0)
+	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptor Tableとして定義
+	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // 全てのシェーダーステージでアクセス可能
+	rootParameters[0].DescriptorTable.NumDescriptorRanges = 1; // Descriptor Rangeは1つ
+	rootParameters[0].DescriptorTable.pDescriptorRanges = &descriptorRange[0]; // Descriptor Rangeを関連付け
 
 	descriptionRootSignature.pParameters = rootParameters;
 	descriptionRootSignature.NumParameters = _countof(rootParameters);
 
+	// rootSignature作成
+	CreateRootSignature(device, descriptionRootSignature, computeState);
+
 	IDxcBlob* shaderBlob = nullptr;
 	ShaderCompile* compile_ = nullptr;
 	// shaderをコンパイルする
-	shaderBlob = compile_->CompileShader(L"resources/ShaderFile/" + shaderName + L".CS.hlsl", L"vs_6_0", dxcUtils, dxcCompiler, includeHandler);
+	shaderBlob = compile_->CompileShader(L"resources/ShaderFile/" + shaderName + L".CS.hlsl", L"cs_6_0", dxcUtils, dxcCompiler, includeHandler);
 	assert(shaderBlob != nullptr);
 
 	D3D12_COMPUTE_PIPELINE_STATE_DESC computePipelineStateDesc{};
