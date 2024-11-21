@@ -12,7 +12,8 @@ void Player::Initialize(uint32_t texHandle)
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
 	object_->SetModel("Player/Jet.obj");
-	worldTransform_.Initialize(); ;
+	worldTransform_.Initialize();
+	worldTransform_.translate.y = 20.0f;
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
 	object_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
@@ -83,6 +84,8 @@ void Player::Move()
 	}
 
 	worldTransform_.translate = worldTransform_.translate + move;
+
+	worldTransform_.translate.z = worldTransform_.translate.z + 0.5f;
 }
 
 void Player::Attack()

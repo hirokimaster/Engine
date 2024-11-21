@@ -36,7 +36,7 @@ void GameScene::Initialize()
 	// player
 	player_ = std::make_unique<Player>();
 	player_->Initialize(texHandlePlayer_);
-	player_->SetPosition({ 0,0,50.0f });
+	player_->SetPosition({ 0,20.0f,50.0f });
 	lockOn_->Initialize(player_->GetWorldTransform().translate);
 	player_->SetLockOn(lockOn_.get());
 	// rail
