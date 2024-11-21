@@ -116,7 +116,7 @@ public:
 
 	void SetParent(const WorldTransform* parent) { worldTransform_.parent = parent; }
 
-	void SetPosition(Vector3 position) { worldTransform_.translate = position; }
+	void SetPosition(const Vector3& position) { worldTransform_.translate = position; }
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 

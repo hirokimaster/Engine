@@ -54,7 +54,7 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="position"></param>
 	/// <returns></returns>
-	static Sprite* Create(uint32_t texHandle, Vector2 position = {0,0}, Vector4 color = {1,1,1,1});
+	static Sprite* Create(uint32_t texHandle, const Vector2& position = {0,0}, const Vector4& color = {1,1,1,1});
 
 #pragma region Getter
 	// 座標の取得

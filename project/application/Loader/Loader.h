@@ -84,7 +84,7 @@ private:
 	Camera camera_{};
 	Player* player_ = nullptr;
 	UVTransform uvTransform_{
-		{3.0f,3.0f,1.0f},
+		{1.0f,2.5f,1.0f},
 		{0.0f,0.0f,0.0f},
 		{0.0f,0.0f,0.0f},
 	};

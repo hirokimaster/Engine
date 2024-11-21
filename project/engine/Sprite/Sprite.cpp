@@ -107,7 +107,7 @@ void Sprite::CreateVertex()
 /// </summary>
 /// <param name="position"></param>
 /// <returns></returns>
-Sprite* Sprite::Create(uint32_t texHandle, Vector2 position, Vector4 color)
+Sprite* Sprite::Create(uint32_t texHandle, const Vector2& position, const Vector4& color)
 {
 	Sprite* sprite = new Sprite;
 	sprite->Initialize(texHandle);

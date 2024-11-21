@@ -129,7 +129,8 @@ void Loader::Arrangement(LevelData* levelData)
 {
 
 	uint32_t texHandle = TextureManager::Load("resources/TempTexture/noise0.png");
-	uint32_t texHandleSibahu = TextureManager::Load("resources/TempTexture/sibahu.jpg");
+	uint32_t texHandleRoad = TextureManager::Load("resources/Stage/road.png");
+	uint32_t texHandleMount = TextureManager::Load("resources/TempTexture/mount.jpg");
 
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData->objects) {
@@ -144,27 +145,35 @@ void Loader::Arrangement(LevelData* levelData)
 			newEnemy->SetEndPosition(objectData.controlPointEnd);
 			enemys_.push_back(std::move(newEnemy));
 		}
-		else if (objectData.fileName == "ground") {			
+		else if (objectData.fileName == "road") {			
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
-			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
-			newObject->SetTexHandle(texHandleSibahu);
+			newObject->SetModel("LevelEditorObj/ground.obj");
+			newObject->SetTexHandle(texHandleRoad);
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
 			newObject->SetUVTransform(uvTransform_);
-			newObject->SetMaterialProperty({ .color = {0.3f,0.3f,0.3f,1.0f} });
 			objects_.push_back(std::move(newObject));
 		}
-		else {
+		else if(objectData.fileName == "ground"){
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
-			newObject->SetTexHandle(texHandleSibahu);
+			newObject->SetTexHandle(texHandleMount);
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
-			newObject->SetMaterialProperty({ .color = {0.3f,0.3f,0.3f,1.0f} });
+			objects_.push_back(std::move(newObject));
+		}
+		else if (objectData.fileName == "mount") {
+			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
+			newObject->Initialize();
+			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
+			newObject->SetTexHandle(texHandleMount);
+			newObject->SetPosition(objectData.translate);
+			newObject->SetRotate(objectData.rotate);
+			newObject->SetScale(objectData.scale);
 			objects_.push_back(std::move(newObject));
 		}
 	}
@@ -190,6 +199,11 @@ void Loader::Update()
 		}
 		return false;
 		});
+
+	ImGui::Begin("uv");
+	ImGui::DragFloat2("scale", &uvTransform_.scale.x, 0.1f, 0.0f, 1000.0f);
+	ImGui::DragFloat2("translate", &uvTransform_.translate.x, 0.1f, 0.0f, 1000.0f);
+	ImGui::End();
 }
 
 void Loader::Draw(Camera& camera)
