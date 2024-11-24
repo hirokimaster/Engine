@@ -86,7 +86,7 @@ void Player::Move()
 
 	worldTransform_.translate = worldTransform_.translate + move;
 
-	//worldTransform_.translate.z = worldTransform_.translate.z + 0.5f;
+	worldTransform_.translate.z = worldTransform_.translate.z + 0.5f;
 }
 
 void Player::Attack()

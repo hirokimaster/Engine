@@ -12,6 +12,7 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Enemy/PhaseState/EnemyStateSortie.h"
 #include "application/GameObject/Enemy/PhaseState/EnemyStateFire.h"
+#include "application/GameObject/Player/PlayerParticle/ExplosionParticle.h"
 
 class Player;
 
@@ -113,5 +114,8 @@ private:
 	Vector3 startPosition_{}; // スポーンする座標
 	Vector3 endPosition_{}; // でできた後の最終座標
 	bool isSortie_ = false;
+	std::unique_ptr<ExplosionParticle> deadParticle_ = nullptr;
+	bool isParticle_ = false;
+	uint32_t particleTimer_ = 40;
 };
 

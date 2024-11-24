@@ -20,6 +20,10 @@ void Enemy::Initialize(uint32_t texHandle)
 	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
+	deadParticle_ = std::make_unique<ExplosionParticle>();
+	deadParticle_->Initialize();
+
+
 	// 最初の状態
 	phaseState_ = std::make_unique<EnemyStateSortie>();
 
@@ -41,6 +45,13 @@ void Enemy::Update()
 		isDead_ = true;
 	}
 
+	if (isParticle_) {
+		// 死んだときのparticle
+		deadParticle_->SetPosition(GetWorldPosition());
+		deadParticle_->Update();
+	}
+	
+
 #ifdef _DEBUG
 
 	ImGui::Begin("Enemy");
@@ -53,10 +64,13 @@ void Enemy::Update()
 void Enemy::Draw(Camera& camera)
 {
 	// 出撃するまで出さない
-	if (isSortie_) {
+	if (isSortie_ && !isParticle_) {
 		object_->Draw(camera);
+		if (isParticle_) {
+			deadParticle_->Draw(camera);
+		}
+		
 	}
-
 
 	// 弾の描画
 	for (const auto& bullet : bullets_) {
@@ -66,7 +80,7 @@ void Enemy::Draw(Camera& camera)
 
 void Enemy::OnCollision()
 {
-	isDead_ = true;
+	isParticle_ = true;
 }
 
 void Enemy::Fire()
@@ -105,6 +119,16 @@ void Enemy::BulletUpdate()
 		}
 		return false;
 		});
+
+	if (isParticle_) {
+		--particleTimer_;
+	}
+
+	if (particleTimer_ <= 0) {
+		particleTimer_ = 0;
+		isParticle_ = false;
+		isDead_ = true;
+	}
 
 }
 
