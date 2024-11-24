@@ -107,6 +107,10 @@ void GameScene::Update()
 	loader_->Update();
 
 	// followCamera
+	float cameraRotateZ = player_->GetRotate().z;
+	cameraRotateZ = std::clamp(cameraRotateZ, -0.1f, 0.1f);
+	followCamera_->SetRotateZ(-cameraRotateZ);
+
 	followCamera_->Update();
 	camera_.matView = followCamera_->GetCamera().matView;
 	camera_.matProjection = followCamera_->GetCamera().matProjection;
