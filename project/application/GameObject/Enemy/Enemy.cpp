@@ -66,10 +66,11 @@ void Enemy::Draw(Camera& camera)
 	// 出撃するまで出さない
 	if (isSortie_ && !isParticle_) {
 		object_->Draw(camera);
-		if (isParticle_) {
-			deadParticle_->Draw(camera);
-		}
 		
+	}
+
+	if (isParticle_) {
+		deadParticle_->Draw(camera);
 	}
 
 	// 弾の描画
