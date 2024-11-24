@@ -22,6 +22,7 @@ void Player::Initialize(uint32_t texHandle)
 	explosionParticle_ = std::make_unique<ExplosionParticle>();
 	explosionParticle_->Initialize();
 
+
 	SetCollosionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
 
@@ -85,7 +86,7 @@ void Player::Move()
 
 	worldTransform_.translate = worldTransform_.translate + move;
 
-	worldTransform_.translate.z = worldTransform_.translate.z + 0.5f;
+	//worldTransform_.translate.z = worldTransform_.translate.z + 0.5f;
 }
 
 void Player::Attack()
@@ -192,30 +193,33 @@ void Player::DrawUI()
 
 void Player::Rotate()
 {
-	Vector3 rotate = { 0,0,0 };
+	Vector3 rotate = { 0, 0, 0 };
 	const float kRotateSpeedZ = 0.05f;
 	const float kRotateSpeedX = 0.05f;
 	const float kRotateLimitZ = 0.7f;
 	const float kRotateLimitX = 0.15f;
-	
+	const float kLerpFactor = 0.1f;
+
 	// ゲームパッドの状態を得る変数(XINPUT)
 	XINPUT_STATE joyState;
 
-
 	// ゲームパッド状態取得
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
-		rotate.z -= (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kRotateSpeedZ;
-		rotate.x -= (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kRotateSpeedX;
+		// ゲームパッドの入力から回転速度を計算
+		rotate.z = (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kRotateSpeedZ;
+		rotate.x = (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kRotateSpeedX;
 	}
 
-
-	// 回転を適用
-	worldTransform_.rotate = worldTransform_.rotate + rotate;
+	// 回転を適用（補間を加える）
+	worldTransform_.rotate.z = std::lerp(worldTransform_.rotate.z, worldTransform_.rotate.z - rotate.z, kLerpFactor);
+	worldTransform_.rotate.x = std::lerp(worldTransform_.rotate.x, worldTransform_.rotate.x - rotate.x, kLerpFactor);
 
 	// z軸に制限をかける
 	worldTransform_.rotate.z = std::clamp(worldTransform_.rotate.z, -kRotateLimitZ, kRotateLimitZ);
+
 	// x軸に制限をかける
 	worldTransform_.rotate.x = std::clamp(worldTransform_.rotate.x, -kRotateLimitX, kRotateLimitX);
+
 	// y軸は回転させないので0にしとく
 	worldTransform_.rotate.y = 0.0f;
 
