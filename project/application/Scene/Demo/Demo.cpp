@@ -28,7 +28,8 @@ void Demo::Initialize()
 
 void Demo::Update()
 {
-	camera_.UpdateMatrix();
+	particle_->Update();
+	camera_.UpdateMatrix();		
 }
 
 void Demo::Draw()

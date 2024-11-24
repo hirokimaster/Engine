@@ -15,3 +15,9 @@ struct Particle
     float32_t currentTime;
     float32_t4 color;
 };
+
+struct PerFrame
+{
+    float32_t time;
+    float32_t deltaTime;
+};

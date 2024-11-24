@@ -29,6 +29,8 @@
     <FxCompile Include="resources\ShaderFile\Skinning.CS.hlsl" />
     <FxCompile Include="resources\ShaderFile\InitializeParticle.CS.hlsl" />
     <FxCompile Include="resources\ShaderFile\GPUParticle.VS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\EmitParticle.CS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\UpdateParticle.CS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application\GameManager\GameManager.cpp" />
