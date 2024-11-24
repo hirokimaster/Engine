@@ -98,23 +98,26 @@ private:
 private:
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList_;
 	// uav用のリソース
-	Microsoft::WRL::ComPtr<ID3D12Resource> uavResource_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> particleResource_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> materialResource_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> perViewResource_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> emitterSphereResource_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> perFrameResource_;
-	Microsoft::WRL::ComPtr<ID3D12Resource> freeCounterResource_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> freeListIndexResource_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> freeListResource_;
 	ParticleCS* particleData_ = nullptr;
 	PerView* perViewData_ = nullptr;
 	EmitterSphere* emitterSphereData_ = nullptr;
 	PerFrame* perFrameData_ = nullptr;
 	Model* model_ = nullptr;
-	D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandle_;
-	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandle_;
-	D3D12_CPU_DESCRIPTOR_HANDLE freeCounterCpuDescHandle_;
-	D3D12_GPU_DESCRIPTOR_HANDLE freeCounterGpuDescHandle_;
+	D3D12_CPU_DESCRIPTOR_HANDLE particleCpuDescHandle_;
+	D3D12_GPU_DESCRIPTOR_HANDLE particleGpuDescHandle_;
+	D3D12_CPU_DESCRIPTOR_HANDLE freeListIndexCpuDescHandle_;
+	D3D12_GPU_DESCRIPTOR_HANDLE freeListIndexGpuDescHandle_;
+	D3D12_CPU_DESCRIPTOR_HANDLE freeListCpuDescHandle_;
+	D3D12_GPU_DESCRIPTOR_HANDLE freeListGpuDescHandle_;
 	uint32_t uavIndex_ = 0;
-	uint32_t srvIndex_ = 0;
+	uint32_t particleSrvIndex_ = 0;
 	ComputePipelineData initializeParticle_;
 	ComputePipelineData emitParticle_;
 	ComputePipelineData updateParticle_;

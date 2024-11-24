@@ -61,7 +61,7 @@ ComputePipelineData ComputePipeline::CreateInitializeParticle(Microsoft::WRL::Co
 
 	// DescriptorRange
 	// uav
-	D3D12_DESCRIPTOR_RANGE descriptorRange[2] = {};
+	D3D12_DESCRIPTOR_RANGE descriptorRange[3] = {};
 	descriptorRange[0].BaseShaderRegister = 0; // 0から始まる
 	descriptorRange[0].NumDescriptors = 1; // 数は1つ
 	descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV; // UAVを使う
@@ -72,19 +72,28 @@ ComputePipelineData ComputePipeline::CreateInitializeParticle(Microsoft::WRL::Co
 	descriptorRange[1].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV; // UAVを使う
 	descriptorRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
+	descriptorRange[2].BaseShaderRegister = 2; // 2から始まる
+	descriptorRange[2].NumDescriptors = 1; // 数は1つ
+	descriptorRange[2].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV; // UAVを使う
+	descriptorRange[2].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+
 	// RootParameter作成
-	D3D12_ROOT_PARAMETER rootParameters[2] = {};
+	D3D12_ROOT_PARAMETER rootParameters[3] = {};
 	// gParticle (u0)
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptor Tableとして定義
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // 全てのシェーダーステージでアクセス可能
 	rootParameters[0].DescriptorTable.NumDescriptorRanges = 1; // Descriptor Rangeは1つ
 	rootParameters[0].DescriptorTable.pDescriptorRanges = &descriptorRange[0]; // Descriptor Rangeを関連付け
-
-	// gFreeCounter (u1)
+	// gFreeListIndex (u1)
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptor Tableとして定義
 	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // 全てのシェーダーステージでアクセス可能
 	rootParameters[1].DescriptorTable.NumDescriptorRanges = 1; // Descriptor Rangeは1つ
 	rootParameters[1].DescriptorTable.pDescriptorRanges = &descriptorRange[1]; // Descriptor Rangeを関連付け
+	// gFreeList (u2)
+	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptor Tableとして定義
+	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // 全てのシェーダーステージでアクセス可能
+	rootParameters[2].DescriptorTable.NumDescriptorRanges = 1; // Descriptor Rangeは1つ
+	rootParameters[2].DescriptorTable.pDescriptorRanges = &descriptorRange[2]; // Descriptor Rangeを関連付け
 
 	descriptionRootSignature.pParameters = rootParameters;
 	descriptionRootSignature.NumParameters = _countof(rootParameters);
@@ -147,7 +156,7 @@ ComputePipelineData ComputePipeline::CreateEmitterParticle(Microsoft::WRL::ComPt
 
 	// DescriptorRange
 	// uav
-	D3D12_DESCRIPTOR_RANGE descriptorRange[2] = {};
+	D3D12_DESCRIPTOR_RANGE descriptorRange[3] = {};
 	descriptorRange[0].BaseShaderRegister = 0; // 0から始まる
 	descriptorRange[0].NumDescriptors = 1; // 数は1つ
 	descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV; // UAVを使う
@@ -158,8 +167,13 @@ ComputePipelineData ComputePipeline::CreateEmitterParticle(Microsoft::WRL::ComPt
 	descriptorRange[1].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV; // UAVを使う
 	descriptorRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
+	descriptorRange[2].BaseShaderRegister = 2; // 2から始まる
+	descriptorRange[2].NumDescriptors = 1; // 数は1つ
+	descriptorRange[2].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV; // UAVを使う
+	descriptorRange[2].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+
 	// RootParameter作成
-	D3D12_ROOT_PARAMETER rootParameters[4] = {};
+	D3D12_ROOT_PARAMETER rootParameters[5] = {};
 	// gParticle (u0)
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptor Tableとして定義
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // 全てのシェーダーステージでアクセス可能
@@ -173,11 +187,16 @@ ComputePipelineData ComputePipeline::CreateEmitterParticle(Microsoft::WRL::ComPt
 	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 	rootParameters[2].Descriptor.ShaderRegister = 1;
-	// freeCounter (u1)
+	// freeListIndex (u1)
 	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptor Tableとして定義
 	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // 全てのシェーダーステージでアクセス可能
 	rootParameters[3].DescriptorTable.NumDescriptorRanges = 1; // Descriptor Rangeは1つ
 	rootParameters[3].DescriptorTable.pDescriptorRanges = &descriptorRange[1]; // Descriptor Rangeを関連付け
+	// freeList (u2)
+	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptor Tableとして定義
+	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // 全てのシェーダーステージでアクセス可能
+	rootParameters[4].DescriptorTable.NumDescriptorRanges = 1; // Descriptor Rangeは1つ
+	rootParameters[4].DescriptorTable.pDescriptorRanges = &descriptorRange[2]; // Descriptor Rangeを関連付け
 
 	descriptionRootSignature.pParameters = rootParameters;
 	descriptionRootSignature.NumParameters = _countof(rootParameters);
@@ -241,14 +260,24 @@ ComputePipelineData ComputePipeline::CreateUpdateParticle(Microsoft::WRL::ComPtr
 
 	// DescriptorRange
 	// uav
-	D3D12_DESCRIPTOR_RANGE descriptorRange[2] = {};
+	D3D12_DESCRIPTOR_RANGE descriptorRange[3] = {};
 	descriptorRange[0].BaseShaderRegister = 0; // 0から始まる
 	descriptorRange[0].NumDescriptors = 1; // 数は1つ
 	descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV; // UAVを使う
 	descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
 
+	descriptorRange[1].BaseShaderRegister = 1; // 1から始まる
+	descriptorRange[1].NumDescriptors = 1; // 数は1つ
+	descriptorRange[1].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV; // UAVを使う
+	descriptorRange[1].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+
+	descriptorRange[2].BaseShaderRegister = 2; // 2から始まる
+	descriptorRange[2].NumDescriptors = 1; // 数は1つ
+	descriptorRange[2].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV; // UAVを使う
+	descriptorRange[2].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; // Offsetを自動計算
+
 	// RootParameter作成
-	D3D12_ROOT_PARAMETER rootParameters[2] = {};
+	D3D12_ROOT_PARAMETER rootParameters[4] = {};
 	// gParticle (u0)
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptor Tableとして定義
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // 全てのシェーダーステージでアクセス可能
@@ -258,6 +287,16 @@ ComputePipelineData ComputePipeline::CreateUpdateParticle(Microsoft::WRL::ComPtr
 	rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
 	rootParameters[1].Descriptor.ShaderRegister = 0;
+	// gFreeListIndex (u1)
+	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptor Tableとして定義
+	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // 全てのシェーダーステージでアクセス可能
+	rootParameters[2].DescriptorTable.NumDescriptorRanges = 1; // Descriptor Rangeは1つ
+	rootParameters[2].DescriptorTable.pDescriptorRanges = &descriptorRange[1]; // Descriptor Rangeを関連付け
+	// gFreeList (u2)
+	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptor Tableとして定義
+	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL; // 全てのシェーダーステージでアクセス可能
+	rootParameters[3].DescriptorTable.NumDescriptorRanges = 1; // Descriptor Rangeは1つ
+	rootParameters[3].DescriptorTable.pDescriptorRanges = &descriptorRange[2]; // Descriptor Rangeを関連付け
 
 	descriptionRootSignature.pParameters = rootParameters;
 	descriptionRootSignature.NumParameters = _countof(rootParameters);

@@ -23,7 +23,6 @@ void GPUParticle::Draw(const Camera& camera)
 {
 	// perView更新
 	PerViewUpdate(camera);
-
 	// emitterのCS起動
 	EmitterParticleCS();
 	// updateParticleのCS起動
@@ -38,7 +37,7 @@ void GPUParticle::Draw(const Camera& camera)
 	commandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	commandList_->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList_->SetGraphicsRootConstantBufferView(1, perViewResource_->GetGPUVirtualAddress());
-	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, srvIndex_); // structuredBuffer
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, particleSrvIndex_); // structuredBuffer
 	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, texHandle_); // texture
 
 	// drawCall
@@ -52,7 +51,7 @@ void GPUParticle::CreateUAV()
 
 	Microsoft::WRL::ComPtr<ID3D12Device> device = DirectXCommon::GetInstance()->GetDevice();
 
-	// uav作成
+	// particleUAV作成
 	D3D12_UNORDERED_ACCESS_VIEW_DESC uavDesc{};
 	uavDesc.Format = DXGI_FORMAT_UNKNOWN;
 	uavDesc.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
@@ -66,47 +65,69 @@ void GPUParticle::CreateUAV()
 	SrvManager::GetInstance()->UavAllocate();
 	uavIndex_ = SrvManager::GetInstance()->GetUavIndex();
 
-	cpuDescHandle_ = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
+	particleCpuDescHandle_ = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
 		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
-	gpuDescHandle_ = DescriptorManager::GetInstance()->GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
+	particleGpuDescHandle_ = DescriptorManager::GetInstance()->GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
 		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
-	device->CreateUnorderedAccessView(uavResource_.Get(), nullptr, &uavDesc, cpuDescHandle_);
+	device->CreateUnorderedAccessView(particleResource_.Get(), nullptr, &uavDesc, particleCpuDescHandle_);
 
-	// freeCounter
-	D3D12_UNORDERED_ACCESS_VIEW_DESC freeCounterUavDesc{};
-	freeCounterUavDesc.Format = DXGI_FORMAT_UNKNOWN;
-	freeCounterUavDesc.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
-	freeCounterUavDesc.Buffer.FirstElement = 0;
-	freeCounterUavDesc.Buffer.NumElements = 1;
-	freeCounterUavDesc.Buffer.CounterOffsetInBytes = 0;
-	freeCounterUavDesc.Buffer.Flags = D3D12_BUFFER_UAV_FLAG_NONE;
-	freeCounterUavDesc.Buffer.StructureByteStride = sizeof(int32_t);
+	// freeListIndex
+	D3D12_UNORDERED_ACCESS_VIEW_DESC freeListIndexUavDesc{};
+	freeListIndexUavDesc.Format = DXGI_FORMAT_UNKNOWN;
+	freeListIndexUavDesc.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
+	freeListIndexUavDesc.Buffer.FirstElement = 0;
+	freeListIndexUavDesc.Buffer.NumElements = 1;
+	freeListIndexUavDesc.Buffer.CounterOffsetInBytes = 0;
+	freeListIndexUavDesc.Buffer.Flags = D3D12_BUFFER_UAV_FLAG_NONE;
+	freeListIndexUavDesc.Buffer.StructureByteStride = sizeof(int32_t);
 	// srvと同じHeapに配置するのでsrvのマネージャからhandleの位置をずらす
 	SrvManager::GetInstance()->UavAllocate();
 	uavIndex_ = SrvManager::GetInstance()->GetUavIndex();
 
-	freeCounterCpuDescHandle_ = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
+	freeListIndexCpuDescHandle_ = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
 		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
-	freeCounterGpuDescHandle_ = DescriptorManager::GetInstance()->GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
+	freeListIndexGpuDescHandle_ = DescriptorManager::GetInstance()->GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
 		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
-	device->CreateUnorderedAccessView(freeCounterResource_.Get(), nullptr, &freeCounterUavDesc, freeCounterCpuDescHandle_);
+	device->CreateUnorderedAccessView(freeListIndexResource_.Get(), nullptr, &freeListIndexUavDesc, freeListIndexCpuDescHandle_);
+
+	// freeList
+	D3D12_UNORDERED_ACCESS_VIEW_DESC freeListUavDesc{};
+	freeListUavDesc.Format = DXGI_FORMAT_UNKNOWN;
+	freeListUavDesc.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
+	freeListUavDesc.Buffer.FirstElement = 0;
+	freeListUavDesc.Buffer.NumElements = kMaxInstance_;
+	freeListUavDesc.Buffer.CounterOffsetInBytes = 0;
+	freeListUavDesc.Buffer.Flags = D3D12_BUFFER_UAV_FLAG_NONE;
+	freeListUavDesc.Buffer.StructureByteStride = sizeof(uint32_t);
+	// srvと同じHeapに配置するのでsrvのマネージャからhandleの位置をずらす
+	SrvManager::GetInstance()->UavAllocate();
+	uavIndex_ = SrvManager::GetInstance()->GetUavIndex();
+
+	freeListCpuDescHandle_ = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
+		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
+	freeListGpuDescHandle_ = DescriptorManager::GetInstance()->GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
+		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
+	device->CreateUnorderedAccessView(freeListResource_.Get(), nullptr, &freeListUavDesc, freeListCpuDescHandle_);
 	
 }
 
 void GPUParticle::CreateSRV()
 {
 	// particle
-	uavResource_ = CreateResource::CreateRWStructuredBufferResource(sizeof(ParticleCS) * kMaxInstance_);
-	// srvの位置をtextureのsrvの位置から設定する
+	particleResource_ = CreateResource::CreateRWStructuredBufferResource(sizeof(ParticleCS) * kMaxInstance_);
 	SrvManager::GetInstance()->StructuredBufIndexAllocate();
-	srvIndex_ = SrvManager::GetInstance()->GetStructuredBufIndex();
-	SrvManager::GetInstance()->CreateStructuredBufferSrv(uavResource_.Get(), kMaxInstance_, sizeof(ParticleCS), srvIndex_);
+	particleSrvIndex_ = SrvManager::GetInstance()->GetStructuredBufIndex();
+	SrvManager::GetInstance()->CreateStructuredBufferSrv(particleResource_.Get(), kMaxInstance_, sizeof(ParticleCS), particleSrvIndex_);
 
-	// freeCounter
-	// srvの位置をtextureのsrvの位置から設定する
-	freeCounterResource_ = CreateResource::CreateRWStructuredBufferResource(sizeof(int32_t));
+	// freeListIndex
+	freeListIndexResource_ = CreateResource::CreateRWStructuredBufferResource(sizeof(int32_t));
 	SrvManager::GetInstance()->StructuredBufIndexAllocate();
-	SrvManager::GetInstance()->CreateStructuredBufferSrv(freeCounterResource_.Get(), 1, sizeof(int32_t), SrvManager::GetInstance()->GetStructuredBufIndex());
+	SrvManager::GetInstance()->CreateStructuredBufferSrv(freeListIndexResource_.Get(), 1, sizeof(int32_t), SrvManager::GetInstance()->GetStructuredBufIndex());
+
+	// freeList
+	freeListResource_ = CreateResource::CreateRWStructuredBufferResource(sizeof(uint32_t) * kMaxInstance_);
+	SrvManager::GetInstance()->StructuredBufIndexAllocate();
+	SrvManager::GetInstance()->CreateStructuredBufferSrv(freeListResource_.Get(), kMaxInstance_, sizeof(int32_t), SrvManager::GetInstance()->GetStructuredBufIndex());
 }
 
 void GPUParticle::CreateBuffer()
@@ -176,17 +197,17 @@ void GPUParticle::InitializeParticleCS()
 
 	initializeParticle_ = ComputePipeline::GetInstance()->GetPipelineType().initializeParticle;
 
-	DirectXCommon::GetInstance()->TransitionResourceBarrier(uavResource_.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-	DirectXCommon::GetInstance()->TransitionResourceBarrier(freeCounterResource_.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+	DirectXCommon::GetInstance()->TransitionResourceBarrier(particleResource_.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+	DirectXCommon::GetInstance()->TransitionResourceBarrier(freeListIndexResource_.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+	DirectXCommon::GetInstance()->TransitionResourceBarrier(freeListResource_.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
 	// dispatch
 	commandList_->SetComputeRootSignature(initializeParticle_.rootSignature.Get());
 	commandList_->SetPipelineState(initializeParticle_.computePipelineState.Get());
 	// uav設定
-	commandList_->SetComputeRootDescriptorTable(0, gpuDescHandle_);
-	commandList_->SetComputeRootDescriptorTable(1, freeCounterGpuDescHandle_);
+	commandList_->SetComputeRootDescriptorTable(0, particleGpuDescHandle_);
+	commandList_->SetComputeRootDescriptorTable(1, freeListIndexGpuDescHandle_);
+	commandList_->SetComputeRootDescriptorTable(2, freeListGpuDescHandle_);
 	commandList_->Dispatch(1, 1, 1);
-
-
 }
 
 void GPUParticle::EmitterParticleCS()
@@ -195,23 +216,33 @@ void GPUParticle::EmitterParticleCS()
 
 	commandList_->SetComputeRootSignature(emitParticle_.rootSignature.Get());
 	commandList_->SetPipelineState(emitParticle_.computePipelineState.Get());
-	commandList_->SetComputeRootDescriptorTable(0, gpuDescHandle_);
+	commandList_->SetComputeRootDescriptorTable(0, particleGpuDescHandle_);
 	commandList_->SetComputeRootConstantBufferView(1, emitterSphereResource_->GetGPUVirtualAddress());
 	commandList_->SetComputeRootConstantBufferView(2, perFrameResource_->GetGPUVirtualAddress());
-	commandList_->SetComputeRootDescriptorTable(3, freeCounterGpuDescHandle_);
+	commandList_->SetComputeRootDescriptorTable(3, freeListIndexGpuDescHandle_);
+	commandList_->SetComputeRootDescriptorTable(4, freeListGpuDescHandle_);
 	commandList_->Dispatch(1, 1, 1);
 }
 
 void GPUParticle::UpdateParticleCS()
 {
+	D3D12_RESOURCE_BARRIER barrier{};
+	barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+	barrier.UAV.pResource = particleResource_.Get();
+	commandList_->ResourceBarrier(1, &barrier);
+	
 	updateParticle_ = ComputePipeline::GetInstance()->GetPipelineType().updateParticle;
 
 	commandList_->SetComputeRootSignature(updateParticle_.rootSignature.Get());
 	commandList_->SetPipelineState(updateParticle_.computePipelineState.Get());
-	commandList_->SetComputeRootDescriptorTable(0, gpuDescHandle_);
+	commandList_->SetComputeRootDescriptorTable(0, particleGpuDescHandle_);
 	commandList_->SetComputeRootConstantBufferView(1, perFrameResource_->GetGPUVirtualAddress());
+	commandList_->SetComputeRootDescriptorTable(2, freeListIndexGpuDescHandle_);
+	commandList_->SetComputeRootDescriptorTable(3, freeListGpuDescHandle_);
 	commandList_->Dispatch(1, 1, 1);
-	DirectXCommon::GetInstance()->TransitionResourceBarrier(uavResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
-	DirectXCommon::GetInstance()->TransitionResourceBarrier(freeCounterResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
+	DirectXCommon::GetInstance()->TransitionResourceBarrier(particleResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
+	DirectXCommon::GetInstance()->TransitionResourceBarrier(freeListIndexResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
+	DirectXCommon::GetInstance()->TransitionResourceBarrier(freeListResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
 }
 
