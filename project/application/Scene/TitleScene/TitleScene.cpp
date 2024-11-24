@@ -90,8 +90,6 @@ void TitleScene::Update()
 	worldTransform_.UpdateMatrix();
 	Vector3 particleOffset = { 0,0.5f,-4.0f };
 	particle_->SetPosition(worldTransform_.translate + particleOffset);
-	particle_->SetAreaMax({ worldTransform_.translate.x + 0.1f, worldTransform_.translate.y + 0.1f,worldTransform_.translate.z - 0.5f });
-	particle_->SetAreaMin({ worldTransform_.translate.x - 0.1f, worldTransform_.translate.y - 0.1f,worldTransform_.translate.z - 0.7f });
 	particle_->Update();
 
 	// カメラ
