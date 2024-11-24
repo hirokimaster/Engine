@@ -19,9 +19,9 @@ void Demo::Initialize()
 {
 	camera_.Initialize();
 	ModelResources::GetInstance()->LoadModel();
-	texHandle_ = TextureManager::GetInstance()->Load("resources/TempTexture/uvChecker.png");
+	texHandle_ = TextureManager::GetInstance()->Load("resources/Player/smoke.png");
 	particle_ = std::make_unique<GPUParticle>();
-	particle_->SetModel("Player/cube.obj");
+	particle_->SetModel("Player/plane.obj");
 	particle_->Initialize();
 	particle_->SetTexHandle(texHandle_);
 }

@@ -23,6 +23,19 @@ struct PerView {
 	Matrix4x4 billboardMatrix;
 };
 
+struct ParticleRange1d {
+	float min;
+	float max;
+	float padding[2];
+};
+
+struct ParticleRange3d {
+	Vector3 min;
+	float padding1[1];
+	Vector3 max;
+	float padding2[1];
+};
+
 struct EmitterSphere {
 	Vector3 translate;
 	float radius;
@@ -30,6 +43,13 @@ struct EmitterSphere {
 	float frequency;
 	float frequencyTime;
 	uint32_t emit;
+	ParticleRange3d rangeTranslate;
+	ParticleRange3d rangeScale;
+	ParticleRange1d rangeLifeTime;
+	ParticleRange3d rangeVelocity;
+	ParticleRange1d rangeCurrentTime;
+	ParticleRange3d rangeColor;
+	ParticleRange1d rangeAlpha;
 };
 
 struct PerFrame {
@@ -39,6 +59,9 @@ struct PerFrame {
 
 class GPUParticle {
 public:
+
+	GPUParticle();
+	~GPUParticle();
 
 	void Initialize();
 
@@ -51,6 +74,8 @@ public:
 	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
 
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
+
+	void SetParticleParam(EmitterSphere param) { *emitterSphereData_ = param; }
 
 #pragma endregion
 
@@ -95,6 +120,11 @@ private:
 	/// </summary>
 	void UpdateParticleCS();
 
+	/// <summary>
+	/// デバック用
+	/// </summary>
+	void DebugDraw();
+
 private:
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList_;
 	// uav用のリソース
@@ -116,8 +146,12 @@ private:
 	D3D12_GPU_DESCRIPTOR_HANDLE freeListIndexGpuDescHandle_;
 	D3D12_CPU_DESCRIPTOR_HANDLE freeListCpuDescHandle_;
 	D3D12_GPU_DESCRIPTOR_HANDLE freeListGpuDescHandle_;
-	uint32_t uavIndex_ = 0;
+	uint32_t particleUavIndex_ = 0;
+	uint32_t freeListUavIndex_ = 0;
+	uint32_t freeListIndexUavIndex_ = 0;
 	uint32_t particleSrvIndex_ = 0;
+	uint32_t freeListSrvIndex_ = 0;
+	uint32_t freeListIndexSrvIndex_ = 0;
 	ComputePipelineData initializeParticle_;
 	ComputePipelineData emitParticle_;
 	ComputePipelineData updateParticle_;

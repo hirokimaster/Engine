@@ -1,5 +1,22 @@
 #include "GPUParticle.h"
 
+GPUParticle::GPUParticle()
+{
+}
+
+GPUParticle::~GPUParticle()
+{
+	// uav解放
+	SrvManager::GetInstance()->UavFree(particleUavIndex_);
+	SrvManager::GetInstance()->UavFree(freeListIndexUavIndex_);
+	SrvManager::GetInstance()->UavFree(freeListUavIndex_);
+
+	// srv解放
+	SrvManager::GetInstance()->StructuredBufIndexFree(particleSrvIndex_);
+	SrvManager::GetInstance()->StructuredBufIndexFree(freeListIndexSrvIndex_);
+	SrvManager::GetInstance()->StructuredBufIndexFree(freeListSrvIndex_);
+}
+
 void GPUParticle::Initialize()
 {
 	// srv作成
@@ -17,6 +34,8 @@ void GPUParticle::Initialize()
 void GPUParticle::Update()
 {
 	UpdateEmitter();
+
+	DebugDraw();
 }
 
 void GPUParticle::Draw(const Camera& camera)
@@ -29,7 +48,7 @@ void GPUParticle::Draw(const Camera& camera)
 	UpdateParticleCS();
 
 	graphicsPipeline_ = GraphicsPipeline::GetInstance()->GetPSO().gpuParticle;
-	
+
 	// graphics
 	commandList_->SetGraphicsRootSignature(graphicsPipeline_.rootSignature_.Get());
 	commandList_->SetPipelineState(graphicsPipeline_.graphicsPipelineState_.Get()); // PSOを設定
@@ -41,9 +60,9 @@ void GPUParticle::Draw(const Camera& camera)
 	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, texHandle_); // texture
 
 	// drawCall
-	if (model_){
+	if (model_) {
 		model_->Draw(kMaxInstance_);
-    }
+	}
 }
 
 void GPUParticle::CreateUAV()
@@ -63,12 +82,12 @@ void GPUParticle::CreateUAV()
 
 	// srvと同じHeapに配置するのでsrvのマネージャからhandleの位置をずらす
 	SrvManager::GetInstance()->UavAllocate();
-	uavIndex_ = SrvManager::GetInstance()->GetUavIndex();
+	particleUavIndex_ = SrvManager::GetInstance()->GetUavIndex();
 
 	particleCpuDescHandle_ = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
-		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
+		DescriptorManager::GetInstance()->GetDescSize().SRV, particleUavIndex_);
 	particleGpuDescHandle_ = DescriptorManager::GetInstance()->GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
-		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
+		DescriptorManager::GetInstance()->GetDescSize().SRV, particleUavIndex_);
 	device->CreateUnorderedAccessView(particleResource_.Get(), nullptr, &uavDesc, particleCpuDescHandle_);
 
 	// freeListIndex
@@ -82,12 +101,12 @@ void GPUParticle::CreateUAV()
 	freeListIndexUavDesc.Buffer.StructureByteStride = sizeof(int32_t);
 	// srvと同じHeapに配置するのでsrvのマネージャからhandleの位置をずらす
 	SrvManager::GetInstance()->UavAllocate();
-	uavIndex_ = SrvManager::GetInstance()->GetUavIndex();
+	freeListIndexUavIndex_ = SrvManager::GetInstance()->GetUavIndex();
 
 	freeListIndexCpuDescHandle_ = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
-		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
+		DescriptorManager::GetInstance()->GetDescSize().SRV, freeListIndexUavIndex_);
 	freeListIndexGpuDescHandle_ = DescriptorManager::GetInstance()->GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
-		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
+		DescriptorManager::GetInstance()->GetDescSize().SRV, freeListIndexUavIndex_);
 	device->CreateUnorderedAccessView(freeListIndexResource_.Get(), nullptr, &freeListIndexUavDesc, freeListIndexCpuDescHandle_);
 
 	// freeList
@@ -101,14 +120,14 @@ void GPUParticle::CreateUAV()
 	freeListUavDesc.Buffer.StructureByteStride = sizeof(uint32_t);
 	// srvと同じHeapに配置するのでsrvのマネージャからhandleの位置をずらす
 	SrvManager::GetInstance()->UavAllocate();
-	uavIndex_ = SrvManager::GetInstance()->GetUavIndex();
+	freeListUavIndex_ = SrvManager::GetInstance()->GetUavIndex();
 
 	freeListCpuDescHandle_ = DescriptorManager::GetInstance()->GetCPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
-		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
+		DescriptorManager::GetInstance()->GetDescSize().SRV, freeListUavIndex_);
 	freeListGpuDescHandle_ = DescriptorManager::GetInstance()->GetGPUDescriptorHandle(DescriptorManager::GetInstance()->GetSRV(),
-		DescriptorManager::GetInstance()->GetDescSize().SRV, uavIndex_);
+		DescriptorManager::GetInstance()->GetDescSize().SRV, freeListUavIndex_);
 	device->CreateUnorderedAccessView(freeListResource_.Get(), nullptr, &freeListUavDesc, freeListCpuDescHandle_);
-	
+
 }
 
 void GPUParticle::CreateSRV()
@@ -122,12 +141,14 @@ void GPUParticle::CreateSRV()
 	// freeListIndex
 	freeListIndexResource_ = CreateResource::CreateRWStructuredBufferResource(sizeof(int32_t));
 	SrvManager::GetInstance()->StructuredBufIndexAllocate();
-	SrvManager::GetInstance()->CreateStructuredBufferSrv(freeListIndexResource_.Get(), 1, sizeof(int32_t), SrvManager::GetInstance()->GetStructuredBufIndex());
+	freeListIndexSrvIndex_ = SrvManager::GetInstance()->GetStructuredBufIndex();
+	SrvManager::GetInstance()->CreateStructuredBufferSrv(freeListIndexResource_.Get(), 1, sizeof(int32_t), freeListIndexSrvIndex_);
 
 	// freeList
 	freeListResource_ = CreateResource::CreateRWStructuredBufferResource(sizeof(uint32_t) * kMaxInstance_);
 	SrvManager::GetInstance()->StructuredBufIndexAllocate();
-	SrvManager::GetInstance()->CreateStructuredBufferSrv(freeListResource_.Get(), kMaxInstance_, sizeof(int32_t), SrvManager::GetInstance()->GetStructuredBufIndex());
+	freeListSrvIndex_ = SrvManager::GetInstance()->GetStructuredBufIndex();
+	SrvManager::GetInstance()->CreateStructuredBufferSrv(freeListResource_.Get(), kMaxInstance_, sizeof(int32_t), freeListSrvIndex_);
 }
 
 void GPUParticle::CreateBuffer()
@@ -153,6 +174,21 @@ void GPUParticle::CreateBuffer()
 	emitterSphereData_->translate = Vector3(0.0f, 0.0f, 0.0f);
 	emitterSphereData_->radius = 1.0f;
 	emitterSphereData_->emit = 0;
+	emitterSphereData_->rangeTranslate.min = Vector3(-1.0f, -1.0f, -1.0f);
+	emitterSphereData_->rangeTranslate.max = Vector3(1.0f, 1.0f, 1.0f);
+	emitterSphereData_->rangeScale.min = Vector3(0.5f, 0.5f, 0.5f);
+	emitterSphereData_->rangeScale.max = Vector3(2.0f, 2.0f, 2.0f);
+	emitterSphereData_->rangeLifeTime.min = 1.0f;
+	emitterSphereData_->rangeLifeTime.max = 5.0f;
+	emitterSphereData_->rangeVelocity.min = Vector3(-1.0f, -1.0f, -1.0f);
+	emitterSphereData_->rangeVelocity.max = Vector3(1.0f, 1.0f, 1.0f);
+	emitterSphereData_->rangeCurrentTime.min = 0.0f;
+	emitterSphereData_->rangeCurrentTime.max = 5.0f;
+	emitterSphereData_->rangeColor.min = Vector3(1.0f, 1.0f, 1.0f);
+	emitterSphereData_->rangeColor.max = Vector3(1.0f, 1.0f, 1.0f);
+	emitterSphereData_->rangeAlpha.min = 1.0f;
+	emitterSphereData_->rangeAlpha.max = 1.0f;
+
 
 	// perFrame
 	perFrameResource_ = CreateResource::CreateBufferResource(sizeof(PerFrame));
@@ -231,7 +267,7 @@ void GPUParticle::UpdateParticleCS()
 	barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 	barrier.UAV.pResource = particleResource_.Get();
 	commandList_->ResourceBarrier(1, &barrier);
-	
+
 	updateParticle_ = ComputePipeline::GetInstance()->GetPipelineType().updateParticle;
 
 	commandList_->SetComputeRootSignature(updateParticle_.rootSignature.Get());
@@ -244,5 +280,66 @@ void GPUParticle::UpdateParticleCS()
 	DirectXCommon::GetInstance()->TransitionResourceBarrier(particleResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
 	DirectXCommon::GetInstance()->TransitionResourceBarrier(freeListIndexResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
 	DirectXCommon::GetInstance()->TransitionResourceBarrier(freeListResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
+}
+
+void GPUParticle::DebugDraw()
+{
+#ifdef _DEBUG
+
+	ImGui::Begin("Emitter");
+	int count = static_cast<int>(emitterSphereData_->count);
+	if (ImGui::InputInt("Count", &count)) {
+		emitterSphereData_->count = static_cast<uint32_t>(count);
+	}
+	ImGui::InputFloat("Frequency", &emitterSphereData_->frequency);
+	ImGui::InputFloat("Frequency Time", &emitterSphereData_->frequencyTime);
+	ImGui::InputFloat3("Translate", &emitterSphereData_->translate.x);  // Vector3 translate
+	ImGui::InputFloat("Radius", &emitterSphereData_->radius);
+
+	// Translate Range
+	if (ImGui::CollapsingHeader("Translate Range")) {
+		ImGui::InputFloat3("Min Translate", &emitterSphereData_->rangeTranslate.min.x);  // Min translate: x, y, z
+		ImGui::InputFloat3("Max Translate", &emitterSphereData_->rangeTranslate.max.x);  // Max translate: x, y, z
+	}
+
+	// Scale Range
+	if (ImGui::CollapsingHeader("Scale Range")) {
+		ImGui::InputFloat3("Min Scale", &emitterSphereData_->rangeScale.min.x);  // Min scale: x, y, z
+		ImGui::InputFloat3("Max Scale", &emitterSphereData_->rangeScale.max.x);  // Max scale: x, y, z
+	}
+
+	// Life Time Range
+	if (ImGui::CollapsingHeader("Life Time Range")) {
+		ImGui::InputFloat("Min Life Time", &emitterSphereData_->rangeLifeTime.min);
+		ImGui::InputFloat("Max Life Time", &emitterSphereData_->rangeLifeTime.max);
+	}
+
+	// Velocity Range
+	if (ImGui::CollapsingHeader("Velocity Range")) {
+		ImGui::InputFloat3("Min Velocity", &emitterSphereData_->rangeVelocity.min.x);  // Min velocity: x, y, z
+		ImGui::InputFloat3("Max Velocity", &emitterSphereData_->rangeVelocity.max.x);  // Max velocity: x, y, z
+	}
+
+	// Current Time Range
+	if (ImGui::CollapsingHeader("Current Time Range")) {
+		ImGui::InputFloat("Min Current Time", &emitterSphereData_->rangeCurrentTime.min);
+		ImGui::InputFloat("Max Current Time", &emitterSphereData_->rangeCurrentTime.max);
+	}
+
+	// Color Range
+	if (ImGui::CollapsingHeader("Color Range")) {
+		ImGui::InputFloat3("Min Color", &emitterSphereData_->rangeColor.min.x);  // Min color: x, y, z
+		ImGui::InputFloat3("Max Color", &emitterSphereData_->rangeColor.max.x);  // Max color: x, y, z
+	}
+
+	// Alpha Range
+	if (ImGui::CollapsingHeader("Alpha Range")) {
+		ImGui::InputFloat("Min Alpha", &emitterSphereData_->rangeAlpha.min);
+		ImGui::InputFloat("Max Alpha", &emitterSphereData_->rangeAlpha.max);
+	}
+
+	ImGui::End();
+
+#endif
 }
 
