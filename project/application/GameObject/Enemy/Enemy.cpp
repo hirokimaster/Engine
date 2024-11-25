@@ -46,9 +46,11 @@ void Enemy::Update()
 	}
 
 	if (isParticle_) {
+		deadParticle_->Update();
+	}
+	else {
 		// 死んだときのparticle
 		deadParticle_->SetPosition(GetWorldPosition());
-		deadParticle_->Update();
 	}
 	
 
@@ -66,7 +68,6 @@ void Enemy::Draw(Camera& camera)
 	// 出撃するまで出さない
 	if (isSortie_ && !isParticle_) {
 		object_->Draw(camera);
-		
 	}
 
 	if (isParticle_) {

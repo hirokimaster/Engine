@@ -115,7 +115,7 @@ private:
 	Vector3 endPosition_{}; // でできた後の最終座標
 	bool isSortie_ = false;
 	std::unique_ptr<ExplosionParticle> deadParticle_ = nullptr;
-	bool isParticle_ = false;
+	bool isParticle_ = false; 
 	uint32_t particleTimer_ = 40;
 };
 
