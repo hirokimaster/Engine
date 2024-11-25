@@ -200,10 +200,6 @@ void Loader::Update()
 		return false;
 		});
 
-	ImGui::Begin("uv");
-	ImGui::DragFloat2("scale", &uvTransform_.scale.x, 0.1f, 0.0f, 1000.0f);
-	ImGui::DragFloat2("translate", &uvTransform_.translate.x, 0.1f, 0.0f, 1000.0f);
-	ImGui::End();
 }
 
 void Loader::Draw(Camera& camera)
