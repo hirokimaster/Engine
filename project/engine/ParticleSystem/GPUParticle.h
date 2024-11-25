@@ -77,6 +77,8 @@ public:
 
 	void SetParticleParam(EmitterSphere param) { *emitterSphereData_ = param; }
 
+	void SetColor(const Material& color) { *materialData_ = color; }
+
 #pragma endregion
 
 private:
@@ -140,6 +142,7 @@ private:
 	EmitterSphere* emitterSphereData_ = nullptr;
 	PerFrame* perFrameData_ = nullptr;
 	Model* model_ = nullptr;
+	Material* materialData_ = nullptr;
 	D3D12_CPU_DESCRIPTOR_HANDLE particleCpuDescHandle_;
 	D3D12_GPU_DESCRIPTOR_HANDLE particleGpuDescHandle_;
 	D3D12_CPU_DESCRIPTOR_HANDLE freeListIndexCpuDescHandle_;

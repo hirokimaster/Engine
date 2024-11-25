@@ -25,12 +25,18 @@ public:
 	// setter
 	void SetPosition(const Vector3& position) { position_ = position; }
 
+	void SetIsExplosion(const bool& isExposion) { isExplosion_ = isExposion; }
+
 #pragma endregion
 
 private:
-	std::unique_ptr<GPUParticle> particle_ = {};
+	std::unique_ptr<GPUParticle> particle_ = nullptr;
 	uint32_t texHandle_ = 0;
 	Vector3 position_ = {};
 	EmitterSphere param_{};
-
+	std::unique_ptr<GPUParticle> particleSmoke_ = nullptr;
+	uint32_t texHandleSmoke_ = 0;
+	EmitterSphere paramSmoke_{};
+	Material materialSmoke_{};
+	bool isExplosion_ = false;
 };

@@ -38,8 +38,11 @@ void Enemy::Update()
 	phaseState_->SetPlayer(player_);
 
 	phaseState_->Update(this); // 状態ごとの更新処理
-	BulletUpdate(); // 弾の更新処理
 
+	if (!isParticle_) {
+		BulletUpdate(); // 弾の更新処理
+	}
+	
 	// 時間で消滅
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
@@ -53,6 +56,19 @@ void Enemy::Update()
 		deadParticle_->SetPosition(GetWorldPosition());
 	}
 	
+	if (isParticle_) {
+		--particleTimer_;
+	}
+
+	if (particleTimer_ <= 0) {
+		particleTimer_ = 0;
+		isParticle_ = false;
+		isDead_ = true;
+	}
+
+	if (particleTimer_ > 120) {
+		deadParticle_->SetIsExplosion(true);
+	}
 
 #ifdef _DEBUG
 
@@ -74,10 +90,13 @@ void Enemy::Draw(Camera& camera)
 		deadParticle_->Draw(camera);
 	}
 
-	// 弾の描画
-	for (const auto& bullet : bullets_) {
-		bullet->Draw(camera);
+	if (!isParticle_) {
+		// 弾の描画
+		for (const auto& bullet : bullets_) {
+			bullet->Draw(camera);
+		}
 	}
+
 }
 
 void Enemy::OnCollision()
@@ -121,17 +140,6 @@ void Enemy::BulletUpdate()
 		}
 		return false;
 		});
-
-	if (isParticle_) {
-		--particleTimer_;
-	}
-
-	if (particleTimer_ <= 0) {
-		particleTimer_ = 0;
-		isParticle_ = false;
-		isDead_ = true;
-	}
-
 }
 
 void Enemy::ChangeState(std::unique_ptr<IPhaseStateEnemy> newState)

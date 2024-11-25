@@ -155,10 +155,9 @@ void GPUParticle::CreateBuffer()
 {
 	materialResource_ = CreateResource::CreateBufferResource(sizeof(Material));
 	// データを書き込む
-	Material* materialData = nullptr;
 	// アドレスを取得
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData));
-	materialData->color = { 1.0f,1.0f,1.0f,1.0f };
+	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
 
 	perViewResource_ = CreateResource::CreateBufferResource(sizeof(PerView));
 	perViewResource_->Map(0, nullptr, reinterpret_cast<void**>(&perViewData_));

@@ -116,6 +116,6 @@ private:
 	bool isSortie_ = false;
 	std::unique_ptr<ExplosionParticle> deadParticle_ = nullptr;
 	bool isParticle_ = false; 
-	uint32_t particleTimer_ = 40;
+	uint32_t particleTimer_ = 120;
 };
 
