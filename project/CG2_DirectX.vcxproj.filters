@@ -94,6 +94,7 @@
     <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateLeave.cpp" />
     <ClCompile Include="engine\ComputePipeline\ComputePipeline.cpp" />
     <ClCompile Include="engine\ParticleSystem\GPUParticle.cpp" />
+    <ClCompile Include="application\AdjustmentVariables\AdjustmentVariables.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateLeave.h" />
     <ClInclude Include="engine\ComputePipeline\ComputePipeline.h" />
     <ClInclude Include="engine\ParticleSystem\GPUParticle.h" />
+    <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli" />

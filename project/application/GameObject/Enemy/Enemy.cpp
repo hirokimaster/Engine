@@ -16,7 +16,6 @@ void Enemy::Initialize(uint32_t texHandle)
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
 
-	worldTransform_.translate = { 0,0,80.0f };
 	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 

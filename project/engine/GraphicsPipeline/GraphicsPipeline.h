@@ -273,7 +273,7 @@ private:
 
 	GraphicsPipeline() = default;
 	~GraphicsPipeline() = default;
-	GraphicsPipeline(const GraphicsPipeline&) = default;
+	GraphicsPipeline(const GraphicsPipeline&) = delete;
 	const GraphicsPipeline& operator=(const GraphicsPipeline&) = delete;
 
 private: // メンバ変数

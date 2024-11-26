@@ -147,7 +147,6 @@ void GameScene::Update()
 	ImGui::Text("position [x: %.3f ] [y: %.3f] [z: %.3f]", player_->GetWorldPosition().x,
 		player_->GetWorldPosition().y, player_->GetWorldPosition().z);
 	ImGui::End();
-
 #endif
 
 }
