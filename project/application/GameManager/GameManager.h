@@ -8,6 +8,7 @@
 #include <memory>
 #include "engine/SceneFactory/AbstractSceneFactory.h"
 #include "engine/PostProcess/PostProcess.h"
+#include "application/AdjustmentVariables/AdjustmentVariables.h"
 
 class GameManager {
 public:

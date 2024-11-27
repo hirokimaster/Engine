@@ -16,7 +16,6 @@ void Player::Initialize(uint32_t texHandle)
 	worldTransform_.translate.y = 20.0f;
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
-	object_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 
 	explosionParticle_ = std::make_unique<ExplosionParticle>();
@@ -86,7 +85,7 @@ void Player::Move()
 
 	worldTransform_.translate = worldTransform_.translate + move;
 
-	worldTransform_.translate.z = worldTransform_.translate.z + 0.5f;
+	worldTransform_.translate.z = worldTransform_.translate.z + moveSpeed_;
 }
 
 void Player::Attack()
@@ -112,7 +111,7 @@ void Player::Attack()
 
 		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 			// 弾の速度
-			const float kBulletSpeed = 2.0f;
+			const float kBulletSpeed = 3.0f;
 			Vector3 velocity = { 0,0,kBulletSpeed };
 			std::list<Vector3> lockOnVelocity;
 			// 自機から照準オブジェクトのベクトル
@@ -262,6 +261,24 @@ void Player::DebugDraw()
 	ImGui::Text("hp %d", hp_);
 	ImGui::End();
 #endif
+}
+
+void Player::AddAdjustmentVariables()
+{
+	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
+	const char* groupName = "Player";
+	// グループを追加
+	variables->CreateGroup(groupName);
+	// アイテム追加
+	variables->AddItem(groupName, "moveSpeed", 0.5f);
+	variables->AddItem(groupName, "translate", Vector3(0.0f, 20.0f, 50.0f));
+}
+
+void Player::ApplyAdjustmentVariables()
+{
+	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
+	const char* groupName = "Player";
+	moveSpeed_ = variables->GetValue<float>(groupName, "moveSpeed");
 }
 
 Vector3 Player::GetWorldPosition() const

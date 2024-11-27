@@ -3,7 +3,11 @@
 #include "engine/Math/Vector3.h"
 #include <map>
 #include <string>
+#include <filesystem>
+#include <iostream>
+#include <fstream>
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"
+#include "externals/Json/json.hpp"
 
 using std::variant;
 using std::map;
@@ -19,10 +23,13 @@ public:
 	static AdjustmentVariables* GetInstance();
 
 	// 項目
-	using Item  = variant<int32_t, float, Vector3>;
-	
+	using Item = variant<int32_t, float, Vector3>;
+
 	// グループ
 	using Group = map<string, Item>;
+
+	// グローバル変数の保存先ファイルパス
+	const string kDirectoryPath = "resources/AdjustmentVariables/";
 
 	/// <summary>
 	/// グループの作成
@@ -34,6 +41,23 @@ public:
 	/// 更新
 	/// </summary>
 	void Update();
+
+	/// <summary>
+	/// ファイルに書き出し
+	/// </summary>
+	/// <param name="groupName"></param>
+	void SaveFile(const std::string& groupName);
+
+	/// <summary>
+	/// ディレクトリの全ファイル読み込み
+	/// </summary>
+	void LoadFiles();
+
+	/// <summary>
+	/// ファイルから読み込む
+	/// </summary>
+	/// <param name="groupName"></param>
+	void LoadFile(const string& groupName);
 
 #pragma region setter
 
@@ -47,11 +71,31 @@ public:
 	template <typename T>
 	void SetValue(const string& groupName, const string& key, T value);
 
+	/// <summary>
+	///	項目の追加
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="groupName"></param>
+	/// <param name="key"></param>
+	/// <param name="value"></param>
+	template <typename T>
+	void AddItem(const string& groupName, const string& key, T value);
+
+#pragma endregion
+
+#pragma region getter
+
+	template <typename T>
+	T GetValue(const string& groupName, const string& key) const;
+
 #pragma endregion
 
 private:
 	// 全データ
 	map<string, Group> datas_;
+
+	// json
+	using json = nlohmann::json;
 
 private:
 	AdjustmentVariables() = default;
@@ -69,5 +113,31 @@ inline void AdjustmentVariables::SetValue(const string& groupName, const string&
 	Item newItem{};
 	newItem = value;
 	// 設定した項目をstd::mapに追加
-	group.items[key] = newItem;
+	group[key] = newItem;
+}
+
+template<typename T>
+inline void AdjustmentVariables::AddItem(const string& groupName, const string& key, T value)
+{
+	if (std::filesystem::exists(key)) {
+		SetValue(groupName, key, value);
+	}
+}
+
+template<typename T>
+inline T AdjustmentVariables::GetValue(const string& groupName, const string& key) const
+{
+	// 指定グループが存在しなかったら止める
+	assert(datas_.find(groupName) != datas_.end());
+	// グループの参照を取得
+	const auto& itGroup = datas_.at(groupName);
+
+	// 指定グループに指定のキーが存在しなかったら止める
+	assert(itGroup.find(key) != itGroup.end());
+
+	// アイテムの値の参照を取得
+	const Item& itItem = itGroup.find(key)->second;
+
+	return 	get<T>(itItem);
+
 }

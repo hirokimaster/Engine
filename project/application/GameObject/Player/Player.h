@@ -14,6 +14,7 @@
 #include "application/GameObject/Rail/Rail.h"
 #include "application/GameObject/Player/PlayerParticle/PlayerParticle.h"
 #include "application/GameObject/Player/PlayerParticle/ExplosionParticle.h"
+#include "application/AdjustmentVariables/AdjustmentVariables.h"
 
 class LockOn;
 
@@ -77,11 +78,20 @@ private: // クラス内でしか使わない
 	/// </summary>
 	void IncurDamage();
 
-
 	/// <summary>
 	/// デバック描画(ImGui)
 	/// </summary>
 	void DebugDraw();
+
+	/// <summary>
+	/// 調整項目の追加
+	/// </summary>
+	void AddAdjustmentVariables();
+
+	/// <summary>
+	/// 調整項目の適用
+	/// </summary>
+	void ApplyAdjustmentVariables();
 
 
 public:
@@ -125,7 +135,7 @@ public:
 #pragma endregion
 
 private:
-	const float kMoveSpeed_ = 0.2f; // 移動スピード
+	float moveSpeed_ = 0.2f; // 移動スピード
 	std::list<std::unique_ptr<PlayerBullet>> bullets_; // 弾のリスト
 	uint32_t texHandleBullet_ = 0;
 	LockOn* lockOn_ = nullptr;

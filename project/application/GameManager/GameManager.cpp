@@ -26,11 +26,16 @@ void GameManager::Update() {
 		scene_->Initialize();
 	}
 
+	// 更新
+	AdjustmentVariables::GetInstance()->Update();
 	scene_->Update();
 }
 
 void GameManager::Initialize()
 {	
+	// 調整項目のファイル読み込み
+	AdjustmentVariables::GetInstance()->LoadFiles();
+
 	scene_->Initialize();
 }
 
