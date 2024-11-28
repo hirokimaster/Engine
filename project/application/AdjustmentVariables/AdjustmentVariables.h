@@ -69,7 +69,7 @@ public:
 	/// <param name="key"></param>
 	/// <param name="value"></param>
 	template <typename T>
-	void SetValue(const string& groupName, const string& key, T value);
+	void SetValue(const string& groupName, const string& key, const T& value);
 
 	/// <summary>
 	///	項目の追加
@@ -79,7 +79,7 @@ public:
 	/// <param name="key"></param>
 	/// <param name="value"></param>
 	template <typename T>
-	void AddItem(const string& groupName, const string& key, T value);
+	void AddItem(const string& groupName, const string& key, const T& value);
 
 #pragma endregion
 
@@ -105,7 +105,7 @@ private:
 };
 
 template<typename T>
-inline void AdjustmentVariables::SetValue(const string& groupName, const string& key, T value)
+inline void AdjustmentVariables::SetValue(const string& groupName, const string& key, const T& value)
 {
 	// グループの参照を取得
 	Group& group = datas_[groupName];
@@ -117,9 +117,9 @@ inline void AdjustmentVariables::SetValue(const string& groupName, const string&
 }
 
 template<typename T>
-inline void AdjustmentVariables::AddItem(const string& groupName, const string& key, T value)
+inline void AdjustmentVariables::AddItem(const string& groupName, const string& key, const T& value)
 {
-	if (std::filesystem::exists(key)) {
+	if (!std::filesystem::exists(key)) {
 		SetValue(groupName, key, value);
 	}
 }

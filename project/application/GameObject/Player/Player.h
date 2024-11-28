@@ -135,7 +135,8 @@ public:
 #pragma endregion
 
 private:
-	float moveSpeed_ = 0.2f; // 移動スピード
+	float moveSpeed_; // 移動スピード
+	float bulletSpeed_;
 	std::list<std::unique_ptr<PlayerBullet>> bullets_; // 弾のリスト
 	uint32_t texHandleBullet_ = 0;
 	LockOn* lockOn_ = nullptr;
@@ -144,8 +145,7 @@ private:
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	bool isDead_ = false;
 	bool isHitEnemyFire_ = false;
-	const uint32_t kMaxHp_ = 3;
-	uint32_t hp_ = 0;
+	uint32_t hp_;
 	std::unique_ptr<ExplosionParticle> explosionParticle_ = nullptr;
 	float deadTimer_ = 60.0f;
 };

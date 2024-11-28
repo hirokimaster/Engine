@@ -25,8 +25,8 @@ void Player::Initialize(uint32_t texHandle)
 	SetCollosionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
 
-	// 体力
-	hp_ = kMaxHp_;
+	AddAdjustmentVariables();
+
 	// 死亡フラグ
 	isDead_ = false;
 	deadTimer_ = 60.0f;
@@ -38,6 +38,7 @@ void Player::Update()
 	Rotate(); // 回転
 	Attack(); // 攻撃
 	UpdateBullet(); // 弾の更新
+	ApplyAdjustmentVariables();
 	worldTransform_.UpdateMatrix();
 
 	// ダメージ
@@ -270,8 +271,10 @@ void Player::AddAdjustmentVariables()
 	// グループを追加
 	variables->CreateGroup(groupName);
 	// アイテム追加
-	variables->AddItem(groupName, "moveSpeed", 0.5f);
-	variables->AddItem(groupName, "translate", Vector3(0.0f, 20.0f, 50.0f));
+	variables->AddItem(groupName, "moveSpeed", moveSpeed_);
+	variables->AddItem(groupName, "translate", worldTransform_.translate);
+	variables->AddItem(groupName, "hp", hp_);
+	variables->AddItem(groupName, "bulletSpeed", bulletSpeed_);
 }
 
 void Player::ApplyAdjustmentVariables()
@@ -279,6 +282,8 @@ void Player::ApplyAdjustmentVariables()
 	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
 	const char* groupName = "Player";
 	moveSpeed_ = variables->GetValue<float>(groupName, "moveSpeed");
+	worldTransform_.translate = variables->GetValue<Vector3>(groupName, "translate");
+	bulletSpeed_ = variables->GetValue<float>(groupName, "bulletSpeed_");
 }
 
 Vector3 Player::GetWorldPosition() const
