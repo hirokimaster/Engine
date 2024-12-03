@@ -52,21 +52,24 @@ public:
 	void Update();
 
 	/// <summary>
-	/// ファイルに書き出し
-	/// </summary>
-	/// <param name="groupName"></param>
-	void SaveFile(const std::string& particleName);
-
-	/// <summary>
 	/// ディレクトリの全ファイル読み込み
 	/// </summary>
 	void LoadFiles();
+
+private:
+	/// <summary>
+    /// ファイルに書き出し
+    /// </summary>
+    /// <param name="groupName"></param>
+	void SaveFile(const std::string& particleName);
 
 	/// <summary>
 	/// ファイルから読み込む
 	/// </summary>
 	/// <param name="groupName"></param>
 	void LoadFile(const string& particleName);
+
+public:
 
 #pragma region setter
 
@@ -88,7 +91,7 @@ public:
 	/// <param name="key"></param>
 	/// <param name="value"></param>
 	template <typename T>
-	void AddItem(const string& particleName, const string& key, const T& value);
+	void AddParam(const string& particleName, const string& key, const T& value);
 
 #pragma endregion
 
@@ -120,7 +123,7 @@ inline void ParticleEditor::SetValue(const string& particleName, const string& k
 }
 
 template<typename T>
-inline void ParticleEditor::AddItem(const string& particleName, const string& key, const T& value)
+inline void ParticleEditor::AddParam(const string& particleName, const string& key, const T& value)
 {
 	if (!std::filesystem::exists(key)) {
 		SetValue(particleName, key, value);

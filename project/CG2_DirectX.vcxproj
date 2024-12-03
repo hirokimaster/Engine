@@ -143,6 +143,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\ModelManager\ModelManager.cpp" />
     <ClCompile Include="engine\Model\SkyBox\SkyBox.cpp" />
     <ClCompile Include="engine\Object3DPlacer\Object3DPlacer.cpp" />
+    <ClCompile Include="engine\ParticleManager\ParticleManager.cpp" />
     <ClCompile Include="engine\ParticleSystem\GPUParticle.cpp" />
     <ClCompile Include="engine\ParticleSystem\ParticleEditor.cpp" />
     <ClCompile Include="engine\PostProcess\PostProcess.cpp" />
@@ -209,6 +210,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\ModelManager\ModelManager.h" />
     <ClInclude Include="engine\Model\SkyBox\SkyBox.h" />
     <ClInclude Include="engine\Object3DPlacer\Object3DPlacer.h" />
+    <ClInclude Include="engine\ParticleManager\ParticleManager.h" />
     <ClInclude Include="engine\ParticleSystem\GPUParticle.h" />
     <ClInclude Include="engine\ParticleSystem\ParticleEditor.h" />
     <ClInclude Include="engine\PostProcess\PostProcess.h" />
