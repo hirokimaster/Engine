@@ -92,72 +92,52 @@ void Player::Move()
 void Player::Attack()
 {
 
-	XINPUT_STATE joyState{};
-
-	// 処理
-	if (Input::GetInstance()->PressedKey(DIK_SPACE)) {
+	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 		// 弾の速度
-		const float kBulletSpeed = 3.0f;
-		Vector3 velocity = { 0,0,kBulletSpeed };
-		// 弾を生成し、初期化
-		std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-		bullet->Initialize(texHandleBullet_);
-		bullet->SetVelocity(velocity);
-		bullet->SetPosition(GetWorldPosition());
-		bullets_.push_back(std::move(bullet));
-	}
+		bulletSpeed_ = 3.0f;
+		Vector3 velocity = { 0,0,bulletSpeed_ };
+		std::list<Vector3> lockOnVelocity;
+		// 自機から照準オブジェクトのベクトル
+		Vector3 WorldPos = GetWorldPosition();
 
-	// ゲームパッドの状態を得る変数(XINPUT)
-	if (Input::GetInstance()->GetJoystickState(joyState)) {
+		if (!lockOn_->GetTarget().empty()) {
+			std::list<const Enemy*> targets = lockOn_->GetTarget(); // コピーしておく
+			for (std::list<const Enemy*>::iterator targetItr = targets.begin(); targetItr != targets.end(); ++targetItr) {
+				// ロックオン対象がいるかつ生きてたら対象に向かって弾を撃つ
+				if ((*targetItr) && !(*targetItr)->GetIsDead()) {
+					// レティクルのworld座標にターゲットのworld座標を入れる
+					Vector3 targetWorldPos = (*targetItr)->GetWorldPosition();
+					Vector3 diff = targetWorldPos - WorldPos;
+					diff = Normalize(diff);
+					velocity = Normalize(velocity);
+					velocity = Multiply(bulletSpeed_, diff);
 
-		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
-			// 弾の速度
-			const float kBulletSpeed = 3.0f;
-			Vector3 velocity = { 0,0,kBulletSpeed };
-			std::list<Vector3> lockOnVelocity;
-			// 自機から照準オブジェクトのベクトル
-			Vector3 WorldPos = GetWorldPosition();
+					// プレイヤーの向きに速度を合わせる
+					//velocity = TransformNormal(velocity, worldTransform_.matWorld);
 
-			if (!lockOn_->GetTarget().empty()) {
-				std::list<const Enemy*> targets = lockOn_->GetTarget(); // コピーしておく
-				for (std::list<const Enemy*>::iterator targetItr = targets.begin(); targetItr != targets.end(); ++targetItr) {
-					// ロックオン対象がいるかつ生きてたら対象に向かって弾を撃つ
-					if ((*targetItr) && !(*targetItr)->GetIsDead()) {
-						// レティクルのworld座標にターゲットのworld座標を入れる
-						Vector3 targetWorldPos = (*targetItr)->GetWorldPosition();
-						Vector3 diff = targetWorldPos - WorldPos;
-						diff = Normalize(diff);
-						velocity = Normalize(velocity);
-						velocity = Multiply(kBulletSpeed, diff);
-
-						// プレイヤーの向きに速度を合わせる
-						//velocity = TransformNormal(velocity, worldTransform_.matWorld);
-
-						std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-						bullet->SetLockOn(lockOn_);
-						bullet->Initialize(texHandleBullet_);
-						bullet->SetPosition(WorldPos);
-						bullet->SetVelocity(velocity);
-						bullets_.push_back(std::move(bullet));
-					}
+					std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
+					bullet->SetLockOn(lockOn_);
+					bullet->Initialize(texHandleBullet_);
+					bullet->SetPosition(WorldPos);
+					bullet->SetVelocity(velocity);
+					bullets_.push_back(std::move(bullet));
 				}
 			}
-			else {
-				Vector3 reticleWorldPos = lockOn_->GetWorldPosition3DReticle();
+		}
+		else {
+			Vector3 reticleWorldPos = lockOn_->GetWorldPosition3DReticle();
 
-				velocity = reticleWorldPos - WorldPos;
-				velocity = Normalize(velocity);
-				velocity = kBulletSpeed * velocity;
-				// プレイヤーの向きに速度を合わせる
-				//velocity = TransformNormal(velocity, worldTransform_.matWorld);
-				// 弾を生成し、初期化
-				std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-				bullet->Initialize(texHandleBullet_);
-				bullet->SetPosition(WorldPos);
-				bullet->SetVelocity(velocity);
-				bullets_.push_back(std::move(bullet));
-			}
-
+			velocity = reticleWorldPos - WorldPos;
+			velocity = Normalize(velocity);
+			velocity = bulletSpeed_ * velocity;
+			// プレイヤーの向きに速度を合わせる
+			//velocity = TransformNormal(velocity, worldTransform_.matWorld);
+			// 弾を生成し、初期化
+			std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
+			bullet->Initialize(texHandleBullet_);
+			bullet->SetPosition(WorldPos);
+			bullet->SetVelocity(velocity);
+			bullets_.push_back(std::move(bullet));
 		}
 
 	}
@@ -283,7 +263,8 @@ void Player::ApplyAdjustmentVariables()
 	const char* groupName = "Player";
 	moveSpeed_ = variables->GetValue<float>(groupName, "moveSpeed");
 	worldTransform_.translate = variables->GetValue<Vector3>(groupName, "translate");
-	bulletSpeed_ = variables->GetValue<float>(groupName, "bulletSpeed_");
+	bulletSpeed_ = variables->GetValue<float>(groupName, "bulletSpeed");
+	hp_ = variables->GetValue<int32_t>(groupName, "hp");
 }
 
 Vector3 Player::GetWorldPosition() const

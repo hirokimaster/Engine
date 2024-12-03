@@ -145,7 +145,7 @@ private:
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	bool isDead_ = false;
 	bool isHitEnemyFire_ = false;
-	uint32_t hp_;
+	int32_t hp_ = 1;
 	std::unique_ptr<ExplosionParticle> explosionParticle_ = nullptr;
 	float deadTimer_ = 60.0f;
 };

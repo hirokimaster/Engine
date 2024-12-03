@@ -6,6 +6,7 @@
 #include "engine/ModelManager/ModelManager.h"
 #include "engine/GraphicsPipeline/GraphicsPipeline.h"
 #include "engine/ComputePipeline/ComputePipeline.h"
+#include "ParticleEditor.h"
 
 static const uint32_t kMaxInstance_ = 1024;
 
@@ -21,19 +22,6 @@ struct ParticleCS {
 struct PerView {
 	Matrix4x4 viewProjection;
 	Matrix4x4 billboardMatrix;
-};
-
-struct ParticleRange1d {
-	float min;
-	float max;
-	float padding[2];
-};
-
-struct ParticleRange3d {
-	Vector3 min;
-	float padding1[1];
-	Vector3 max;
-	float padding2[1];
 };
 
 struct EmitterSphere {

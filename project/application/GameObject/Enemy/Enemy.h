@@ -65,6 +65,16 @@ private:
 	/// </summary>
 	void BulletUpdate();
 
+	/// <summary>
+	/// 調整項目の追加
+	/// </summary>
+	void AddAdjustmentVariables();
+
+	/// <summary>
+	/// 調整項目の適用
+	/// </summary>
+	void ApplyAdjustmentVariables();
+
 public:
 
 #pragma region getter
@@ -108,7 +118,6 @@ private:
 	static const int32_t kLifeTime_ = 60 * 50; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	Player* player_ = nullptr;
-	float deltaTime_ = 1.0f / 60.0f;
 	std::unique_ptr<IPhaseStateEnemy> phaseState_; // 行動フェーズ（状態）
 	Vector3 velocity_{}; // 移動ベクトル
 	Vector3 startPosition_{}; // スポーンする座標
@@ -117,5 +126,6 @@ private:
 	std::unique_ptr<ExplosionParticle> deadParticle_ = nullptr;
 	bool isParticle_ = false; 
 	uint32_t particleTimer_ = 120;
+	float bulletSpeed_ = 0.2f;
 };
 

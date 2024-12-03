@@ -57,6 +57,7 @@ void AdjustmentVariables::Update()
 				Vector3* ptr = get_if<Vector3>(&item);
 				ImGui::SliderFloat3(itemName.c_str(), reinterpret_cast<float*>(ptr), -10.0f, 10.0f);
 			}
+
 		}
 
 		// 改行

@@ -105,14 +105,11 @@ void Enemy::OnCollision()
 
 void Enemy::Fire()
 {
-	// 弾の速度
-	const float kBulletSpeed = 0.02f;
-
 	Vector3 playerWorldPos = player_->GetWorldPosition(); // 自キャラのワールド座標を取得
 	Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
 	Vector3 diff = Subtract(playerWorldPos, enemyWorldPos); // 差分ベクトルを求める
 	Normalize(diff); // 正規化
-	Vector3 velocity = Multiply(kBulletSpeed, diff); // ベクトルの速度
+	Vector3 velocity = Multiply(bulletSpeed_, diff); // ベクトルの速度
 
 	// 弾を生成して初期化
 	std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
@@ -139,6 +136,23 @@ void Enemy::BulletUpdate()
 		}
 		return false;
 		});
+}
+
+void Enemy::AddAdjustmentVariables()
+{
+	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
+	const char* groupName = "Enemy";
+	// グループを追加
+	variables->CreateGroup(groupName);
+	// アイテム追加
+	variables->AddItem(groupName, "bulletSpeed", bulletSpeed_);
+}
+
+void Enemy::ApplyAdjustmentVariables()
+{
+	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
+	const char* groupName = "Enemy";
+	bulletSpeed_ = variables->GetValue<float>(groupName, "bulletSpeed");
 }
 
 void Enemy::ChangeState(std::unique_ptr<IPhaseStateEnemy> newState)

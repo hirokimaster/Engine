@@ -95,6 +95,7 @@
     <ClCompile Include="engine\ComputePipeline\ComputePipeline.cpp" />
     <ClCompile Include="engine\ParticleSystem\GPUParticle.cpp" />
     <ClCompile Include="application\AdjustmentVariables\AdjustmentVariables.cpp" />
+    <ClCompile Include="engine\ParticleSystem\ParticleEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="engine\ComputePipeline\ComputePipeline.h" />
     <ClInclude Include="engine\ParticleSystem\GPUParticle.h" />
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h" />
+    <ClInclude Include="engine\ParticleSystem\ParticleEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli" />
