@@ -6,6 +6,7 @@ using std::string;
 using std::map;
 using std::unique_ptr;
 using std::make_unique;
+using std::pair;
 
 class ParticleManager {
 public:
@@ -15,11 +16,6 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	static ParticleManager* GetInstance();
-
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize();
 
 	/// <summary>
 	/// editorを起動する
@@ -37,20 +33,31 @@ public:
 	/// paticleのインスタンス生成
 	/// </summary>
 	/// <param name="particleName"></param>
-	void CreateParticle(const string& particleName);
+	void CreateParticle(const string& particleName, const string& model, uint32_t texHandle);
 
 	/// <summary>
-	/// 更新
+	/// particleの名前を指定して更新
 	/// </summary>
-	void Update();
+	/// <param name="particleName"></param>
+	void Update(const string& particleName);
+
+	/// <summary>
+	/// particleの名前を指定して描画
+	/// </summary>
+	/// <param name="particleName"></param>
+	/// <param name="camera"></param>
+	void Draw(const string& particleName, const Camera& camera);
 
 private:
-
+	ParticleManager() = default;
+	~ParticleManager() = default;
+	ParticleManager(const ParticleManager&) = delete;
+	ParticleManager& operator=(const ParticleManager&) = delete;
 
 private:
 	// particleのパラメータ保存用のコンテナ
 	map<string, EmitterSphere> params_;
-	// editor
-	unique_ptr<ParticleEditor> editor_ = nullptr;
+	// particleのインスタンス保存用のコンテナ
+	map<string, unique_ptr<GPUParticle>> particles_;
 
 };

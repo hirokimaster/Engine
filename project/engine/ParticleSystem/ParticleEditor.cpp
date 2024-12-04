@@ -1,5 +1,11 @@
 #include "ParticleEditor.h"
 
+ParticleEditor* ParticleEditor::GetInstance()
+{
+	static ParticleEditor instance;
+	return &instance;
+}
+
 void ParticleEditor::CreateParticle(const string& particleName)
 {
 	// 指定名のオブジェクトが無ければ追加する
@@ -41,6 +47,13 @@ void ParticleEditor::Update()
 				int32_t* ptr = get_if<int32_t>(&param);
 				ImGui::SliderInt(itemName.c_str(), ptr, 0, 100);
 			}
+			// uint32_t型
+			else if (holds_alternative<uint32_t>(param)) {
+				uint32_t* ptr = get_if<uint32_t>(&param);
+				int sliderValue = static_cast<int>(*ptr);
+				ImGui::SliderInt(itemName.c_str(), &sliderValue, 0, 100);
+				*ptr = static_cast<uint32_t>(sliderValue);
+			}
 			// float型
 			else if (holds_alternative<float>(param)) {
 				float* ptr = get_if<float>(&param);
@@ -50,18 +63,6 @@ void ParticleEditor::Update()
 			else if (holds_alternative<Vector3>(param)) {
 				Vector3* ptr = get_if<Vector3>(&param);
 				ImGui::SliderFloat3(itemName.c_str(), reinterpret_cast<float*>(ptr), -10.0f, 10.0f);
-			}
-			// ParticleRange1d
-			else if (holds_alternative<ParticleRange1d>(param)) {
-				ParticleRange1d* ptr = get_if<ParticleRange1d>(&param);
-				ImGui::SliderFloat((itemName + "_min").c_str(), reinterpret_cast<float*>(&ptr->min), -100.0f, 100.0f);
-				ImGui::SliderFloat((itemName + "_max").c_str(), reinterpret_cast<float*>(&ptr->max), -100.0f, 100.0f);
-			}
-			// ParticleRange3d
-			else if (holds_alternative<ParticleRange3d>(param)) {
-				ParticleRange3d* ptr = get_if<ParticleRange3d>(&param);
-				ImGui::SliderFloat3((itemName + "_min").c_str(), reinterpret_cast<float*>(&ptr->min), -100.0f, 100.0f);
-				ImGui::SliderFloat3((itemName + "_max").c_str(), reinterpret_cast<float*>(&ptr->max), -100.0f, 100.0f);
 			}
 		}
 
@@ -106,6 +107,10 @@ void ParticleEditor::SaveFile(const std::string& particleName)
 		if (holds_alternative<int32_t>(param)) {
 			root[particleName][paramName] = get<int32_t>(param);
 		}
+		// uint32_t型
+		else if (holds_alternative<uint32_t>(param)) {
+			root[particleName][paramName] = get<uint32_t>(param);
+		}
 		// float型
 		else if (holds_alternative<float>(param)) {
 			root[particleName][paramName] = get<float>(param);
@@ -114,16 +119,6 @@ void ParticleEditor::SaveFile(const std::string& particleName)
 		else if (holds_alternative<Vector3>(param)) {
 			Vector3 value = get<Vector3>(param);
 			root[particleName][paramName] = json::array({ value.x,value.y,value.z });
-		}
-		// ParticleRange1d
-		else if (holds_alternative<ParticleRange1d>(param)) {
-			ParticleRange1d value = get<ParticleRange1d>(param);
-			root[particleName][paramName] = json::array({ value.min, value.max });
-		}
-		// Particlerange3d
-		else if (holds_alternative<ParticleRange3d>(param)) {
-			ParticleRange3d value = get<ParticleRange3d>(param);
-			root[particleName][paramName] = json::array({ value.min.x, value.min.y, value.min.z, value.max.x, value.max.y, value.max.z });
 		}
 
 	}
@@ -220,6 +215,11 @@ void ParticleEditor::LoadFile(const string& particleName)
 			int32_t value = itParam->get<int32_t>();
 			SetValue(particleName, paramName, value);
 		}
+		// uint32_t型
+		else if (itParam->is_number_unsigned()) {
+			uint32_t value = itParam->get<uint32_t>();
+			SetValue(particleName, paramName, value);
+		}
 		// float
 		else if (itParam->is_number_float()) {
 			double value = itParam->get<double>();
@@ -228,22 +228,6 @@ void ParticleEditor::LoadFile(const string& particleName)
 		// Vector3
 		else if (itParam->is_array() && itParam->size() == 3) {
 			Vector3 value = { itParam->at(0), itParam->at(1), itParam->at(2) };
-			SetValue(particleName, paramName, value);
-		}
-		// ParticleRange1d
-		else if (itParam->is_array() && itParam->size() == 2) {
-			ParticleRange1d value = { .min = itParam->at(0), .max = itParam->at(1) };
-			SetValue(particleName, paramName, value);
-		}
-		// ParticleRange3d
-		else if (itParam->is_array() && itParam->size() == 6) {
-			ParticleRange3d value{};
-			value.min.x = itParam->at(0);
-			value.min.y = itParam->at(1);
-			value.min.z = itParam->at(2);
-			value.max.x = itParam->at(3);
-			value.max.y = itParam->at(4);
-			value.max.z = itParam->at(5);
 			SetValue(particleName, paramName, value);
 		}
 	}

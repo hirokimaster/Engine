@@ -15,8 +15,7 @@
 #include "application/GameManager/GameManager.h"
 #include "application/Loader/Loader.h"
 #include "application/GameObject/ModelResources/ModelResources.h"
-#include "application/GameObject/Player/PlayerParticle/PlayerParticle.h"
-#include "engine/ParticleSystem/GPUParticle.h"
+#include "engine/ParticleManager/ParticleManager.h"
 
 class Demo : public IScene {
 public: // メンバ関数
@@ -52,7 +51,7 @@ public: // メンバ関数
 
 private:
 	Camera camera_;
-	std::unique_ptr<GPUParticle> particle_;
+	ParticleManager* particleManager_ = nullptr;
 	uint32_t texHandle_ = 0;
 };
 

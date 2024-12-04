@@ -24,6 +24,19 @@ struct PerView {
 	Matrix4x4 billboardMatrix;
 };
 
+struct ParticleRange1d {
+	float min;
+	float max;
+	float padding[2];
+};
+
+struct ParticleRange3d {
+	Vector3 min;
+	float padding1[1];
+	Vector3 max;
+	float padding2[1];
+};
+
 struct EmitterSphere {
 	Vector3 translate;
 	float radius;
@@ -109,11 +122,6 @@ private:
 	/// updateParticle.CSのディスパッチまで
 	/// </summary>
 	void UpdateParticleCS();
-
-	/// <summary>
-	/// デバック用
-	/// </summary>
-	void DebugDraw();
 
 private:
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList_;

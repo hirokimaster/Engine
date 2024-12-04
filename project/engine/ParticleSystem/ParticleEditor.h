@@ -11,19 +11,6 @@
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"
 #include "externals/Json/json.hpp"
 
-struct ParticleRange1d {
-	float min;
-	float max;
-	float padding[2];
-};
-
-struct ParticleRange3d {
-	Vector3 min;
-	float padding1[1];
-	Vector3 max;
-	float padding2[1];
-};
-
 using std::variant;
 using std::map;
 using std::string;
@@ -31,8 +18,14 @@ using std::string;
 class ParticleEditor {
 public:
 
+	/// <summary>
+	/// インスタンス取得
+	/// </summary>
+	/// <returns></returns>
+	static ParticleEditor* GetInstance();
+
 	// パラメーター
-	using Param = variant<int32_t, float, Vector3, ParticleRange1d, ParticleRange3d>;
+	using Param = variant<int32_t, uint32_t, float, Vector3>;
 
 	// particle
 	using Particle = map<string, Param>;
@@ -108,6 +101,13 @@ private:
 
 	// json
 	using json = nlohmann::json;
+
+private:
+
+	ParticleEditor() = default;
+	~ParticleEditor() = default;
+	ParticleEditor(const ParticleEditor&) = delete;
+	ParticleEditor& operator=(const ParticleEditor&) = delete;
 };
 
 template<typename T>

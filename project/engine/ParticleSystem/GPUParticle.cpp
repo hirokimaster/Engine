@@ -34,8 +34,6 @@ void GPUParticle::Initialize()
 void GPUParticle::Update()
 {
 	UpdateEmitter();
-
-	DebugDraw();
 }
 
 void GPUParticle::Draw(const Camera& camera)
@@ -279,66 +277,5 @@ void GPUParticle::UpdateParticleCS()
 	DirectXCommon::GetInstance()->TransitionResourceBarrier(particleResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
 	DirectXCommon::GetInstance()->TransitionResourceBarrier(freeListIndexResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
 	DirectXCommon::GetInstance()->TransitionResourceBarrier(freeListResource_.Get(), D3D12_RESOURCE_STATE_UNORDERED_ACCESS, D3D12_RESOURCE_STATE_GENERIC_READ);
-}
-
-void GPUParticle::DebugDraw()
-{
-#ifdef _DEBUG
-
-	ImGui::Begin("Emitter");
-	int count = static_cast<int>(emitterSphereData_->count);
-	if (ImGui::InputInt("Count", &count)) {
-		emitterSphereData_->count = static_cast<uint32_t>(count);
-	}
-	ImGui::InputFloat("Frequency", &emitterSphereData_->frequency);
-	ImGui::InputFloat("Frequency Time", &emitterSphereData_->frequencyTime);
-	ImGui::InputFloat3("Translate", &emitterSphereData_->translate.x);  // Vector3 translate
-	ImGui::InputFloat("Radius", &emitterSphereData_->radius);
-
-	// Translate Range
-	if (ImGui::CollapsingHeader("Translate Range")) {
-		ImGui::InputFloat3("Min Translate", &emitterSphereData_->rangeTranslate.min.x);  // Min translate: x, y, z
-		ImGui::InputFloat3("Max Translate", &emitterSphereData_->rangeTranslate.max.x);  // Max translate: x, y, z
-	}
-
-	// Scale Range
-	if (ImGui::CollapsingHeader("Scale Range")) {
-		ImGui::InputFloat3("Min Scale", &emitterSphereData_->rangeScale.min.x);  // Min scale: x, y, z
-		ImGui::InputFloat3("Max Scale", &emitterSphereData_->rangeScale.max.x);  // Max scale: x, y, z
-	}
-
-	// Life Time Range
-	if (ImGui::CollapsingHeader("Life Time Range")) {
-		ImGui::InputFloat("Min Life Time", &emitterSphereData_->rangeLifeTime.min);
-		ImGui::InputFloat("Max Life Time", &emitterSphereData_->rangeLifeTime.max);
-	}
-
-	// Velocity Range
-	if (ImGui::CollapsingHeader("Velocity Range")) {
-		ImGui::InputFloat3("Min Velocity", &emitterSphereData_->rangeVelocity.min.x);  // Min velocity: x, y, z
-		ImGui::InputFloat3("Max Velocity", &emitterSphereData_->rangeVelocity.max.x);  // Max velocity: x, y, z
-	}
-
-	// Current Time Range
-	if (ImGui::CollapsingHeader("Current Time Range")) {
-		ImGui::InputFloat("Min Current Time", &emitterSphereData_->rangeCurrentTime.min);
-		ImGui::InputFloat("Max Current Time", &emitterSphereData_->rangeCurrentTime.max);
-	}
-
-	// Color Range
-	if (ImGui::CollapsingHeader("Color Range")) {
-		ImGui::InputFloat3("Min Color", &emitterSphereData_->rangeColor.min.x);  // Min color: x, y, z
-		ImGui::InputFloat3("Max Color", &emitterSphereData_->rangeColor.max.x);  // Max color: x, y, z
-	}
-
-	// Alpha Range
-	if (ImGui::CollapsingHeader("Alpha Range")) {
-		ImGui::InputFloat("Min Alpha", &emitterSphereData_->rangeAlpha.min);
-		ImGui::InputFloat("Max Alpha", &emitterSphereData_->rangeAlpha.max);
-	}
-
-	ImGui::End();
-
-#endif
 }
 

@@ -9,6 +9,7 @@
 #include "engine/SceneFactory/AbstractSceneFactory.h"
 #include "engine/PostProcess/PostProcess.h"
 #include "application/AdjustmentVariables/AdjustmentVariables.h"
+#include "engine/ParticleManager/ParticleManager.h"
 
 class GameManager {
 public:
