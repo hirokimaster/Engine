@@ -23,23 +23,18 @@ void GameManager::Update() {
 
 		scene_->SetGameManager(this);
 
+		// 調整項目のファイル読み込み
+		AdjustmentVariables::GetInstance()->LoadFiles();
+		// particleのファイル読み込み
+		ParticleManager::GetInstance()->Initialize();
+
 		scene_->Initialize();
 	}
 
 	// 更新
 	AdjustmentVariables::GetInstance()->Update();
-	ParticleEditor::GetInstance()->Update();
+	ParticleManager::GetInstance()->UpdateEditor();
 	scene_->Update();
-}
-
-void GameManager::Initialize()
-{	
-	// 調整項目のファイル読み込み
-	AdjustmentVariables::GetInstance()->LoadFiles();
-	// particleのファイル読み込み
-	ParticleEditor::GetInstance()->LoadFiles();
-
-	scene_->Initialize();
 }
 
 void GameManager::Draw()

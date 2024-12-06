@@ -38,6 +38,7 @@ public:
 	void SetAnimationTime(float animationTime) { modelAnimation_->SetAnimationTime(animationTime); }
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 	void SetColor(const Vector4& color) { materialData_->color = color; }
+	void SetEnableLighting(const bool& enable) { materialData_->enableLighting = enable; }
 	void SetLight(Lighting* lighting) { lighting_ = lighting; }
 	void SetWorldTransform(WorldTransform worldTransform) { worldTransform_ = worldTransform; }
 	void SetPosition(Vector3 position) { worldTransform_.translate = position; }

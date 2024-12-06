@@ -156,6 +156,7 @@ void GPUParticle::CreateBuffer()
 	// アドレスを取得
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
+	materialData_->enableLighting = false;
 
 	perViewResource_ = CreateResource::CreateBufferResource(sizeof(PerView));
 	perViewResource_->Map(0, nullptr, reinterpret_cast<void**>(&perViewData_));

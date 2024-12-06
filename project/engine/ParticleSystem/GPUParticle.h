@@ -78,7 +78,7 @@ public:
 
 	void SetParticleParam(EmitterSphere param) { *emitterSphereData_ = param; }
 
-	void SetColor(const Material& color) { *materialData_ = color; }
+	void SetColor(const Vector4& color) { materialData_->color = color;}
 
 #pragma endregion
 

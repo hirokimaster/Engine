@@ -37,6 +37,5 @@ private:
 	std::unique_ptr<GPUParticle> particleSmoke_ = nullptr;
 	uint32_t texHandleSmoke_ = 0;
 	EmitterSphere paramSmoke_{};
-	Material materialSmoke_{};
 	bool isExplosion_ = false;
 };

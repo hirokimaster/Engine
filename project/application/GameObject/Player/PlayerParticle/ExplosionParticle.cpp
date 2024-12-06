@@ -68,8 +68,7 @@ void ExplosionParticle::Initialize()
 
 	particleSmoke_->SetParticleParam(paramSmoke_);
 	Vector4 color = { 0.2f,0.2f,0.2f,0.2f };
-	materialSmoke_.color = color;
-	particleSmoke_->SetColor(materialSmoke_);
+	particleSmoke_->SetColor(color);
 
 }
 

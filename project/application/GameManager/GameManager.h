@@ -26,11 +26,6 @@ public:
 	void Update();
 
 	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize(); // 初期化
-
-	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw();

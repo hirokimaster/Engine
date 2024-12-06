@@ -45,25 +45,19 @@ void ParticleEditor::Update()
 			// int32_t型
 			if (holds_alternative<int32_t>(param)) {
 				int32_t* ptr = get_if<int32_t>(&param);
-				ImGui::SliderInt(itemName.c_str(), ptr, 0, 100);
-			}
-			// uint32_t型
-			else if (holds_alternative<uint32_t>(param)) {
-				uint32_t* ptr = get_if<uint32_t>(&param);
-				int sliderValue = static_cast<int>(*ptr);
-				ImGui::SliderInt(itemName.c_str(), &sliderValue, 0, 100);
-				*ptr = static_cast<uint32_t>(sliderValue);
+				ImGui::DragInt(itemName.c_str(), ptr, 1.0f, 0, 100);
 			}
 			// float型
 			else if (holds_alternative<float>(param)) {
 				float* ptr = get_if<float>(&param);
-				ImGui::SliderFloat(itemName.c_str(), ptr, 0.0f, 100.0f);
+				ImGui::DragFloat(itemName.c_str(), ptr, 0.1f, -100.0f, 100.0f, "%.2f");
 			}
 			// Vector3型
 			else if (holds_alternative<Vector3>(param)) {
 				Vector3* ptr = get_if<Vector3>(&param);
-				ImGui::SliderFloat3(itemName.c_str(), reinterpret_cast<float*>(ptr), -10.0f, 10.0f);
+				ImGui::DragFloat3(itemName.c_str(), reinterpret_cast<float*>(ptr), 0.1f, -100.0f, 100.0f, "%.2f");
 			}
+
 		}
 
 		// 改行
@@ -106,10 +100,6 @@ void ParticleEditor::SaveFile(const std::string& particleName)
 		// int32_t型
 		if (holds_alternative<int32_t>(param)) {
 			root[particleName][paramName] = get<int32_t>(param);
-		}
-		// uint32_t型
-		else if (holds_alternative<uint32_t>(param)) {
-			root[particleName][paramName] = get<uint32_t>(param);
 		}
 		// float型
 		else if (holds_alternative<float>(param)) {
@@ -213,11 +203,6 @@ void ParticleEditor::LoadFile(const string& particleName)
 		// int32_t型
 		if (itParam->is_number_integer()) {
 			int32_t value = itParam->get<int32_t>();
-			SetValue(particleName, paramName, value);
-		}
-		// uint32_t型
-		else if (itParam->is_number_unsigned()) {
-			uint32_t value = itParam->get<uint32_t>();
 			SetValue(particleName, paramName, value);
 		}
 		// float

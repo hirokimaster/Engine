@@ -24,6 +24,7 @@ void Demo::Initialize()
 
 	particleManager_->StartEditor("demoParticle");
 	particleManager_->CreateParticle("demoParticle", "Player/plane.obj", texHandle_);
+
 }
 
 void Demo::Update()

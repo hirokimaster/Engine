@@ -34,5 +34,6 @@ void Engine::Draw()
 /// </summary>
 void Engine::Finalize() {
 
+	gameManager_->Finalize();
 	Framework::Finalize();
 }

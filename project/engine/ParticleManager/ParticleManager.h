@@ -18,10 +18,15 @@ public:
 	static ParticleManager* GetInstance();
 
 	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Initialize();
+
+	/// <summary>
 	/// editorを起動する
 	/// </summary>
 	/// <param name="particleName"></param>
-	void StartEditor(const string& particleName);
+	void StartEditor(const char* particleName);
 
 	/// <summary>
 	/// particleの情報をエディターから読み込む
@@ -42,11 +47,23 @@ public:
 	void Update(const string& particleName);
 
 	/// <summary>
+	/// editorの更新
+	/// </summary>
+	void UpdateEditor();
+
+	/// <summary>
 	/// particleの名前を指定して描画
 	/// </summary>
 	/// <param name="particleName"></param>
 	/// <param name="camera"></param>
 	void Draw(const string& particleName, const Camera& camera);
+
+#pragma region setter
+
+	void SetColor(const string& particleName, const Vector4& color) { particles_[particleName]->SetColor(color); }
+
+#pragma endregion
+
 
 private:
 	ParticleManager() = default;

@@ -25,7 +25,7 @@ public:
 	static ParticleEditor* GetInstance();
 
 	// パラメーター
-	using Param = variant<int32_t, uint32_t, float, Vector3>;
+	using Param = variant<int32_t, float, Vector3>;
 
 	// particle
 	using Particle = map<string, Param>;
@@ -125,7 +125,9 @@ inline void ParticleEditor::SetValue(const string& particleName, const string& k
 template<typename T>
 inline void ParticleEditor::AddParam(const string& particleName, const string& key, const T& value)
 {
-	if (!std::filesystem::exists(key)) {
+	Particle& particle = datas_[particleName];
+	// 項目が未登録なら
+	if (particle.find(key) == particle.end()) {
 		SetValue(particleName, key, value);
 	}
 }
@@ -136,13 +138,13 @@ inline T ParticleEditor::GetValue(const string& particleName, const string& key)
 	// 指定グループが存在しなかったら止める
 	assert(datas_.find(particleName) != datas_.end());
 	// グループの参照を取得
-	const auto& itGroup = datas_.at(particleName);
+	const auto& itParticle = datas_.at(particleName);
 
 	// particleに指定のキーが存在しなかったら止める
-	assert(itGroup.find(key) != itGroup.end());
+	assert(itParticle.find(key) != itParticle.end());
 
 	// パラメーターの値の参照を取得
-	const Param& itParam = itGroup.find(key)->second;
+	const Param& itParam = itParticle.find(key)->second;
 
 	return 	get<T>(itParam);
 

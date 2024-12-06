@@ -6,7 +6,13 @@ ParticleManager* ParticleManager::GetInstance()
 	return &instance;
 }
 
-void ParticleManager::StartEditor(const string& particleName)
+void ParticleManager::Initialize()
+{
+	// 読み込み
+	ParticleEditor::GetInstance()->LoadFiles();
+}
+
+void ParticleManager::StartEditor(const char* particleName)
 {
 	// particleの値を設定する
 	// エディター起動
@@ -14,10 +20,10 @@ void ParticleManager::StartEditor(const string& particleName)
 	editor->CreateParticle(particleName);
 	editor->AddParam(particleName, "translate", params_[particleName].translate);
 	editor->AddParam(particleName, "radius", params_[particleName].radius);
-	editor->AddParam(particleName, "count", params_[particleName].count);
+	editor->AddParam(particleName, "count", static_cast<int32_t>(params_[particleName].count));
 	editor->AddParam(particleName, "frequency", params_[particleName].frequency);
 	editor->AddParam(particleName, "frequencyTime", params_[particleName].frequencyTime);
-	editor->AddParam(particleName, "emit", params_[particleName].emit);
+	editor->AddParam(particleName, "emit", static_cast<int32_t>(params_[particleName].emit));
 	// rangeTranslateを設定
 	editor->AddParam(particleName, "rangeTranslate_min",params_[particleName].rangeTranslate.min);
 	editor->AddParam(particleName, "rangeTranslate_max", params_[particleName].rangeTranslate.max);
@@ -47,10 +53,10 @@ void ParticleManager::ApplyParticleInfo(const char* particleName)
 	// params_のparticleNameに対応するemitterを更新を適用する
 	params_[particleName].translate = editor->GetValue<Vector3>(particleName, "translate");
 	params_[particleName].radius = editor->GetValue<float>(particleName, "radius");
-	params_[particleName].count = editor->GetValue<uint32_t>(particleName, "count");
+	params_[particleName].count = static_cast<uint32_t>(editor->GetValue<int32_t>(particleName, "count"));
 	params_[particleName].frequency = editor->GetValue<float>(particleName, "frequency");
 	params_[particleName].frequencyTime = editor->GetValue<float>(particleName, "frequencyTime");
-	params_[particleName].emit = editor->GetValue<uint32_t>(particleName, "emit");
+	params_[particleName].emit = static_cast<uint32_t>(editor->GetValue<int32_t>(particleName, "emit"));
 	// rangeTranslateのminとmaxを設定
 	params_[particleName].rangeTranslate.min = editor->GetValue<Vector3>(particleName, "rangeTranslate_min");
 	params_[particleName].rangeTranslate.max = editor->GetValue<Vector3>(particleName, "rangeTranslate_max");
@@ -94,6 +100,11 @@ void ParticleManager::CreateParticle(const string& particleName, const string& m
 void ParticleManager::Update(const string& particleName)
 {
 	particles_[particleName]->Update();
+}
+
+void ParticleManager::UpdateEditor()
+{
+	ParticleEditor::GetInstance()->Update();
 }
 
 void ParticleManager::Draw(const string& particleName, const Camera& camera)
