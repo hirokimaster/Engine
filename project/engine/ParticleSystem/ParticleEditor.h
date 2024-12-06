@@ -10,6 +10,7 @@
 #include <fstream>
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"
 #include "externals/Json/json.hpp"
+#include <Windows.h>
 
 using std::variant;
 using std::map;
