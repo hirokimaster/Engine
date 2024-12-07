@@ -120,7 +120,9 @@ inline void AdjustmentVariables::SetValue(const string& groupName, const string&
 template<typename T>
 inline void AdjustmentVariables::AddItem(const string& groupName, const string& key, const T& value)
 {
-	if (!std::filesystem::exists(key)) {
+	Group& group = datas_[groupName];
+	// 項目が未登録なら
+	if (group.find(key) == group.end()) {
 		SetValue(groupName, key, value);
 	}
 }

@@ -5,6 +5,7 @@
 */
 
 #include "Loader.h"
+#include "application/GameObject/Player/Player.h"
 
 LevelData* Loader::Load(const std::string& fileName)
 {
@@ -145,10 +146,10 @@ void Loader::Arrangement(LevelData* levelData)
 			newEnemy->SetEndPosition(objectData.controlPointEnd);
 			enemys_.push_back(std::move(newEnemy));
 		}
-		else if (objectData.fileName == "road") {			
+		else if (objectData.fileName == "roads") {			
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
-			newObject->SetModel("LevelEditorObj/ground.obj");
+			newObject->SetModel("LevelEditorObj/grounds.obj");
 			newObject->SetTexHandle(texHandleRoad);
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
@@ -156,7 +157,7 @@ void Loader::Arrangement(LevelData* levelData)
 			newObject->SetUVTransform(uvTransform_);
 			objects_.push_back(std::move(newObject));
 		}
-		else if(objectData.fileName == "ground"){
+		else if(objectData.fileName == "grounds"){
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
@@ -166,7 +167,7 @@ void Loader::Arrangement(LevelData* levelData)
 			newObject->SetScale(objectData.scale);
 			objects_.push_back(std::move(newObject));
 		}
-		else if (objectData.fileName == "mount") {
+		else if (objectData.fileName == "mounts") {
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
@@ -199,7 +200,6 @@ void Loader::Update()
 		}
 		return false;
 		});
-
 }
 
 void Loader::Draw(Camera& camera)

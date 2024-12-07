@@ -32,6 +32,8 @@ struct LevelData {
 	std::vector<ObjectData>objects;
 };
 
+class Player;
+
 class Loader {
 public:
 	/// <summary>

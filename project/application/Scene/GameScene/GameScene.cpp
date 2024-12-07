@@ -60,7 +60,7 @@ void GameScene::Initialize()
 	// loader
 	uint32_t texhandle = TextureManager::Load("resources/TempTexture/white.png");
 	loader_ = std::make_unique<Loader>();
-	levelData_ = loader_->Load("level");
+	levelData_ = loader_->Load("level2");
 	loader_->SetPlayer(player_.get());
 	loader_->SetTexHandle(texhandle);
 	loader_->Arrangement(levelData_);
@@ -122,7 +122,7 @@ void GameScene::Update()
 
 	// 仮のクリア判定
 	if (player_->GetWorldPosition().z >= 600.0f) {
-		isTransitionClear_ = true;
+		//isTransitionClear_ = true;
 	}
 
 	// 天球
@@ -174,7 +174,7 @@ void GameScene::PostProcessDraw()
 {
 	postProcess_->PreDraw();
 
-	skydome_->Draw(camera_);
+	//skydome_->Draw(camera_);
 
 	loader_->Draw(camera_);
 	// player

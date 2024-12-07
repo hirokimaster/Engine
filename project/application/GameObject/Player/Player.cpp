@@ -26,6 +26,7 @@ void Player::Initialize(uint32_t texHandle)
 	SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
 
 	AddAdjustmentVariables();
+	ApplyAdjustmentVariables();
 
 	// 死亡フラグ
 	isDead_ = false;
@@ -38,7 +39,6 @@ void Player::Update()
 	Rotate(); // 回転
 	Attack(); // 攻撃
 	UpdateBullet(); // 弾の更新
-	ApplyAdjustmentVariables();
 	worldTransform_.UpdateMatrix();
 
 	// ダメージ
