@@ -31,6 +31,12 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// debug用の描画
+	/// </summary>
+	/// <param name="camera"></param>
+	void DebugDraw(Camera& camera);
+
+	/// <summary>
 	/// レティクルの更新
 	/// </summary>
 	/// <param name="camera"></param>
@@ -130,4 +136,5 @@ private:
 	uint32_t texHandleLockOnReticle_ = 0;
 	std::unique_ptr<Sprite> spriteLockOnReticle_;
 	Vector2 reticlePosition_ = { 640.0f, 360.0f }; // reticleの範囲制限用のposition
+	std::unique_ptr<Object3DPlacer> debugReticle_ = nullptr;
 };

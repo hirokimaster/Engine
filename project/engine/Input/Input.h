@@ -12,6 +12,7 @@
 #include <Xinput.h>
 #pragma comment(lib,"xinput.lib")
 #pragma comment(lib,"dinput8.lib")
+#include <cmath>
 
 class Input {
 public:
@@ -72,6 +73,19 @@ public:
 	/// <returns></returns>
 	bool PressedButton(WORD button);
 
+	/// <summary>
+	/// deadzoneの設定
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	//void ApplyDeadZone(SHORT& x, SHORT& y);
+
+#pragma region setter
+
+	//void SetDeadZone(float deadZone) { deadZone_ = deadZone; }
+
+#pragma endregion
+
 #pragma endregion
 
 private:
@@ -86,6 +100,9 @@ private:
 
 	XINPUT_STATE state_{};
 	XINPUT_STATE preState_{};
+
+	// 初期値は20%くらい
+	//float deadZone_ = SHRT_MAX * 0.8f;
 
 private:
 

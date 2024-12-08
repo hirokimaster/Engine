@@ -102,3 +102,19 @@ bool Input::PressedButton(WORD button)
 
 	return false;
 }
+
+//void Input::ApplyDeadZone(SHORT& x, SHORT& y)
+//{
+//	float input = sqrtf((float)(x * x) + (float)(y * y)); // 入力の大きさ
+//	if (input < deadZone_) {
+//		// デッドゾーン内では入力をゼロ
+//		x = 0;
+//		y = 0;
+//	}
+//	else {
+//		// デッドゾーン外の入力を正規化
+//		float scale = (input - deadZone_) / (SHRT_MAX - deadZone_);
+//		x = (SHORT)((x / input) * scale * SHRT_MAX);
+//		y = (SHORT)((y / input) * scale * SHRT_MAX);
+//	}
+//}

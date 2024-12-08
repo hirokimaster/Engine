@@ -10,11 +10,18 @@ void LockOn::Initialize(Vector3 playerPosition)
 {
 	texHandle2DReticle_ = TextureManager::Load("resources/Player/reticle.png");
 	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, reticlePosition_));
-	spriteLockOnReticle_.reset(Sprite::Create(texHandle2DReticle_, { 640.0f,380.0f }));
+	spriteLockOnReticle_.reset(Sprite::Create(texHandle2DReticle_, { 640.0f,360.0f }));
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
-	worldTransform3DReticle_.translate = playerPosition + 100.0f;
+	uint32_t debugTex = TextureManager::Load("resources/TempTexture/white.png");
+	debugReticle_ = std::make_unique<Object3DPlacer>();
+	debugReticle_->Initialize();
+	debugReticle_->SetModel("Player/cube.obj");
+	debugReticle_->SetTexHandle(debugTex);
+	debugReticle_->SetColor({ 1.0f,0.0f,0.0f,1.0f });
+	debugReticle_->SetWorldTransform(worldTransform3DReticle_);
+	playerPosition;
 }
 
 void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
@@ -108,6 +115,11 @@ void LockOn::Draw()
 	}
 }
 
+void LockOn::DebugDraw(Camera& camera)
+{
+	debugReticle_->Draw(camera);
+}
+
 void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector3& playerPosition)
 {
 	// ビューポート行列
@@ -135,6 +147,8 @@ void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector
 	// カメラから照準オブジェクトの距離
 	const float kDistanceTestObject = playerPosition.z + 100.0f;
 	worldTransform3DReticle_.translate = kDistanceTestObject * mouseDirection;
+	worldTransform3DReticle_.translate.y = worldTransform3DReticle_.translate.y + playerPosition.y;
+
 	worldTransform3DReticle_.UpdateMatrix();
 }
 
@@ -211,8 +225,8 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 
 		// ジョイスティック状態取得
 		if (Input::GetInstance()->GetJoystickState(joyState)) {
-			spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 12.0f;
-			spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 12.0f;
+			spritePosition.x -= (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 12.0f;
+			spritePosition.y += (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 12.0f;
 			// スプライトの座標変更を反映
 			if (isLockOnMode_) {
 				spriteLockOnReticle_->SetPosition(spritePosition);
