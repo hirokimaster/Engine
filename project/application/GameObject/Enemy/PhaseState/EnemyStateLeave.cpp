@@ -10,14 +10,13 @@ EnemyStateLeave::~EnemyStateLeave()
 void EnemyStateLeave::Update(Enemy* pEnemy)
 {
 	// ランダム生成器の初期化
-	std::random_device rd;  // 非決定論的な乱数生成器
-	std::mt19937 gen(rd()); // メルセンヌ・ツイスタによる乱数生成器
-	std::uniform_int_distribution<int> dist(0, 1); // 0または1を生成
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> dist(0, 1);
 
-	// 2つの移動量の選択肢を定義
 	std::vector<Vector3> velocities = {
-		{ -0.5f, 0.1f, 0.2f }, // 1つ目の移動量
-		{ 0.5f, 0.1f, 0.2f } // 2つ目の移動量
+		{ -0.5f, 0.1f, 0.2f }, 
+		{ 0.5f, 0.1f, 0.2f }
 	};
 
 	// ランダムに選択して移動量を設定

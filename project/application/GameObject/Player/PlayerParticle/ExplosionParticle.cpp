@@ -23,12 +23,12 @@ void ExplosionParticle::Initialize()
 	param_.emit = 1;
 	param_.rangeTranslate.min = Vector3(0.0f, 0.0f, 0.0f);
 	param_.rangeTranslate.max = Vector3(0.0f, 0.0f, 0.0f);
-	param_.rangeScale.min = Vector3(0.3f, 0.3f, 0.3f);
-	param_.rangeScale.max = Vector3(0.5f, 0.5f, 0.5f);
+	param_.rangeScale.min = Vector3(0.5f, 0.5f, 0.5f);
+	param_.rangeScale.max = Vector3(0.7f, 0.7f, 0.7f);
 	param_.rangeLifeTime.min = 1.0f;
 	param_.rangeLifeTime.max = 1.0f;
-	param_.rangeVelocity.min = Vector3(-0.01f, -0.01f, -0.01f);
-	param_.rangeVelocity.max = Vector3(0.01f, 0.01f, 0.01f);
+	param_.rangeVelocity.min = Vector3(-0.1f, -0.1f, -0.1f);
+	param_.rangeVelocity.max = Vector3(0.1f, 0.1f, 0.1f);
 	param_.rangeCurrentTime.min = 0.0f;
 	param_.rangeCurrentTime.max = 5.0f;
 	param_.rangeColor.min = Vector3(1.0f, 1.0f, 0.0f);
@@ -57,8 +57,8 @@ void ExplosionParticle::Initialize()
 	paramSmoke_.rangeScale.max = Vector3(2.0f, 2.0f, 2.0f);
 	paramSmoke_.rangeLifeTime.min = 1.0f;
 	paramSmoke_.rangeLifeTime.max = 5.0f;
-	paramSmoke_.rangeVelocity.min = Vector3(-0.03f, -0.03f, -0.03f);
-	paramSmoke_.rangeVelocity.max = Vector3(0.03f, 0.03f, 0.03f);
+	paramSmoke_.rangeVelocity.min = Vector3(-0.15f, -0.15f, -0.15f);
+	paramSmoke_.rangeVelocity.max = Vector3(0.15f, 0.15f, 0.15f);
 	paramSmoke_.rangeCurrentTime.min = 0.0f;
 	paramSmoke_.rangeCurrentTime.max = 5.0f;
 	paramSmoke_.rangeColor.min = Vector3(0.4f, 0.4f, 0.4f);

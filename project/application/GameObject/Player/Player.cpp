@@ -94,7 +94,6 @@ void Player::Attack()
 
 	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 		// 弾の速度
-		bulletSpeed_ = 3.0f;
 		Vector3 velocity = { 0,0,bulletSpeed_ };
 		std::list<Vector3> lockOnVelocity;
 		// 自機から照準オブジェクトのベクトル
