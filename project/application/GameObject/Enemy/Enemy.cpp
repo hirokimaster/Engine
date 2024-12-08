@@ -21,7 +21,7 @@ void Enemy::Initialize(uint32_t texHandle)
 
 	deadParticle_ = std::make_unique<ExplosionParticle>();
 	deadParticle_->Initialize();
-	bulletSpeed_ = 0.3f;
+	bulletSpeed_ = 0.08f;
 
 
 	// 最初の状態

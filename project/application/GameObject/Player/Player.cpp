@@ -64,7 +64,7 @@ void Player::Draw(Camera& camera)
 	DrawUI();
 
 	// 死んだときの爆発
-	if (deadTimer_ <= 30.0f) {
+	if (deadTimer_ <= 0.0f) {
 		explosionParticle_->Draw(camera);
 	}
 }
@@ -221,7 +221,7 @@ void Player::IncurDamage()
 		--deadTimer_;
 	}
 
-	if (deadTimer_ <= 30.0f) {
+	if (deadTimer_ <= 0.0f) {
 		explosionParticle_->Update();
 	}
 	else {
