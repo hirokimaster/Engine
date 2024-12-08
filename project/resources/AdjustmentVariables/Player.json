@@ -1,6 +1,6 @@
 {
     "Player": {
-        "bulletSpeed": 0.0,
+        "bulletSpeed": 1.0420000553131104,
         "hp": 1,
         "moveSpeed": 2.0,
         "translate": [

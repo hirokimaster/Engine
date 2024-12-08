@@ -99,6 +99,7 @@ void GameScene::Update()
 
 	// player
 	player_->Update();
+	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition(), isGameStart_);
 	rail_->Update();
 
 	// loader
@@ -116,7 +117,6 @@ void GameScene::Update()
 
 	// lockOn
 	lockOn_->Update(loader_->GetEnemys(), camera_);
-	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition(), isGameStart_);
 
 	Collision();
 
