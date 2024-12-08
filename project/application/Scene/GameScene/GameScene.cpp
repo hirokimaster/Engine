@@ -121,8 +121,8 @@ void GameScene::Update()
 	Collision();
 
 	// 仮のクリア判定
-	if (player_->GetWorldPosition().z >= 600.0f) {
-		//isTransitionClear_ = true;
+	if (player_->GetWorldPosition().z >= 2600.0f) {
+		isTransitionClear_ = true;
 	}
 
 	// 天球
@@ -174,7 +174,7 @@ void GameScene::PostProcessDraw()
 {
 	postProcess_->PreDraw();
 
-	//skydome_->Draw(camera_);
+	skydome_->Draw(camera_);
 
 	loader_->Draw(camera_);
 	// player
