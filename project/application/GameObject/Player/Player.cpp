@@ -18,10 +18,6 @@ void Player::Initialize(uint32_t texHandle)
 	object_->SetTexHandle(texHandle);
 	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 
-	explosionParticle_ = std::make_unique<ExplosionParticle>();
-	explosionParticle_->Initialize();
-
-
 	SetCollosionAttribute(kCollisionAttributePlayer);
 	SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
 
@@ -62,11 +58,6 @@ void Player::Draw(Camera& camera)
 
 	// UIの描画
 	DrawUI();
-
-	// 死んだときの爆発
-	if (deadTimer_ <= 0.0f) {
-		explosionParticle_->Draw(camera);
-	}
 }
 
 void Player::Move()
@@ -219,13 +210,6 @@ void Player::IncurDamage()
 
 	if (isDead_) {
 		--deadTimer_;
-	}
-
-	if (deadTimer_ <= 0.0f) {
-		explosionParticle_->Update();
-	}
-	else {
-		explosionParticle_->SetPosition(GetWorldPosition());
 	}
 }
 

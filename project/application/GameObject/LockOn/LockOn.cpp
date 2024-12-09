@@ -122,6 +122,9 @@ void LockOn::DebugDraw(Camera& camera)
 
 void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector3& playerPosition)
 {
+
+	sprite2DReticle_->SetPosition(position);
+
 	// ビューポート行列
 	Matrix4x4 matViewport =
 		MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
@@ -145,9 +148,10 @@ void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector
 	mouseDirection = Normalize(mouseDirection);
 
 	// カメラから照準オブジェクトの距離
-	const float kDistanceTestObject = playerPosition.z + 100.0f;
+	const float kDistanceTestObject = 100.0f;
 	worldTransform3DReticle_.translate = kDistanceTestObject * mouseDirection;
-	worldTransform3DReticle_.translate.y = worldTransform3DReticle_.translate.y + playerPosition.y;
+	//worldTransform3DReticle_.translate.y = worldTransform3DReticle_.translate.y + playerPosition.y;
+	playerPosition;
 
 	worldTransform3DReticle_.UpdateMatrix();
 }
@@ -225,8 +229,8 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 
 		// ジョイスティック状態取得
 		if (Input::GetInstance()->GetJoystickState(joyState)) {
-			spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 12.0f;
-			spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 12.0f;
+			spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 8.0f;
+			spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 8.0f;
 			// スプライトの座標変更を反映
 			if (isLockOnMode_) {
 				spriteLockOnReticle_->SetPosition(spritePosition);

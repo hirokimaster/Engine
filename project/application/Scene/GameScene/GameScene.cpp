@@ -321,6 +321,9 @@ void GameScene::GameOver()
 		spriteNo_->SetColor(texColor_);
 		texColor_.w += 0.05f;
 		postProcess_->SetEffect(PostEffectType::GaussianBlur);
+		for (auto& enemys : loader_->GetEnemys()) {
+			enemys->SetIsDead(true);
+		}
 	}
 
 	if (texColor_.w >= 2.0f) {

@@ -107,6 +107,8 @@ public:
 
 	void SetIsSortie(bool isSortie) { isSortie_ = isSortie; }
 
+	void SetIsDead(bool isDead) { isDead_ = isDead; }
+
 #pragma endregion
 
 private:
