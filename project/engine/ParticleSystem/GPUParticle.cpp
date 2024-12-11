@@ -165,29 +165,8 @@ void GPUParticle::CreateBuffer()
 
 	// emitter
 	emitterSphereResource_ = CreateResource::CreateBufferResource(sizeof(EmitterSphere));
-	emitterSphereResource_->Map(0, nullptr, reinterpret_cast<void**>(&emitterSphereData_));
-	emitterSphereData_->count = 10;
-	emitterSphereData_->frequency = 0.5f;
-	emitterSphereData_->frequencyTime = 0.0f;
-	emitterSphereData_->translate = Vector3(0.0f, 0.0f, 0.0f);
-	emitterSphereData_->radius = 1.0f;
-	emitterSphereData_->emit = 0;
-	emitterSphereData_->rangeTranslate.min = Vector3(-1.0f, -1.0f, -1.0f);
-	emitterSphereData_->rangeTranslate.max = Vector3(1.0f, 1.0f, 1.0f);
-	emitterSphereData_->rangeScale.min = Vector3(0.5f, 0.5f, 0.5f);
-	emitterSphereData_->rangeScale.max = Vector3(2.0f, 2.0f, 2.0f);
-	emitterSphereData_->rangeLifeTime.min = 1.0f;
-	emitterSphereData_->rangeLifeTime.max = 5.0f;
-	emitterSphereData_->rangeVelocity.min = Vector3(-1.0f, -1.0f, -1.0f);
-	emitterSphereData_->rangeVelocity.max = Vector3(1.0f, 1.0f, 1.0f);
-	emitterSphereData_->rangeCurrentTime.min = 0.0f;
-	emitterSphereData_->rangeCurrentTime.max = 5.0f;
-	emitterSphereData_->rangeColor.min = Vector3(1.0f, 1.0f, 1.0f);
-	emitterSphereData_->rangeColor.max = Vector3(1.0f, 1.0f, 1.0f);
-	emitterSphereData_->rangeAlpha.min = 1.0f;
-	emitterSphereData_->rangeAlpha.max = 1.0f;
-
-
+	emitterSphereResource_->Map(0, nullptr, reinterpret_cast<void**>(&emitterSphereData_[kMaxInstance_]));
+	
 	// perFrame
 	perFrameResource_ = CreateResource::CreateBufferResource(sizeof(PerFrame));
 	perFrameResource_->Map(0, nullptr, reinterpret_cast<void**>(&perFrameData_));

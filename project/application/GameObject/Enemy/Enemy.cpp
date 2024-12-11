@@ -19,9 +19,12 @@ void Enemy::Initialize(uint32_t texHandle)
 	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
-	deadParticle_ = std::make_unique<ExplosionParticle>();
-	deadParticle_->Initialize();
-	bulletSpeed_ = 1.0f;
+	texHandleExplosion_ = TextureManager::Load("resources/Player/smoke.png");
+	particleManager_ = ParticleManager::GetInstance();
+	particleManager_->StartEditor("explosion");
+	particleManager_->CreateParticle("explosion", "Player/plane.obj", texHandleExplosion_);
+	particleManager_->ApplyParticleInfo("explosion", id_);
+	bulletSpeed_ = 0.04f;
 
 
 	// 最初の状態
@@ -49,11 +52,10 @@ void Enemy::Update()
 	}
 
 	if (isParticle_) {
-		deadParticle_->Update();
+		particleManager_->Update("explosion", id_);
 	}
 	else {
-		// 死んだときのparticle
-		deadParticle_->SetPosition(GetWorldPosition());
+		particleManager_->SetPosition("explosion", GetWorldPosition(), id_);
 	}
 	
 	if (isParticle_) {
@@ -64,10 +66,6 @@ void Enemy::Update()
 		particleTimer_ = 0;
 		isParticle_ = false;
 		isDead_ = true;
-	}
-
-	if (particleTimer_ > 120) {
-		deadParticle_->SetIsExplosion(true);
 	}
 
 #ifdef _DEBUG
@@ -87,7 +85,7 @@ void Enemy::Draw(Camera& camera)
 	}
 
 	if (isParticle_) {
-		deadParticle_->Draw(camera);
+		particleManager_->Draw("explosion", camera, id_);
 	}
 
 	if (!isParticle_) {

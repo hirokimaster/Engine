@@ -13,6 +13,7 @@
 #include "application/GameObject/Enemy/PhaseState/EnemyStateSortie.h"
 #include "application/GameObject/Enemy/PhaseState/EnemyStateFire.h"
 #include "application/GameObject/Player/PlayerParticle/ExplosionParticle.h"
+#include "engine/ParticleManager/ParticleManager.h"
 
 class Player;
 
@@ -91,6 +92,8 @@ public:
 
 	bool GetIsSortie() { return isSortie_; }
 
+	uint32_t GetID() const { return id_; }
+
 #pragma endregion
 
 #pragma region setter
@@ -109,9 +112,12 @@ public:
 
 	void SetIsDead(bool isDead) { isDead_ = isDead; }
 
+	void SetID(int id) { id_ = id; }
+
 #pragma endregion
 
 private:
+	uint32_t id_ = 0; // enemyの識別番号
 	bool isDead_ = false; // デスフラグ
 	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
 	uint32_t texHandleBullet_ = 0; // bulletのtexHandle
@@ -125,9 +131,10 @@ private:
 	Vector3 startPosition_{}; // スポーンする座標
 	Vector3 endPosition_{}; // でできた後の最終座標
 	bool isSortie_ = false;
-	std::unique_ptr<ExplosionParticle> deadParticle_ = nullptr;
 	bool isParticle_ = false; 
 	uint32_t particleTimer_ = 120;
 	float bulletSpeed_ = 0.2f;
+	ParticleManager* particleManager_ = nullptr;
+	uint32_t texHandleExplosion_ = 0;
 };
 

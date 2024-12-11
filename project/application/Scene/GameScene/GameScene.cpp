@@ -60,10 +60,9 @@ void GameScene::Initialize()
 	// loader
 	uint32_t texhandle = TextureManager::Load("resources/TempTexture/white.png");
 	loader_ = std::make_unique<Loader>();
-	levelData_ = loader_->Load("level2");
 	loader_->SetPlayer(player_.get());
 	loader_->SetTexHandle(texhandle);
-	loader_->Arrangement(levelData_);
+	loader_->Arrangement();
 
 
 	// 天球

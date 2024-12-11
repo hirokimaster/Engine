@@ -47,7 +47,7 @@ void ParticleManager::StartEditor(const char* particleName)
 	editor->AddParam(particleName, "rangeAlpha_max", params_[particleName].rangeAlpha.max);
 }
 
-void ParticleManager::ApplyParticleInfo(const char* particleName)
+void ParticleManager::ApplyParticleInfo(const char* particleName, uint32_t id)
 {
 	ParticleEditor* editor = ParticleEditor::GetInstance();
 	// params_のparticleNameに対応するemitterを更新を適用する
@@ -79,27 +79,23 @@ void ParticleManager::ApplyParticleInfo(const char* particleName)
 	params_[particleName].rangeAlpha.min = editor->GetValue<float>(particleName, "rangeAlpha_min");
 	params_[particleName].rangeAlpha.max = editor->GetValue<float>(particleName, "rangeAlpha_max");
 
-	particles_[particleName]->SetParticleParam(params_[particleName]);
+	particles_[particleName][id]->SetParticleParam(params_[particleName]);
 }
 
 void ParticleManager::CreateParticle(const string& particleName, const string& model, uint32_t texHandle)
 {
-	// 読み込まれてたら抜ける
-	if (particles_.contains(particleName)) {
-		return;
-	}
 	unique_ptr<GPUParticle> particle = make_unique<GPUParticle>();
 	particle->SetModel(model);
 	particle->Initialize();
 	particle->SetTexHandle(texHandle);
 	particle->SetParticleParam(params_[particleName]);
 
-	particles_.insert(pair(particleName, move(particle)));
+	particles_[particleName].emplace_back(move(particle));
 }
 
-void ParticleManager::Update(const string& particleName)
+void ParticleManager::Update(const string& particleName, uint32_t id)
 {
-	particles_[particleName]->Update();
+	particles_[particleName][id]->Update();
 }
 
 void ParticleManager::UpdateEditor()
@@ -107,7 +103,7 @@ void ParticleManager::UpdateEditor()
 	ParticleEditor::GetInstance()->Update();
 }
 
-void ParticleManager::Draw(const string& particleName, const Camera& camera)
+void ParticleManager::Draw(const string& particleName, const Camera& camera, uint32_t id)
 {
-	particles_[particleName]->Draw(camera);
+	particles_[particleName][id]->Draw(camera);
 }

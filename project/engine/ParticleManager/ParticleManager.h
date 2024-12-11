@@ -7,6 +7,8 @@ using std::map;
 using std::unique_ptr;
 using std::make_unique;
 using std::pair;
+using std::unordered_map;
+using std::vector;
 
 class ParticleManager {
 public:
@@ -32,7 +34,7 @@ public:
 	/// particleの情報をエディターから読み込む
 	/// </summary>
 	/// <param name="particleName"></param>
-	void ApplyParticleInfo(const char* particleName);
+	void ApplyParticleInfo(const char* particleName, uint32_t id = 0);
 
 	/// <summary>
 	/// paticleのインスタンス生成
@@ -44,7 +46,7 @@ public:
 	/// particleの名前を指定して更新
 	/// </summary>
 	/// <param name="particleName"></param>
-	void Update(const string& particleName);
+	void Update(const string& particleName, uint32_t id = 0);
 
 	/// <summary>
 	/// editorの更新
@@ -56,11 +58,17 @@ public:
 	/// </summary>
 	/// <param name="particleName"></param>
 	/// <param name="camera"></param>
-	void Draw(const string& particleName, const Camera& camera);
+	void Draw(const string& particleName, const Camera& camera, uint32_t id = 0);
 
 #pragma region setter
 
-	void SetColor(const string& particleName, const Vector4& color) { particles_[particleName]->SetColor(color); }
+	void SetColor(const string& particleName, const Vector4& color) {
+		for (auto& particle : particles_[particleName]) {
+			particle->SetColor(color);
+		}
+	}
+
+	void SetPosition(const string& particleName, const Vector3& position, uint32_t id = 0) { particles_[particleName][id]->SetPosition(position); }
 
 #pragma endregion
 
@@ -75,6 +83,6 @@ private:
 	// particleのパラメータ保存用のコンテナ
 	map<string, EmitterSphere> params_;
 	// particleのインスタンス保存用のコンテナ
-	map<string, unique_ptr<GPUParticle>> particles_;
+	unordered_map<string, vector<unique_ptr<GPUParticle>>> particles_;
 
 };

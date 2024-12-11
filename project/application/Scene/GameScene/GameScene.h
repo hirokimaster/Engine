@@ -101,7 +101,6 @@ private:
 	WorldTransform worldTransformSkyBox_{};
 	uint32_t texHandleSkyBox_ = 0; // skyBoxのtexture
 	std::unique_ptr<Loader> loader_ = nullptr;
-	LevelData* levelData_ = nullptr;
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
 	// 仮のUI
 	std::unique_ptr<Sprite> spriteLockOn_ = nullptr;

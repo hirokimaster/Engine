@@ -126,24 +126,33 @@ LevelData* Loader::Load(const std::string& fileName)
 	return levelData;
 }
 
-void Loader::Arrangement(LevelData* levelData)
+void Loader::Arrangement()
 {
 
 	uint32_t texHandle = TextureManager::Load("resources/TempTexture/noise0.png");
 	uint32_t texHandleRoad = TextureManager::Load("resources/Stage/road.png");
 	uint32_t texHandleMount = TextureManager::Load("resources/TempTexture/mount.jpg");
 
+	levelData_ = Load("level2");
+
+	// enemyに番号をつける用
+	// 初期化しておく
+	uint32_t enemyID = 0;
+
 	// レベルデータからオブジェクトを生成、配置
-	for (auto& objectData : levelData->objects) {
+	for (auto& objectData : levelData_->objects) {
 
 		// モデルを指定して3Dオブジェクトを生成
 		if (objectData.fileName == "enemy") {
 			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+			newEnemy->SetID(enemyID);
+			enemyID++;
 			newEnemy->Initialize(texHandle);
 			newEnemy->SetPlayer(player_);
 			newEnemy->SetPosition(objectData.controlPointStart);
 			newEnemy->SetStartPosition(objectData.controlPointStart);
 			newEnemy->SetEndPosition(objectData.controlPointEnd);
+
 			enemys_.push_back(std::move(newEnemy));
 		}
 		else if (objectData.fileName == "roads") {			

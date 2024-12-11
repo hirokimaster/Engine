@@ -1,0 +1,60 @@
+{
+    "explosion": {
+        "count": 300,
+        "emit": 1,
+        "frequency": 0.10000000149011612,
+        "frequencyTime": 0.10000000149011612,
+        "radius": 1.0,
+        "rangeAlpha_max": 1.0,
+        "rangeAlpha_min": 0.0,
+        "rangeColor_max": [
+            5.0,
+            0.009999999776482582,
+            0.0
+        ],
+        "rangeColor_min": [
+            1.0,
+            0.10000000149011612,
+            0.0
+        ],
+        "rangeCurrentTime_max": 5.0,
+        "rangeCurrentTime_min": 0.0,
+        "rangeLifeTime_max": 1.0,
+        "rangeLifeTime_min": 1.0,
+        "rangeScale_max": [
+            0.699999988079071,
+            0.699999988079071,
+            0.699999988079071
+        ],
+        "rangeScale_min": [
+            0.5,
+            0.5,
+            0.5
+        ],
+        "rangeTranslate_max": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "rangeTranslate_min": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "rangeVelocity_max": [
+            0.03999999910593033,
+            0.03999999910593033,
+            0.03999999910593033
+        ],
+        "rangeVelocity_min": [
+            -0.03999999910593033,
+            -0.03999999910593033,
+            -0.03999999910593033
+        ],
+        "translate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    }
+}

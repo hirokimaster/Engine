@@ -76,9 +76,11 @@ public:
 
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 
-	void SetParticleParam(EmitterSphere param) { *emitterSphereData_ = param; }
+	void SetParticleParam(EmitterSphere param, uint32_t index) { *emitterSphereData_[index] = param; }
 
 	void SetColor(const Vector4& color) { materialData_->color = color;}
+
+	void SetPosition(const Vector3& position, uint32_t index) { emitterSphereData_[index]->translate = position; }
 
 #pragma endregion
 
@@ -135,7 +137,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> freeListResource_;
 	ParticleCS* particleData_ = nullptr;
 	PerView* perViewData_ = nullptr;
-	EmitterSphere* emitterSphereData_ = nullptr;
+	EmitterSphere* emitterSphereData_[kMaxInstance_];
 	PerFrame* perFrameData_ = nullptr;
 	Model* model_ = nullptr;
 	Material* materialData_ = nullptr;

@@ -1,0 +1,60 @@
+{
+    "explosionSmoke": {
+        "count": 300,
+        "emit": 1,
+        "frequency": 0.3,
+        "frequencyTime": 0.3,
+        "radius": 1.0,
+        "rangeAlpha_max": 0.8,
+        "rangeAlpha_min": 0.6,
+        "rangeColor_max": [
+            0.6,
+            0.6,
+            0.6
+        ],
+        "rangeColor_min": [
+            0.4,
+            0.4,
+            0.4
+        ],
+        "rangeCurrentTime_max": 5.0,
+        "rangeCurrentTime_min": 0.0,
+        "rangeLifeTime_max": 5.0,
+        "rangeLifeTime_min": 1.0,
+        "rangeScale_max": [
+            2.0,
+            2.0,
+            2.0
+        ],
+        "rangeScale_min": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "rangeTranslate_max": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "rangeTranslate_min": [
+            -1.0,
+            -1.0,
+            -1.0
+        ],
+        "rangeVelocity_max": [
+            0.15,
+            0.15,
+            0.15
+        ],
+        "rangeVelocity_min": [
+            -0.15,
+            -0.15,
+            -0.15
+        ],
+        "translate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    }
+}

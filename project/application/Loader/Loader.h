@@ -36,16 +36,11 @@ class Player;
 
 class Loader {
 public:
-	/// <summary>
-	/// leveldataのロード
-	/// </summary>
-	/// <param name="fileName"></param>
-	LevelData* Load(const std::string& fileName);
 
 	/// <summary>
 	/// ロードしたデータを基に配置
 	/// </summary>
-	void Arrangement(LevelData* levelData);
+	void Arrangement();
 
 	/// <summary>
 	/// 更新
@@ -68,6 +63,16 @@ public:
 
 	const std::list<std::unique_ptr<Enemy>>& GetEnemys() const{ return enemys_; }
 
+	std::unique_ptr<Enemy>* FindEnemyByID(uint32_t id)
+	{
+		for (auto& enemy : enemys_) {
+			if (enemy->GetID() == id) {
+				return &enemy;
+			}
+		}
+		return nullptr;
+	}
+
 #pragma endregion
 
 #pragma region setter
@@ -77,6 +82,14 @@ public:
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 
 #pragma endregion
+
+private:
+
+	/// <summary>
+	/// leveldataのロード
+	/// </summary>
+	/// <param name="fileName"></param>
+	LevelData* Load(const std::string& fileName);
 
 private:
 	std::map<std::string, std::unique_ptr<Model>>  models_;
@@ -90,4 +103,5 @@ private:
 		{0.0f,0.0f,0.0f},
 		{0.0f,0.0f,0.0f},
 	};
+	LevelData* levelData_;
 };
