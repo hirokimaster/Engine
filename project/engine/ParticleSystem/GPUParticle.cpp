@@ -165,7 +165,7 @@ void GPUParticle::CreateBuffer()
 
 	// emitter
 	emitterSphereResource_ = CreateResource::CreateBufferResource(sizeof(EmitterSphere));
-	emitterSphereResource_->Map(0, nullptr, reinterpret_cast<void**>(&emitterSphereData_[kMaxInstance_]));
+	emitterSphereResource_->Map(0, nullptr, reinterpret_cast<void**>(&emitterSphereData_));
 	
 	// perFrame
 	perFrameResource_ = CreateResource::CreateBufferResource(sizeof(PerFrame));

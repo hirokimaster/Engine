@@ -60,6 +60,13 @@ public:
 	/// <param name="camera"></param>
 	void Draw(const string& particleName, const Camera& camera, uint32_t id = 0);
 
+	/// <summary>
+	/// コンテナから削除
+	/// </summary>
+	/// <param name="particleName"></param>
+	/// <param name="id"></param>
+	void Clear(const string& particleName, uint32_t id);
+
 #pragma region setter
 
 	void SetColor(const string& particleName, const Vector4& color) {

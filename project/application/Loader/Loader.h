@@ -16,6 +16,7 @@
 #include "engine/ModelManager/ModelManager.h"
 #include <numbers>
 #include "application/GameObject/Enemy/Enemy.h"
+#include "engine/ParticleManager/ParticleManager.h"
 
 // レベルデータ
 struct LevelData {

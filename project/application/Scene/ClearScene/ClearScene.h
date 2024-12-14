@@ -11,6 +11,7 @@
 #include "engine/Input/Input.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Skydome/Skydome.h"
+#include "engine/ParticleManager/ParticleManager.h"
 
 class ClearScene : public IScene {
 public:

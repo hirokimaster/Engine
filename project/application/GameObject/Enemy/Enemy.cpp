@@ -20,10 +20,14 @@ void Enemy::Initialize(uint32_t texHandle)
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
 	texHandleExplosion_ = TextureManager::Load("resources/Player/smoke.png");
+	texHandleSmoke_ = TextureManager::Load("resources/TempTexture/circle2.png");
 	particleManager_ = ParticleManager::GetInstance();
 	particleManager_->StartEditor("explosion");
 	particleManager_->CreateParticle("explosion", "Player/plane.obj", texHandleExplosion_);
 	particleManager_->ApplyParticleInfo("explosion", id_);
+	//particleManager_->StartEditor("explosionSmoke");
+	//particleManager_->CreateParticle("explosionSmoke", "Player/plane.obj", texHandleSmoke_);
+	//particleManager_->ApplyParticleInfo("explosionSmoke", id_);
 	bulletSpeed_ = 0.04f;
 
 
@@ -51,22 +55,33 @@ void Enemy::Update()
 		isDead_ = true;
 	}
 
-	if (isParticle_) {
+	if (particleTimer_ <= 20) {
+		particleManager_->Clear("explosion", id_);
+		//particleManager_->Clear("explosionSmoke", id_);
+		particleTimer_ = 0;
+		isParticle_ = false;
+		isDead_ = true;
+	}
+
+	if (isParticle_ && particleTimer_ >= 30) {
+		//particleManager_->Update("explosionSmoke", id_);
 		particleManager_->Update("explosion", id_);
+		return;
 	}
 	else {
 		particleManager_->SetPosition("explosion", GetWorldPosition(), id_);
+		//particleManager_->SetPosition("explosionSmoke", GetWorldPosition(), id_);
 	}
 	
 	if (isParticle_) {
 		--particleTimer_;
 	}
 
-	if (particleTimer_ <= 0) {
-		particleTimer_ = 0;
-		isParticle_ = false;
-		isDead_ = true;
+
+	if (isParticle_ && GetWorldPosition().z < player_->GetWorldPosition().z) {
+		deathTimer_ = 0;
 	}
+	
 
 #ifdef _DEBUG
 
@@ -84,9 +99,13 @@ void Enemy::Draw(Camera& camera)
 		object_->Draw(camera);
 	}
 
-	if (isParticle_) {
+	if (isParticle_ && particleTimer_ >= 30) {
 		particleManager_->Draw("explosion", camera, id_);
 	}
+
+	//if (isParticle_ && particleTimer_ >= 30) {
+	//	particleManager_->Draw("explosionSmoke",camera, id_);
+	//}
 
 	if (!isParticle_) {
 		// 弾の描画

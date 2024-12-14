@@ -149,9 +149,8 @@ void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector
 
 	// カメラから照準オブジェクトの距離
 	const float kDistanceTestObject = 100.0f;
-	worldTransform3DReticle_.translate = kDistanceTestObject * mouseDirection;
+	worldTransform3DReticle_.translate = kDistanceTestObject * mouseDirection + playerPosition;
 	//worldTransform3DReticle_.translate.y = worldTransform3DReticle_.translate.y + playerPosition.y;
-	playerPosition;
 
 	worldTransform3DReticle_.UpdateMatrix();
 }
@@ -159,37 +158,16 @@ void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector
 void LockOn::ReticleRangeLimit()
 {
 	// reticleの範囲制限
+	Vector2 positionLockOn = spriteLockOnReticle_->GetPosition();
+	Vector2 positionReticle = sprite2DReticle_->GetPosition();
+	positionReticle.x = std::clamp(positionReticle.x, 25.0f, 1255.0f);
+	positionReticle.y = std::clamp(positionReticle.y, 25.0f, 695.0f);
 
-	if (sprite2DReticle_->GetPosition().x <= 25.0f) {
-		sprite2DReticle_->SetPosition({ 25.0f,sprite2DReticle_->GetPosition().y });
-	}
-	else if (sprite2DReticle_->GetPosition().x >= 1255.0f) {
-		sprite2DReticle_->SetPosition({ 1255.0f, sprite2DReticle_->GetPosition().y });
-	}
+	positionLockOn.x = std::clamp(positionLockOn.x, 25.0f, 1255.0f);
+	positionLockOn.y = std::clamp(positionLockOn.y, 25.0f, 695.0f);
 
-	if (sprite2DReticle_->GetPosition().y <= 25.0f) {
-		sprite2DReticle_->SetPosition({ sprite2DReticle_->GetPosition().x,25.0f });
-	}
-	else if (sprite2DReticle_->GetPosition().y >= 695.0f) {
-		sprite2DReticle_->SetPosition({ sprite2DReticle_->GetPosition().x, 695.0f });
-	}
-
-	// LockOnReticleの範囲制限
-	if (isLockOnMode_) {
-		if (spriteLockOnReticle_->GetPosition().x <= 25.0f) {
-			spriteLockOnReticle_->SetPosition({ 25.0f,spriteLockOnReticle_->GetPosition().y });
-		}
-		else if (spriteLockOnReticle_->GetPosition().x >= 1255.0f) {
-			spriteLockOnReticle_->SetPosition({ 1255.0f, spriteLockOnReticle_->GetPosition().y });
-		}
-
-		if (spriteLockOnReticle_->GetPosition().y <= 25.0f) {
-			spriteLockOnReticle_->SetPosition({ spriteLockOnReticle_->GetPosition().x,25.0f });
-		}
-		else if (spriteLockOnReticle_->GetPosition().y >= 695.0f) {
-			spriteLockOnReticle_->SetPosition({ spriteLockOnReticle_->GetPosition().x, 695.0f });
-		}
-	}
+	sprite2DReticle_->SetPosition(positionReticle);
+	spriteLockOnReticle_->SetPosition(positionLockOn);
 }
 
 Vector3 LockOn::GetWorldPosition3DReticle() const

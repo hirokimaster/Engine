@@ -125,7 +125,10 @@ void Player::Attack()
 			// 弾を生成し、初期化
 			std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 			bullet->Initialize(texHandleBullet_);
-			bullet->SetPosition(WorldPos);
+			const float kDistanceZ = 5.0f;
+			Vector3 position = WorldPos;
+			position.z = position.z + kDistanceZ;
+			bullet->SetPosition(position);
 			bullet->SetVelocity(velocity);
 			bullets_.push_back(std::move(bullet));
 		}

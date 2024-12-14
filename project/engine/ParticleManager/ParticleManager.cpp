@@ -107,3 +107,8 @@ void ParticleManager::Draw(const string& particleName, const Camera& camera, uin
 {
 	particles_[particleName][id]->Draw(camera);
 }
+
+void ParticleManager::Clear(const string& particleName, uint32_t id)
+{
+	particles_[particleName].erase(particles_[particleName].begin() + id);
+}

@@ -136,5 +136,6 @@ private:
 	float bulletSpeed_ = 0.2f;
 	ParticleManager* particleManager_ = nullptr;
 	uint32_t texHandleExplosion_ = 0;
+	uint32_t texHandleSmoke_ = 0;
 };
 
