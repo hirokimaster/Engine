@@ -51,7 +51,7 @@ public: // メンバ関数
 
 private:
 	Camera camera_;
-	ParticleManager* particleManager_ = nullptr;
+	std::unique_ptr<Sprite> sprite_ = nullptr;
 	uint32_t texHandle_ = 0;
 };
 
