@@ -23,6 +23,7 @@ struct GraphicsPipelineData {
 // pipelineState
 struct PipelineState {
 	GraphicsPipelineData Object3D;
+	GraphicsPipelineData Object3DInstancing;
 	GraphicsPipelineData Sprite2D;
 	GraphicsPipelineData Particle;
 	GraphicsPipelineData PointLight;
@@ -122,6 +123,14 @@ private:
 	/// <param name="shaderName"></param>
 	/// <returns></returns>
 	static GraphicsPipelineData CreateObject3D(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	/// <summary>
+	/// object3dをinstancing
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
+	static GraphicsPipelineData CreateObject3DInstancing(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 	/// <summary>
 	/// sprite2D

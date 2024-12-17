@@ -31,6 +31,7 @@
     <FxCompile Include="resources\ShaderFile\GPUParticle.VS.hlsl" />
     <FxCompile Include="resources\ShaderFile\EmitParticle.CS.hlsl" />
     <FxCompile Include="resources\ShaderFile\UpdateParticle.CS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Object3dInstancing.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application\GameManager\GameManager.cpp" />

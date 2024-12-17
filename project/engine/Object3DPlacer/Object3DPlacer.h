@@ -11,10 +11,14 @@
 
 class Object3DPlacer {
 public:
+
+	Object3DPlacer();
+	~Object3DPlacer();
+
 	/// <summary>
 	/// 普通のモデルの初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(bool isInstancing = false, uint32_t numInstance = 0);
 
 	/// <summary>
 	/// 描画
@@ -31,6 +35,23 @@ public:
 	/// <param name="isAnimation"></param>
 	void Draw(Camera& camera, bool isAnimation);
 
+private:
+
+	/// <summary>
+	/// インスタンシング用の初期化
+	/// </summary>
+	void InitializeInstancing();
+
+	/// <summary>
+	/// インスタンシングの更新
+	/// </summary>
+	void UpdateInstancing();
+
+	/// <summary>
+	/// pipeline設定
+	/// </summary>
+	void CreatePipeline();
+
 #pragma region setter
 
 	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
@@ -44,6 +65,7 @@ public:
 	void SetPosition(Vector3 position) { worldTransform_.translate = position; }
 	void SetRotate(Vector3 rotate) { worldTransform_.rotate = rotate; }
 	void SetScale(Vector3 scale) { worldTransform_.scale = scale; }
+	void SetNumInstance(uint32_t instance) { numInstance_ = instance; }
 	WorldTransform& GetWorldTransform() { return worldTransform_; }
 	Material SetMaterialProperty(Material materialdata) { return *materialData_ = materialdata; }
 	// directionalLightの設定
@@ -72,4 +94,10 @@ private:
 		{0.0f,0.0f,0.0f},
 		{0.0f,0.0f,0.0f},
 	};
+	// インスタンシングにするかどうか
+	bool isInstancing_ = false;
+	uint32_t numInstance_ = 0;
+	ConstBufferDataWorldTransform* instancingData_ = nullptr;
+	uint32_t srvIndex_ = 0;
+	std::vector<WorldTransform> worldTransformInstancing_;
 };
