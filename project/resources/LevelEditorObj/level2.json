@@ -917,6 +917,336 @@
                 }
             ],
             "file_name": "enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Aset_nature_rock_L_vmiibdg_LOD0.009",
+            "transform": {
+                "translation": [
+                    85.0,
+                    3950.0,
+                    -10.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -1.5707964897155762
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "mounts"
+        },
+        {
+            "type": "MESH",
+            "name": "Aset_nature_rock_L_vmiibdg_LOD0.010",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    3950.0,
+                    -10.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -1.5707964897155762
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "mounts"
+        },
+        {
+            "type": "MESH",
+            "name": "Aset_nature_rock_L_vmiibdg_LOD0.011",
+            "transform": {
+                "translation": [
+                    85.0,
+                    4900.0,
+                    -10.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -1.5707964897155762
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "mounts"
+        },
+        {
+            "type": "MESH",
+            "name": "Aset_nature_rock_L_vmiibdg_LOD0.012",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    4900.0,
+                    -10.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -1.5707964897155762
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "mounts"
+        },
+        {
+            "type": "MESH",
+            "name": "Aset_nature_rock_L_vmiibdg_LOD0.013",
+            "transform": {
+                "translation": [
+                    85.0,
+                    5850.0,
+                    -10.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -1.5707964897155762
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "mounts"
+        },
+        {
+            "type": "MESH",
+            "name": "Aset_nature_rock_L_vmiibdg_LOD0.014",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    5850.0,
+                    -10.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -1.5707964897155762
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "mounts"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.013",
+            "transform": {
+                "translation": [
+                    -30.0,
+                    4150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.014",
+            "transform": {
+                "translation": [
+                    30.0,
+                    4150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.015",
+            "transform": {
+                "translation": [
+                    -30.0,
+                    5150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.016",
+            "transform": {
+                "translation": [
+                    30.0,
+                    5150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.017",
+            "transform": {
+                "translation": [
+                    30.0,
+                    6150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.018",
+            "transform": {
+                "translation": [
+                    -30.0,
+                    6150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.019",
+            "transform": {
+                "translation": [
+                    0.0,
+                    4150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "roads"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.020",
+            "transform": {
+                "translation": [
+                    0.0,
+                    5150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "roads"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.021",
+            "transform": {
+                "translation": [
+                    0.0,
+                    6150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "roads"
         }
     ]
 }
