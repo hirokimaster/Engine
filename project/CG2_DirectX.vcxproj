@@ -123,8 +123,6 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp" />
     <ClCompile Include="application\GameObject\Player\Bullet\PlayerBullet.cpp" />
     <ClCompile Include="application\GameObject\Player\Player.cpp" />
-    <ClCompile Include="application\GameObject\Player\PlayerParticle\ExplosionParticle.cpp" />
-    <ClCompile Include="application\GameObject\Player\PlayerParticle\PlayerParticle.cpp" />
     <ClCompile Include="application\GameObject\Rail\Rail.cpp" />
     <ClCompile Include="application\GameObject\Skydome\Skydome.cpp" />
     <ClCompile Include="application\Scene\ClearScene\ClearScene.cpp" />
@@ -189,8 +187,6 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
     <ClInclude Include="application\GameObject\Player\Bullet\PlayerBullet.h" />
     <ClInclude Include="application\GameObject\Player\Player.h" />
-    <ClInclude Include="application\GameObject\Player\PlayerParticle\PlayerParticle.h" />
-    <ClInclude Include="application\GameObject\Player\PlayerParticle\ExplosionParticle.h" />
     <ClInclude Include="application\GameObject\Rail\Rail.h" />
     <ClInclude Include="application\GameObject\Skydome\Skydome.h" />
     <ClInclude Include="application\Scene\ClearScene\ClearScene.h" />

@@ -13,7 +13,6 @@
 #include "application/GameObject/ModelResources/ModelResources.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
-#include "application/GameObject/Player/PlayerParticle/PlayerParticle.h"
 #include "application/GameObject/Skydome/Skydome.h"
 
 class TitleScene : public IScene {
@@ -66,7 +65,6 @@ private:
 	Camera camera_{};
 	WorldTransform worldTransform_{};
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
-	std::unique_ptr<PlayerParticle> particle_;
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 	uint32_t texHandleMask_ = 0;
 	DissolveParam param_{};

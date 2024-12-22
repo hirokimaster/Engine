@@ -12,7 +12,6 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Enemy/PhaseState/EnemyStateSortie.h"
 #include "application/GameObject/Enemy/PhaseState/EnemyStateFire.h"
-#include "application/GameObject/Player/PlayerParticle/ExplosionParticle.h"
 #include "engine/ParticleManager/ParticleManager.h"
 
 class Player;

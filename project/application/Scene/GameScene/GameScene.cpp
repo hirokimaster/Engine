@@ -121,7 +121,7 @@ void GameScene::Update()
 
 	// 仮のクリア判定
 	if (player_->GetWorldPosition().z >= 2600.0f) {
-		isTransitionClear_ = true;
+		//isTransitionClear_ = true;
 	}
 
 	// 天球

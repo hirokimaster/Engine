@@ -12,8 +12,6 @@
 #include <vector>
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Rail/Rail.h"
-#include "application/GameObject/Player/PlayerParticle/PlayerParticle.h"
-#include "application/GameObject/Player/PlayerParticle/ExplosionParticle.h"
 #include "application/AdjustmentVariables/AdjustmentVariables.h"
 
 class LockOn;
@@ -146,6 +144,5 @@ private:
 	bool isDead_ = false;
 	bool isHitEnemyFire_ = false;
 	int32_t hp_ = 1;
-	std::unique_ptr<ExplosionParticle> explosionParticle_ = nullptr;
 	float deadTimer_ = 60.0f;
 };

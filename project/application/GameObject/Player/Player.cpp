@@ -101,10 +101,6 @@ void Player::Attack()
 					diff = Normalize(diff);
 					velocity = Normalize(velocity);
 					velocity = Multiply(bulletSpeed_, diff);
-
-					// プレイヤーの向きに速度を合わせる
-					//velocity = TransformNormal(velocity, worldTransform_.matWorld);
-
 					std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 					bullet->SetLockOn(lockOn_);
 					bullet->Initialize(texHandleBullet_);
@@ -120,8 +116,6 @@ void Player::Attack()
 			velocity = reticleWorldPos - WorldPos;
 			velocity = Normalize(velocity);
 			velocity = bulletSpeed_ * velocity;
-			// プレイヤーの向きに速度を合わせる
-			//velocity = TransformNormal(velocity, worldTransform_.matWorld);
 			// 弾を生成し、初期化
 			std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 			bullet->Initialize(texHandleBullet_);

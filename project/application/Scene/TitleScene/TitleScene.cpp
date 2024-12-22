@@ -53,9 +53,7 @@ void TitleScene::Initialize()
 	objectPlayer_->SetTexHandle(texHandleWhite_);
 	worldTransform_.Initialize();
 	objectPlayer_->SetWorldTransform(worldTransform_);
-	particle_ = std::make_unique<PlayerParticle>();
-	particle_->Initialize();
-
+	
 	// 天球
 	skydome_ = std::make_unique<Skydome>();
 	skydome_->Initialize();
@@ -88,10 +86,7 @@ void TitleScene::Update()
 	Vector3 move = { 0,0,0.2f };
 	worldTransform_.translate = worldTransform_.translate + move;
 	worldTransform_.UpdateMatrix();
-	Vector3 particleOffset = { 0,0.5f,-4.0f };
-	particle_->SetPosition(worldTransform_.translate + particleOffset);
-	particle_->Update();
-
+	
 	// カメラ
 	followCamera_->Update();
 	camera_.matView = followCamera_->GetCamera().matView;
@@ -142,7 +137,6 @@ void TitleScene::PostProcessDraw()
 
 	skydome_->Draw(camera_);
 	
-	particle_->Draw(camera_);
 	objectPlayer_->Draw(camera_);
 
 	spriteTitle_->Draw();
