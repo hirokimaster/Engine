@@ -39,7 +39,7 @@ void TitleScene::Initialize()
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 
 	texHandleTitle_ = TextureManager::Load("resources/Scene/title.png");
-	spriteTitle_.reset(Sprite::Create(texHandleTitle_,{650.0f,170.0f}));
+	spriteTitle_.reset(Sprite::Create(texHandleTitle_, { 650.0f,170.0f }));
 	spriteTitle_->SetAnchorPoint({ 0.5f,0.5f });
 
 	texHandlePushA_ = TextureManager::Load("resources/UI/A.png");
@@ -53,7 +53,7 @@ void TitleScene::Initialize()
 	objectPlayer_->SetTexHandle(texHandleWhite_);
 	worldTransform_.Initialize();
 	objectPlayer_->SetWorldTransform(worldTransform_);
-	
+
 	// 天球
 	skydome_ = std::make_unique<Skydome>();
 	skydome_->Initialize();
@@ -72,6 +72,8 @@ void TitleScene::Initialize()
 	// シーン遷移用
 	sceneTimer_ = 60;
 	isTransition_ = false;
+	sceneTransition_ = SceneTransition::GetInstance();
+	sceneTransition_->Initialize();
 }
 
 void TitleScene::Update()
@@ -79,14 +81,25 @@ void TitleScene::Update()
 	// spriteの点滅用のタイマー
 	++animationTimer_;
 
-	// シーン遷移
-	SceneTransition();
+
+	// Aボタンが押されたらシーン遷移処理を開始する
+	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
+		if (!isTransition_) {  // シーン遷移がまだ始まっていない場合のみ
+			isTransition_ = true;
+			isDissolve_ = false;
+			isDissolve2_ = false;
+		}
+	}
+
+	if (isTransition_) {
+		sceneTransition_->FadeIn("GAME");
+	}
 
 	// 自機
 	Vector3 move = { 0,0,0.2f };
 	worldTransform_.translate = worldTransform_.translate + move;
 	worldTransform_.UpdateMatrix();
-	
+
 	// カメラ
 	followCamera_->Update();
 	camera_.matView = followCamera_->GetCamera().matView;
@@ -104,7 +117,7 @@ void TitleScene::Update()
 		postProcess_->SetDissolveParam(param_);
 		param_.threshold += 0.02f;
 	}
-	
+
 	if (param_.threshold >= 1.1f) {
 		isDissolve_ = false;
 		isDissolve2_ = true;
@@ -136,7 +149,7 @@ void TitleScene::PostProcessDraw()
 	postProcess_->PreDraw();
 
 	skydome_->Draw(camera_);
-	
+
 	objectPlayer_->Draw(camera_);
 
 	spriteTitle_->Draw();
@@ -144,47 +157,9 @@ void TitleScene::PostProcessDraw()
 	if (animationTimer_ % 40 >= 20) {
 		spritePushA_->Draw();
 	}
-	
+
+	sceneTransition_->Draw();
+
 	postProcess_->PostDraw();
 
-}
-
-void TitleScene::SceneTransition()
-{
-
-	if (sceneTimer_ >= 60) {
-		// Aボタンが押されたらシーン遷移処理を開始する
-		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
-			if (!isTransition_) {  // シーン遷移がまだ始まっていない場合のみ
-				isTransition_ = true;
-				isDissolve_ = false;
-				isDissolve2_ = false;
-			}
-		}
-	}
-	
-	if (isTransition_) {
-		postProcess_->SetDissolveParam(param_);
-		param_.threshold = 0.0f;
-		--sceneTimer_;
-	}
-
-	if (sceneTimer_ <= 0) {
-		postProcess_->SetDissolveParam(param_);
-		param_.threshold += 0.01f;
-		isTransition_ = false;
-		if (param_.threshold >= 1.0f) {
-			GameManager::GetInstance()->ChangeScene("GAME");
-		}
-	}
-
-	// クリアシーンからタイトルに来た時
-	if (title_ && !isTransition_) {
-		postProcess_->SetDissolveParam(param_);
-		param_.threshold -= 0.01f;
-		if (param_.threshold <= 0.0f) {
-			param_.threshold = 0.0f;
-			title_ = false;
-		}
-	}
 }

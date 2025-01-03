@@ -14,6 +14,7 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Skydome/Skydome.h"
+#include "application/GameObject/SceneTransition/SceneTransition.h"
 
 class TitleScene : public IScene {
 public:
@@ -48,13 +49,6 @@ public:
 	void PostProcessDraw()override;
 
 private:
-
-	/// <summary>
-	/// シーン遷移
-	/// </summary>
-	void SceneTransition();
-
-private:
 	std::unique_ptr<PostProcess> postProcess_ = nullptr; // postProcess
 	std::unique_ptr<Sprite> spriteTitle_ = nullptr; // Titleのsprite
 	uint32_t texHandleTitle_ = 0;
@@ -77,4 +71,5 @@ private:
 	// シーン遷移用
 	bool isTransition_ = false;
 	uint32_t sceneTimer_ = 60;
+	SceneTransition* sceneTransition_ = nullptr;
 };
