@@ -35,7 +35,6 @@ void TitleScene::Initialize()
 		param_.threshold = 0.0f;
 	}
 
-
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 
 	texHandleTitle_ = TextureManager::Load("resources/Scene/title.png");
@@ -70,7 +69,6 @@ void TitleScene::Initialize()
 	followCamera_->SetTarget(&worldTransform_);
 
 	// シーン遷移用
-	sceneTimer_ = 60;
 	isTransition_ = false;
 	sceneTransition_ = SceneTransition::GetInstance();
 	sceneTransition_->Initialize();
@@ -91,6 +89,7 @@ void TitleScene::Update()
 		}
 	}
 
+	// シーン遷移
 	if (isTransition_) {
 		sceneTransition_->FadeIn("GAME");
 	}

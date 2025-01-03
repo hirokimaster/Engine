@@ -70,6 +70,5 @@ private:
 
 	// シーン遷移用
 	bool isTransition_ = false;
-	uint32_t sceneTimer_ = 60;
 	SceneTransition* sceneTransition_ = nullptr;
 };
