@@ -21,14 +21,12 @@ void GameScene::Initialize()
 	isTransition_ = true;
 	postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
-	postProcess_->SetEffect(PostEffectType::Dissolve);
-	param_.threshold = 1.0f;
-	postProcess_->SetDissolveParam(param_);
+	postProcess_->SetEffect(PostEffectType::Vignette);
+
+	sceneTransition_ = SceneTransition::GetInstance();
 
 	// テクスチャ読み込み
 	LoadTextureFile();
-	postProcess_->SetMaskTexture(texHandleMask_);
-	spriteWhite_.reset(Sprite::Create(texHandleWhite_));
 
 	camera_.Initialize();
 	// lockOn
@@ -64,11 +62,6 @@ void GameScene::Initialize()
 	loader_->SetTexHandle(texhandle);
 	loader_->Arrangement();
 
-
-	// 天球
-	skydome_ = std::make_unique<Skydome>();
-	skydome_->Initialize();
-
 	// 仮のUI
 	spriteLockOn_.reset(Sprite::Create(texHandleLockOn_, { 20.0f,100.0f }));
 	spriteUnLock_.reset(Sprite::Create(texHandleUnLock_, { 20.0f,100.0f }));
@@ -91,7 +84,26 @@ void GameScene::Initialize()
 void GameScene::Update()
 {
 	// シーン遷移
-	SceneTransition();
+	// ゲームシーンに来た時
+	if (isTransition_) {
+		sceneTransition_->FadeOut();
+		--sceneTimer_;
+	}
+
+	if (sceneTimer_ <= 0) {
+		isTransition_ = false;
+	}
+
+	// ゲームシーンからクリアへ
+	if (isTransitionClear_) {
+		spriteFade_->SetColor(spriteColor_);
+		spriteColor_.w += 0.01f;
+		if (spriteColor_.w >= 1.2f) {
+			isTransitionClear_ = false;
+			title_ = true;
+			GameManager::GetInstance()->ChangeScene("CLEAR");
+		}
+	}
 
 	// ゲームスタート演出
 	StartGame();
@@ -119,14 +131,6 @@ void GameScene::Update()
 
 	Collision();
 
-	// 仮のクリア判定
-	if (player_->GetWorldPosition().z >= 2600.0f) {
-		//isTransitionClear_ = true;
-	}
-
-	// 天球
-	skydome_->Update();
-
 	// ダメージエフェクト
 	DamegeEffect();
 
@@ -146,8 +150,6 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	spriteWhite_->Draw();
-
 	postProcess_->Draw();
 
 	spriteNo_->Draw();
@@ -173,17 +175,16 @@ void GameScene::PostProcessDraw()
 {
 	postProcess_->PreDraw();
 
-	//skydome_->Draw(camera_);
-
 	loader_->Draw(camera_);
 	// player
 	player_->Draw(camera_);
-
 
 	// lockOn_(レティクル)
 	lockOn_->Draw();
 
 	spriteFade_->Draw();
+
+	sceneTransition_->Draw();
 
 	postProcess_->PostDraw();
 
@@ -225,30 +226,6 @@ void GameScene::LoadTextureFile()
 	texHandleYes_ = TextureManager::Load("resources/UI/yes.png");
 	texHandleNo_ = TextureManager::Load("resources/UI/no.png");
 	texHandleContinue_ = TextureManager::Load("resources/UI/continue.png");
-}
-
-void GameScene::SceneTransition()
-{
-	// ゲームシーンに来た時
-	if (isTransition_) {
-		postProcess_->SetDissolveParam(param_);
-		param_.threshold -= 0.01f;
-		if (param_.threshold <= 0.0f) {
-			isTransition_ = false;
-			param_.threshold = 0.0f;
-		}
-	}
-
-	// ゲームシーンからクリアへ
-	if (isTransitionClear_) {
-		spriteFade_->SetColor(spriteColor_);
-		spriteColor_.w += 0.01f;
-		if (spriteColor_.w >= 1.2f) {
-			isTransitionClear_ = false;
-			title_ = true;
-			GameManager::GetInstance()->ChangeScene("CLEAR");
-		}
-	}
 }
 
 void GameScene::StartGame()

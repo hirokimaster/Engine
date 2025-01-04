@@ -23,6 +23,7 @@
 #include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Enemy/BossEnemy/BossEnemy.h"
 #include "application/GameObject/Skydome/Skydome.h"
+#include "application/GameObject/SceneTransition/SceneTransition.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -69,11 +70,6 @@ private:
 	void LoadTextureFile();
 
 	/// <summary>
-	/// シーン遷移
-	/// </summary>
-	void SceneTransition();
-
-	/// <summary>
 	/// ゲーム開始
 	/// </summary>
 	void StartGame();
@@ -112,8 +108,9 @@ private:
 
 	// シーン遷移用
 	bool isTransition_ = false;
-	uint32_t sceneTimer_ = 60;
+	uint32_t sceneTimer_ = 100;
 	bool isTransitionClear_ = false;
+	SceneTransition* sceneTransition_ = nullptr;
 
 	// postEffect用
 	uint32_t texHandleMask_ = 0;

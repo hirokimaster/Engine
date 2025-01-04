@@ -53,10 +53,6 @@ void TitleScene::Initialize()
 	worldTransform_.Initialize();
 	objectPlayer_->SetWorldTransform(worldTransform_);
 
-	// 天球
-	skydome_ = std::make_unique<Skydome>();
-	skydome_->Initialize();
-
 	// カメラ
 	camera_.Initialize();
 
@@ -105,9 +101,6 @@ void TitleScene::Update()
 	camera_.matProjection = followCamera_->GetCamera().matProjection;
 	camera_.TransferMatrix();
 
-	// 天球
-	skydome_->Update();
-
 	if (worldTransform_.translate.z >= 250.0f) {
 		isDissolve_ = true;
 	}
@@ -146,8 +139,6 @@ void TitleScene::Draw()
 void TitleScene::PostProcessDraw()
 {
 	postProcess_->PreDraw();
-
-	skydome_->Draw(camera_);
 
 	objectPlayer_->Draw(camera_);
 

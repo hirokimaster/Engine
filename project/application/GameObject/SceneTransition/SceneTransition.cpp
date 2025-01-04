@@ -26,7 +26,7 @@ void SceneTransition::FadeOut()
 {
 	Vector4 color = { 1.0f,1.0f,1.0f,alpha_ };
 	spriteWhite_->SetColor(color);
-	alpha_ -= 0.08f;
+	alpha_ -= 0.02f;
 	if (alpha_ <= 0.0f) {
 		alpha_ = 0.0f;
 	}

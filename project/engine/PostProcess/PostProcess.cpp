@@ -103,8 +103,8 @@ void PostProcess::CreateBuffer()
 	else if (type_ == PostEffectType::Vignette) {
 		vignette_ = CreateResource::CreateBufferResource(sizeof(VignetteParam));
 		vignette_->Map(0, nullptr, reinterpret_cast<void**>(&vignetteData_));
-		vignetteData_->scale = 16.0f;
-		vignetteData_->exponent = 0.8f;
+		vignetteData_->scale = 0.0f;
+		vignetteData_->exponent = 1.0f;
 	}
 	else if (type_ == PostEffectType::GaussianBlur) {
 		gaussian_ = CreateResource::CreateBufferResource(sizeof(GaussianParam));
