@@ -16,24 +16,16 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize()
 {
-
+	// ポストエフェクト初期化
 	postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
 	postProcess_->SetEffect(PostEffectType::Dissolve);
-
 	param_.threshold = 0.0f;
 	postProcess_->SetDissolveParam(param_);
 	texHandleMask_ = TextureManager::Load("resources/TempTexture/noise0.png");
 	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
 	spriteWhite_.reset(Sprite::Create(texHandleWhite_));
 	postProcess_->SetMaskTexture(texHandleMask_);
-
-	if (title_) {
-		param_.threshold = 1.0f;
-	}
-	else {
-		param_.threshold = 0.0f;
-	}
 
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 
@@ -56,6 +48,7 @@ void TitleScene::Initialize()
 	// カメラ
 	camera_.Initialize();
 
+	// 追従カメラ
 	followCamera_ = std::make_unique<FollowCamera>();
 	followCamera_->Initialize();
 	Vector3 offset = { -12.0f,0.5f,13.0f };
@@ -75,7 +68,6 @@ void TitleScene::Update()
 	// spriteの点滅用のタイマー
 	++animationTimer_;
 
-
 	// Aボタンが押されたらシーン遷移処理を開始する
 	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
 		if (!isTransition_) {  // シーン遷移がまだ始まっていない場合のみ
@@ -90,7 +82,7 @@ void TitleScene::Update()
 		sceneTransition_->FadeIn("GAME");
 	}
 
-	// 自機
+	// 自機の移動
 	Vector3 move = { 0,0,0.2f };
 	worldTransform_.translate = worldTransform_.translate + move;
 	worldTransform_.UpdateMatrix();
@@ -101,29 +93,21 @@ void TitleScene::Update()
 	camera_.matProjection = followCamera_->GetCamera().matProjection;
 	camera_.TransferMatrix();
 
-	if (worldTransform_.translate.z >= 250.0f) {
-		isDissolve_ = true;
+	// シーンのリセット
+	if (worldTransform_.translate.z >= 250.0f && param_.threshold <= 0.0f) {
+		param_.threshold = 0.02f;
 	}
 
-	if (isDissolve_) {
+	if (param_.threshold > 0.0f) {
 		postProcess_->SetDissolveParam(param_);
-		param_.threshold += 0.02f;
-	}
 
-	if (param_.threshold >= 1.1f) {
-		isDissolve_ = false;
-		isDissolve2_ = true;
-		worldTransform_.translate.z = 0.0f;
-	}
-
-	if (isDissolve2_) {
-		postProcess_->SetDissolveParam(param_);
-		param_.threshold -= 0.02f;
-	}
-
-	if (param_.threshold <= 0.0f && !isDissolve_) {
-		param_.threshold = 0.0f;
-		isDissolve2_ = false;
+		if (param_.threshold <= 1.1f) {
+			param_.threshold += 0.02f;
+		}
+		else {
+			param_.threshold -= 0.02f;
+			worldTransform_.translate.z = 0.0f;
+		}
 	}
 }
 

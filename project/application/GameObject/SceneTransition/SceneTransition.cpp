@@ -18,6 +18,7 @@ void SceneTransition::FadeIn(const std::string& SceneName)
 	spriteWhite_->SetColor(color);
 	alpha_ += 0.02f;
 	if (alpha_ >= 1.0f) {
+		fadeState_ = true;
 		GameManager::GetInstance()->ChangeScene(SceneName);
 	}		   
 }
@@ -27,8 +28,9 @@ void SceneTransition::FadeOut()
 	Vector4 color = { 1.0f,1.0f,1.0f,alpha_ };
 	spriteWhite_->SetColor(color);
 	alpha_ -= 0.02f;
-	if (alpha_ <= 0.0f) {
+	if (alpha_ <= 0.0f && fadeState_) {
 		alpha_ = 0.0f;
+		fadeState_ = false;
 	}
 }
 
