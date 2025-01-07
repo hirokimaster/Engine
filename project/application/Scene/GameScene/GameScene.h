@@ -21,7 +21,6 @@
 #include "application/GameObject/LockOn/LockOn.h"
 #include "application/Loader/Loader.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
-#include "application/GameObject/Enemy/BossEnemy/BossEnemy.h"
 #include "application/GameObject/Skydome/Skydome.h"
 #include "application/GameObject/SceneTransition/SceneTransition.h"
 

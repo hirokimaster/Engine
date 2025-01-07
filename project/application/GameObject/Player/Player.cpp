@@ -167,11 +167,12 @@ void Player::DrawUI()
 void Player::Rotate()
 {
 	Vector3 rotate = { 0, 0, 0 };
-	const float kRotateSpeedZ = 0.05f;
-	const float kRotateSpeedX = 0.05f;
+	const float kRotateSpeedZ = 0.07f;
+	const float kRotateSpeedX = 0.07f;
 	const float kRotateLimitZ = 0.7f;
 	const float kRotateLimitX = 0.15f;
 	const float kLerpFactor = 0.1f;
+	const float kReturnLerpFactor = 0.05f;
 
 	// ゲームパッドの状態を得る変数(XINPUT)
 	XINPUT_STATE joyState;
@@ -196,6 +197,13 @@ void Player::Rotate()
 	// y軸は回転させないので0にしとく
 	worldTransform_.rotate.y = 0.0f;
 
+	// 操作がない場合は徐々に0に戻す
+	if (std::abs(rotate.z) < 0.005f) {
+		worldTransform_.rotate.z = std::lerp(worldTransform_.rotate.z, 0.0f, kReturnLerpFactor);
+	}
+	if (std::abs(rotate.x) < 0.005f) {
+		worldTransform_.rotate.x = std::lerp(worldTransform_.rotate.x, 0.0f, kReturnLerpFactor);
+	}
 }
 
 void Player::IncurDamage()
