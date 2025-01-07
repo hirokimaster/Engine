@@ -108,19 +108,12 @@ private:
 	SceneTransition* sceneTransition_ = nullptr;
 
 	// postEffect用
-	uint32_t texHandleMask_ = 0;
-	DissolveParam param_{};
-	std::unique_ptr<Sprite> spriteWhite_;
-	std::unique_ptr<Sprite> spriteFade_;
-	Vector4 spriteColor_{};
 	uint32_t texHandleWhite_ = 0;
 	std::unique_ptr<PostProcess> postProcess_;
 	bool isPlayerIncurDamage_ = false;
 	float effectTime_ = 30.0f;
 	bool isGameStart_ = false;
-	// 天球
-	std::unique_ptr<Skydome> skydome_ = nullptr;
-
+	
 	// カメラワーク用
 	// 初期のカメラのオフセットと回転
 	Vector3 offsetStart_ = { -12.0f, 0.5f, 13.0f };

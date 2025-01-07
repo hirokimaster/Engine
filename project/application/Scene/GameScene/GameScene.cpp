@@ -71,10 +71,6 @@ void GameScene::Initialize()
 	spriteNo_.reset(Sprite::Create(texHandleNo_, { 750.0f,400.0f }, texColor_));
 	spriteContinue_.reset(Sprite::Create(texHandleContinue_, { 450.0f,250.0f }, texColor_));
 
-	spriteColor_ = { 1.0f,1.0f,1.0f,0.0f };
-	spriteFade_.reset(Sprite::Create(texHandleWhite_));
-	spriteFade_->SetColor(spriteColor_);
-	
 	// ゲームスタート
 	isGameStart_ = false;
 }
@@ -94,13 +90,8 @@ void GameScene::Update()
 
 	// ゲームシーンからクリアへ
 	if (isTransitionClear_) {
-		spriteFade_->SetColor(spriteColor_);
-		spriteColor_.w += 0.01f;
-		if (spriteColor_.w >= 1.2f) {
-			isTransitionClear_ = false;
-			title_ = true;
-			GameManager::GetInstance()->ChangeScene("CLEAR");
-		}
+		title_ = true;
+		sceneTransition_->FadeIn("CLEAR");
 	}
 
 	// ゲームスタート演出
@@ -171,8 +162,6 @@ void GameScene::PostProcessDraw()
 	// lockOn_(レティクル)
 	lockOn_->Draw();
 
-	spriteFade_->Draw();
-
 	sceneTransition_->Draw();
 
 	postProcess_->PostDraw();
@@ -204,11 +193,10 @@ void GameScene::Collision()
 
 void GameScene::LoadTextureFile()
 {
-	texHandleMask_ = TextureManager::Load("resources/TempTexture/noise0.png");
 	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
 	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
 	texHandleAttack_ = TextureManager::Load("resources/UI/attack.png");
-	
+
 	// ゲームオーバー用
 	texHandleYes_ = TextureManager::Load("resources/UI/yes.png");
 	texHandleNo_ = TextureManager::Load("resources/UI/no.png");
@@ -303,7 +291,7 @@ void GameScene::GameOver()
 	}
 
 	static float scaleTimer = 0.0f;
-	const float scaleSpeed = 2.0f; 
+	const float scaleSpeed = 2.0f;
 	const float scaleRange = 0.2f;
 
 	// spriteNo,Yesのアニメーション
