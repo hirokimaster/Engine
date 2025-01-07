@@ -99,11 +99,7 @@ private:
 	std::unique_ptr<Loader> loader_ = nullptr;
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
 	// 仮のUI
-	std::unique_ptr<Sprite> spriteLockOn_ = nullptr;
-	std::unique_ptr<Sprite> spriteUnLock_ = nullptr;
 	std::unique_ptr<Sprite> spriteAttack_ = nullptr;
-	uint32_t texHandleLockOn_ = 0;
-	uint32_t texHandleUnLock_ = 0;
 	uint32_t texHandleAttack_ = 0;
 
 	// シーン遷移用

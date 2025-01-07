@@ -63,8 +63,6 @@ void GameScene::Initialize()
 	loader_->Arrangement();
 
 	// 仮のUI
-	spriteLockOn_.reset(Sprite::Create(texHandleLockOn_, { 20.0f,100.0f }));
-	spriteUnLock_.reset(Sprite::Create(texHandleUnLock_, { 20.0f,100.0f }));
 	spriteAttack_.reset(Sprite::Create(texHandleAttack_, { 1000.0f , 100.0f }));
 
 	// ゲームオーバー用
@@ -158,15 +156,6 @@ void GameScene::Draw()
 
 	spriteContinue_->Draw();
 
-
-	// 仮UI
-	if (lockOn_->GetIsLockOnMode()) {
-		spriteUnLock_->Draw();
-	}
-	else {
-		spriteLockOn_->Draw();
-	}
-
 	spriteAttack_->Draw();
 
 }
@@ -218,8 +207,6 @@ void GameScene::LoadTextureFile()
 	texHandleMask_ = TextureManager::Load("resources/TempTexture/noise0.png");
 	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
 	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
-	texHandleLockOn_ = TextureManager::Load("resources/UI/LockOn.png");
-	texHandleUnLock_ = TextureManager::Load("resources/UI/unLock.png");
 	texHandleAttack_ = TextureManager::Load("resources/UI/attack.png");
 	
 	// ゲームオーバー用
