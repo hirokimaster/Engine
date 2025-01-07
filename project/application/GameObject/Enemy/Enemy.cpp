@@ -110,6 +110,8 @@ void Enemy::Draw(Camera& camera)
 void Enemy::OnCollision()
 {
 	isParticle_ = true;
+	// 撃破数を足す
+	player_->AddDestroyCount();
 }
 
 void Enemy::Fire()

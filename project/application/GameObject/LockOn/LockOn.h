@@ -109,7 +109,7 @@ public:
 
 #pragma region setter
 
-
+	void SetIsLockOnMode(bool lockOnMode) { isLockOnMode_ = lockOnMode; }
 
 #pragma endregion
 

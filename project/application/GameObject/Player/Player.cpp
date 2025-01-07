@@ -42,6 +42,12 @@ void Player::Update()
 
 	// imgui
 	DebugDraw();
+
+	// 撃破カウントが一定数いったらマルチロックオンにする
+	if (destroyCount_ >= 5) {
+		lockOn_->SetIsLockOnMode(true);
+		destroyCount_ = 0;
+	}
 }
 
 void Player::Draw(Camera& camera)

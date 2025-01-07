@@ -45,26 +45,13 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 	}
 	else {
-
-		// lockOnModeにする
-		if (Input::GetInstance()->GetJoystickState(joyState)) {
-
-			if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_LEFT_SHOULDER)) {
-				isLockOnMode_ = true;
-			}
-
-		}
-	}
-
-	if (isLockOnMode_) {
-		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
-			isLockOnMode_ = false;
-		}
+		
 	}
 
 	// 検索
 	Search(enemies, camera);
 
+	// ターゲットが死んだら消す
 	for (auto itr = target_.begin(); itr != target_.end(); ++itr) {
 		if ((*itr)->GetIsDead()) {
 			target_.erase(itr);
@@ -74,6 +61,7 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	// reticleの位置を決める
 	ReticlePositionCalc(camera);
 
+	// ロックオンした敵にレティクルを出す
 	if (!target_.empty()) {
 
 		for (auto itr = positionScreen_.begin(); itr != positionScreen_.end(); ++itr) {

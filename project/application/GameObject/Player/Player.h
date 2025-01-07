@@ -38,6 +38,11 @@ public:
 	/// <param name="camera"></param>
 	void Draw(Camera& camera);
 
+	/// <summary>
+	/// 撃破数を足す
+	/// </summary>
+	void AddDestroyCount() { ++destroyCount_; }
+
 private: // クラス内でしか使わない
 
 	/// <summary>
@@ -91,7 +96,6 @@ private: // クラス内でしか使わない
 	/// </summary>
 	void ApplyAdjustmentVariables();
 
-
 public:
 
 #pragma region getter
@@ -111,6 +115,8 @@ public:
 	uint32_t GetHp() { return hp_; }
 
 	float GetDeadTimer() { return deadTimer_; }
+
+	uint32_t GetDestroyCount() { return destroyCount_; }
 
 	/// <summary>
 	/// ワールドトランスフォームを取得
@@ -145,4 +151,5 @@ private:
 	bool isHitEnemyFire_ = false;
 	int32_t hp_ = 1;
 	float deadTimer_ = 60.0f;
+	uint32_t destroyCount_ = 0; // 敵を倒した数
 };
