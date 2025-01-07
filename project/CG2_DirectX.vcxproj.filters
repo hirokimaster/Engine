@@ -34,7 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application\GameManager\GameManager.cpp" />
-    <ClCompile Include="application\GameObject\Enemy\BossEnemy\BossEnemy.cpp" />
     <ClCompile Include="application\GameObject\Enemy\Bullet\EnemyBullet.cpp" />
     <ClCompile Include="application\GameObject\Enemy\Enemy.cpp" />
     <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateSortie.cpp" />
@@ -99,7 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
-    <ClInclude Include="application\GameObject\Enemy\BossEnemy\BossEnemy.h" />
     <ClInclude Include="application\GameObject\Enemy\Bullet\EnemyBullet.h" />
     <ClInclude Include="application\GameObject\Enemy\Enemy.h" />
     <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateSortie.h" />

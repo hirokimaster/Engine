@@ -111,7 +111,6 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="application\AdjustmentVariables\AdjustmentVariables.cpp" />
     <ClCompile Include="application\GameManager\GameManager.cpp" />
-    <ClCompile Include="application\GameObject\Enemy\BossEnemy\BossEnemy.cpp" />
     <ClCompile Include="application\GameObject\Enemy\Bullet\EnemyBullet.cpp" />
     <ClCompile Include="application\GameObject\Enemy\Enemy.cpp" />
     <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateFire.cpp" />
@@ -176,7 +175,6 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h" />
     <ClInclude Include="application\GameManager\GameManager.h" />
-    <ClInclude Include="application\GameObject\Enemy\BossEnemy\BossEnemy.h" />
     <ClInclude Include="application\GameObject\Enemy\Bullet\EnemyBullet.h" />
     <ClInclude Include="application\GameObject\Enemy\Enemy.h" />
     <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateLeave.h" />
