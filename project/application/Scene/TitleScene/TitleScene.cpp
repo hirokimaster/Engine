@@ -22,14 +22,15 @@ void TitleScene::Initialize()
 	postProcess_->SetEffect(PostEffectType::Dissolve);
 	param_.threshold = 0.0f;
 	postProcess_->SetDissolveParam(param_);
-	texHandleMask_ = TextureManager::Load("resources/TempTexture/noise0.png");
-	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
+
+	LoadTextureFile(); // texture読み込み
+
 	spriteWhite_.reset(Sprite::Create(texHandleWhite_));
 	postProcess_->SetMaskTexture(texHandleMask_);
 
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 
-	texHandleTitle_ = TextureManager::Load("resources/Scene/title.png");
+	
 	spriteTitle_.reset(Sprite::Create(texHandleTitle_, { 650.0f,170.0f }));
 	spriteTitle_->SetAnchorPoint({ 0.5f,0.5f });
 
@@ -37,7 +38,6 @@ void TitleScene::Initialize()
 	spritePushA_.reset(Sprite::Create(texHandlePushA_, { 620.0f,500.0f }));
 
 	// 自機モデル
-	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
 	objectPlayer_ = std::make_unique<Object3DPlacer>();
 	objectPlayer_->Initialize();
 	objectPlayer_->SetModel("Player/Jet.obj");
@@ -72,8 +72,6 @@ void TitleScene::Update()
 	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
 		if (!isTransition_) {  // シーン遷移がまだ始まっていない場合のみ
 			isTransition_ = true;
-			isDissolve_ = false;
-			isDissolve2_ = false;
 		}
 	}
 
@@ -136,4 +134,12 @@ void TitleScene::PostProcessDraw()
 
 	postProcess_->PostDraw();
 
+}
+
+void TitleScene::LoadTextureFile()
+{
+	texHandleMask_ = TextureManager::Load("resources/TempTexture/noise0.png");
+	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
+	texHandleTitle_ = TextureManager::Load("resources/Scene/title.png");
+	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
 }

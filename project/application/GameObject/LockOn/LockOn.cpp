@@ -6,7 +6,7 @@
 
 #include "LockOn.h"
 
-void LockOn::Initialize(Vector3 playerPosition)
+void LockOn::Initialize()
 {
 	texHandle2DReticle_ = TextureManager::Load("resources/Player/reticle.png");
 	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, reticlePosition_));
@@ -21,7 +21,6 @@ void LockOn::Initialize(Vector3 playerPosition)
 	debugReticle_->SetTexHandle(debugTex);
 	debugReticle_->SetColor({ 1.0f,0.0f,0.0f,1.0f });
 	debugReticle_->SetWorldTransform(worldTransform3DReticle_);
-	playerPosition;
 }
 
 void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
@@ -70,6 +69,7 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 		}
 	}
 
+	// 検索
 	Search(enemies, camera);
 
 	for (auto itr = target_.begin(); itr != target_.end(); ++itr) {

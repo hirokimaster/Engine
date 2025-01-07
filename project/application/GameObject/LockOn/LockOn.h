@@ -16,7 +16,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Vector3 playerPosition);
+	void Initialize();
 
 	/// <summary>
 	/// 更新

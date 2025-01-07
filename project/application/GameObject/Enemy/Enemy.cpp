@@ -25,9 +25,6 @@ void Enemy::Initialize(uint32_t texHandle)
 	particleManager_->StartEditor("explosion");
 	particleManager_->CreateParticle("explosion", "Player/plane.obj", texHandleExplosion_);
 	particleManager_->ApplyParticleInfo("explosion", id_);
-	//particleManager_->StartEditor("explosionSmoke");
-	//particleManager_->CreateParticle("explosionSmoke", "Player/plane.obj", texHandleSmoke_);
-	//particleManager_->ApplyParticleInfo("explosionSmoke", id_);
 	bulletSpeed_ = 0.04f;
 
 
@@ -57,20 +54,18 @@ void Enemy::Update()
 
 	if (particleTimer_ <= 20) {
 		particleManager_->Clear("explosion", id_);
-		//particleManager_->Clear("explosionSmoke", id_);
 		particleTimer_ = 0;
 		isParticle_ = false;
 		isDead_ = true;
 	}
 
+	// 撃破されたときのparticleの更新
 	if (isParticle_ && particleTimer_ >= 30) {
-		//particleManager_->Update("explosionSmoke", id_);
 		particleManager_->Update("explosion", id_);
 		return;
 	}
 	else {
 		particleManager_->SetPosition("explosion", GetWorldPosition(), id_);
-		//particleManager_->SetPosition("explosionSmoke", GetWorldPosition(), id_);
 	}
 	
 	if (isParticle_) {
@@ -103,10 +98,6 @@ void Enemy::Draw(Camera& camera)
 		particleManager_->Draw("explosion", camera, id_);
 	}
 
-	//if (isParticle_ && particleTimer_ >= 30) {
-	//	particleManager_->Draw("explosionSmoke",camera, id_);
-	//}
-
 	if (!isParticle_) {
 		// 弾の描画
 		for (const auto& bullet : bullets_) {
@@ -123,19 +114,22 @@ void Enemy::OnCollision()
 
 void Enemy::Fire()
 {
-	Vector3 playerWorldPos = player_->GetWorldPosition(); // 自キャラのワールド座標を取得
-	Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
-	Vector3 diff = Subtract(playerWorldPos, enemyWorldPos); // 差分ベクトルを求める
-	Normalize(diff); // 正規化
-	Vector3 velocity = Multiply(bulletSpeed_, diff); // ベクトルの速度
+	// playerがいなかったらそもそも撃つ対象がいない
+	if (player_) {
+		Vector3 playerWorldPos = player_->GetWorldPosition(); // 自キャラのワールド座標を取得
+		Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
+		Vector3 diff = Subtract(playerWorldPos, enemyWorldPos); // 差分ベクトルを求める
+		Normalize(diff); // 正規化
+		Vector3 velocity = Multiply(bulletSpeed_, diff); // ベクトルの速度
 
-	// 弾を生成して初期化
-	std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-	bullet->Initialize(texHandleBullet_);
-	bullet->SetPosition(GetWorldPosition());
-	bullet->SetVelocity(velocity);
-	// 弾をセット
-	bullets_.push_back(std::move(bullet));
+		// 弾を生成して初期化
+		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+		bullet->Initialize(texHandleBullet_);
+		bullet->SetPosition(GetWorldPosition());
+		bullet->SetVelocity(velocity);
+		// 弾をセット
+		bullets_.push_back(std::move(bullet));
+	}
 }
 
 void Enemy::BulletUpdate()

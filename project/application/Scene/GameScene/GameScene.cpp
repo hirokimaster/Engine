@@ -17,7 +17,7 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	// postEffect
+	// ポストエフェクトの初期化
 	isTransition_ = true;
 	postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
@@ -34,7 +34,7 @@ void GameScene::Initialize()
 	// player
 	player_ = std::make_unique<Player>();
 	player_->Initialize(texHandlePlayer_);
-	lockOn_->Initialize(player_->GetWorldTransform().translate);
+	lockOn_->Initialize();
 	player_->SetLockOn(lockOn_.get());
 	// rail
 	rail_ = std::make_unique<Rail>();

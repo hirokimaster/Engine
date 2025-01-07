@@ -49,6 +49,12 @@ public:
 	void PostProcessDraw()override;
 
 private:
+	/// <summary>
+	/// textureはここに書く
+	/// </summary>
+	void LoadTextureFile();
+
+private:
 	std::unique_ptr<PostProcess> postProcess_ = nullptr; // postProcess
 	std::unique_ptr<Sprite> spriteTitle_ = nullptr; // Titleのsprite
 	uint32_t texHandleTitle_ = 0;
