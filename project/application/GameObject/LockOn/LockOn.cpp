@@ -14,13 +14,6 @@ void LockOn::Initialize()
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
-	uint32_t debugTex = TextureManager::Load("resources/TempTexture/white.png");
-	debugReticle_ = std::make_unique<Object3DPlacer>();
-	debugReticle_->Initialize();
-	debugReticle_->SetModel("Player/cube.obj");
-	debugReticle_->SetTexHandle(debugTex);
-	debugReticle_->SetColor({ 1.0f,0.0f,0.0f,1.0f });
-	debugReticle_->SetWorldTransform(worldTransform3DReticle_);
 }
 
 void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
@@ -115,11 +108,6 @@ void LockOn::Draw()
 	}
 }
 
-void LockOn::DebugDraw(Camera& camera)
-{
-	debugReticle_->Draw(camera);
-}
-
 void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector3& playerPosition)
 {
 
@@ -150,8 +138,6 @@ void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector
 	// カメラから照準オブジェクトの距離
 	const float kDistanceTestObject = 100.0f;
 	worldTransform3DReticle_.translate = kDistanceTestObject * mouseDirection + playerPosition;
-	//worldTransform3DReticle_.translate.y = worldTransform3DReticle_.translate.y + playerPosition.y;
-
 	worldTransform3DReticle_.UpdateMatrix();
 }
 

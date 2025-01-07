@@ -31,12 +31,6 @@ public:
 	void Draw();
 
 	/// <summary>
-	/// debug用の描画
-	/// </summary>
-	/// <param name="camera"></param>
-	void DebugDraw(Camera& camera);
-
-	/// <summary>
 	/// レティクルの更新
 	/// </summary>
 	/// <param name="camera"></param>
