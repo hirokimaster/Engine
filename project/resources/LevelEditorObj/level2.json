@@ -1137,6 +1137,1146 @@
                 ]
             },
             "file_name": "grounds"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.012",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.013",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.014",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.015",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.016",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.017",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.018",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.019",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.020",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.021",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.022",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.023",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.024",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.025",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.026",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.027",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.028",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.029",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.030",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                {
+                    "end": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.008",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    650.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -3.141592502593994
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.001",
+            "transform": {
+                "translation": [
+                    85.0,
+                    650.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.002",
+            "transform": {
+                "translation": [
+                    85.0,
+                    1750.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.003",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    1750.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -3.141592502593994
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.004",
+            "transform": {
+                "translation": [
+                    85.0,
+                    2850.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.005",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    2850.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -3.141592502593994
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.006",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    3950.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -3.141592502593994
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.007",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    5050.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -3.141592502593994
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.009",
+            "transform": {
+                "translation": [
+                    85.0,
+                    3950.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.011",
+            "transform": {
+                "translation": [
+                    85.0,
+                    6150.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.012",
+            "transform": {
+                "translation": [
+                    85.0,
+                    7250.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.013",
+            "transform": {
+                "translation": [
+                    85.0,
+                    8350.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.014",
+            "transform": {
+                "translation": [
+                    85.0,
+                    9450.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.015",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    5050.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -3.141592502593994
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.016",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    6150.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -3.141592502593994
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.017",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    7250.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -3.141592502593994
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.018",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    8350.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -3.141592502593994
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.019",
+            "transform": {
+                "translation": [
+                    -85.0,
+                    9450.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -3.141592502593994
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.010",
+            "transform": {
+                "translation": [
+                    85.0,
+                    5050.0,
+                    15.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    3.0,
+                    3.0,
+                    3.0
+                ]
+            },
+            "file_name": "mounts2"
         }
     ]
 }

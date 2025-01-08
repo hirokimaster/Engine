@@ -28,5 +28,8 @@ void EnemyStateLeave::Update(Enemy* pEnemy)
 	
 	pEnemy->Move();
 
-	pEnemy->SetIsDead(true);
+	--deadTimer_;
+	if (deadTimer_ <= 0.0f) {
+		pEnemy->SetIsDead(true);
+	}
 }

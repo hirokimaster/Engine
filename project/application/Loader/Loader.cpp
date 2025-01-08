@@ -176,7 +176,7 @@ void Loader::Arrangement()
 			newObject->SetScale(objectData.scale);
 			objects_.push_back(std::move(newObject));
 		}
-		else if (objectData.fileName == "mounts") {
+		else if (objectData.fileName == "mounts2") {
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
@@ -184,6 +184,7 @@ void Loader::Arrangement()
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
+			//newObject->SetEnableLighting(false);
 			objects_.push_back(std::move(newObject));
 		}
 	}

@@ -21,4 +21,5 @@ public:
 private:
 
 	bool isSetvelocity_ = false;
+	float deadTimer_ = 80.0f;
 };
