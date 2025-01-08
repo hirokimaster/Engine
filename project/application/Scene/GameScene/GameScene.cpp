@@ -190,8 +190,6 @@ void GameScene::Collision()
 		}
 	}
 
-	collisionManager_->ColliderPush(laser_.get());
-
 	collisionManager_->CheckAllCollision(); // 判定
 }
 
