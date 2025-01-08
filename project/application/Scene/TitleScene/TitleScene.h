@@ -65,7 +65,6 @@ private:
 	Camera camera_{};
 	WorldTransform worldTransform_{};
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
-	std::unique_ptr<Skydome> skydome_ = nullptr;
 	uint32_t texHandleMask_ = 0;
 	DissolveParam param_{};
 	std::unique_ptr<Sprite> spriteWhite_;
@@ -77,4 +76,5 @@ private:
 	// シーン遷移用
 	bool isTransition_ = false;
 	SceneTransition* sceneTransition_ = nullptr;
+	std::unique_ptr<Skydome> skydome_ = nullptr;
 };

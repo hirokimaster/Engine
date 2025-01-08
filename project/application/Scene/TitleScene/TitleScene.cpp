@@ -61,6 +61,10 @@ void TitleScene::Initialize()
 	isTransition_ = false;
 	sceneTransition_ = SceneTransition::GetInstance();
 	sceneTransition_->Initialize();
+
+	// 天球
+	skydome_ = std::make_unique<Skydome>();
+	skydome_->Initialize();
 }
 
 void TitleScene::Update()
@@ -75,13 +79,18 @@ void TitleScene::Update()
 		}
 	}
 
+	if (title_) {
+		sceneTransition_->FadeOut();
+	}
+
 	// シーン遷移
 	if (isTransition_) {
+		title_ = false;
 		sceneTransition_->FadeIn("GAME");
 	}
 
 	// 自機の移動
-	Vector3 move = { 0,0,0.2f };
+	Vector3 move = { 0,0,2.0f };
 	worldTransform_.translate = worldTransform_.translate + move;
 	worldTransform_.UpdateMatrix();
 
@@ -92,21 +101,33 @@ void TitleScene::Update()
 	camera_.TransferMatrix();
 
 	// シーンのリセット
-	if (worldTransform_.translate.z >= 250.0f && param_.threshold <= 0.0f) {
-		param_.threshold = 0.02f;
+	if (worldTransform_.translate.z >= 2500.0f) {
+		isDissolve_ = true;
 	}
 
-	if (param_.threshold > 0.0f) {
+	if (isDissolve_) {
 		postProcess_->SetDissolveParam(param_);
-
-		if (param_.threshold <= 1.1f) {
-			param_.threshold += 0.02f;
-		}
-		else {
-			param_.threshold -= 0.02f;
-			worldTransform_.translate.z = 0.0f;
-		}
+		param_.threshold += 0.02f;
 	}
+
+	if (param_.threshold >= 1.1f) {
+		isDissolve_ = false;
+		isDissolve2_ = true;
+		worldTransform_.translate.z = 0.0f;
+	}
+
+	if (isDissolve2_) {
+		postProcess_->SetDissolveParam(param_);
+		param_.threshold -= 0.02f;
+	}
+
+	if (param_.threshold <= 0.0f && !isDissolve_) {
+		param_.threshold = 0.0f;
+		isDissolve2_ = false;
+	}
+
+	// 天球
+	skydome_->Update();
 }
 
 void TitleScene::Draw()
@@ -121,6 +142,8 @@ void TitleScene::Draw()
 void TitleScene::PostProcessDraw()
 {
 	postProcess_->PreDraw();
+
+	skydome_->Draw(camera_);
 
 	objectPlayer_->Draw(camera_);
 

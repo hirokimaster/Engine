@@ -137,4 +137,8 @@ private:
 	uint32_t texHandleContinue_ = 0;
 	Vector4 texColor_{};
 	uint32_t selectNo_ = 0;
+
+	// 天球
+	std::unique_ptr<Skydome> skydome_ = nullptr;
+
 };

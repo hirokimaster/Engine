@@ -74,6 +74,10 @@ void GameScene::Initialize()
 	// ゲームスタート
 	isGameStart_ = false;
 	sceneTimer_ = 100;
+
+	// 天球
+	skydome_ = std::make_unique<Skydome>();
+	skydome_->Initialize();
 }
 
 void GameScene::Update()
@@ -123,11 +127,19 @@ void GameScene::Update()
 
 	Collision();
 
+	// 天球
+	skydome_->Update();
+
 	// ダメージエフェクト
 	DamegeEffect();
 
 	// ゲームオーバー
 	GameOver();
+
+	// クリア条件
+	if (player_->GetWorldPosition().z >= 8500.0f) {
+		isTransitionClear_ = true;
+	}
 
 #ifdef _DEBUG
 	// カメラの座標
@@ -156,6 +168,8 @@ void GameScene::Draw()
 void GameScene::PostProcessDraw()
 {
 	postProcess_->PreDraw();
+
+	skydome_->Draw(camera_);
 
 	loader_->Draw(camera_);
 	// player
