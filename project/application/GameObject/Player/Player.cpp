@@ -83,6 +83,10 @@ void Player::Move()
 
 	worldTransform_.translate = worldTransform_.translate + move;
 
+	// 移動範囲を制限
+	worldTransform_.translate.x = std::clamp(worldTransform_.translate.x, moveMinLimit_.x, moveMaxLimit_.x);
+	worldTransform_.translate.y = std::clamp(worldTransform_.translate.y, moveMinLimit_.y, moveMaxLimit_.y);
+
 	worldTransform_.translate.z = worldTransform_.translate.z + moveSpeed_;
 }
 
@@ -167,12 +171,12 @@ void Player::DrawUI()
 void Player::Rotate()
 {
 	Vector3 rotate = { 0, 0, 0 };
-	const float kRotateSpeedZ = 0.07f;
-	const float kRotateSpeedX = 0.07f;
+	const float kRotateSpeedZ = 0.13f;
+	const float kRotateSpeedX = 0.13f;
 	const float kRotateLimitZ = 0.7f;
 	const float kRotateLimitX = 0.15f;
 	const float kLerpFactor = 0.1f;
-	const float kReturnLerpFactor = 0.05f;
+	const float kReturnLerpFactor = 0.1f;
 
 	// ゲームパッドの状態を得る変数(XINPUT)
 	XINPUT_STATE joyState;
@@ -184,9 +188,26 @@ void Player::Rotate()
 		rotate.x = (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kRotateSpeedX;
 	}
 
-	// 回転を適用（補間を加える）
-	worldTransform_.rotate.z = std::lerp(worldTransform_.rotate.z, worldTransform_.rotate.z - rotate.z, kLerpFactor);
-	worldTransform_.rotate.x = std::lerp(worldTransform_.rotate.x, worldTransform_.rotate.x - rotate.x, kLerpFactor);
+	// 移動限界に達しているか
+	bool isAtMoveLimitX = (worldTransform_.translate.x <= moveMinLimit_.x && rotate.z < 0) ||
+		(worldTransform_.translate.x >= moveMaxLimit_.x && rotate.z > 0);
+	bool isAtMoveLimitY = (worldTransform_.translate.y <= moveMinLimit_.y && rotate.x < 0) ||
+		(worldTransform_.translate.y >= moveMaxLimit_.y && rotate.x > 0);
+
+	// 回転を適用
+	if (!isAtMoveLimitX) {
+		worldTransform_.rotate.z = std::lerp(worldTransform_.rotate.z, worldTransform_.rotate.z - rotate.z, kLerpFactor);
+	}
+	else {
+		worldTransform_.rotate.z = std::lerp(worldTransform_.rotate.z, 0.0f, kReturnLerpFactor);
+	}
+
+	if (!isAtMoveLimitY) {
+		worldTransform_.rotate.x = std::lerp(worldTransform_.rotate.x, worldTransform_.rotate.x - rotate.x, kLerpFactor);
+	}
+	else {
+		worldTransform_.rotate.x = std::lerp(worldTransform_.rotate.x, 0.0f, kReturnLerpFactor);
+	}
 
 	// z軸に制限をかける
 	worldTransform_.rotate.z = std::clamp(worldTransform_.rotate.z, -kRotateLimitZ, kRotateLimitZ);
@@ -249,6 +270,8 @@ void Player::AddAdjustmentVariables()
 	variables->AddItem(groupName, "translate", worldTransform_.translate);
 	variables->AddItem(groupName, "hp", hp_);
 	variables->AddItem(groupName, "bulletSpeed", bulletSpeed_);
+	variables->AddItem(groupName, "moveMinLimit", moveMinLimit_);
+	variables->AddItem(groupName, "moveMaxLimit", moveMaxLimit_);
 }
 
 void Player::ApplyAdjustmentVariables()
@@ -259,6 +282,8 @@ void Player::ApplyAdjustmentVariables()
 	worldTransform_.translate = variables->GetValue<Vector3>(groupName, "translate");
 	bulletSpeed_ = variables->GetValue<float>(groupName, "bulletSpeed");
 	hp_ = variables->GetValue<int32_t>(groupName, "hp");
+	moveMinLimit_ = variables->GetValue<Vector3>(groupName, "moveMinLimit");
+	moveMaxLimit_ = variables->GetValue<Vector3>(groupName, "moveMaxLimit");
 }
 
 Vector3 Player::GetWorldPosition() const

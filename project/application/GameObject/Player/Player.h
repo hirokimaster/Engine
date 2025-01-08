@@ -154,4 +154,6 @@ private:
 	int32_t hp_ = 1;
 	float deadTimer_ = 60.0f;
 	uint32_t destroyCount_ = 0; // 敵を倒した数
+	Vector3 moveMinLimit_ = { -30.0f, 10.0f, 0.0f }; // 移動最小値
+	Vector3 moveMaxLimit_ = { 30.0f, 50.0f, 0.0f };    // 移動最大値
 };
