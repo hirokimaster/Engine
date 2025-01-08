@@ -11,7 +11,7 @@ void Enemy::Initialize(uint32_t texHandle)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("Enemy/cube.obj");
+	object_->SetModel("LevelEditorObj/enemy.obj");
 	worldTransform_.Initialize();
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
