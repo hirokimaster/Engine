@@ -939,6 +939,204 @@
                 ]
             },
             "file_name": "roads"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.022",
+            "transform": {
+                "translation": [
+                    0.0,
+                    7150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "roads"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.023",
+            "transform": {
+                "translation": [
+                    0.0,
+                    8150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "roads"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.024",
+            "transform": {
+                "translation": [
+                    0.0,
+                    9150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "roads"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.025",
+            "transform": {
+                "translation": [
+                    30.0,
+                    7150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.026",
+            "transform": {
+                "translation": [
+                    30.0,
+                    8150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.027",
+            "transform": {
+                "translation": [
+                    30.0,
+                    9150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.028",
+            "transform": {
+                "translation": [
+                    -30.0,
+                    7150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.029",
+            "transform": {
+                "translation": [
+                    -30.0,
+                    8150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "平面.030",
+            "transform": {
+                "translation": [
+                    -30.0,
+                    9150.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
         }
     ]
 }

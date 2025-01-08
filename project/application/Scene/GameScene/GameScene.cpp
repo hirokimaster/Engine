@@ -129,7 +129,6 @@ void GameScene::Update()
 	// ゲームオーバー
 	GameOver();
 
-
 #ifdef _DEBUG
 	// カメラの座標
 	ImGui::Begin("Camera");
@@ -190,6 +189,8 @@ void GameScene::Collision()
 			collisionManager_->ColliderPush(enemyBullet.get()); // enemybulletをリストに追加
 		}
 	}
+
+	collisionManager_->ColliderPush(laser_.get());
 
 	collisionManager_->CheckAllCollision(); // 判定
 }
