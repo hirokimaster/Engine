@@ -196,7 +196,7 @@ void GameScene::Collision()
 void GameScene::LoadTextureFile()
 {
 	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
-	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
+	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/mount.jpg");
 	texHandleAttack_ = TextureManager::Load("resources/UI/attack.png");
 
 	// ゲームオーバー用

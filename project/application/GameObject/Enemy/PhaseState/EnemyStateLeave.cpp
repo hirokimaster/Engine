@@ -27,4 +27,6 @@ void EnemyStateLeave::Update(Enemy* pEnemy)
 	}
 	
 	pEnemy->Move();
+
+	pEnemy->SetIsDead(true);
 }
