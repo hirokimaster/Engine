@@ -25,7 +25,7 @@ void Enemy::Initialize(uint32_t texHandle)
 	particleManager_->StartEditor("explosion");
 	particleManager_->CreateParticle("explosion", "Player/plane.obj", texHandleExplosion_);
 	particleManager_->ApplyParticleInfo("explosion", id_);
-	bulletSpeed_ = 0.04f;
+	bulletSpeed_ = 0.03f;
 
 
 	// 最初の状態

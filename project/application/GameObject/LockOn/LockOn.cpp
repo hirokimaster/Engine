@@ -8,7 +8,7 @@
 
 void LockOn::Initialize()
 {
-	texHandle2DReticle_ = TextureManager::Load("resources/Player/reticle.png");
+	texHandle2DReticle_ = TextureManager::Load("resources/Player/reticle2.png");
 	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, reticlePosition_));
 	spriteLockOnReticle_.reset(Sprite::Create(texHandle2DReticle_, { 640.0f,360.0f }));
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
