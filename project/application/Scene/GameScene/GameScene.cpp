@@ -73,6 +73,7 @@ void GameScene::Initialize()
 
 	// ゲームスタート
 	isGameStart_ = false;
+	sceneTimer_ = 100;
 }
 
 void GameScene::Update()
@@ -81,11 +82,13 @@ void GameScene::Update()
 	// ゲームシーンに来た時
 	if (isTransition_) {
 		sceneTransition_->FadeOut();
-		--sceneTimer_;
 	}
+
+	--sceneTimer_;
 
 	if (sceneTimer_ <= 0) {
 		isTransition_ = false;
+		sceneTimer_ = 0;
 	}
 
 	// ゲームシーンからクリアへ
