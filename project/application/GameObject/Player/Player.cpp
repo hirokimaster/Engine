@@ -176,7 +176,7 @@ void Player::Rotate()
 	const float kRotateLimitZ = 0.7f;
 	const float kRotateLimitX = 0.15f;
 	const float kLerpFactor = 0.1f;
-	const float kReturnLerpFactor = 0.1f;
+	const float kReturnLerpFactor = 0.07f;
 
 	// ゲームパッドの状態を得る変数(XINPUT)
 	XINPUT_STATE joyState;

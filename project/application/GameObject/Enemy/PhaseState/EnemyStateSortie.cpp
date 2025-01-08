@@ -26,7 +26,7 @@ void EnemyStateSortie::Update(Enemy* pEnemy)
 		if (t_ <= 1.0f) {
 			Vector3 sortiePosition = Lerp(pEnemy->GetStartPosition(), pEnemy->GetEndPosition(), t_);
 			pEnemy->SetPosition(sortiePosition);
-			t_ += 0.1f;
+			t_ += 0.08f;
 		}
 		else {
 			isSortie_ = false;
