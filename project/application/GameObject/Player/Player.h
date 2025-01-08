@@ -136,6 +136,8 @@ public:
 
 	void SetPositionZ(float positionZ) { worldTransform_.translate.z = positionZ; }
 
+	void SetHp(uint32_t hp) { hp_ = hp; }
+
 #pragma endregion
 
 private:

@@ -23,6 +23,7 @@
 #include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Skydome/Skydome.h"
 #include "application/GameObject/SceneTransition/SceneTransition.h"
+#include "application/GameObject/Gimmick/Laser.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
