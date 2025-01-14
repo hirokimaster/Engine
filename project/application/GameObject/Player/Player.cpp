@@ -86,7 +86,9 @@ void Player::Move()
 void Player::Attack()
 {
 
-	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
+	// Rトリガーを押していたら
+	if (Input::GetInstance()->PushButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
+
 		// 弾の速度
 		Vector3 velocity = { 0,0,bulletSpeed_ };
 		std::list<Vector3> lockOnVelocity;

@@ -103,6 +103,16 @@ bool Input::PressedButton(WORD button)
 	return false;
 }
 
+bool Input::PushButton(WORD button)
+{
+	if (Input::GetInstance()->state_.Gamepad.wButtons & button) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 //void Input::ApplyDeadZone(SHORT& x, SHORT& y)
 //{
 //	float input = sqrtf((float)(x * x) + (float)(y * y)); // 入力の大きさ

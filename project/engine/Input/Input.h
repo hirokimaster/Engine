@@ -74,6 +74,13 @@ public:
 	bool PressedButton(WORD button);
 
 	/// <summary>
+	/// 押したとき
+	/// </summary>
+	/// <param name="button"></param>
+	/// <returns></returns>
+	bool PushButton(WORD button);
+
+	/// <summary>
 	/// deadzoneの設定
 	/// </summary>
 	/// <param name="x"></param>
