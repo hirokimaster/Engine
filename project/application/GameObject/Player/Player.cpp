@@ -68,26 +68,19 @@ void Player::Draw(Camera& camera)
 
 void Player::Move()
 {
-
-	Vector3 move = { 0,0,0 }; // 移動ベクトル
-	const float kMoveSpeed = 0.2f;
-
-	// ゲームパッドの状態を得る変数(XINPUT)
-	XINPUT_STATE joyState;
-
-	// ゲームパッド状態取得
-	if (Input::GetInstance()->GetJoystickState(joyState)) {
-		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kMoveSpeed;
-		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kMoveSpeed;
-	}
-
-	worldTransform_.translate = worldTransform_.translate + move;
+	// レティクルに追従させる
+	Vector3 end = lockOn_->GetWorldTransform();
+	Vector3 start = worldTransform_.translate;
+	// 差分
+	Vector3 diff = end - start;
+	diff = Normalize(diff);
+	Vector3 velocity = moveSpeed_ * diff;
+	worldTransform_.translate = worldTransform_.translate + velocity;
 
 	// 移動範囲を制限
 	worldTransform_.translate.x = std::clamp(worldTransform_.translate.x, moveMinLimit_.x, moveMaxLimit_.x);
 	worldTransform_.translate.y = std::clamp(worldTransform_.translate.y, moveMinLimit_.y, moveMaxLimit_.y);
 
-	worldTransform_.translate.z = worldTransform_.translate.z + moveSpeed_;
 }
 
 void Player::Attack()

@@ -238,7 +238,7 @@ void GameScene::StartGame()
 		isGameStart_ = true;
 		RadialParam param = {
 			.center = Vector2(0.5f,0.5f),
-			.blurWidth = 0.001f,
+			.blurWidth = 0.005f,
 		};
 		postProcess_->SetEffect(PostEffectType::RadialBlur);
 		postProcess_->SetRadialParam(param);

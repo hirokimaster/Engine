@@ -140,5 +140,4 @@ private:
 
 	// 天球
 	std::unique_ptr<Skydome> skydome_ = nullptr;
-
 };

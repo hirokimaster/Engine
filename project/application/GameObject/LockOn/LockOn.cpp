@@ -181,8 +181,8 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 
 		// ジョイスティック状態取得
 		if (Input::GetInstance()->GetJoystickState(joyState)) {
-			spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 12.0f;
-			spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 12.0f;
+			spritePosition.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 4.0f;
+			spritePosition.y -= (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 4.0f;
 			// スプライトの座標変更を反映
 			if (isLockOnMode_) {
 				spriteLockOnReticle_->SetPosition(spritePosition);
