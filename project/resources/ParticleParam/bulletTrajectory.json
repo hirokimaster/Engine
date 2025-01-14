@@ -1,0 +1,60 @@
+{
+    "bulletTrajectory": {
+        "count": 70,
+        "emit": 1,
+        "frequency": 0.10000000149011612,
+        "frequencyTime": 0.10000000149011612,
+        "radius": 1.0,
+        "rangeAlpha_max": 1.0,
+        "rangeAlpha_min": 0.0,
+        "rangeColor_max": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "rangeColor_min": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "rangeCurrentTime_max": 5.0,
+        "rangeCurrentTime_min": 0.0,
+        "rangeLifeTime_max": 1.0,
+        "rangeLifeTime_min": 1.0,
+        "rangeScale_max": [
+            0.30000001192092896,
+            0.30000001192092896,
+            0.30000001192092896
+        ],
+        "rangeScale_min": [
+            0.10000000149011612,
+            0.10000000149011612,
+            0.10000000149011612
+        ],
+        "rangeTranslate_max": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "rangeTranslate_min": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "rangeVelocity_max": [
+            0.0,
+            0.0,
+            0.20000000298023224
+        ],
+        "rangeVelocity_min": [
+            0.0,
+            0.0,
+            0.10000000149011612
+        ],
+        "translate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    }
+}

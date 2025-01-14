@@ -27,6 +27,8 @@ void Player::Initialize(uint32_t texHandle)
 	// 死亡フラグ
 	isDead_ = false;
 	deadTimer_ = 60.0f;
+
+	bulletId_ = 0;
 }
 
 void Player::Update()
@@ -87,7 +89,7 @@ void Player::Attack()
 {
 
 	// Rトリガーを押していたら
-	if (Input::GetInstance()->PushButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
+	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 
 		// 弾の速度
 		Vector3 velocity = { 0,0,bulletSpeed_ };
@@ -107,6 +109,8 @@ void Player::Attack()
 					velocity = Normalize(velocity);
 					velocity = Multiply(bulletSpeed_, diff);
 					std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
+					bullet->SetId(bulletId_);
+					++bulletId_;
 					bullet->SetLockOn(lockOn_);
 					bullet->Initialize(texHandleBullet_);
 					bullet->SetPosition(WorldPos);
@@ -123,6 +127,8 @@ void Player::Attack()
 			velocity = bulletSpeed_ * velocity;
 			// 弾を生成し、初期化
 			std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
+			bullet->SetId(bulletId_);
+			++bulletId_;
 			bullet->Initialize(texHandleBullet_);
 			const float kDistanceZ = 5.0f;
 			Vector3 position = WorldPos;

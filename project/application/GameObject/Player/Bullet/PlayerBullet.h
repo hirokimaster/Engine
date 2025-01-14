@@ -8,6 +8,7 @@
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "application/GameObject/LockOn/LockOn.h"
 #include "engine/Object3DPlacer/Object3DPlacer.h"
+#include "engine/ParticleManager/ParticleManager.h"
 
 class PlayerBullet : public Collider {
 public:
@@ -65,6 +66,8 @@ public:
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
+	void SetId(uint32_t id) { id_ = id; }
+
 #pragma endregion
 
 private:
@@ -75,4 +78,8 @@ private:
 	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
 	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
+	ParticleManager* particleManager_ = nullptr;
+	uint32_t texHandleSmoke_ = 0;
+	uint32_t id_ = 0;
+	int32_t particleTimer_ = 200;
 };

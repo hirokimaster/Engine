@@ -18,21 +18,38 @@ void PlayerBullet::Initialize(uint32_t texHandle)
 	SetCollosionAttribute(kCollisionAttributePlayerBullet);
 	SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
 
-	worldTransform_.scale = { 0.2f,0.2f,0.2f };
+	worldTransform_.scale = { 0.5f,0.5f,0.5f };
 
+	// particle
+	texHandleSmoke_ = TextureManager::Load("resources/TempTexture/circle2.png");
+	particleManager_ = ParticleManager::GetInstance();
+	particleManager_->StartEditor("bulletTrajectory");
+	particleManager_->CreateParticle("bulletTrajectory", "Player/plane.obj", texHandleSmoke_);
+	particleManager_->ApplyParticleInfo("bulletTrajectory",id_);
 }
 
 void PlayerBullet::Update()
 {
 	Move(); // 移動
 	BulletErase(); // 弾を削除
+	--particleTimer_;
+	if (particleTimer_ < 10) {
+		particleManager_->Clear("bulletTrajectory", id_);
+	}
+	else {
+		particleManager_->Update("bulletTrajectory", id_);
+		particleManager_->SetPosition("bulletTrajectory", GetWorldPosition(), id_);
+	}
+	
 	worldTransform_.UpdateMatrix();
-
 }
 
 void PlayerBullet::Draw(Camera& camera)
 {
 	object_->Draw(camera);
+	if (particleTimer_ > 10) {
+		particleManager_->Draw("bulletTrajectory", camera, id_);
+	}	
 }
 
 void PlayerBullet::Move()
