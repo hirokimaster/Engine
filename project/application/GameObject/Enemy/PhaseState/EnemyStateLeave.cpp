@@ -30,6 +30,6 @@ void EnemyStateLeave::Update(Enemy* pEnemy)
 
 	--deadTimer_;
 	if (deadTimer_ <= 0.0f) {
-		pEnemy->SetIsDead(true);
+		//pEnemy->SetIsDead(true);
 	}
 }

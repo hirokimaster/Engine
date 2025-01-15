@@ -184,7 +184,6 @@ void Loader::Arrangement()
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
-			//newObject->SetEnableLighting(false);
 			objects_.push_back(std::move(newObject));
 		}
 	}

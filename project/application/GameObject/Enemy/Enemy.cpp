@@ -53,7 +53,7 @@ void Enemy::Update()
 	}
 
 	if (particleTimer_ <= 20) {
-		particleManager_->Clear("explosion", id_);
+		//particleManager_->Clear("explosion", id_);
 		particleTimer_ = 0;
 		isParticle_ = false;
 		isDead_ = true;
@@ -65,16 +65,17 @@ void Enemy::Update()
 		return;
 	}
 	else {
-		particleManager_->SetPosition("explosion", GetWorldPosition(), id_);
+		//particleManager_->SetPosition("explosion", GetWorldPosition(), id_);
 	}
 	
 	if (isParticle_) {
-		--particleTimer_;
+
 	}
 
+	--particleTimer_;
 
 	if (isParticle_ && GetWorldPosition().z < player_->GetWorldPosition().z) {
-		deathTimer_ = 0;
+		//deathTimer_ = 0;
 	}
 	
 
@@ -82,6 +83,7 @@ void Enemy::Update()
 
 	ImGui::Begin("Enemy");
 	ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, -100.0f, 100.0f);
+	ImGui::Text("ti = %d", particleTimer_);
 	ImGui::End();
 
 #endif
