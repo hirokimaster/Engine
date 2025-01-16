@@ -27,6 +27,12 @@ public:
 
 #pragma endregion
 
+#pragma region setter
+
+	void SetPosition(Vector3 position)override { worldTransform_.translate = position; }
+
+#pragma endregion
+
 private:
 
 	void OnCollision()override;

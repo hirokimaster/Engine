@@ -37,6 +37,12 @@ public:
 
 #pragma endregion
 
+#pragma region setter
+
+	virtual void SetPosition(Vector3 position) = 0;
+
+#pragma endregion
+
 protected:
 	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;

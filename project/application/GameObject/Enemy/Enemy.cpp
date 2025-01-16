@@ -65,17 +65,15 @@ void Enemy::Update()
 		return;
 	}
 	else {
-		//particleManager_->SetPosition("explosion", GetWorldPosition(), id_);
+		particleManager_->SetPosition("explosion", GetWorldPosition(), id_);
 	}
 	
 	if (isParticle_) {
-
+		--particleTimer_;
 	}
 
-	--particleTimer_;
-
 	if (isParticle_ && GetWorldPosition().z < player_->GetWorldPosition().z) {
-		//deathTimer_ = 0;
+		deathTimer_ = 0;
 	}
 	
 

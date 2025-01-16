@@ -8,7 +8,6 @@ void IGimmick::Initialize()
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("Enemy/cube.obj");
 	worldTransform_.Initialize();
 	SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象

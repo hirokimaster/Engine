@@ -17,6 +17,7 @@
 #include <numbers>
 #include "application/GameObject/Enemy/Enemy.h"
 #include "engine/ParticleManager/ParticleManager.h"
+#include "application/GameObject/Gimmick/Laser.h"
 
 // レベルデータ
 struct LevelData {
@@ -96,6 +97,7 @@ private:
 	std::map<std::string, std::unique_ptr<Model>>  models_;
 	std::vector<std::unique_ptr<Object3DPlacer>> objects_;
 	std::list<std::unique_ptr<Enemy>> enemys_;
+	std::list<std::unique_ptr<Laser>> lasers_;
 	uint32_t texHandle_ = 0;
 	Camera camera_{};
 	Player* player_ = nullptr;

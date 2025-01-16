@@ -28,7 +28,7 @@ void Player::Initialize(uint32_t texHandle)
 	isDead_ = false;
 	deadTimer_ = 60.0f;
 
-	bulletId_ = 0;
+	//bulletId_ = 0;
 }
 
 void Player::Update()
@@ -109,8 +109,8 @@ void Player::Attack()
 					velocity = Normalize(velocity);
 					velocity = Multiply(bulletSpeed_, diff);
 					std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-					bullet->SetId(bulletId_);
-					++bulletId_;
+					//bullet->SetId(bulletId_);
+					//++bulletId_;
 					bullet->SetLockOn(lockOn_);
 					bullet->Initialize(texHandleBullet_);
 					bullet->SetPosition(WorldPos);
@@ -127,8 +127,8 @@ void Player::Attack()
 			velocity = bulletSpeed_ * velocity;
 			// 弾を生成し、初期化
 			std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-			bullet->SetId(bulletId_);
-			++bulletId_;
+			//bullet->SetId(bulletId_);
+			//++bulletId_;
 			bullet->Initialize(texHandleBullet_);
 			const float kDistanceZ = 5.0f;
 			Vector3 position = WorldPos;

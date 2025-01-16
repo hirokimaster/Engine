@@ -186,6 +186,12 @@ void Loader::Arrangement()
 			newObject->SetScale(objectData.scale);
 			objects_.push_back(std::move(newObject));
 		}
+		else if (objectData.fileName == "laser") {
+			std::unique_ptr<Laser> newLaser = std::make_unique<Laser>();
+			newLaser->Initialize();
+			newLaser->SetPosition(objectData.translate);
+			lasers_.push_back(std::move(newLaser));
+		}
 	}
 }
 
@@ -197,9 +203,13 @@ void Loader::Update()
 		object->SetUVTransform(uvTransform_);
 	}
 
-
+	// enemyの更新
 	for (auto& enemy : enemys_) {
 		enemy->Update();
+	}
+
+	for (auto& laser : lasers_) {
+		laser->Update();
 	}
 
 	// デスフラグが立ったら要素を削除
@@ -219,6 +229,10 @@ void Loader::Draw(Camera& camera)
 
 	for (auto& enemy : enemys_) {
 		enemy->Draw(camera);
+	}
+
+	for (auto& laser : lasers_) {
+		laser->Draw(camera);
 	}
 }
 
