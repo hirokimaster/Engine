@@ -10,6 +10,12 @@
 #include <list>
 #include "ColliderConfig.h"
 
+enum class ColliderType {
+	Sphere,
+	AABB,
+	OBB
+};
+
 class Collider {
 public:
 
@@ -24,6 +30,7 @@ public:
     virtual Vector3 GetWorldPosition() const = 0;
 	uint32_t GetCollosionAttribute() const { return collisionAttribute_; }
 	uint32_t GetCollisionMask() const { return CollisionMask_; }
+	ColliderType GetType()const { return type_; }
 
 #pragma endregion
 
@@ -32,6 +39,7 @@ public:
 	void SetRadious(float radious) { radious_ = radious; }
 	void SetCollosionAttribute(uint32_t collisionAttribute) { collisionAttribute_ = collisionAttribute; }
 	void SetCollisionMask(uint32_t collisionMask) { CollisionMask_ = collisionMask; }
+	void SetType(ColliderType type) { type_ = type; }
 
 #pragma endregion
 
@@ -43,4 +51,6 @@ private:
 	uint32_t CollisionMask_ = 0xffffffff;
 
 	float radious_ = 1.0f;
+
+	ColliderType type_ = ColliderType::Sphere;
 };

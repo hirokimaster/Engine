@@ -31,20 +31,29 @@ void CollisionManager::CheckCollisionPair(Collider* cA, Collider* cB) {
 		(cA->GetCollisionMask() & cB->GetCollosionAttribute()) == 0) {
 		return;
 	}
-	//当たり判定の計算開始
-	Vector3 cApos = cA->GetWorldPosition();
-	Vector3 cBpos = cB->GetWorldPosition();
 
-	float cARadious = cA->GetRadious();
-	float cBRadious = cB->GetRadious();
+	if (cA->GetType() == ColliderType::Sphere && cB->GetType() == ColliderType::Sphere) {
+		//当たり判定の計算開始
+		Vector3 cApos = cA->GetWorldPosition();
+		Vector3 cBpos = cB->GetWorldPosition();
 
-	if (CheckBallCollision(cApos, cARadious, cBpos, cBRadious)) {
-		cA->OnCollision();
-		cB->OnCollision();
+		float cARadious = cA->GetRadious();
+		float cBRadious = cB->GetRadious();
+
+		if (CheckCollision(cApos, cARadious, cBpos, cBRadious)) {
+			cA->OnCollision();
+			cB->OnCollision();
+		}
+
 	}
+	else if (cA->GetType() == ColliderType::AABB && cB->GetType() == ColliderType::Sphere) {
+
+	}
+
+																				  
 }
 
-bool CollisionManager::CheckBallCollision(Vector3 v1, float v1Radious, Vector3 v2, float v2Radious)
+bool CollisionManager::CheckCollision(Vector3 v1, float v1Radious, Vector3 v2, float v2Radious)
 {
 	float x = (v2.x - v1.x);
 	float y = (v2.y - v1.y);
@@ -63,4 +72,19 @@ bool CollisionManager::CheckBallCollision(Vector3 v1, float v1Radious, Vector3 v
 	}
 
 
+}
+
+bool CollisionManager::CheckCollision(const AABB& aabb, const Vector3 center, const float radius)
+{
+	Vector3 closesetPoint{
+		std::clamp(center.x, aabb.min.x, aabb.max.x), std::clamp(center.y, aabb.min.y, aabb.max.y),
+		std::clamp(center.z, aabb.min.z, aabb.max.z) };
+	float distance = Length(Subtract(closesetPoint, center));
+
+	if (distance <= radius) {
+
+		return true;
+	}
+
+	return false;
 }

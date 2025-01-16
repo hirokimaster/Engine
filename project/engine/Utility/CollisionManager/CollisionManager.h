@@ -7,6 +7,7 @@
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/Math/Mathfunction.h"
+#include <algorithm>
 
 class CollisionManager {
 public:
@@ -42,7 +43,16 @@ private:
 	/// <param name="v2"></param>
 	/// <param name="v2Radious"></param>
 	/// <returns></returns>
-	bool CheckBallCollision(Vector3 v1, float v1Radious, Vector3 v2, float v2Radious);
+	bool CheckCollision(Vector3 v1, float v1Radious, Vector3 v2, float v2Radious);
+
+	/// <summary>
+	/// aabbと球の当たり判定
+	/// </summary>
+	/// <param name="aabb"></param>
+	/// <param name="center"></param>
+	/// <param name="radious"></param>
+	/// <returns></returns>
+	bool CheckCollision(const AABB& aabb, const Vector3 center, const float radius);
 
 private:
 
