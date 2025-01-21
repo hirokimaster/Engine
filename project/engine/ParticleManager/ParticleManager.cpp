@@ -47,7 +47,7 @@ void ParticleManager::StartEditor(const char* particleName)
 	editor->AddParam(particleName, "rangeAlpha_max", params_[particleName].rangeAlpha.max);
 }
 
-void ParticleManager::ApplyParticleInfo(const char* particleName, uint32_t id)
+void ParticleManager::ApplyParticleInfo(const char* particleName)
 {
 	ParticleEditor* editor = ParticleEditor::GetInstance();
 	// params_のparticleNameに対応するemitterを更新を適用する
@@ -78,24 +78,31 @@ void ParticleManager::ApplyParticleInfo(const char* particleName, uint32_t id)
 	// rangeAlphaのminとmaxを設定
 	params_[particleName].rangeAlpha.min = editor->GetValue<float>(particleName, "rangeAlpha_min");
 	params_[particleName].rangeAlpha.max = editor->GetValue<float>(particleName, "rangeAlpha_max");
-
-	particles_[particleName][id]->SetParticleParam(params_[particleName]);
 }
 
-void ParticleManager::CreateParticle(const string& particleName, const string& model, uint32_t texHandle)
+void ParticleManager::CreateParticle(const string& particleName, std::unique_ptr<ParticleEmitter> emitter, const string& model, uint32_t texHandle)
 {
-	unique_ptr<GPUParticle> particle = make_unique<GPUParticle>();
-	particle->SetModel(model);
-	particle->Initialize();
-	particle->SetTexHandle(texHandle);
-	particle->SetParticleParam(params_[particleName]);
+	// 既にあったらemitterだけ追加して抜ける
+	if (particles_[particleName]) {
+		emitter->SetParam(params_[particleName]);
+		particles_[particleName]->AddEmitter(std::move(emitter));
+		return;
+	}
+	// 新しくparticle生成
+	else {
+		unique_ptr<GPUParticle> particle = make_unique<GPUParticle>();
+		particle->SetModel(model);
+		particle->Initialize();
+		particle->SetTexHandle(texHandle);
+		particle->AddEmitter(std::move(emitter));
 
-	particles_[particleName].emplace_back(move(particle));
+		particles_[particleName] = (std::move(particle));
+	}
 }
 
-void ParticleManager::Update(const string& particleName, uint32_t id)
+void ParticleManager::Update(const string& particleName)
 {
-	particles_[particleName][id]->Update();
+	particles_[particleName]->Update();
 }
 
 void ParticleManager::UpdateEditor()
@@ -103,12 +110,7 @@ void ParticleManager::UpdateEditor()
 	ParticleEditor::GetInstance()->Update();
 }
 
-void ParticleManager::Draw(const string& particleName, const Camera& camera, uint32_t id)
+void ParticleManager::Draw(const string& particleName, const Camera& camera)
 {
-	particles_[particleName][id]->Draw(camera);
-}
-
-void ParticleManager::Clear(const string& particleName, uint32_t id)
-{
-	particles_[particleName].erase(particles_[particleName].begin() + id);
+	particles_[particleName]->Draw(camera);
 }

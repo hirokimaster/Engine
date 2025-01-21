@@ -97,6 +97,7 @@
     <ClCompile Include="application\GameObject\SceneTransition\SceneTransition.cpp" />
     <ClCompile Include="application\GameObject\Gimmick\Laser.cpp" />
     <ClCompile Include="application\GameObject\Gimmick\IGimmick\IGimmick.cpp" />
+    <ClCompile Include="engine\ParticleSystem\ParticleEmitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="application\GameObject\SceneTransition\SceneTransition.h" />
     <ClInclude Include="application\GameObject\Gimmick\IGimmick\IGimmick.h" />
     <ClInclude Include="application\GameObject\Gimmick\Laser.h" />
+    <ClInclude Include="engine\ParticleSystem\ParticleEmitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli" />

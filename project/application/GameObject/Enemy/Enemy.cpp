@@ -24,7 +24,7 @@ void Enemy::Initialize(uint32_t texHandle)
 	particleManager_ = ParticleManager::GetInstance();
 	particleManager_->StartEditor("explosion");
 	particleManager_->CreateParticle("explosion", "Player/plane.obj", texHandleExplosion_);
-	particleManager_->ApplyParticleInfo("explosion", id_);
+	//particleManager_->ApplyParticleInfo("explosion", id_);
 	bulletSpeed_ = 0.03f;
 
 
@@ -61,11 +61,11 @@ void Enemy::Update()
 
 	// 撃破されたときのparticleの更新
 	if (isParticle_ && particleTimer_ >= 30) {
-		particleManager_->Update("explosion", id_);
+		//particleManager_->Update("explosion", id_);
 		return;
 	}
 	else {
-		particleManager_->SetPosition("explosion", GetWorldPosition(), id_);
+		//particleManager_->SetPosition("explosion", GetWorldPosition(), id_);
 	}
 	
 	if (isParticle_) {
@@ -95,7 +95,7 @@ void Enemy::Draw(Camera& camera)
 	}
 
 	if (isParticle_ && particleTimer_ >= 30) {
-		particleManager_->Draw("explosion", camera, id_);
+		//particleManager_->Draw("explosion", camera, id_);
 	}
 
 	if (!isParticle_) {

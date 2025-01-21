@@ -63,6 +63,12 @@ void GPUParticle::Draw(const Camera& camera)
 	}
 }
 
+void GPUParticle::AddEmitter(std::unique_ptr<ParticleEmitter> emitter)
+{
+	// コンテナに追加する
+	emitters_.push_back(std::move(emitter));
+}
+
 void GPUParticle::CreateUAV()
 {
 
@@ -162,10 +168,6 @@ void GPUParticle::CreateBuffer()
 	perViewResource_->Map(0, nullptr, reinterpret_cast<void**>(&perViewData_));
 	perViewData_->billboardMatrix = MakeIdentityMatrix();
 	perViewData_->viewProjection = MakeIdentityMatrix();
-
-	// emitter
-	emitterSphereResource_ = CreateResource::CreateBufferResource(sizeof(EmitterSphere));
-	emitterSphereResource_->Map(0, nullptr, reinterpret_cast<void**>(&emitterSphereData_));
 	
 	// perFrame
 	perFrameResource_ = CreateResource::CreateBufferResource(sizeof(PerFrame));
@@ -191,16 +193,22 @@ void GPUParticle::PerViewUpdate(const Camera& camera)
 
 void GPUParticle::UpdateEmitter()
 {
+	// 空だったら止める
+	assert(emitters_.empty());
+
 	perFrameData_->time += perFrameData_->deltaTime;
-	emitterSphereData_->frequencyTime += kDeltaTime_;
-	// 射出間隔を上回ったら許可を出して時間を調整する
-	if (emitterSphereData_->frequency <= emitterSphereData_->frequencyTime) {
-		emitterSphereData_->frequencyTime -= emitterSphereData_->frequency;
-		emitterSphereData_->emit = 1;
+	for (uint32_t i = 0; i < emitters_.size(); ++i) {
+		emitters_[i]->GetEmitterData()->frequencyTime += kDeltaTime_;
+		// 射出間隔を上回ったら許可を出して時間を調整する
+		if (emitters_[i]->GetEmitterData()->frequency <= emitters_[i]->GetEmitterData()->frequencyTime) {
+			emitters_[i]->GetEmitterData()->frequencyTime -= emitters_[i]->GetEmitterData()->frequency;
+			emitters_[i]->GetEmitterData()->emit = 1;
+		}
+		else {
+			emitters_[i]->GetEmitterData()->emit = 0;
+		}
 	}
-	else {
-		emitterSphereData_->emit = 0;
-	}
+
 }
 
 void GPUParticle::InitializeParticleCS()
@@ -225,12 +233,17 @@ void GPUParticle::InitializeParticleCS()
 
 void GPUParticle::EmitterParticleCS()
 {
+	// 空だったら止める
+	assert(emitters_.empty());
+
 	emitParticle_ = ComputePipeline::GetInstance()->GetPipelineType().emitterParticle;
 
 	commandList_->SetComputeRootSignature(emitParticle_.rootSignature.Get());
 	commandList_->SetPipelineState(emitParticle_.computePipelineState.Get());
 	commandList_->SetComputeRootDescriptorTable(0, particleGpuDescHandle_);
-	commandList_->SetComputeRootConstantBufferView(1, emitterSphereResource_->GetGPUVirtualAddress());
+	for (uint32_t i = 0; i < emitters_.size(); ++i) {
+		commandList_->SetComputeRootConstantBufferView(1, emitters_[i]->GetResource()->GetGPUVirtualAddress());
+	}
 	commandList_->SetComputeRootConstantBufferView(2, perFrameResource_->GetGPUVirtualAddress());
 	commandList_->SetComputeRootDescriptorTable(3, freeListIndexGpuDescHandle_);
 	commandList_->SetComputeRootDescriptorTable(4, freeListGpuDescHandle_);

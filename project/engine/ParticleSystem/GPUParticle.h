@@ -6,7 +6,7 @@
 #include "engine/ModelManager/ModelManager.h"
 #include "engine/GraphicsPipeline/GraphicsPipeline.h"
 #include "engine/ComputePipeline/ComputePipeline.h"
-#include "ParticleEditor.h"
+#include "engine/ParticleSystem/ParticleEmitter.h"
 
 static const uint32_t kMaxInstance_ = 1024;
 
@@ -22,35 +22,6 @@ struct ParticleCS {
 struct PerView {
 	Matrix4x4 viewProjection;
 	Matrix4x4 billboardMatrix;
-};
-
-struct ParticleRange1d {
-	float min;
-	float max;
-	float padding[2];
-};
-
-struct ParticleRange3d {
-	Vector3 min;
-	float padding1[1];
-	Vector3 max;
-	float padding2[1];
-};
-
-struct EmitterSphere {
-	Vector3 translate;
-	float radius;
-	uint32_t count;
-	float frequency;
-	float frequencyTime;
-	uint32_t emit;
-	ParticleRange3d rangeTranslate;
-	ParticleRange3d rangeScale;
-	ParticleRange1d rangeLifeTime;
-	ParticleRange3d rangeVelocity;
-	ParticleRange1d rangeCurrentTime;
-	ParticleRange3d rangeColor;
-	ParticleRange1d rangeAlpha;
 };
 
 struct PerFrame {
@@ -70,17 +41,19 @@ public:
 
 	void Draw(const Camera& camera);
 
+	/// <summary>
+	/// emitter追加
+	/// </summary>
+	/// <param name="emitter"></param>
+	void AddEmitter(std::unique_ptr<ParticleEmitter> emitter);
+
 #pragma region setter
 
 	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
 
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 
-	void SetParticleParam(EmitterSphere param) { *emitterSphereData_ = param; }
-
 	void SetColor(const Vector4& color) { materialData_->color = color;}
-
-	void SetPosition(const Vector3& position) { emitterSphereData_->translate = position; }
 
 #pragma endregion
 
@@ -131,13 +104,11 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> particleResource_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> materialResource_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> perViewResource_;
-	Microsoft::WRL::ComPtr<ID3D12Resource> emitterSphereResource_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> perFrameResource_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> freeListIndexResource_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> freeListResource_;
 	ParticleCS* particleData_ = nullptr;
 	PerView* perViewData_ = nullptr;
-	EmitterSphere* emitterSphereData_;
 	PerFrame* perFrameData_ = nullptr;
 	Model* model_ = nullptr;
 	Material* materialData_ = nullptr;
@@ -160,4 +131,5 @@ private:
 	uint32_t texHandle_ = 0;
 	D3D12_RESOURCE_BARRIER barrier_{};
 	const float kDeltaTime_ = 1.0f / 60.0f;
+	std::vector<std::unique_ptr<ParticleEmitter>> emitters_;
 };
