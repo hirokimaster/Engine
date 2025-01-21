@@ -63,7 +63,10 @@ void GameScene::Initialize()
 	loader_->Arrangement();
 
 	// 仮のUI
-	spriteAttack_.reset(Sprite::Create(texHandleAttack_, { 1000.0f , 100.0f }));
+	spriteAttack_.reset(Sprite::Create(texHandleAttack_, { 1000.0f , 500.0f }));
+	spriteAttack_->SetScale({ 2.0f,2.0f,2.0f });
+	spriteMove_.reset(Sprite::Create(texHandleMove_, { 240.0f,500.0f }));
+	spriteMove_->SetScale({ 2.0f,2.0f,2.0f });
 
 	// ゲームオーバー用
 	texColor_ = { 1.0f,1.0f,1.0f,0.0f };
@@ -163,6 +166,8 @@ void GameScene::Draw()
 
 	spriteAttack_->Draw();
 
+	spriteMove_->Draw();
+
 }
 
 void GameScene::PostProcessDraw()
@@ -211,7 +216,8 @@ void GameScene::LoadTextureFile()
 {
 	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
 	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
-	texHandleAttack_ = TextureManager::Load("resources/UI/attack.png");
+	texHandleAttack_ = TextureManager::Load("resources/UI/RB.png");
+	texHandleMove_ = TextureManager::Load("resources/UI/L.png");
 
 	// ゲームオーバー用
 	texHandleYes_ = TextureManager::Load("resources/UI/yes.png");

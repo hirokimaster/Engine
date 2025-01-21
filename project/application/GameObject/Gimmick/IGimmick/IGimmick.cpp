@@ -11,6 +11,7 @@ void IGimmick::Initialize()
 	worldTransform_.Initialize();
 	SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
+	SetType(ColliderType::AABB);
 }
 
 void IGimmick::Update()

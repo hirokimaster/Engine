@@ -5,8 +5,6 @@ void Laser::Initialize()
 	IGimmick::Initialize();
 	object_->SetModel("LevelEditorObj/laser.obj");
 	texHandle_ = TextureManager::Load("resources/TempTexture/mount.jpg");
-	//worldTransform_.translate = { 0.0f,20.0f, 1000.0f };
-	//worldTransform_.scale = { 20.0f, 1.0f,1.0f };
 	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle_);
 }

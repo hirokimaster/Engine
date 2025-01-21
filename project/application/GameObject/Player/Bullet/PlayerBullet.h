@@ -56,6 +56,8 @@ public:
 
 	Vector3 GetWorldPosition()const override;
 
+	Vector3 GetScale() const override { return worldTransform_.scale; }
+
 #pragma endregion
 
 #pragma region	setter

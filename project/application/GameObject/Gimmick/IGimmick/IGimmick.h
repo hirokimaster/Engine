@@ -33,7 +33,9 @@ public:
 
 #pragma region getter
 
-	virtual Vector3 GetWorldPosition() const = 0;
+	virtual Vector3 GetWorldPosition() const override = 0;
+
+	virtual Vector3 GetScale()const override = 0;
 
 #pragma endregion
 

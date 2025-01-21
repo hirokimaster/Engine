@@ -101,6 +101,8 @@ private:
 	// 仮のUI
 	std::unique_ptr<Sprite> spriteAttack_ = nullptr;
 	uint32_t texHandleAttack_ = 0;
+	std::unique_ptr<Sprite> spriteMove_ = nullptr;
+	uint32_t texHandleMove_ = 0;
 
 	// シーン遷移用
 	bool isTransition_ = false;

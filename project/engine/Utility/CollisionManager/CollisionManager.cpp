@@ -47,10 +47,39 @@ void CollisionManager::CheckCollisionPair(Collider* cA, Collider* cB) {
 
 	}
 	else if (cA->GetType() == ColliderType::AABB && cB->GetType() == ColliderType::Sphere) {
+		// 当たり判定の計算
+		Vector3 cApos = cA->GetWorldPosition();
+		Vector3 cAScale = cA->GetScale();
+		Vector3 cBpos = cB->GetWorldPosition();
 
+		float cBRadius = cB->GetRadious();
+
+		AABB aabb{};
+		aabb.min = cApos - cAScale;
+		aabb.max = cApos + cAScale;
+
+		if (CheckCollision(aabb, cBpos, cBRadius)) {
+			cA->OnCollision();
+			cB->OnCollision();
+		}
 	}
+	else if (cA->GetType() == ColliderType::Sphere && cB->GetType() == ColliderType::AABB) {
+		// 当たり判定の計算
+		Vector3 cApos = cA->GetWorldPosition();
+		Vector3 cBpos = cB->GetWorldPosition();
+		Vector3 cBScale = cB->GetScale();
 
-																				  
+		float cARadius = cA->GetRadious();
+
+		AABB aabb{};
+		aabb.min = cBpos - cBScale;
+		aabb.max = cBpos + cBScale;
+
+		if (CheckCollision(aabb, cApos, cARadius)) {
+			cA->OnCollision();
+			cB->OnCollision();
+		}
+	}																			  
 }
 
 bool CollisionManager::CheckCollision(Vector3 v1, float v1Radious, Vector3 v2, float v2Radious)

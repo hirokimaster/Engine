@@ -81,6 +81,8 @@ public:
 
 	Vector3 GetWorldPosition() const override;
 
+	Vector3 GetScale() const override { return worldTransform_.scale; }
+
 	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const { return bullets_; }
 
 	bool GetIsDead()const { return isDead_; }

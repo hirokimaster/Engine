@@ -104,6 +104,8 @@ public:
 
 	Vector3 GetWorldPosition()const override;
 
+	Vector3 GetScale() const override { return worldTransform_.scale; }
+
 	Vector2 GetScreenPosition2DReticle() { return screenPositionReticle_; }
 
 	Vector3 GetRotate()const { return worldTransform_.rotate; }

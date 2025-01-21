@@ -23,6 +23,8 @@ public:
 
 	Vector3 GetWorldPosition() const override;
 
+	Vector3 GetScale() const override { return worldTransform_.scale; }
+
 	bool GetIsHit()const { return isHit_; }
 
 #pragma endregion

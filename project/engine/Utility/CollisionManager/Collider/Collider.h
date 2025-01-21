@@ -27,7 +27,8 @@ public:
 #pragma region getter
 
 	float GetRadious() { return radious_; }
-    virtual Vector3 GetWorldPosition() const = 0;
+    virtual Vector3 GetWorldPosition() const= 0;
+	virtual Vector3 GetScale() const = 0;
 	uint32_t GetCollosionAttribute() const { return collisionAttribute_; }
 	uint32_t GetCollisionMask() const { return CollisionMask_; }
 	ColliderType GetType()const { return type_; }
