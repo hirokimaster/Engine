@@ -19,6 +19,7 @@ void EnemyBullet::Initialize(uint32_t texHandle)
 
 	SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
+	SetType(ColliderType::Sphere); // どの形状でとるか
 }
 
 void EnemyBullet::Update()

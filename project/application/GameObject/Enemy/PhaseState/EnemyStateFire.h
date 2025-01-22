@@ -15,12 +15,17 @@ public:
 
 	~EnemyStateFire();
 
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="pEnemy"></param>
 	void Update(Enemy* pEnemy)override;
 
+	// 攻撃間隔
 	const uint32_t kFireInterval_ = 60;
 
 private:
 
-	uint32_t fireTimer_ = 60;
+	uint32_t fireTimer_ = 60; // 攻撃タイマー
 
 };

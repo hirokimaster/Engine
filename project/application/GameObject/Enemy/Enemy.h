@@ -93,8 +93,6 @@ public:
 
 	bool GetIsSortie() { return isSortie_; }
 
-	uint32_t GetID() const { return id_; }
-
 #pragma endregion
 
 #pragma region setter
@@ -113,12 +111,9 @@ public:
 
 	void SetIsDead(bool isDead) { isDead_ = isDead; }
 
-	void SetID(int id) { id_ = id; }
-
 #pragma endregion
 
 private:
-	uint32_t id_ = 0; // enemyの識別番号
 	bool isDead_ = false; // デスフラグ
 	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
 	uint32_t texHandleBullet_ = 0; // bulletのtexHandle
@@ -126,16 +121,13 @@ private:
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	static const int32_t kLifeTime_ = 60 * 50; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
-	Player* player_ = nullptr;
+	Player* player_ = nullptr; // playerのポインタ
 	std::unique_ptr<IPhaseStateEnemy> phaseState_; // 行動フェーズ（状態）
 	Vector3 velocity_{}; // 移動ベクトル
 	Vector3 startPosition_{}; // スポーンする座標
 	Vector3 endPosition_{}; // でできた後の最終座標
-	bool isSortie_ = false;
-	bool isParticle_ = false; 
-	uint32_t particleTimer_ = 120;
-	float bulletSpeed_ = 0.2f;
-	ParticleManager* particleManager_ = nullptr;
+	bool isSortie_ = false; // 出撃してるか
+	float bulletSpeed_ = 0.2f; // 弾のスピード
 	uint32_t texHandleExplosion_ = 0;
 	uint32_t texHandleSmoke_ = 0;
 };

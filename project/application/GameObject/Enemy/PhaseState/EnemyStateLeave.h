@@ -15,11 +15,14 @@ public:
 
 	~EnemyStateLeave();
 
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="pEnemy"></param>
 	void Update(Enemy* pEnemy)override;
 
 
 private:
 
-	bool isSetvelocity_ = false;
-	float deadTimer_ = 80.0f;
+
 };

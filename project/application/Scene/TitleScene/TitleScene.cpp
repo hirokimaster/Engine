@@ -25,12 +25,13 @@ void TitleScene::Initialize()
 
 	LoadTextureFile(); // texture読み込み
 
+	// ディゾルブ用
 	spriteWhite_.reset(Sprite::Create(texHandleWhite_));
 	postProcess_->SetMaskTexture(texHandleMask_);
 
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 
-	
+	// タイトルのスプライト
 	spriteTitle_.reset(Sprite::Create(texHandleTitle_, { 650.0f,170.0f }));
 	spriteTitle_->SetAnchorPoint({ 0.5f,0.5f });
 
@@ -79,13 +80,15 @@ void TitleScene::Update()
 		}
 	}
 
-	if (title_) {
+	// クリア、ゲームシーンから戻ってきたとき
+	if (sceneTransition_->GetPreScene() == PreScene::Clear ||
+		sceneTransition_->GetPreScene() == PreScene::Game) {
 		sceneTransition_->FadeOut();
 	}
 
 	// シーン遷移
 	if (isTransition_) {
-		title_ = false;
+		sceneTransition_->SetPreScene(PreScene::Title);
 		sceneTransition_->FadeIn("GAME");
 	}
 

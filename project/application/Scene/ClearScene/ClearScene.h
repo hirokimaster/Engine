@@ -12,6 +12,7 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Skydome/Skydome.h"
 #include "engine/ParticleManager/ParticleManager.h"
+#include "application/SceneTransition/SceneTransition.h"
 
 class ClearScene : public IScene {
 public:
@@ -56,4 +57,6 @@ private:
 	uint32_t texHandleWhite_ = 0;
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 	bool isTransition_;
+	float scaleTimer_ = 0.0f; // claerSpriteのアニメーション用のタイマー
+	SceneTransition* sceneTransition_ = nullptr;
 };

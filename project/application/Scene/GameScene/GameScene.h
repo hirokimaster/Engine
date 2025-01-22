@@ -22,7 +22,7 @@
 #include "application/Loader/Loader.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Skydome/Skydome.h"
-#include "application/GameObject/SceneTransition/SceneTransition.h"
+#include "application/SceneTransition/SceneTransition.h"
 #include "application/GameObject/Gimmick/Laser.h"
 
 class GameScene : public IScene {
@@ -124,13 +124,14 @@ private:
 	// 目的のカメラのオフセットと回転
 	Vector3 offsetEnd_ = { 0, 1.5f, -25.0f };
 	Vector3 cameraRotateEnd_ = { 0, 0, 0 };
-	float t = 0.0f;
+	float rotateParam_ = 0.0f;
 	
 	Vector4 engageColor_ = { 1.0f,1.0f,1.0f,1.0f };
 
 	// ゲームオーバー用
 	bool isGameOver_ = false;
 
+	// コンティニューの時のスプライト
 	std::unique_ptr<Sprite> spriteYes_;
 	std::unique_ptr<Sprite> spriteNo_;
 	std::unique_ptr<Sprite> spriteContinue_;

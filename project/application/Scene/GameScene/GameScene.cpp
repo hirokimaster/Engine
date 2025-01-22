@@ -53,7 +53,7 @@ void GameScene::Initialize()
 	followCamera_->SetRotate(cameraRotateStart_);
 	followCamera_->SetTarget(&player_->GetWorldTransform());
 	followCamera_->SetLockOn(lockOn_.get());
-	t = 0.0f;
+	rotateParam_ = 0.0f;
 
 	// loader
 	uint32_t texhandle = TextureManager::Load("resources/TempTexture/white.png");
@@ -100,7 +100,7 @@ void GameScene::Update()
 
 	// ゲームシーンからクリアへ
 	if (isTransitionClear_) {
-		title_ = true;
+		sceneTransition_->SetPreScene(PreScene::Game);
 		sceneTransition_->FadeIn("CLEAR");
 	}
 
@@ -227,28 +227,32 @@ void GameScene::LoadTextureFile()
 
 void GameScene::StartGame()
 {
-	if (!isTransition_ && t <= 1.0f) {
-		Vector3 currentOffset = Lerp(offsetStart_, offsetEnd_, t);
-
-		// 回転の補間
-		Vector3 currentCameraRotate = Lerp(cameraRotateStart_, cameraRotateEnd_, t);
+	// シーン遷移が終わったかつ補間が終わってない時
+	if (!isTransition_ && rotateParam_ <= 1.0f) {
+		// カメラの位置を補間する
+		Vector3 currentOffset = Lerp(offsetStart_, offsetEnd_, rotateParam_);
+		// 回転の補間をする
+		Vector3 currentCameraRotate = Lerp(cameraRotateStart_, cameraRotateEnd_, rotateParam_);
+		// 正規化
 		currentCameraRotate.y = NormalizeRotation(currentCameraRotate.y);
-
+		// カメラに適用
 		followCamera_->SetOffset(currentOffset);
 		followCamera_->SetRotate(currentCameraRotate);
-
-		t += 0.02f;
+		rotateParam_ += 0.02f;
 	}
 
-	if (t >= 1.0f) {
+	// 補間が終わったら
+	if (rotateParam_ >= 1.0f) {
+		// ゲーム開始
 		isGameStart_ = true;
+		// ブラーをかける
 		RadialParam param = {
 			.center = Vector2(0.5f,0.5f),
 			.blurWidth = 0.005f,
 		};
 		postProcess_->SetEffect(PostEffectType::RadialBlur);
 		postProcess_->SetRadialParam(param);
-		t = 1.0f;
+		rotateParam_ = 1.0f;
 	}
 }
 
@@ -262,7 +266,11 @@ void GameScene::DamegeEffect()
 	if (isPlayerIncurDamage_) {
 		--effectTime_;
 	}
+	else {
+		effectTime_ = 10.0f;
+	}
 
+	// effectTimerが0になるまでにビネットをかける
 	if (effectTime_ > 0.0f && isPlayerIncurDamage_) {
 
 		VignetteParam param = {
@@ -275,13 +283,11 @@ void GameScene::DamegeEffect()
 		followCamera_->StartShake(0.1f, 0.4f); // シェイクさせる
 	}
 
+	// ダメージエフェクト終わり
 	if (effectTime_ < 0.0f) {
 		isPlayerIncurDamage_ = false;
 	}
 
-	if (!isPlayerIncurDamage_) {
-		effectTime_ = 10.0f;
-	}
 }
 
 void GameScene::GameOver()
@@ -305,6 +311,7 @@ void GameScene::GameOver()
 		texColor_.w = 2.0f;
 	}
 
+	// コンティニューするかどうかの選択
 	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_DPAD_LEFT) && selectNo_ == 1) {
 		selectNo_ -= 1;
 	}
@@ -312,6 +319,7 @@ void GameScene::GameOver()
 		selectNo_ += 1;
 	}
 
+	// UIのアニメーション用の変数
 	static float scaleTimer = 0.0f;
 	const float scaleSpeed = 2.0f;
 	const float scaleRange = 0.2f;
@@ -320,6 +328,7 @@ void GameScene::GameOver()
 	scaleTimer += scaleSpeed * 1.0f / 60.0f;
 	float scaleValue = 1.0f + scaleRange * sin(scaleTimer);
 
+	// 選択してるスプライトによって変える
 	if (selectNo_ == 0) {
 		spriteYes_->SetScale({ scaleValue, scaleValue, scaleValue });
 		spriteNo_->SetScale({ 1.0f, 1.0f, 1.0f });
@@ -333,6 +342,7 @@ void GameScene::GameOver()
 		spriteNo_->SetScale({ 1.0f, 1.0f, 1.0f });
 	}
 
+	// コンティニューするならリスタートやめるならタイトル
 	if (texColor_.w >= 2.0f) {
 		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A) && selectNo_ >= 1) {
 			GameManager::GetInstance()->ChangeScene("TITLE");

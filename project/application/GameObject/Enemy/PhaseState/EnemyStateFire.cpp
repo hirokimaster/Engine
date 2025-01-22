@@ -9,6 +9,7 @@ EnemyStateFire::~EnemyStateFire()
 
 void EnemyStateFire::Update(Enemy* pEnemy)
 {
+	// 差分もとめる
 	Vector3 playerPosition = player_->GetWorldPosition();
 	Vector3 enemyPosition = pEnemy->GetWorldPosition();
 	float diffZ = enemyPosition.z - playerPosition.z;
@@ -23,6 +24,7 @@ void EnemyStateFire::Update(Enemy* pEnemy)
 		fireTimer_ = kFireInterval_;
 	}
 
+	// この距離までplayerが接近したら離脱する
 	if (diffZ <= 50.0f) {
 		pEnemy->ChangeState(std::make_unique<EnemyStateLeave>());
 	}

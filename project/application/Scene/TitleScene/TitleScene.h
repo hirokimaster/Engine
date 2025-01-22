@@ -14,7 +14,7 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Skydome/Skydome.h"
-#include "application/GameObject/SceneTransition/SceneTransition.h"
+#include "application/SceneTransition/SceneTransition.h"
 
 class TitleScene : public IScene {
 public:

@@ -2,6 +2,7 @@
 
 void Laser::Initialize()
 {
+	// 共通部分の初期化
 	IGimmick::Initialize();
 	object_->SetModel("LevelEditorObj/laser.obj");
 	texHandle_ = TextureManager::Load("resources/TempTexture/mount.jpg");
@@ -11,6 +12,7 @@ void Laser::Initialize()
 
 void Laser::Update()
 {
+	// 共通部分の更新
 	IGimmick::Update();
 }
 
@@ -33,5 +35,6 @@ Vector3 Laser::GetWorldPosition() const
 
 void Laser::OnCollision()
 {
+	// 当たった
 	isHit_ = true;
 }

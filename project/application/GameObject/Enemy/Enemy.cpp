@@ -21,10 +21,6 @@ void Enemy::Initialize(uint32_t texHandle)
 
 	texHandleExplosion_ = TextureManager::Load("resources/Player/smoke.png");
 	texHandleSmoke_ = TextureManager::Load("resources/TempTexture/circle2.png");
-	particleManager_ = ParticleManager::GetInstance();
-	particleManager_->StartEditor("explosion");
-	particleManager_->CreateParticle("explosion", "Player/plane.obj", texHandleExplosion_);
-	particleManager_->ApplyParticleInfo("explosion", id_);
 	bulletSpeed_ = 0.03f;
 
 
@@ -34,6 +30,7 @@ void Enemy::Initialize(uint32_t texHandle)
 	// 当たり判定の属性設定
 	SetCollosionAttribute(kCollisionAttributeEnemy);
 	SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
+	SetType(ColliderType::Sphere); // 形状
 }
 
 void Enemy::Update()
@@ -43,45 +40,17 @@ void Enemy::Update()
 
 	phaseState_->Update(this); // 状態ごとの更新処理
 
-	if (!isParticle_) {
-		BulletUpdate(); // 弾の更新処理
-	}
-	
+	BulletUpdate(); // 弾の更新処理
+
 	// 時間で消滅
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
 
-	if (particleTimer_ <= 20) {
-		//particleManager_->Clear("explosion", id_);
-		particleTimer_ = 0;
-		isParticle_ = false;
-		isDead_ = true;
-	}
-
-	// 撃破されたときのparticleの更新
-	if (isParticle_ && particleTimer_ >= 30) {
-		particleManager_->Update("explosion", id_);
-		return;
-	}
-	else {
-		particleManager_->SetPosition("explosion", GetWorldPosition(), id_);
-	}
-	
-	if (isParticle_) {
-		--particleTimer_;
-	}
-
-	if (isParticle_ && GetWorldPosition().z < player_->GetWorldPosition().z) {
-		deathTimer_ = 0;
-	}
-	
-
 #ifdef _DEBUG
 
 	ImGui::Begin("Enemy");
 	ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, -100.0f, 100.0f);
-	ImGui::Text("ti = %d", particleTimer_);
 	ImGui::End();
 
 #endif
@@ -90,26 +59,19 @@ void Enemy::Update()
 void Enemy::Draw(Camera& camera)
 {
 	// 出撃するまで出さない
-	if (isSortie_ && !isParticle_) {
+	if (isSortie_) {
 		object_->Draw(camera);
 	}
 
-	if (isParticle_ && particleTimer_ >= 30) {
-		particleManager_->Draw("explosion", camera, id_);
-	}
-
-	if (!isParticle_) {
-		// 弾の描画
-		for (const auto& bullet : bullets_) {
-			bullet->Draw(camera);
-		}
+	for (const auto& bullet : bullets_) {
+		bullet->Draw(camera);
 	}
 
 }
 
 void Enemy::OnCollision()
 {
-	isParticle_ = true;
+	isDead_ = true;
 	// 撃破数を足す
 	player_->AddDestroyCount();
 }

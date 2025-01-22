@@ -18,17 +18,17 @@ void Player::Initialize(uint32_t texHandle)
 	object_->SetTexHandle(texHandle);
 	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 
-	SetCollosionAttribute(kCollisionAttributePlayer);
+	SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
 	SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
+	SetType(ColliderType::Sphere); // どの形状でとるか
 
+	// 調整項目
 	AddAdjustmentVariables();
 	ApplyAdjustmentVariables();
 
 	// 死亡フラグ
 	isDead_ = false;
 	deadTimer_ = 60.0f;
-
-	//bulletId_ = 0;
 }
 
 void Player::Update()
@@ -45,7 +45,7 @@ void Player::Update()
 	// imgui
 	DebugDraw();
 
-	// 撃破カウントが一定数いったらマルチロックオンにする
+	// 撃破カウントが一定数いったらマルチロックオンにする(まだできてない)
 	if (destroyCount_ >= 5) {
 		//lockOn_->SetIsLockOnMode(true);
 		destroyCount_ = 0;
@@ -109,8 +109,6 @@ void Player::Attack()
 					velocity = Normalize(velocity);
 					velocity = Multiply(bulletSpeed_, diff);
 					std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-					//bullet->SetId(bulletId_);
-					//++bulletId_;
 					bullet->SetLockOn(lockOn_);
 					bullet->Initialize(texHandleBullet_);
 					bullet->SetPosition(WorldPos);
@@ -127,8 +125,6 @@ void Player::Attack()
 			velocity = bulletSpeed_ * velocity;
 			// 弾を生成し、初期化
 			std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-			//bullet->SetId(bulletId_);
-			//++bulletId_;
 			bullet->Initialize(texHandleBullet_);
 			const float kDistanceZ = 5.0f;
 			Vector3 position = WorldPos;

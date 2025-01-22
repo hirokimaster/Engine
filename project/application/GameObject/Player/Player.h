@@ -147,16 +147,15 @@ private:
 	float bulletSpeed_;
 	std::list<std::unique_ptr<PlayerBullet>> bullets_; // 弾のリスト
 	uint32_t texHandleBullet_ = 0;
-	LockOn* lockOn_ = nullptr;
+	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
 	Vector2 screenPositionReticle_{};
 	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
-	bool isDead_ = false;
-	bool isHitEnemyFire_ = false;
+	bool isDead_ = false; // 死んだか
+	bool isHitEnemyFire_ = false; // 敵の攻撃が当たったか
 	int32_t hp_ = 1;
 	float deadTimer_ = 60.0f;
 	uint32_t destroyCount_ = 0; // 敵を倒した数
 	Vector3 moveMinLimit_ = { -30.0f, 10.0f, 0.0f }; // 移動最小値
 	Vector3 moveMaxLimit_ = { 30.0f, 50.0f, 0.0f };    // 移動最大値
-	//uint32_t bulletId_ = 0;
 };
