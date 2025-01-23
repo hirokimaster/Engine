@@ -65,16 +65,6 @@ public:
 
 	const std::list<std::unique_ptr<Enemy>>& GetEnemys() const{ return enemys_; }
 
-	std::unique_ptr<Enemy>* FindEnemyByID(uint32_t id)
-	{
-		for (auto& enemy : enemys_) {
-			if (enemy->GetID() == id) {
-				return &enemy;
-			}
-		}
-		return nullptr;
-	}
-
 #pragma endregion
 
 #pragma region setter
