@@ -103,32 +103,6 @@ void TitleScene::Update()
 	camera_.matProjection = followCamera_->GetCamera().matProjection;
 	camera_.TransferMatrix();
 
-	// シーンのリセット
-	if (worldTransform_.translate.z >= 2500.0f) {
-		isDissolve_ = true;
-	}
-
-	if (isDissolve_) {
-		postProcess_->SetDissolveParam(param_);
-		param_.threshold += 0.02f;
-	}
-
-	if (param_.threshold >= 1.1f) {
-		isDissolve_ = false;
-		isDissolve2_ = true;
-		worldTransform_.translate.z = 0.0f;
-	}
-
-	if (isDissolve2_) {
-		postProcess_->SetDissolveParam(param_);
-		param_.threshold -= 0.02f;
-	}
-
-	if (param_.threshold <= 0.0f && !isDissolve_) {
-		param_.threshold = 0.0f;
-		isDissolve2_ = false;
-	}
-
 	// 天球
 	skydome_->Update();
 }

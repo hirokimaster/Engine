@@ -69,8 +69,6 @@ private:
 	DissolveParam param_{};
 	std::unique_ptr<Sprite> spriteWhite_;
 	uint32_t texHandleWhite_ = 0;
-	bool isDissolve_ = false;
-	bool isDissolve2_ = false;
 	uint32_t animationTimer_ = 0;
 
 	// シーン遷移用
