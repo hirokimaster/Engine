@@ -121,7 +121,7 @@ void Enemy::ApplyAdjustmentVariables()
 	bulletSpeed_ = variables->GetValue<float>(groupName, "bulletSpeed");
 }
 
-void Enemy::ChangeState(std::unique_ptr<IPhaseStateEnemy> newState)
+void Enemy::ChangeState(std::unique_ptr<BasePhaseStateEnemy> newState)
 {
 	phaseState_ = std::move(newState);
 }

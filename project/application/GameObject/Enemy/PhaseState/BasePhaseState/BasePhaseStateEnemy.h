@@ -3,13 +3,13 @@
 class Player;
 class Enemy;
 
-class IPhaseStateEnemy {
+class BasePhaseStateEnemy {
 public:
 
 	/// <summary>
 	/// 仮想デストラクタ
 	/// </summary>
-	virtual ~IPhaseStateEnemy();
+	virtual ~BasePhaseStateEnemy();
 
 	/// <summary>
 	/// 更新処理

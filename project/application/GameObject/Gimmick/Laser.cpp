@@ -3,21 +3,24 @@
 void Laser::Initialize()
 {
 	// 共通部分の初期化
-	IGimmick::Initialize();
+	BaseObject::Initialize();
 	object_->SetModel("LevelEditorObj/laser.obj");
 	texHandle_ = TextureManager::Load("resources/TempTexture/mount.jpg");
 	object_->SetTexHandle(texHandle_);
+	SetCollosionAttribute(kCollisionAttributeEnemyBullet);
+	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
+	SetType(ColliderType::Sphere); // 形状
 }
 
 void Laser::Update()
 {
 	// 共通部分の更新
-	IGimmick::Update();
+	BaseObject::Update();
 }
 
 void Laser::Draw(Camera& camera)
 {
-	IGimmick::Draw(camera);
+	BaseObject::Draw(camera);
 }
 
 Vector3 Laser::GetWorldPosition() const

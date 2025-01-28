@@ -76,12 +76,11 @@ void Player::Move()
 	diff = Normalize(diff);
 	Vector3 velocity = moveSpeed_ * diff;
 	Vector3 position = object_->GetWorldTransform().translate + velocity;
-	object_->SetPosition(position);
 
 	// 移動範囲を制限
 	position.x = std::clamp(position.x, moveMinLimit_.x, moveMaxLimit_.x);
 	position.y = std::clamp(position.y, moveMinLimit_.y, moveMaxLimit_.y);
-
+	object_->SetPosition(position);
 }
 
 void Player::Attack()

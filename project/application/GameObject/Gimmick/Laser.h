@@ -1,7 +1,7 @@
 #pragma once
-#include "application/GameObject/Gimmick/IGimmick/IGimmick.h"
+#include "application/GameObject/BaseObject/BaseObject.h"
 
-class Laser : public IGimmick {
+class Laser : public BaseObject {
 public:
 	/// <summary>
 	/// 初期化

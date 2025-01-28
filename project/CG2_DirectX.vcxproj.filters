@@ -86,7 +86,7 @@
     <ClCompile Include="Engine\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Base\WinApp\WinApp.cpp" />
     <ClCompile Include="Engine\Transform\WorldTransform.cpp" />
-    <ClCompile Include="application\GameObject\Enemy\PhaseState\IPhaseState\IPhaseStateEnemy.cpp" />
+    <ClCompile Include="application\GameObject\Enemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.cpp" />
     <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateFire.cpp" />
     <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateLeave.cpp" />
     <ClCompile Include="engine\ComputePipeline\ComputePipeline.cpp" />
@@ -96,14 +96,14 @@
     <ClCompile Include="engine\ParticleManager\ParticleManager.cpp" />
     <ClCompile Include="application\SceneTransition\SceneTransition.cpp" />
     <ClCompile Include="application\GameObject\Gimmick\Laser.cpp" />
-    <ClCompile Include="application\GameObject\Gimmick\IGimmick\IGimmick.cpp" />
+    <ClCompile Include="application\GameObject\BaseObject\BaseObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\GameManager\GameManager.h" />
     <ClInclude Include="application\GameObject\Enemy\Bullet\EnemyBullet.h" />
     <ClInclude Include="application\GameObject\Enemy\Enemy.h" />
     <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateSortie.h" />
-    <ClInclude Include="application\GameObject\Enemy\PhaseState\IPhaseState\IPhaseStateEnemy.h" />
+    <ClInclude Include="application\GameObject\Enemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.h" />
     <ClInclude Include="application\GameObject\FollowCamera\FollowCamera.h" />
     <ClInclude Include="application\GameObject\LockOn\LockOn.h" />
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
@@ -170,7 +170,7 @@
     <ClInclude Include="engine\ParticleSystem\ParticleEditor.h" />
     <ClInclude Include="engine\ParticleManager\ParticleManager.h" />
     <ClInclude Include="application\SceneTransition\SceneTransition.h" />
-    <ClInclude Include="application\GameObject\Gimmick\IGimmick\IGimmick.h" />
+    <ClInclude Include="application\GameObject\BaseObject\BaseObject.h" />
     <ClInclude Include="application\GameObject\Gimmick\Laser.h" />
   </ItemGroup>
   <ItemGroup>

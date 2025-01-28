@@ -3,13 +3,13 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "engine/TextureManager/TextureManager.h"
 
-class IGimmick : public Collider{
+class BaseObject : public Collider{
 public:
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	virtual ~IGimmick();
+	virtual ~BaseObject();
 
 	/// <summary>
 	/// 初期化

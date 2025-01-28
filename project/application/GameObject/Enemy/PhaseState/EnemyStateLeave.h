@@ -7,10 +7,10 @@
 */
 
 #pragma once
-#include "application/GameObject/Enemy/PhaseState/IPhaseState/IPhaseStateEnemy.h"
+#include "application/GameObject/Enemy/PhaseState/BasePhaseState/BasePhaseStateEnemy.h"
 #include <cstdint>
 
-class EnemyStateLeave : public IPhaseStateEnemy {
+class EnemyStateLeave : public BasePhaseStateEnemy {
 public:
 
 	~EnemyStateLeave();

@@ -5,9 +5,9 @@
 */
 
 #pragma once
-#include "application/GameObject/Enemy/PhaseState/IPhaseState/IPhaseStateEnemy.h"
+#include "application/GameObject/Enemy/PhaseState/BasePhaseState/BasePhaseStateEnemy.h"
 
-class EnemyStateSortie : public IPhaseStateEnemy {
+class EnemyStateSortie : public BasePhaseStateEnemy {
 public:
 
 	~EnemyStateSortie();

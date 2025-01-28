@@ -46,7 +46,7 @@ public:
 	/// 状態を変える
 	/// </summary>
 	/// <param name="newState"></param>
-	void ChangeState(std::unique_ptr<IPhaseStateEnemy> newState);
+	void ChangeState(std::unique_ptr<BasePhaseStateEnemy> newState);
 
 	/// <summary>
 	/// 攻撃
@@ -121,7 +121,7 @@ private:
 	static const int32_t kLifeTime_ = 60 * 50; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	Player* player_ = nullptr; // playerのポインタ
-	std::unique_ptr<IPhaseStateEnemy> phaseState_; // 行動フェーズ（状態）
+	std::unique_ptr<BasePhaseStateEnemy> phaseState_; // 行動フェーズ（状態）
 	Vector3 velocity_{}; // 移動ベクトル
 	Vector3 startPosition_{}; // スポーンする座標
 	Vector3 endPosition_{}; // でできた後の最終座標

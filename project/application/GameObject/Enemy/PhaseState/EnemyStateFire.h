@@ -6,11 +6,11 @@
 */
 
 #pragma once
-#include "application/GameObject/Enemy/PhaseState/IPhaseState/IPhaseStateEnemy.h"
+#include "application/GameObject/Enemy/PhaseState/BasePhaseState/BasePhaseStateEnemy.h"
 #include "application/GameObject/Enemy/PhaseState/EnemyStateLeave.h"
 #include <cstdint>
 
-class EnemyStateFire : public IPhaseStateEnemy {
+class EnemyStateFire : public BasePhaseStateEnemy {
 public:
 
 	~EnemyStateFire();
