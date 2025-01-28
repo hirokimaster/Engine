@@ -33,7 +33,7 @@ void GameScene::Initialize()
 	lockOn_ = std::make_unique<LockOn>();
 	// player
 	player_ = std::make_unique<Player>();
-	player_->Initialize(texHandlePlayer_);
+	player_->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
 	lockOn_->Initialize();
 	player_->SetLockOn(lockOn_.get());
 	// rail
@@ -56,23 +56,23 @@ void GameScene::Initialize()
 	rotateParam_ = 0.0f;
 
 	// loader
-	uint32_t texhandle = TextureManager::Load("resources/TempTexture/white.png");
+	TextureManager::Load("resources/TempTexture/white.png");
 	loader_ = std::make_unique<Loader>();
 	loader_->SetPlayer(player_.get());
-	loader_->SetTexHandle(texhandle);
+	loader_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
 	loader_->Arrangement();
 
 	// 仮のUI
-	spriteAttack_.reset(Sprite::Create(texHandleAttack_, { 1000.0f , 500.0f }));
+	spriteAttack_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/RB.png"),{ 1000.0f , 500.0f }));
 	spriteAttack_->SetScale({ 2.0f,2.0f,2.0f });
-	spriteMove_.reset(Sprite::Create(texHandleMove_, { 240.0f,500.0f }));
+	spriteMove_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/L.png"),{ 240.0f,500.0f }));
 	spriteMove_->SetScale({ 2.0f,2.0f,2.0f });
 
 	// ゲームオーバー用
 	texColor_ = { 1.0f,1.0f,1.0f,0.0f };
-	spriteYes_.reset(Sprite::Create(texHandleYes_, { 400.0f,400.0f }, texColor_));
-	spriteNo_.reset(Sprite::Create(texHandleNo_, { 750.0f,400.0f }, texColor_));
-	spriteContinue_.reset(Sprite::Create(texHandleContinue_, { 450.0f,250.0f }, texColor_));
+	spriteYes_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/yes.png"), { 400.0f,400.0f }, texColor_));
+	spriteNo_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/no.png"), { 750.0f,400.0f }, texColor_));
+	spriteContinue_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/continue.png"), { 450.0f,250.0f }, texColor_));
 
 	// ゲームスタート
 	isGameStart_ = false;
@@ -214,15 +214,15 @@ void GameScene::Collision()
 
 void GameScene::LoadTextureFile()
 {
-	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
-	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
-	texHandleAttack_ = TextureManager::Load("resources/UI/RB.png");
-	texHandleMove_ = TextureManager::Load("resources/UI/L.png");
+	TextureManager::Load("resources/TempTexture/white2.png");
+	TextureManager::Load("resources/TempTexture/white.png");
+	TextureManager::Load("resources/UI/RB.png");
+	TextureManager::Load("resources/UI/L.png");
 
 	// ゲームオーバー用
-	texHandleYes_ = TextureManager::Load("resources/UI/yes.png");
-	texHandleNo_ = TextureManager::Load("resources/UI/no.png");
-	texHandleContinue_ = TextureManager::Load("resources/UI/continue.png");
+	TextureManager::Load("resources/UI/yes.png");
+	TextureManager::Load("resources/UI/no.png");
+	TextureManager::Load("resources/UI/continue.png");
 }
 
 void GameScene::StartGame()

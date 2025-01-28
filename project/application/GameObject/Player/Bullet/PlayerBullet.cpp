@@ -15,9 +15,6 @@ void PlayerBullet::Initialize(uint32_t texHandle)
 
 	SetCollosionAttribute(kCollisionAttributePlayerBullet);
 	SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
-
-	// particle
-	texHandleSmoke_ = TextureManager::Load("resources/TempTexture/circle2.png");
 }
 
 void PlayerBullet::Update()

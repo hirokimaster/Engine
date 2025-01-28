@@ -51,8 +51,6 @@ public: // メンバ関数
 
 private:
 	Camera camera_;
-	std::unique_ptr<Sprite> sprite_ = nullptr;
-	uint32_t texHandle_ = 0;
 };
 
 

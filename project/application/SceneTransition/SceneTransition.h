@@ -60,7 +60,6 @@ private:
 private:
 	// シーン遷移時に出すsprite
 	std::unique_ptr<Sprite> spriteWhite_ = nullptr;
-	uint32_t texHandleWhite_ = 0;
 	float alpha_ = 0.0f;
 	bool fadeState_ = false; // falseの時in,trueの時out
 	PreScene preScene_ = PreScene::Title; // 最初はタイトル

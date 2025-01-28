@@ -146,7 +146,6 @@ private:
 	float moveSpeed_; // 移動スピード
 	float bulletSpeed_;
 	std::list<std::unique_ptr<PlayerBullet>> bullets_; // 弾のリスト
-	uint32_t texHandleBullet_ = 0;
 	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
 	Vector2 screenPositionReticle_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;

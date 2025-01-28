@@ -28,11 +28,26 @@ public:
 	/// <summary>
 	/// 読み込み
 	/// </summary>
-	static uint32_t Load(const std::string& fileName);
+	static void Load(const std::string& fileName);
 
 #pragma region getter
 
 	const DirectX::TexMetadata& GetMetaData(uint32_t textureIndex);
+
+	/// <summary>
+	/// mapからtextureHandleを取り出す
+	/// </summary>
+	/// <param name="name"></param>
+	/// <returns></returns>
+	static uint32_t GetTexHandle(const std::string& name) {
+		std::string path = "resources/" + name;
+		auto it = TextureManager::GetInstance()->fileHandleMap.find(path);
+		if (it == TextureManager::GetInstance()->fileHandleMap.end()) {
+			// ファイル名が存在しない場合
+			assert(0);
+		}
+		return it->second;
+	}
 
 #pragma endregion
 

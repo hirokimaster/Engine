@@ -14,8 +14,7 @@ void Player::Initialize(uint32_t texHandle)
 	object_->SetModel("Player/Jet.obj");
 	object_->SetPosition({ 0,-20.0f,0 });
 	object_->SetTexHandle(texHandle);
-	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
-
+	
 	SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
 	SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
 	SetType(ColliderType::Sphere); // どの形状でとるか
@@ -108,7 +107,7 @@ void Player::Attack()
 					velocity = Multiply(bulletSpeed_, diff);
 					std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
 					bullet->SetLockOn(lockOn_);
-					bullet->Initialize(texHandleBullet_);
+					bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
 					bullet->SetPosition(WorldPos);
 					bullet->SetVelocity(velocity);
 					bullets_.push_back(std::move(bullet));
@@ -123,7 +122,7 @@ void Player::Attack()
 			velocity = bulletSpeed_ * velocity;
 			// 弾を生成し、初期化
 			std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-			bullet->Initialize(texHandleBullet_);
+			bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
 			const float kDistanceZ = 5.0f;
 			Vector3 position = WorldPos;
 			position.z = position.z + kDistanceZ;

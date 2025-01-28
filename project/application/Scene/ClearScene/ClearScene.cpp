@@ -17,12 +17,11 @@ ClearScene::~ClearScene()
 void ClearScene::Initialize()
 {
 	isTransition_ = true;
-	texHandleClear_ = TextureManager::Load("resources/Scene/clear.png");
-	spriteClear_.reset(Sprite::Create(texHandleClear_, { 640.0f,260.0f }));
+	TextureManager::Load("resources/Scene/clear.png");
+	spriteClear_.reset(Sprite::Create(TextureManager::GetTexHandle("Scene/clear.png"), { 640.0f,260.0f }));
 	spriteClear_->SetAnchorPoint({ 0.5f,0.5f });
 
-	texHandlePushA_ = TextureManager::Load("resources/UI/A.png");
-	spritePushA_.reset(Sprite::Create(texHandlePushA_, { 620.0f,500.0f }));
+	spritePushA_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/A.png"), { 620.0f,500.0f }));
 
 	// 天球
 	skydome_ = std::make_unique<Skydome>();

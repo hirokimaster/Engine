@@ -120,14 +120,12 @@ private:
 	float maxDistance_ = 100.0f;
 	std::list<Vector2> positionScreen_{};
 	std::list<std::unique_ptr<Sprite>> sprite_;
-	uint32_t texHandle2DReticle_ = 0;
 	WorldTransform worldTransform3DReticle_; // reticleのworldTransform
 	std::unique_ptr<Sprite> sprite2DReticle_;
 	Vector2 screenPositionReticle_{};
 	bool isLockOnMode_ = false;
 	float lockOnTimer_ = 60.0f;
 	bool startLockOnTimer_ = false;
-	uint32_t texHandleLockOnReticle_ = 0;
 	std::unique_ptr<Sprite> spriteLockOnReticle_;
 	Vector2 reticlePosition_ = { 640.0f, 360.0f }; // reticleの範囲制限用のposition
 	std::unique_ptr<Object3DPlacer> debugReticle_ = nullptr;

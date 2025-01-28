@@ -8,9 +8,9 @@
 
 void LockOn::Initialize()
 {
-	texHandle2DReticle_ = TextureManager::Load("resources/Player/reticle2.png");
-	sprite2DReticle_.reset(Sprite::Create(texHandle2DReticle_, reticlePosition_));
-	spriteLockOnReticle_.reset(Sprite::Create(texHandle2DReticle_, { 640.0f,360.0f }));
+	TextureManager::Load("resources/Player/reticle2.png");
+	sprite2DReticle_.reset(Sprite::Create(TextureManager::GetTexHandle("Player/reticle2.png"), reticlePosition_));
+	spriteLockOnReticle_.reset(Sprite::Create(TextureManager::GetTexHandle("Player/reticle2.png"), { 640.0f,360.0f }));
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
@@ -66,7 +66,7 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 		for (auto itr = positionScreen_.begin(); itr != positionScreen_.end(); ++itr) {
 			std::unique_ptr<Sprite> sprite;
-			sprite.reset(Sprite::Create(texHandle2DReticle_, { (*itr).x,(*itr).y }));
+			sprite.reset(Sprite::Create(TextureManager::GetTexHandle("Player/reticle2.png"), { (*itr).x,(*itr).y }));
 			sprite->SetAnchorPoint({ 0.5f,0.5f });
 			sprite_.push_back(std::move(sprite));
 		}

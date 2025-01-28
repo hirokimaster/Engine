@@ -10,13 +10,13 @@
 
 void Skydome::Initialize()
 {
-	texHandle_ = TextureManager::GetInstance()->Load("resources/skydome/sky2.png");
+	TextureManager::GetInstance()->Load("resources/skydome/sky2.png");
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
 	object_->SetModel("skydome/skydome.obj");
 	Vector3 scale{ 9500.0f,9500.0f,9500.0f };
 	object_->SetScale(scale);
-	object_->SetTexHandle(texHandle_);
+	object_->SetTexHandle(TextureManager::GetTexHandle("skydome/sky2.png"));
 	material_.color = { 1.0f,1.0f,1.0f,1.0f };
 	material_.enableLighting = false;
 	object_->SetMaterialProperty(material_);

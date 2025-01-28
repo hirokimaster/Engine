@@ -40,6 +40,5 @@ private:
 	void OnCollision()override;
 
 private:
-	uint32_t texHandle_ = 0;
 	bool isHit_ = false;
 };

@@ -129,9 +129,9 @@ LevelData* Loader::Load(const std::string& fileName)
 void Loader::Arrangement()
 {
     // 使うテクスチャ
-	uint32_t texHandle = TextureManager::Load("resources/TempTexture/noise0.png");
-	uint32_t texHandleRoad = TextureManager::Load("resources/Stage/road.png");
-	uint32_t texHandleMount = TextureManager::Load("resources/TempTexture/mount.jpg");
+	TextureManager::Load("resources/TempTexture/noise0.png");
+	TextureManager::Load("resources/Stage/road.png");
+	TextureManager::Load("resources/TempTexture/mount.jpg");
 
 	levelData_ = Load("level2");
 
@@ -141,7 +141,7 @@ void Loader::Arrangement()
 		// モデルを指定して3Dオブジェクトを生成
 		if (objectData.fileName == "enemy") {
 			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
-			newEnemy->Initialize(texHandle);
+			newEnemy->Initialize(TextureManager::GetTexHandle("TempTexture/noise0.png"));
 			newEnemy->SetPlayer(player_);
 			newEnemy->SetPosition(objectData.controlPointStart);
 			newEnemy->SetStartPosition(objectData.controlPointStart);
@@ -153,7 +153,7 @@ void Loader::Arrangement()
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/grounds.obj");
-			newObject->SetTexHandle(texHandleRoad);
+			newObject->SetTexHandle(TextureManager::GetTexHandle("Stage/road.png"));
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
@@ -164,7 +164,7 @@ void Loader::Arrangement()
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
-			newObject->SetTexHandle(texHandleMount);
+			newObject->SetTexHandle(TextureManager::GetTexHandle("TempTexture/mount.jpg"));
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
@@ -174,7 +174,7 @@ void Loader::Arrangement()
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
-			newObject->SetTexHandle(texHandleMount);
+			newObject->SetTexHandle(TextureManager::GetTexHandle("TempTexture/mount.jpg"));
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);

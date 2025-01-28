@@ -44,9 +44,7 @@ public:
 private:
 	Camera camera_{};
 	std::unique_ptr<Sprite> spriteClear_ = nullptr;
-	uint32_t texHandleClear_ = 0;
 	std::unique_ptr<Sprite> spritePushA_ = nullptr; // pushAのsprite
-	uint32_t texHandlePushA_ = 0;
 	uint32_t animationTimer_ = 0;
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 	bool isTransition_;

@@ -18,8 +18,6 @@ Demo::~Demo()
 void Demo::Initialize()
 {
 	camera_.Initialize();
-	texHandle_ = TextureManager::GetInstance()->Load("resources/TempTexture/smoke.dds");
-	sprite_.reset(Sprite::Create(texHandle_));
 
 }
 
@@ -31,7 +29,6 @@ void Demo::Update()
 
 void Demo::Draw()
 {
-	sprite_->Draw();
 }
 
 void Demo::PostProcessDraw()

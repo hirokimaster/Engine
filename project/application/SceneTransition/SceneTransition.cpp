@@ -8,8 +8,7 @@ SceneTransition* SceneTransition::GetInstance()
 
 void SceneTransition::Initialize()
 {
-	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
-	spriteWhite_.reset(Sprite::Create(texHandleWhite_, { 0.0f,0.0f }, { 1.0f,1.0f,1.0f,0.0f }));
+	spriteWhite_.reset(Sprite::Create(TextureManager::GetTexHandle("TempTexture/white2.png"), { 0.0f,0.0f }, { 1.0f,1.0f,1.0f,0.0f }));
 }
 
 void SceneTransition::FadeIn(const std::string& SceneName)

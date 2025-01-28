@@ -57,17 +57,12 @@ private:
 private:
 	std::unique_ptr<PostProcess> postProcess_ = nullptr; // postProcess
 	std::unique_ptr<Sprite> spriteTitle_ = nullptr; // Titleのsprite
-	uint32_t texHandleTitle_ = 0;
 	std::unique_ptr<Sprite> spritePushA_ = nullptr; // pushAのsprite
-	uint32_t texHandlePushA_ = 0;
 	std::unique_ptr<Object3DPlacer> objectPlayer_ = nullptr;
-	uint32_t texHandlePlayer_ = 0;
 	Camera camera_{};
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
-	uint32_t texHandleMask_ = 0;
 	DissolveParam param_{};
 	std::unique_ptr<Sprite> spriteWhite_;
-	uint32_t texHandleWhite_ = 0;
 	uint32_t animationTimer_ = 0;
 
 	// シーン遷移用

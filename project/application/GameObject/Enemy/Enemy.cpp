@@ -13,12 +13,7 @@ void Enemy::Initialize(uint32_t texHandle)
 	object_->Initialize();
 	object_->SetModel("LevelEditorObj/enemy.obj");
 	object_->SetTexHandle(texHandle);
-
-	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-
-	texHandleExplosion_ = TextureManager::Load("resources/Player/smoke.png");
-	texHandleSmoke_ = TextureManager::Load("resources/TempTexture/circle2.png");
 	bulletSpeed_ = 0.03f;
 
 
@@ -78,7 +73,7 @@ void Enemy::Fire()
 
 		// 弾を生成して初期化
 		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(texHandleBullet_);
+		bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
 		bullet->SetPosition(GetWorldPosition());
 		bullet->SetVelocity(velocity);
 		// 弾をセット

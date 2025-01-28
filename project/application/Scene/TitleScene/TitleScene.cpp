@@ -26,23 +26,23 @@ void TitleScene::Initialize()
 	LoadTextureFile(); // texture読み込み
 
 	// ディゾルブ用
-	spriteWhite_.reset(Sprite::Create(texHandleWhite_));
-	postProcess_->SetMaskTexture(texHandleMask_);
+	spriteWhite_.reset(Sprite::Create(TextureManager::GetTexHandle("TempTexture/white2.png")));
+	postProcess_->SetMaskTexture(TextureManager::GetTexHandle("TempTexture/noise0.png"));
 
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 
 	// タイトルのスプライト
-	spriteTitle_.reset(Sprite::Create(texHandleTitle_, { 650.0f,170.0f }));
+	spriteTitle_.reset(Sprite::Create(TextureManager::GetTexHandle("Scene/title.png"), { 650.0f,170.0f }));
 	spriteTitle_->SetAnchorPoint({ 0.5f,0.5f });
 
-	texHandlePushA_ = TextureManager::Load("resources/UI/A.png");
-	spritePushA_.reset(Sprite::Create(texHandlePushA_, { 620.0f,500.0f }));
+	// Aボタンのスプライト
+	spritePushA_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/A.png"), { 620.0f,500.0f }));
 
 	// 自機モデル
 	objectPlayer_ = std::make_unique<Object3DPlacer>();
 	objectPlayer_->Initialize();
 	objectPlayer_->SetModel("Player/Jet.obj");
-	objectPlayer_->SetTexHandle(texHandleWhite_);
+	objectPlayer_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white2.png"));
 	
 	// カメラ
 	camera_.Initialize();
@@ -138,8 +138,10 @@ void TitleScene::PostProcessDraw()
 
 void TitleScene::LoadTextureFile()
 {
-	texHandleMask_ = TextureManager::Load("resources/TempTexture/noise0.png");
-	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
-	texHandleTitle_ = TextureManager::Load("resources/Scene/title.png");
-	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
+	TextureManager::Load("resources/TempTexture/noise0.png");
+	TextureManager::Load("resources/TempTexture/white2.png");
+	TextureManager::Load("resources/Scene/title.png");
+	TextureManager::Load("resources/Scene/title.png");
+	TextureManager::Load("resources/TempTexture/white.png");
+	TextureManager::Load("resources/UI/A.png");
 }

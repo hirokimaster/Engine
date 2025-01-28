@@ -88,7 +88,6 @@ private:
 	Camera camera_{};
 	// player
 	std::unique_ptr<Player> player_ = nullptr;
-	uint32_t texHandlePlayer_ = 0;
 	std::unique_ptr<Rail> rail_ = nullptr;
 
 	std::unique_ptr<CollisionManager> collisionManager_ = nullptr; // 衝突判定まとめ
@@ -100,9 +99,7 @@ private:
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
 	// 仮のUI
 	std::unique_ptr<Sprite> spriteAttack_ = nullptr;
-	uint32_t texHandleAttack_ = 0;
 	std::unique_ptr<Sprite> spriteMove_ = nullptr;
-	uint32_t texHandleMove_ = 0;
 
 	// シーン遷移用
 	bool isTransition_ = false;
@@ -111,7 +108,6 @@ private:
 	SceneTransition* sceneTransition_ = nullptr;
 
 	// postEffect用
-	uint32_t texHandleWhite_ = 0;
 	std::unique_ptr<PostProcess> postProcess_;
 	bool isPlayerIncurDamage_ = false;
 	float effectTime_ = 30.0f;
@@ -135,9 +131,6 @@ private:
 	std::unique_ptr<Sprite> spriteYes_;
 	std::unique_ptr<Sprite> spriteNo_;
 	std::unique_ptr<Sprite> spriteContinue_;
-	uint32_t texHandleYes_ = 0;
-	uint32_t texHandleNo_ = 0;
-	uint32_t texHandleContinue_ = 0;
 	Vector4 texColor_{};
 	uint32_t selectNo_ = 0;
 

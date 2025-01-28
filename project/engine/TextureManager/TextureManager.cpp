@@ -11,21 +11,21 @@ TextureManager* TextureManager::GetInstance() {
 	return &instance;
 }
 
-uint32_t TextureManager::Load(const std::string& fileName) {
+void TextureManager::Load(const std::string& fileName) {
 
 	auto it = TextureManager::GetInstance()->fileHandleMap.find(fileName);
 	if (it != TextureManager::GetInstance()->fileHandleMap.end()) {
 		// 既にロードされたファイルの場合、そのハンドルを返す
-		return it->second;
+		TextureManager::GetInstance()->fileHandleMap[fileName] = it->second;
+		return;
 	}
-
-	// 新しいのならindexをずらして新しく作る
-	SrvManager::GetInstance()->Allocate();
-	uint32_t newIndex = SrvManager::GetInstance()->GetIndex();
-	TextureManager::GetInstance()->fileHandleMap[fileName] = newIndex;
-	LoadTexture(fileName, newIndex);
-
-	return newIndex;
+	else {
+		// 新しいのならindexをずらして新しく作る
+		SrvManager::GetInstance()->Allocate();
+		uint32_t newIndex = SrvManager::GetInstance()->GetIndex();
+		TextureManager::GetInstance()->fileHandleMap[fileName] = newIndex;
+		LoadTexture(fileName, newIndex);
+	}
 }
 
 

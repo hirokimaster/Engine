@@ -5,8 +5,7 @@ void Laser::Initialize()
 	// 共通部分の初期化
 	BaseObject::Initialize();
 	object_->SetModel("LevelEditorObj/laser.obj");
-	texHandle_ = TextureManager::Load("resources/TempTexture/mount.jpg");
-	object_->SetTexHandle(texHandle_);
+	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/mount.jpg"));
 	SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
 	SetType(ColliderType::Sphere); // 形状
