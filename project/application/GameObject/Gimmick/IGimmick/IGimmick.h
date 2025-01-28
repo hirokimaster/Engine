@@ -46,6 +46,5 @@ public:
 #pragma endregion
 
 protected:
-	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 };

@@ -30,8 +30,6 @@ public:
 	void Draw(Camera& camera);
 
 private:
-	
-	WorldTransform worldTransform_;
 	std::unique_ptr<Object3DPlacer> object_;
 	uint32_t texHandle_ = 0;
 	Material material_{};

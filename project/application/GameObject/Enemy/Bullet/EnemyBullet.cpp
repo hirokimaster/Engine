@@ -12,9 +12,6 @@ void EnemyBullet::Initialize(uint32_t texHandle)
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
 	object_->SetModel("Enemy/cube.obj");
-	worldTransform_.Initialize();
-	object_->SetWorldTransform(worldTransform_);
-	worldTransform_.scale = { 0.5f,0.5f,0.5f };
 	object_->SetTexHandle(texHandle);
 
 	SetCollosionAttribute(kCollisionAttributeEnemyBullet);
@@ -26,6 +23,7 @@ void EnemyBullet::Update()
 {
 	Move();
 	BulletErase();
+	object_->Update();
 }
 
 void EnemyBullet::Draw(Camera& camera)
@@ -35,8 +33,9 @@ void EnemyBullet::Draw(Camera& camera)
 
 void EnemyBullet::Move()
 {
-	worldTransform_.translate = worldTransform_.translate + velocity_;
-	worldTransform_.UpdateMatrix();
+	Vector3 move{};
+	move = object_->GetWorldTransform().translate + velocity_;
+	object_->SetPosition(move);
 }
 
 void EnemyBullet::BulletErase()
@@ -57,9 +56,9 @@ Vector3 EnemyBullet::GetWorldPosition() const
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = worldTransform_.matWorld.m[3][0];
-	worldPos.y = worldTransform_.matWorld.m[3][1];
-	worldPos.z = worldTransform_.matWorld.m[3][2];
+	worldPos.x = object_->GetWorldTransform().matWorld.m[3][0];
+	worldPos.y = object_->GetWorldTransform().matWorld.m[3][1];
+	worldPos.z = object_->GetWorldTransform().matWorld.m[3][2];
 
 	return worldPos;
 }

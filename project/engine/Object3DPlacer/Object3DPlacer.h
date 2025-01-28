@@ -17,6 +17,11 @@ public:
 	void Initialize();
 
 	/// <summary>
+	/// 行列の更新
+	/// </summary>
+	void Update();
+
+	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="worldTransform"></param>
@@ -40,15 +45,20 @@ public:
 	void SetColor(const Vector4& color) { materialData_->color = color; }
 	void SetEnableLighting(const bool& enable) { materialData_->enableLighting = enable; }
 	void SetLight(Lighting* lighting) { lighting_ = lighting; }
-	void SetWorldTransform(WorldTransform worldTransform) { worldTransform_ = worldTransform; }
-	void SetPosition(Vector3 position) { worldTransform_.translate = position; }
-	void SetRotate(Vector3 rotate) { worldTransform_.rotate = rotate; }
-	void SetScale(Vector3 scale) { worldTransform_.scale = scale; }
-	WorldTransform& GetWorldTransform() { return worldTransform_; }
-	Material SetMaterialProperty(Material materialdata) { return *materialData_ = materialdata; }
+	void SetPosition(const Vector3& position) { worldTransform_.translate = position; }
+	void SetRotate(const Vector3& rotate) { worldTransform_.rotate = rotate; }
+	void SetScale(const Vector3& scale) { worldTransform_.scale = scale; }
+	void SetParent(const WorldTransform* parent) { worldTransform_.parent = parent; }
+	Material SetMaterialProperty(const Material& materialdata) { return *materialData_ = materialdata; }
 	// directionalLightの設定
 	DirectionalLight SetLightingProperty(DirectionalLight directionalLight) { return *directionalLightData_ = directionalLight; }
-	void SetUVTransform(UVTransform uvTransform) { uvTransform_ = uvTransform; }
+	void SetUVTransform(const UVTransform& uvTransform) { uvTransform_ = uvTransform; }
+
+#pragma endregion
+
+#pragma region getter
+
+	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
 #pragma endregion
 

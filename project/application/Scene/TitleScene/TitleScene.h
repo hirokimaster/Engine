@@ -63,7 +63,6 @@ private:
 	std::unique_ptr<Object3DPlacer> objectPlayer_ = nullptr;
 	uint32_t texHandlePlayer_ = 0;
 	Camera camera_{};
-	WorldTransform worldTransform_{};
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
 	uint32_t texHandleMask_ = 0;
 	DissolveParam param_{};

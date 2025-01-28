@@ -26,6 +26,11 @@ void Object3DPlacer::Initialize()
 	directionalLightData_->intensity = 1.0f;
 }
 
+void Object3DPlacer::Update()
+{
+	worldTransform_.UpdateMatrix();
+}
+
 void Object3DPlacer::Draw(Camera& camera)
 {
 	CreateUVTransformMatrix();
@@ -75,8 +80,6 @@ void Object3DPlacer::Draw(Camera& camera)
 
 void Object3DPlacer::Draw(Camera& camera, bool isAnimation)
 {
-	worldTransform_.UpdateMatrix();
-
 	pipelineData_ = GraphicsPipeline::GetInstance()->GetPSO().SkinningObject3D;
 
 	// Rootsignatureを設定。PSOに設定してるけど別途設定が必要

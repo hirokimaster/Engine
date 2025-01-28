@@ -12,8 +12,6 @@ void Enemy::Initialize(uint32_t texHandle)
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
 	object_->SetModel("LevelEditorObj/enemy.obj");
-	worldTransform_.Initialize();
-	object_->SetWorldTransform(worldTransform_);
 	object_->SetTexHandle(texHandle);
 
 	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
@@ -35,7 +33,7 @@ void Enemy::Initialize(uint32_t texHandle)
 
 void Enemy::Update()
 {
-	worldTransform_.UpdateMatrix();
+	object_->Update();
 	phaseState_->SetPlayer(player_);
 
 	phaseState_->Update(this); // 状態ごとの更新処理
@@ -46,14 +44,6 @@ void Enemy::Update()
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
-
-#ifdef _DEBUG
-
-	ImGui::Begin("Enemy");
-	ImGui::DragFloat3("translate", &worldTransform_.translate.x, 0.1f, -100.0f, 100.0f);
-	ImGui::End();
-
-#endif
 }
 
 void Enemy::Draw(Camera& camera)
@@ -139,7 +129,9 @@ void Enemy::ChangeState(std::unique_ptr<IPhaseStateEnemy> newState)
 void Enemy::Move()
 {
 	// 移動
-	worldTransform_.translate = worldTransform_.translate + velocity_;
+	Vector3 move{};
+	move = object_->GetWorldTransform().translate + velocity_;
+	object_->SetPosition(move);
 }
 
 Vector3 Enemy::GetWorldPosition() const
@@ -147,9 +139,9 @@ Vector3 Enemy::GetWorldPosition() const
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = worldTransform_.matWorld.m[3][0];
-	worldPos.y = worldTransform_.matWorld.m[3][1];
-	worldPos.z = worldTransform_.matWorld.m[3][2];
+	worldPos.x = object_->GetWorldTransform().matWorld.m[3][0];
+	worldPos.y = object_->GetWorldTransform().matWorld.m[3][1];
+	worldPos.z = object_->GetWorldTransform().matWorld.m[3][2];
 
 	return worldPos;
 }

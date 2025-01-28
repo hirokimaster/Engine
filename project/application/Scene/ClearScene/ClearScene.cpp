@@ -24,24 +24,6 @@ void ClearScene::Initialize()
 	texHandlePushA_ = TextureManager::Load("resources/UI/A.png");
 	spritePushA_.reset(Sprite::Create(texHandlePushA_, { 620.0f,500.0f }));
 
-	// fade用のsprite
-	texHandleWhite_ = TextureManager::Load("resources/TempTexture/white2.png");
-	spriteColor_ = { 1.0f,1.0f,1.0f,1.0f };
-	spriteFade_.reset(Sprite::Create(texHandleWhite_));
-	spriteFade_->SetColor(spriteColor_);
-
-	// playerのオブジェクト
-	texHandlePlayer_ = TextureManager::Load("resources/TempTexture/white.png");
-	objectPlayer_ = std::make_unique<Object3DPlacer>();
-	objectPlayer_->Initialize();
-	objectPlayer_->SetModel("Player/Jet.obj");
-	objectPlayer_->SetTexHandle(texHandleWhite_);
-	worldTransform_.Initialize();
-	objectPlayer_->SetWorldTransform(worldTransform_);
-	worldTransform_.translate.y = -5.0f;
-	worldTransform_.translate.z = -50.0f;
-	worldTransform_.translate.x = 8.0f;
-
 	// 天球
 	skydome_ = std::make_unique<Skydome>();
 	skydome_->Initialize();
@@ -78,23 +60,8 @@ void ClearScene::Update()
 		sceneTransition_->FadeOut();
 	}
 	
-	// 自機の移動
-	const float moveSpeed = 1.2f;
-	const float moveLimitZ = 300.0f;
-	const float startPosZ = -50.0f;
-	const float startPosX = 7.0f;
-	worldTransform_.translate.z += moveSpeed;
-	// 移動限界に達したら初期位置に戻す
-	if (worldTransform_.translate.z >= moveLimitZ) {
-		worldTransform_.translate.z = startPosZ;
-		worldTransform_.translate.x = startPosX;
-	}
-	worldTransform_.UpdateMatrix();
-
 	// 天球
 	skydome_->Update();
-
-
 }
 
 
@@ -103,14 +70,9 @@ void ClearScene::Draw()
 
 	skydome_->Draw(camera_);
 
-	objectPlayer_->Draw(camera_);
-
 	spriteClear_->Draw();
 
 	if (animationTimer_ % 40 >= 20) {
 		spritePushA_->Draw();
 	}
-
-	spriteFade_->Draw();
-
 }

@@ -12,9 +12,7 @@ void Player::Initialize(uint32_t texHandle)
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
 	object_->SetModel("Player/Jet.obj");
-	worldTransform_.Initialize();
-	worldTransform_.translate.y = 20.0f;
-	object_->SetWorldTransform(worldTransform_);
+	object_->SetPosition({ 0,-20.0f,0 });
 	object_->SetTexHandle(texHandle);
 	texHandleBullet_ = TextureManager::Load("resources/TempTexture/white.png"); // bulletの画像
 
@@ -37,7 +35,7 @@ void Player::Update()
 	Rotate(); // 回転
 	Attack(); // 攻撃
 	UpdateBullet(); // 弾の更新
-	worldTransform_.UpdateMatrix();
+	object_->Update();
 
 	// ダメージ
 	IncurDamage();
@@ -72,16 +70,17 @@ void Player::Move()
 {
 	// レティクルに追従させる
 	Vector3 end = lockOn_->GetWorldTransform();
-	Vector3 start = worldTransform_.translate;
+	Vector3 start = object_->GetWorldTransform().translate;
 	// 差分
 	Vector3 diff = end - start;
 	diff = Normalize(diff);
 	Vector3 velocity = moveSpeed_ * diff;
-	worldTransform_.translate = worldTransform_.translate + velocity;
+	Vector3 position = object_->GetWorldTransform().translate + velocity;
+	object_->SetPosition(position);
 
 	// 移動範囲を制限
-	worldTransform_.translate.x = std::clamp(worldTransform_.translate.x, moveMinLimit_.x, moveMaxLimit_.x);
-	worldTransform_.translate.y = std::clamp(worldTransform_.translate.y, moveMinLimit_.y, moveMaxLimit_.y);
+	position.x = std::clamp(position.x, moveMinLimit_.x, moveMaxLimit_.x);
+	position.y = std::clamp(position.y, moveMinLimit_.y, moveMaxLimit_.y);
 
 }
 
@@ -186,42 +185,45 @@ void Player::Rotate()
 	}
 
 	// 移動限界に達しているか
-	bool isAtMoveLimitX = (worldTransform_.translate.x <= moveMinLimit_.x && rotate.z < 0) ||
-		(worldTransform_.translate.x >= moveMaxLimit_.x && rotate.z > 0);
-	bool isAtMoveLimitY = (worldTransform_.translate.y <= moveMinLimit_.y && rotate.x < 0) ||
-		(worldTransform_.translate.y >= moveMaxLimit_.y && rotate.x > 0);
+	bool isAtMoveLimitX = (object_->GetWorldTransform().translate.x <= moveMinLimit_.x && rotate.z < 0) ||
+		(object_->GetWorldTransform().translate.x >= moveMaxLimit_.x && rotate.z > 0);
+	bool isAtMoveLimitY = (object_->GetWorldTransform().translate.y <= moveMinLimit_.y && rotate.x < 0) ||
+		(object_->GetWorldTransform().translate.y >= moveMaxLimit_.y && rotate.x > 0);
 
+	Vector3 rotateVelo{};
 	// 回転を適用
 	if (!isAtMoveLimitX) {
-		worldTransform_.rotate.z = std::lerp(worldTransform_.rotate.z, worldTransform_.rotate.z - rotate.z, kLerpFactor);
+		rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, object_->GetWorldTransform().rotate.z - rotate.z, kLerpFactor);
 	}
 	else {
-		worldTransform_.rotate.z = std::lerp(worldTransform_.rotate.z, 0.0f, kReturnLerpFactor);
+		rotateVelo.z = std::lerp(rotateVelo.z, 0.0f, kReturnLerpFactor);
 	}
 
 	if (!isAtMoveLimitY) {
-		worldTransform_.rotate.x = std::lerp(worldTransform_.rotate.x, worldTransform_.rotate.x - rotate.x, kLerpFactor);
+		rotateVelo.x = std::lerp(rotateVelo.x, object_->GetWorldTransform().rotate.x - rotate.x, kLerpFactor);
 	}
 	else {
-		worldTransform_.rotate.x = std::lerp(worldTransform_.rotate.x, 0.0f, kReturnLerpFactor);
+		rotateVelo.x = std::lerp(rotateVelo.x, 0.0f, kReturnLerpFactor);
 	}
 
 	// z軸に制限をかける
-	worldTransform_.rotate.z = std::clamp(worldTransform_.rotate.z, -kRotateLimitZ, kRotateLimitZ);
+	rotateVelo.z = std::clamp(rotateVelo.z, -kRotateLimitZ, kRotateLimitZ);
 
 	// x軸に制限をかける
-	worldTransform_.rotate.x = std::clamp(worldTransform_.rotate.x, -kRotateLimitX, kRotateLimitX);
+	rotateVelo.x = std::clamp(rotateVelo.x, -kRotateLimitX, kRotateLimitX);
 
 	// y軸は回転させないので0にしとく
-	worldTransform_.rotate.y = 0.0f;
+	rotateVelo.y = 0.0f;
 
 	// 操作がない場合は徐々に0に戻す
 	if (std::abs(rotate.z) < 0.005f) {
-		worldTransform_.rotate.z = std::lerp(worldTransform_.rotate.z, 0.0f, kReturnLerpFactor);
+		rotateVelo.z = std::lerp(rotateVelo.z, 0.0f, kReturnLerpFactor);
 	}
 	if (std::abs(rotate.x) < 0.005f) {
-		worldTransform_.rotate.x = std::lerp(worldTransform_.rotate.x, 0.0f, kReturnLerpFactor);
+		rotateVelo.x = std::lerp(rotateVelo.x, 0.0f, kReturnLerpFactor);
 	}
+
+	object_->SetRotate(rotateVelo);
 }
 
 void Player::IncurDamage()
@@ -246,8 +248,8 @@ void Player::DebugDraw()
 {
 #ifdef _DEBUG
 	ImGui::Begin("PlayerRotate");
-	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", worldTransform_.rotate.x,
-		worldTransform_.rotate.y, worldTransform_.rotate.z);
+	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", object_->GetWorldTransform().rotate.x,
+		object_->GetWorldTransform().rotate.y, object_->GetWorldTransform().rotate.z);
 	ImGui::End();
 
 	ImGui::Begin("playerHp");
@@ -264,7 +266,7 @@ void Player::AddAdjustmentVariables()
 	variables->CreateGroup(groupName);
 	// アイテム追加
 	variables->AddItem(groupName, "moveSpeed", moveSpeed_);
-	variables->AddItem(groupName, "translate", worldTransform_.translate);
+	variables->AddItem(groupName, "translate", object_->GetWorldTransform().translate);
 	variables->AddItem(groupName, "hp", hp_);
 	variables->AddItem(groupName, "bulletSpeed", bulletSpeed_);
 	variables->AddItem(groupName, "moveMinLimit", moveMinLimit_);
@@ -276,7 +278,7 @@ void Player::ApplyAdjustmentVariables()
 	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
 	const char* groupName = "Player";
 	moveSpeed_ = variables->GetValue<float>(groupName, "moveSpeed");
-	worldTransform_.translate = variables->GetValue<Vector3>(groupName, "translate");
+	object_->SetPosition(variables->GetValue<Vector3>(groupName, "translate"));
 	bulletSpeed_ = variables->GetValue<float>(groupName, "bulletSpeed");
 	hp_ = variables->GetValue<int32_t>(groupName, "hp");
 	moveMinLimit_ = variables->GetValue<Vector3>(groupName, "moveMinLimit");
@@ -288,9 +290,9 @@ Vector3 Player::GetWorldPosition() const
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = worldTransform_.matWorld.m[3][0];
-	worldPos.y = worldTransform_.matWorld.m[3][1];
-	worldPos.z = worldTransform_.matWorld.m[3][2];
+	worldPos.x = object_->GetWorldTransform().matWorld.m[3][0];
+	worldPos.y = object_->GetWorldTransform().matWorld.m[3][1];
+	worldPos.z = object_->GetWorldTransform().matWorld.m[3][2];
 
 	return worldPos;
 }

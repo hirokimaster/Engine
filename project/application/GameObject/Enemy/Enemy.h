@@ -81,7 +81,7 @@ public:
 
 	Vector3 GetWorldPosition() const override;
 
-	Vector3 GetScale() const override { return worldTransform_.scale; }
+	Vector3 GetScale() const override { return object_->GetWorldTransform().scale; }
 
 	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const { return bullets_; }
 
@@ -97,7 +97,7 @@ public:
 
 #pragma region setter
 
-	void SetPosition(Vector3 position) { worldTransform_.translate = position; }
+	void SetPosition(Vector3 position) { object_->SetPosition(position); }
 
 	void SetPlayer(Player* player) { player_ = player; }
 
@@ -117,7 +117,6 @@ private:
 	bool isDead_ = false; // デスフラグ
 	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
 	uint32_t texHandleBullet_ = 0; // bulletのtexHandle
-	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	static const int32_t kLifeTime_ = 60 * 50; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー

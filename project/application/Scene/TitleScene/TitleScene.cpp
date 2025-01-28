@@ -43,9 +43,7 @@ void TitleScene::Initialize()
 	objectPlayer_->Initialize();
 	objectPlayer_->SetModel("Player/Jet.obj");
 	objectPlayer_->SetTexHandle(texHandleWhite_);
-	worldTransform_.Initialize();
-	objectPlayer_->SetWorldTransform(worldTransform_);
-
+	
 	// カメラ
 	camera_.Initialize();
 
@@ -56,7 +54,7 @@ void TitleScene::Initialize()
 	Vector3 cameraRotate = { 0,std::numbers::pi_v<float> *3.0f / 4.0f ,0 };
 	followCamera_->SetOffset(offset);
 	followCamera_->SetRotate(cameraRotate);
-	followCamera_->SetTarget(&worldTransform_);
+	followCamera_->SetTarget(&objectPlayer_->GetWorldTransform());
 
 	// シーン遷移用
 	isTransition_ = false;
@@ -93,9 +91,11 @@ void TitleScene::Update()
 	}
 
 	// 自機の移動
-	Vector3 move = { 0,0,2.0f };
-	worldTransform_.translate = worldTransform_.translate + move;
-	worldTransform_.UpdateMatrix();
+	Vector3 velocity = { 0,0,2.0f };
+	Vector3 move{};
+	move = objectPlayer_->GetWorldTransform().translate + velocity;
+	objectPlayer_->SetPosition(move);
+	objectPlayer_->Update();
 
 	// カメラ
 	followCamera_->Update();

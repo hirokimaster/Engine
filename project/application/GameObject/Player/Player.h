@@ -104,11 +104,11 @@ public:
 
 	Vector3 GetWorldPosition()const override;
 
-	Vector3 GetScale() const override { return worldTransform_.scale; }
+	Vector3 GetScale() const override { return object_->GetWorldTransform().scale; }
 
 	Vector2 GetScreenPosition2DReticle() { return screenPositionReticle_; }
 
-	Vector3 GetRotate()const { return worldTransform_.rotate; }
+	Vector3 GetRotate()const { return object_->GetWorldTransform().rotate; }
 
 	bool GetIsHitEnemyFire() { return isHitEnemyFire_; }
 
@@ -124,19 +124,19 @@ public:
 	/// ワールドトランスフォームを取得
 	/// </summary>
 	/// <returns></returns>
-	const WorldTransform& GetWorldTransform() { return worldTransform_; }
+	const WorldTransform& GetWorldTransform() { return object_->GetWorldTransform(); }
 
 #pragma endregion
 
 #pragma region setter
 
-	void SetParent(const WorldTransform* parent) { worldTransform_.parent = parent; }
+	void SetParent(const WorldTransform* parent) { object_->SetParent(parent); }
 
-	void SetPosition(const Vector3& position) { worldTransform_.translate = position; }
+	void SetPosition(const Vector3& position) { object_->SetPosition(position); }
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
-	void SetPositionZ(float positionZ) { worldTransform_.translate.z = positionZ; }
+	//void SetPositionZ(float positionZ) { object_->SetPosition({ 0,0,positionZ }); }
 
 	void SetHp(uint32_t hp) { hp_ = hp; }
 
@@ -149,7 +149,6 @@ private:
 	uint32_t texHandleBullet_ = 0;
 	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
 	Vector2 screenPositionReticle_{};
-	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	bool isDead_ = false; // 死んだか
 	bool isHitEnemyFire_ = false; // 敵の攻撃が当たったか

@@ -193,7 +193,7 @@ void Loader::Update()
 {
 	// objectの更新
 	for (auto& object : objects_) {
-		object->GetWorldTransform().UpdateMatrix();
+		object->Update();
 		object->SetUVTransform(uvTransform_);
 	}
 

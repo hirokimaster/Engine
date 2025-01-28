@@ -23,7 +23,7 @@ public:
 
 	Vector3 GetWorldPosition() const override;
 
-	Vector3 GetScale() const override { return worldTransform_.scale; }
+	Vector3 GetScale() const override { return object_->GetWorldTransform().scale; }
 
 	bool GetIsHit()const { return isHit_; }
 
@@ -31,7 +31,7 @@ public:
 
 #pragma region setter
 
-	void SetPosition(Vector3 position)override { worldTransform_.translate = position; }
+	void SetPosition(Vector3 position)override { object_->SetPosition(position); }
 
 #pragma endregion
 

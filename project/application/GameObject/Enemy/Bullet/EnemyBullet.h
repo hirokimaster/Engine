@@ -55,7 +55,7 @@ public:
 
 	Vector3 GetWorldPosition()const override;
 
-	Vector3 GetScale() const override { return worldTransform_.scale; }
+	Vector3 GetScale() const override { return object_->GetWorldTransform().scale; }
 
 	bool GetIsDead() { return isDead_; }
 
@@ -65,7 +65,7 @@ public:
 
 	void SetVelocity(Vector3 velocity) { velocity_ = velocity; }; // 速度ベクトル
 
-	void SetPosition(Vector3 position) { worldTransform_.translate = position; } // 位置
+	void SetPosition(Vector3 position) { object_->SetPosition(position); } // 位置
 #pragma endregion
 
 private:
@@ -73,6 +73,5 @@ private:
 	bool isDead_ = false; // bulletのデスフラグ
 	static const int32_t kLifeTime_ = 60 * 5; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
-	WorldTransform worldTransform_{};
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 };
