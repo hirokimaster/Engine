@@ -11,7 +11,7 @@
 
 class Player;
 
-class EnemyBullet : public Collider {
+class EnemyBullet{
 public:
 	/// <summary>
 	/// 初期化
@@ -47,17 +47,19 @@ private:
 	/// <summary>
 	/// 当たり判定
 	/// </summary>
-	void OnCollision()override;
+	void OnCollision();
 
 public:
 
 #pragma region getter
 
-	Vector3 GetWorldPosition()const override;
+	Vector3 GetWorldPosition()const;
 
-	Vector3 GetScale() const override { return object_->GetWorldTransform().scale; }
+	Vector3 GetScale() const{ return object_->GetWorldTransform().scale; }
 
 	bool GetIsDead() { return isDead_; }
+
+	Collider* GetCollider() { return collider_.get(); }
 
 #pragma endregion
 
@@ -74,4 +76,5 @@ private:
 	static const int32_t kLifeTime_ = 60 * 5; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
+	std::unique_ptr<Collider> collider_ = nullptr;
 };

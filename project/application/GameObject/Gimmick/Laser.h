@@ -1,44 +1,50 @@
 #pragma once
-#include "application/GameObject/BaseObject/BaseObject.h"
+#include "engine/Object3DPlacer/Object3DPlacer.h"
+#include "engine/Utility/CollisionManager/Collider/Collider.h"
+#include "engine/TextureManager/TextureManager.h"
 
-class Laser : public BaseObject {
+class Laser{
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize()override;
+	void Initialize();
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update()override;
+	void Update();
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
-	void Draw(Camera& camera)override;
+	void Draw(Camera& camera);
 
 #pragma region getter
 
-	Vector3 GetWorldPosition() const override;
+	Vector3 GetWorldPosition() const;
 
-	Vector3 GetScale() const override { return object_->GetWorldTransform().scale; }
+	Vector3 GetScale() const{ return object_->GetWorldTransform().scale; }
 
 	bool GetIsHit()const { return isHit_; }
+
+	Collider* GetCollider() { return collider_.get(); }
 
 #pragma endregion
 
 #pragma region setter
 
-	void SetPosition(Vector3 position)override { object_->SetPosition(position); }
+	void SetPosition(Vector3 position) { object_->SetPosition(position); }
 
 #pragma endregion
 
 private:
 
-	void OnCollision()override;
+	void OnCollision();
 
 private:
 	bool isHit_ = false;
+	std::unique_ptr<Collider> collider_ = nullptr;
+	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 };

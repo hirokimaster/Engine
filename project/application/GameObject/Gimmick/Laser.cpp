@@ -2,24 +2,28 @@
 
 void Laser::Initialize()
 {
-	// 共通部分の初期化
-	BaseObject::Initialize();
+	object_ = std::make_unique<Object3DPlacer>();
+	object_->Initialize();
 	object_->SetModel("LevelEditorObj/laser.obj");
 	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/mount.jpg"));
-	SetCollosionAttribute(kCollisionAttributeEnemyBullet);
-	SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
-	SetType(ColliderType::Sphere); // 形状
+
+	// collider設定
+	collider_ = std::make_unique<Collider>();
+	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
+	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
+	collider_->SetType(ColliderType::Sphere); // 形状
 }
 
 void Laser::Update()
 {
-	// 共通部分の更新
-	BaseObject::Update();
+	object_->Update();
+	collider_->SetWorldPosition(GetWorldPosition());
+	collider_->SetScale(GetScale());
 }
 
 void Laser::Draw(Camera& camera)
 {
-	BaseObject::Draw(camera);
+	object_->Draw(camera);
 }
 
 Vector3 Laser::GetWorldPosition() const

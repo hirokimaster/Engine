@@ -65,6 +65,8 @@ public:
 
 	const std::list<std::unique_ptr<Enemy>>& GetEnemys() const{ return enemys_; }
 
+	const std::list<std::unique_ptr<Laser>>& GetLasers() const { return lasers_; }
+
 #pragma endregion
 
 #pragma region setter

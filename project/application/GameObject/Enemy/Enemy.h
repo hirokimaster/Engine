@@ -16,7 +16,7 @@
 
 class Player;
 
-class Enemy : public Collider {
+class Enemy{
 public:
 	/// <summary>
 	/// 初期化
@@ -58,7 +58,7 @@ private:
 	/// <summary>
 	/// 当たり判定
 	/// </summary>
-	void OnCollision()override;
+	void OnCollision();
 
 	/// <summary>
 	/// 弾の更新
@@ -79,9 +79,7 @@ public:
 
 #pragma region getter
 
-	Vector3 GetWorldPosition() const override;
-
-	Vector3 GetScale() const override { return object_->GetWorldTransform().scale; }
+	Vector3 GetWorldPosition() const;
 
 	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const { return bullets_; }
 
@@ -93,19 +91,21 @@ public:
 
 	bool GetIsSortie() { return isSortie_; }
 
+	Collider* GetCollider() { return collider_.get(); }
+
 #pragma endregion
 
 #pragma region setter
 
-	void SetPosition(Vector3 position) { object_->SetPosition(position); }
+	void SetPosition(const Vector3& position) { object_->SetPosition(position); }
 
 	void SetPlayer(Player* player) { player_ = player; }
 
-	void SetVelocity(Vector3 velocity) { velocity_ = velocity; }
+	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
 
-	void SetStartPosition(Vector3 start) { startPosition_ = start; }
+	void SetStartPosition(const Vector3& start) { startPosition_ = start; }
 
-	void SetEndPosition(Vector3 end) { endPosition_ = end; }
+	void SetEndPosition(const Vector3& end) { endPosition_ = end; }
 
 	void SetIsSortie(bool isSortie) { isSortie_ = isSortie; }
 
@@ -116,7 +116,6 @@ public:
 private:
 	bool isDead_ = false; // デスフラグ
 	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
-	uint32_t texHandleBullet_ = 0; // bulletのtexHandle
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	static const int32_t kLifeTime_ = 60 * 50; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
@@ -127,7 +126,6 @@ private:
 	Vector3 endPosition_{}; // でできた後の最終座標
 	bool isSortie_ = false; // 出撃してるか
 	float bulletSpeed_ = 0.2f; // 弾のスピード
-	uint32_t texHandleExplosion_ = 0;
-	uint32_t texHandleSmoke_ = 0;
+	std::unique_ptr<Collider> collider_ = nullptr; // collider
 };
 

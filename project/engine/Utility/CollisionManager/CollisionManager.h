@@ -52,7 +52,7 @@ private:
 	/// <param name="center"></param>
 	/// <param name="radious"></param>
 	/// <returns></returns>
-	bool CheckCollision(const AABB& aabb, const Vector3 center, const float radius);
+	bool CheckCollision(const AABB& aabb, const Vector3 center,float radius);
 
 private:
 

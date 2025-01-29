@@ -46,7 +46,7 @@ public:
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
-	void SetRotateZ(const float& rotate) { camera_.rotate.z = rotate; }
+	void SetRotateZ(float rotate) { camera_.rotate.z = rotate; }
 
 	void SetRotate(const Vector3& rotate) { camera_.rotate = rotate; }
 

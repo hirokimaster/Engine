@@ -193,20 +193,25 @@ void GameScene::Collision()
 {
 	collisionManager_->ColliderClear(); // colliderのリストをクリア
 
-	collisionManager_->ColliderPush(player_.get()); // playerをリストに追加
+	collisionManager_->ColliderPush(player_->GetCollider()); // playerのcolliderをリストに追加
 
 	// playerBullet
 	for (const auto& playerBullet : player_->GetBullets()) {
-		collisionManager_->ColliderPush(playerBullet.get()); // playerBulletをリストに登録
+		collisionManager_->ColliderPush(playerBullet->GetCollider()); // playerBulletをリストに登録
 	}
 
 	// enemy
 	for (const auto& enemy : loader_->GetEnemys()) {
-		collisionManager_->ColliderPush(enemy.get()); // enemyをリストに登録
+		collisionManager_->ColliderPush(enemy->GetCollider()); // enemyをリストに登録
 
 		for (const auto& enemyBullet : enemy->GetBullets()) {
-			collisionManager_->ColliderPush(enemyBullet.get()); // enemybulletをリストに追加
+			collisionManager_->ColliderPush(enemyBullet->GetCollider()); // enemybulletをリストに追加
 		}
+	}
+
+	// laser
+	for (const auto& laser : loader_->GetLasers()) {
+		collisionManager_->ColliderPush(laser->GetCollider()); // laserをリストに登録
 	}
 
 	collisionManager_->CheckAllCollision(); // 判定

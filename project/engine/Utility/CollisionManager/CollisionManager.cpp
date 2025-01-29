@@ -103,7 +103,7 @@ bool CollisionManager::CheckCollision(Vector3 v1, float v1Radious, Vector3 v2, f
 
 }
 
-bool CollisionManager::CheckCollision(const AABB& aabb, const Vector3 center, const float radius)
+bool CollisionManager::CheckCollision(const AABB& aabb, const Vector3 center,float radius)
 {
 	Vector3 closesetPoint{
 		std::clamp(center.x, aabb.min.x, aabb.max.x), std::clamp(center.y, aabb.min.y, aabb.max.y),

@@ -43,7 +43,7 @@ public:
 	void SetAnimationTime(float animationTime) { modelAnimation_->SetAnimationTime(animationTime); }
 	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 	void SetColor(const Vector4& color) { materialData_->color = color; }
-	void SetEnableLighting(const bool& enable) { materialData_->enableLighting = enable; }
+	void SetEnableLighting(bool enable) { materialData_->enableLighting = enable; }
 	void SetLight(Lighting* lighting) { lighting_ = lighting; }
 	void SetPosition(const Vector3& position) { worldTransform_.translate = position; }
 	void SetRotate(const Vector3& rotate) { worldTransform_.rotate = rotate; }
@@ -51,7 +51,7 @@ public:
 	void SetParent(const WorldTransform* parent) { worldTransform_.parent = parent; }
 	Material SetMaterialProperty(const Material& materialdata) { return *materialData_ = materialdata; }
 	// directionalLightの設定
-	DirectionalLight SetLightingProperty(DirectionalLight directionalLight) { return *directionalLightData_ = directionalLight; }
+	DirectionalLight SetLightingProperty(const DirectionalLight& directionalLight) { return *directionalLightData_ = directionalLight; }
 	void SetUVTransform(const UVTransform& uvTransform) { uvTransform_ = uvTransform; }
 
 #pragma endregion

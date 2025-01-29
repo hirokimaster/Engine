@@ -16,14 +16,14 @@ void Enemy::Initialize(uint32_t texHandle)
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 	bulletSpeed_ = 0.03f;
 
-
 	// 最初の状態
 	phaseState_ = std::make_unique<EnemyStateSortie>();
 
 	// 当たり判定の属性設定
-	SetCollosionAttribute(kCollisionAttributeEnemy);
-	SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
-	SetType(ColliderType::Sphere); // 形状
+	collider_ = std::make_unique<Collider>();
+	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);
+	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
+	collider_->SetType(ColliderType::Sphere); // 形状
 }
 
 void Enemy::Update()
@@ -56,9 +56,11 @@ void Enemy::Draw(Camera& camera)
 
 void Enemy::OnCollision()
 {
-	isDead_ = true;
-	// 撃破数を足す
-	player_->AddDestroyCount();
+	if (collider_->OnCollision()) {
+		isDead_ = true;
+		// 撃破数を足す
+		player_->AddDestroyCount();
+	}
 }
 
 void Enemy::Fire()

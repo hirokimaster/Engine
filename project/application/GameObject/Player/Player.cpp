@@ -15,9 +15,11 @@ void Player::Initialize(uint32_t texHandle)
 	object_->SetPosition({ 0,-20.0f,0 });
 	object_->SetTexHandle(texHandle);
 	
-	SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
-	SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
-	SetType(ColliderType::Sphere); // どの形状でとるか
+	// collider
+	collider_ = std::make_unique<Collider>();
+	collider_->SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
+	collider_->SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
+	collider_->SetType(ColliderType::Sphere); // どの形状でとるか
 
 	// 調整項目
 	AddAdjustmentVariables();
@@ -35,6 +37,7 @@ void Player::Update()
 	Attack(); // 攻撃
 	UpdateBullet(); // 弾の更新
 	object_->Update();
+	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
 
 	// ダメージ
 	IncurDamage();
@@ -154,7 +157,10 @@ void Player::UpdateBullet()
 
 void Player::OnCollision()
 {
-	isHitEnemyFire_ = true; // 敵の攻撃が当たった
+
+	if (collider_->OnCollision()) {
+		isHitEnemyFire_ = true; // 敵の攻撃が当たった
+	}
 }
 
 void Player::DrawUI()

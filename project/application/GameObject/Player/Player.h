@@ -16,7 +16,7 @@
 
 class LockOn;
 
-class Player : public Collider
+class Player
 {
 public:
 	/// <summary>
@@ -63,7 +63,7 @@ private: // クラス内でしか使わない
 	/// <summary>
 	/// 当たり判定
 	/// </summary>
-	void OnCollision()override;
+	void OnCollision();
 
 	/// <summary>
 	/// UIの描画
@@ -102,9 +102,7 @@ public:
 
 	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() const { return bullets_; }
 
-	Vector3 GetWorldPosition()const override;
-
-	Vector3 GetScale() const override { return object_->GetWorldTransform().scale; }
+	Vector3 GetWorldPosition()const;
 
 	Vector2 GetScreenPosition2DReticle() { return screenPositionReticle_; }
 
@@ -125,6 +123,8 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	const WorldTransform& GetWorldTransform() { return object_->GetWorldTransform(); }
+
+	Collider* GetCollider() { return collider_.get(); }
 
 #pragma endregion
 
@@ -156,4 +156,5 @@ private:
 	uint32_t destroyCount_ = 0; // 敵を倒した数
 	Vector3 moveMinLimit_ = { -30.0f, 10.0f, 0.0f }; // 移動最小値
 	Vector3 moveMaxLimit_ = { 30.0f, 50.0f, 0.0f };    // 移動最大値
+	std::unique_ptr<Collider> collider_ = nullptr;
 };

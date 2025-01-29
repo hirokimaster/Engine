@@ -13,8 +13,11 @@ void PlayerBullet::Initialize(uint32_t texHandle)
 	object_->SetModel("Player/cube.obj");
 	object_->SetTexHandle(texHandle);
 
-	SetCollosionAttribute(kCollisionAttributePlayerBullet);
-	SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
+	// collider設定
+	collider_ = std::make_unique<Collider>();
+	collider_->SetCollosionAttribute(kCollisionAttributePlayerBullet);
+	collider_->SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
+	collider_->SetType(ColliderType::Sphere); // どの形状でとるか
 }
 
 void PlayerBullet::Update()
@@ -22,6 +25,7 @@ void PlayerBullet::Update()
 	Move(); // 移動
 	BulletErase(); // 弾を削除
 	object_->Update();
+	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
 }
 
 void PlayerBullet::Draw(Camera& camera)

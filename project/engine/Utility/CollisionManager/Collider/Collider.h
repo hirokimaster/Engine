@@ -22,13 +22,13 @@ public:
 	/// <summary>
 	/// 当たった時
 	/// </summary>
-	virtual void OnCollision() = 0;
+	bool OnCollision() { return true; }
 
 #pragma region getter
 
 	float GetRadious() { return radious_; }
-    virtual Vector3 GetWorldPosition() const= 0;
-	virtual Vector3 GetScale() const = 0;
+	const Vector3& GetWorldPosition() const { return worldPosition_; }
+	const Vector3& GetScale() const { return scale_; }
 	uint32_t GetCollosionAttribute() const { return collisionAttribute_; }
 	uint32_t GetCollisionMask() const { return CollisionMask_; }
 	ColliderType GetType()const { return type_; }
@@ -41,6 +41,8 @@ public:
 	void SetCollosionAttribute(uint32_t collisionAttribute) { collisionAttribute_ = collisionAttribute; }
 	void SetCollisionMask(uint32_t collisionMask) { CollisionMask_ = collisionMask; }
 	void SetType(ColliderType type) { type_ = type; }
+	void SetWorldPosition(const Vector3& worldPosition) { worldPosition_ = worldPosition; }
+	void SetScale(const Vector3& scale) { scale_ = scale; }
 
 #pragma endregion
 
@@ -52,6 +54,10 @@ private:
 	uint32_t CollisionMask_ = 0xffffffff;
 
 	float radious_ = 1.0f;
-
+	
 	ColliderType type_ = ColliderType::Sphere;
+	// スケール
+	Vector3 scale_{};
+	// ワールド座標
+	Vector3 worldPosition_{};
 };

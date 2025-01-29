@@ -10,7 +10,7 @@
 #include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "engine/ParticleManager/ParticleManager.h"
 
-class PlayerBullet : public Collider {
+class PlayerBullet{
 public:
 	/// <summary>
 	/// 初期化
@@ -46,7 +46,7 @@ private: // クラス内でしか使わない
 	/// <summary>
 	/// 当たり判定
 	/// </summary>
-	void OnCollision()override;
+	void OnCollision();
 
 public:
 
@@ -54,17 +54,19 @@ public:
 
 	bool GetIsDead() { return isDead_; }; // デスフラグ
 
-	Vector3 GetWorldPosition()const override;
+	Vector3 GetWorldPosition()const;
 
-	Vector3 GetScale() const override { return object_->GetWorldTransform().scale; }
+	Vector3 GetScale() const { return object_->GetWorldTransform().scale; }
+
+	Collider* GetCollider() { return collider_.get(); }
 
 #pragma endregion
 
 #pragma region	setter
 
-	void SetVelocity(Vector3 velocity) { velocity_ = velocity; }; // 速度ベクトル
+	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }; // 速度ベクトル
 
-	void SetPosition(Vector3 position) { object_->SetPosition(position); } // 位置
+	void SetPosition(const Vector3& position) { object_->SetPosition(position); } // 位置
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
@@ -77,6 +79,6 @@ private:
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
 	std::unique_ptr<Object3DPlacer> object_ = nullptr;
-	uint32_t texHandleSmoke_ = 0;
 	int32_t particleTimer_ = 200;
+	std::unique_ptr<Collider> collider_ = nullptr;
 };
