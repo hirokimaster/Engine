@@ -26,7 +26,7 @@ public:
 	/// </summary>
 	/// <param name="worldTransform"></param>
 	/// <param name="camera"></param>
-	void Draw(Camera& camera);
+	void Draw(const Camera& camera);
 
 	/// <summary>
 	/// animation描画
@@ -34,7 +34,7 @@ public:
 	/// <param name="worldTransform"></param>
 	/// <param name="camera"></param>
 	/// <param name="isAnimation"></param>
-	void Draw(Camera& camera, bool isAnimation);
+	void Draw(const Camera& camera, bool isAnimation);
 
 #pragma region setter
 

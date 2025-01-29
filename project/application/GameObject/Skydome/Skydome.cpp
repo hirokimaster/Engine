@@ -36,7 +36,7 @@ void Skydome::Update()
 
 }
 
-void Skydome::Draw(Camera& camera)
+void Skydome::Draw(const Camera& camera)
 {
 	object_->Draw(camera);
 }

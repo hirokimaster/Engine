@@ -56,7 +56,7 @@ public:
 
 #pragma region getter
 
-	Camera GetCamera() { return camera_; }
+	const Camera& GetCamera()const { return camera_; }
 
 #pragma endregion
 

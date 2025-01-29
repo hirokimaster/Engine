@@ -31,7 +31,7 @@ void Object3DPlacer::Update()
 	worldTransform_.UpdateMatrix();
 }
 
-void Object3DPlacer::Draw(Camera& camera)
+void Object3DPlacer::Draw(const Camera& camera)
 {
 	CreateUVTransformMatrix();
 
@@ -78,7 +78,7 @@ void Object3DPlacer::Draw(Camera& camera)
 	}
 }
 
-void Object3DPlacer::Draw(Camera& camera, bool isAnimation)
+void Object3DPlacer::Draw(const Camera& camera, bool isAnimation)
 {
 	pipelineData_ = GraphicsPipeline::GetInstance()->GetPSO().SkinningObject3D;
 

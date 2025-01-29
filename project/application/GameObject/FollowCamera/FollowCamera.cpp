@@ -39,8 +39,6 @@ void FollowCamera::Update()
 	}
 
 	camera_.UpdateMatrix();
-
-
 }
 
 void FollowCamera::StartShake(float intensity, float duration)

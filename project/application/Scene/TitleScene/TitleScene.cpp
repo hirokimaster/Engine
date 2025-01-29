@@ -31,12 +31,8 @@ void TitleScene::Initialize()
 
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 
-	// タイトルのスプライト
-	spriteTitle_.reset(Sprite::Create(TextureManager::GetTexHandle("Scene/title.png"), { 650.0f,170.0f }));
-	spriteTitle_->SetAnchorPoint({ 0.5f,0.5f });
-
-	// Aボタンのスプライト
-	spritePushA_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/A.png"), { 620.0f,500.0f }));
+	titleSprite_ = std::make_unique<TitleSprite>();
+	titleSprite_->Initialize();
 
 	// 自機モデル
 	objectPlayer_ = std::make_unique<Object3DPlacer>();
@@ -44,9 +40,6 @@ void TitleScene::Initialize()
 	objectPlayer_->SetModel("Player/Jet.obj");
 	objectPlayer_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white2.png"));
 	
-	// カメラ
-	camera_.Initialize();
-
 	// 追従カメラ
 	followCamera_ = std::make_unique<FollowCamera>();
 	followCamera_->Initialize();
@@ -68,8 +61,8 @@ void TitleScene::Initialize()
 
 void TitleScene::Update()
 {
-	// spriteの点滅用のタイマー
-	++animationTimer_;
+	// spriteの更新
+	titleSprite_->Update();
 
 	// Aボタンが押されたらシーン遷移処理を開始する
 	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
@@ -99,10 +92,7 @@ void TitleScene::Update()
 
 	// カメラ
 	followCamera_->Update();
-	camera_.matView = followCamera_->GetCamera().matView;
-	camera_.matProjection = followCamera_->GetCamera().matProjection;
-	camera_.TransferMatrix();
-
+	
 	// 天球
 	skydome_->Update();
 }
@@ -120,15 +110,11 @@ void TitleScene::PostProcessDraw()
 {
 	postProcess_->PreDraw();
 
-	skydome_->Draw(camera_);
+	skydome_->Draw(followCamera_->GetCamera());
 
-	objectPlayer_->Draw(camera_);
+	objectPlayer_->Draw(followCamera_->GetCamera());
 
-	spriteTitle_->Draw();
-
-	if (animationTimer_ % 40 >= 20) {
-		spritePushA_->Draw();
-	}
+	titleSprite_->Draw();
 
 	sceneTransition_->Draw();
 
