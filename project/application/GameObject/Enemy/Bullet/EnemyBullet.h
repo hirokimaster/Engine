@@ -6,7 +6,7 @@
 
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
-#include "engine/Object3DPlacer/Object3DPlacer.h"
+#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include <random>
 
 class Player;

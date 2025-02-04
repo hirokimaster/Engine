@@ -7,8 +7,7 @@
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "application/GameObject/LockOn/LockOn.h"
-#include "engine/Object3DPlacer/Object3DPlacer.h"
-#include "engine/ParticleManager/ParticleManager.h"
+#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 
 class PlayerBullet{
 public:

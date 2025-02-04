@@ -6,9 +6,10 @@
 
 #pragma once
 #include <memory>
-#include "engine/Transform/WorldTransform.h"
-#include "engine/Object3DPlacer/Object3DPlacer.h"
-#include "engine/Camera/Camera.h"
+#include "engine/Graphics/Transform/WorldTransform.h"
+#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
+#include "engine/Graphics/Camera/Camera.h"
+#include "engine/Graphics/TextureManager/TextureManager.h"
 
 class Skydome
 {

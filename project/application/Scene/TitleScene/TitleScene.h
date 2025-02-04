@@ -6,11 +6,9 @@
 
 #pragma once
 #include "application/Scene/IScene/IScene.h"
-#include "engine/PostProcess/PostProcess.h"
-#include "application/GameManager/GameManager.h"
+#include "engine/Graphics/PostProcess/PostProcess.h"
 #include "engine/Input/Input.h"
 #include "application/GameObject/ModelResources/ModelResources.h"
-#include "engine/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Skydome/Skydome.h"
 #include "application/SceneTransition/SceneTransition.h"

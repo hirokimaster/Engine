@@ -1,7 +1,7 @@
 #pragma once
-#include "engine/Object3DPlacer/Object3DPlacer.h"
+#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
-#include "engine/TextureManager/TextureManager.h"
+#include "engine/Graphics/TextureManager/TextureManager.h"
 
 class Laser{
 public:

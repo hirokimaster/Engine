@@ -75,3 +75,8 @@ void ClearScene::Draw()
 		spritePushA_->Draw();
 	}
 }
+
+void ClearScene::PostProcessDraw()
+{
+
+}

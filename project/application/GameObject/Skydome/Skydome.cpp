@@ -6,7 +6,6 @@
 
 #include "Skydome.h"
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"
-#include "engine/TextureManager/TextureManager.h"
 
 void Skydome::Initialize()
 {

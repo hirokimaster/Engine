@@ -5,7 +5,7 @@
 */
 
 #pragma once
-#include "engine/Sprite/Sprite.h"
+#include "engine/2d/Sprite/Sprite.h"
 
 class TitleSprite {
 public:

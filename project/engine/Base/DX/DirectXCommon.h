@@ -18,7 +18,7 @@
 #pragma comment(lib, "dxguid.lib")
 #include <chrono>
 #include "engine/Base/WinApp/WinApp.h"
-#include "engine/DescriptorManager/DescriptorManager.h"
+#include "engine/Graphics/DescriptorManager/DescriptorManager.h"
 #include <thread>
 
 class PostProcess;

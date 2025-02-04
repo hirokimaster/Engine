@@ -5,7 +5,6 @@
 */
 
 #include "GameScene.h"
-#include "engine/ModelManager/ModelManager.h"
 
 GameScene::GameScene()
 {
@@ -36,11 +35,6 @@ void GameScene::Initialize()
 	player_->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
 	lockOn_->Initialize();
 	player_->SetLockOn(lockOn_.get());
-	// rail
-	rail_ = std::make_unique<Rail>();
-	rail_->Initialize();
-	rail_->SetPlayer(player_.get());
-
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
 
@@ -110,8 +104,7 @@ void GameScene::Update()
 	// player
 	player_->Update();
 	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition(), isGameStart_);
-	rail_->Update();
-
+	
 	// loader
 	loader_->Update();
 

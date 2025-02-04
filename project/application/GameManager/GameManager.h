@@ -7,9 +7,9 @@
 #pragma once
 #include <memory>
 #include "engine/SceneFactory/AbstractSceneFactory.h"
-#include "engine/PostProcess/PostProcess.h"
+#include "engine/Graphics/PostProcess/PostProcess.h"
 #include "application/AdjustmentVariables/AdjustmentVariables.h"
-#include "engine/ParticleManager/ParticleManager.h"
+#include "engine/Graphics/Effects/Particle/ParticleManager.h"
 
 class GameManager {
 public:

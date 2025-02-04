@@ -8,14 +8,15 @@
 #include "engine/Base/WinApp/WinApp.h"
 #include "engine/Base/DX/DirectXCommon.h"
 #include "engine/Utility/ShaderCompile.h"
-#include "engine/GraphicsPipeline/GraphicsPipeline.h"
+#include "engine/Graphics/Pipeline/GraphicsPipeline.h"
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"
-#include "engine/TextureManager/TextureManager.h"
+#include "engine/Graphics/TextureManager/TextureManager.h"
 #include "engine/Input/Input.h"
 #include "engine/Audio/Audio.h"
 #include "application/GameManager/GameManager.h"
 #include "engine/SceneFactory/SceneFactory.h"
-#include "engine/ComputePipeline/ComputePipeline.h"
+#include "engine/Graphics/Pipeline/ComputePipeline.h"
+#include "engine/2d/Sprite/Sprite.h"
 
 class Framework {
 public:

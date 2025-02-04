@@ -11,12 +11,11 @@
 #include <fstream>
 #include "externals/Json/json.hpp"
 #include "engine/Math/Vector3.h"
-#include "engine/Model/Model.h"
-#include "engine/Object3DPlacer/Object3DPlacer.h"
-#include "engine/ModelManager/ModelManager.h"
+#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
+#include "engine/3d/Model/ModelManager.h"
 #include <numbers>
 #include "application/GameObject/Enemy/Enemy.h"
-#include "engine/ParticleManager/ParticleManager.h"
+#include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "application/GameObject/Gimmick/Laser.h"
 
 // レベルデータ

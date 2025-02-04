@@ -6,7 +6,7 @@
 
 #include "DirectXCommon.h"
 #include "engine/Utility/StringUtility.h"
-#include "engine/PostProcess/PostProcess.h"
+#include "engine/Graphics/PostProcess/PostProcess.h"
 
 DirectXCommon* DirectXCommon::GetInstance() {
 	static DirectXCommon instance;

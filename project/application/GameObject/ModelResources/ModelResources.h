@@ -5,7 +5,7 @@
 */
 
 #pragma once
-#include "engine/ModelManager/ModelManager.h"
+#include "engine/3d/Model/ModelManager.h"
 
 class ModelResources {
 public:

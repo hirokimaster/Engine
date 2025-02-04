@@ -11,13 +11,6 @@ class GameManager;
 
 class IScene
 {
-protected:
-
-	// ステージナンバー
-	static int stageNo_;
-
-	static bool title_;
-
 public:
 	/// <summary>
 	/// 初期化
@@ -37,7 +30,7 @@ public:
 	/// <summary>
 	/// ポストエフェクト描画
 	/// </summary>
-	virtual void PostProcessDraw();
+	virtual void PostProcessDraw() = 0;
 
 	/// <summary>
 	/// ゲームマネージャを設定

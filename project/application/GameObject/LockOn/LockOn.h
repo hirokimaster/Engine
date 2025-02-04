@@ -6,9 +6,10 @@
 
 #pragma once
 #include "application/GameObject/Enemy/Enemy.h"
-#include "engine/Sprite/Sprite.h"
+#include "engine/2d/Sprite/Sprite.h"
 #include <math.h>
 #include "engine/Math/Mathfunction.h"
+#include "engine/Input/Input.h"
 
 class LockOn {
 public:

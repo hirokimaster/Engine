@@ -6,12 +6,10 @@
 
 #pragma once
 #include "application/Scene/IScene/IScene.h"
-#include "engine/Sprite/Sprite.h"
-#include "application/GameManager/GameManager.h"
+#include "engine/2d/Sprite/Sprite.h"
 #include "engine/Input/Input.h"
-#include "engine/Object3DPlacer/Object3DPlacer.h"
+#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Skydome/Skydome.h"
-#include "engine/ParticleManager/ParticleManager.h"
 #include "application/SceneTransition/SceneTransition.h"
 
 class ClearScene : public IScene {
@@ -40,6 +38,11 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw()override;
+
+	/// <summary>
+	/// postProcess描画
+	/// </summary>
+	void PostProcessDraw()override;
 
 private:
 	Camera camera_{};

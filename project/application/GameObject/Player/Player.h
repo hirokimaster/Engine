@@ -6,11 +6,11 @@
 
 #pragma once
 #include "application/GameObject/Player/Bullet/PlayerBullet.h"
-#include "engine/TextureManager/TextureManager.h"
+#include "engine/Graphics/TextureManager/TextureManager.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
-#include "engine/Sprite/Sprite.h"
+#include "engine/2d/Sprite/Sprite.h"
 #include <vector>
-#include "engine/Object3DPlacer/Object3DPlacer.h"
+#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Rail/Rail.h"
 #include "application/AdjustmentVariables/AdjustmentVariables.h"
 

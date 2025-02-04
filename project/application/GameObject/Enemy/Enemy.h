@@ -7,12 +7,10 @@
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "application/GameObject/Enemy/Bullet/EnemyBullet.h"
-#include "engine/TextureManager/TextureManager.h"
-#include "engine/ParticleSystem/ParticleSystem.h"
-#include "engine/Object3DPlacer/Object3DPlacer.h"
+#include "engine/Graphics/TextureManager/TextureManager.h"
+#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Enemy/PhaseState/EnemyStateSortie.h"
 #include "application/GameObject/Enemy/PhaseState/EnemyStateFire.h"
-#include "engine/ParticleManager/ParticleManager.h"
 
 class Player;
 
