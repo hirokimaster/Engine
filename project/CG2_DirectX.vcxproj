@@ -134,6 +134,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\Scene\IScene\IScene.cpp" />
     <ClCompile Include="application\Scene\TitleScene\TitleScene.cpp" />
     <ClCompile Include="application\Loader\Loader.cpp" />
+    <ClCompile Include="engine\3d\Line\Line.cpp" />
     <ClCompile Include="engine\Graphics\Pipeline\ComputePipeline.cpp" />
     <ClCompile Include="engine\3d\Model\Animation\ModelAnimation.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
@@ -200,6 +201,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\Scene\IScene\IScene.h" />
     <ClInclude Include="application\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="application\Loader\Loader.h" />
+    <ClInclude Include="engine\3d\Line\Line.h" />
     <ClInclude Include="engine\Graphics\Pipeline\ComputePipeline.h" />
     <ClInclude Include="engine\3d\Model\Animation\Animation.h" />
     <ClInclude Include="engine\3d\Model\Animation\ModelAnimation.h" />
