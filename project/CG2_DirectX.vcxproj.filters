@@ -284,6 +284,7 @@
       <Filter>application\SceneSprite\TitleSprite</Filter>
     </ClCompile>
     <ClCompile Include="engine\3d\Line\Line.cpp" />
+    <ClCompile Include="application\SceneSprite\GameSprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -506,6 +507,7 @@
       <Filter>application\SceneSprite\TitleSprite</Filter>
     </ClInclude>
     <ClInclude Include="engine\3d\Line\Line.h" />
+    <ClInclude Include="application\SceneSprite\GameSprite.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">
