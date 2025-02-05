@@ -29,6 +29,7 @@ void Enemy::Initialize(uint32_t texHandle)
 void Enemy::Update()
 {
 	object_->Update();
+	collider_->SetWorldPosition(GetWorldPosition());
 	phaseState_->SetPlayer(player_);
 
 	phaseState_->Update(this); // 状態ごとの更新処理

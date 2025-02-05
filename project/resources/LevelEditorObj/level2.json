@@ -1121,6 +1121,82 @@
                 ]
             },
             "file_name": "laser"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        100.0,
+                        20.0,
+                        300.0
+                    ]
+                },
+                {
+                    "end": [
+                        20.0,
+                        20.0,
+                        1000.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "EnemySortieRoad.001",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "control_points": [
+                {
+                    "start": [
+                        100.0,
+                        100.0,
+                        20.0
+                    ]
+                },
+                {
+                    "end": [
+                        20.0,
+                        1000.0,
+                        40.0
+                    ]
+                }
+            ],
+            "file_name": "enemy"
         }
     ]
 }

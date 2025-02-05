@@ -6,7 +6,7 @@ void Laser::Initialize()
 	object_->Initialize();
 	object_->SetModel("LevelEditorObj/laser.obj");
 	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/mount.jpg"));
-
+	
 	// collider設定
 	collider_ = std::make_unique<Collider>();
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
@@ -40,6 +40,9 @@ Vector3 Laser::GetWorldPosition() const
 
 void Laser::OnCollision()
 {
-	// 当たった
-	isHit_ = true;
+	if (collider_->OnCollision()) {
+		// 当たった
+		isHit_ = true;
+	}
+	
 }

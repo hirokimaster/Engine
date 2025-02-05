@@ -1,6 +1,6 @@
 /**
 * @file Object3DPlacer.h
-* @brief モデルの種類決め、位置を管理クラス
+* @brief モデルの配置を行うクラス
 * @author 仁平 琉乃
 */
 
