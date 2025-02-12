@@ -156,6 +156,8 @@ void GameScene::Draw()
 	spriteContinue_->Draw();
 
 	gameSprite_->Draw();
+
+	player_->DrawUI();
 }
 
 void GameScene::PostProcessDraw()
@@ -210,6 +212,7 @@ void GameScene::LoadTextureFile()
 	TextureManager::Load("resources/TempTexture/white2.png");
 	TextureManager::Load("resources/TempTexture/white.png");
 	TextureManager::Load("resources/UI/RB.png");
+	TextureManager::Load("resources/UI/RB2.png");
 	TextureManager::Load("resources/UI/L.png");
 
 	// ゲームオーバー用

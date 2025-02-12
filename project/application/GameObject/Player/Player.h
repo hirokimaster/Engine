@@ -39,6 +39,12 @@ public:
 	void Draw(Camera& camera);
 
 	/// <summary>
+	/// UIの描画
+	/// </summary>
+	/// <param name="camera"></param>
+	void DrawUI();
+
+	/// <summary>
 	/// 撃破数を足す
 	/// </summary>
 	void AddDestroyCount() { ++destroyCount_; }
@@ -64,12 +70,6 @@ private: // クラス内でしか使わない
 	/// 当たり判定
 	/// </summary>
 	void OnCollision();
-
-	/// <summary>
-	/// UIの描画
-	/// </summary>
-	/// <param name="camera"></param>
-	void DrawUI();
 
 	/// <summary>
 	/// 自機の回転
@@ -157,4 +157,7 @@ private:
 	Vector3 moveMinLimit_ = { -30.0f, 10.0f, 0.0f }; // 移動最小値
 	Vector3 moveMaxLimit_ = { 30.0f, 50.0f, 0.0f };    // 移動最大値
 	std::unique_ptr<Collider> collider_ = nullptr;
+	// UI
+	std::unique_ptr<Sprite> spriteAttack_ = nullptr;
+	std::unique_ptr<Sprite> spriteMove_ = nullptr;
 };

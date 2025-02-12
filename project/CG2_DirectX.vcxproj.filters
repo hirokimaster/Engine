@@ -285,6 +285,7 @@
     </ClCompile>
     <ClCompile Include="engine\3d\Line\Line.cpp" />
     <ClCompile Include="application\SceneSprite\GameSprite.cpp" />
+    <ClCompile Include="application\GameState\StateGameStart.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -508,6 +509,8 @@
     </ClInclude>
     <ClInclude Include="engine\3d\Line\Line.h" />
     <ClInclude Include="application\SceneSprite\GameSprite.h" />
+    <ClInclude Include="application\GameState\IGameState.h" />
+    <ClInclude Include="application\GameState\StateGameStart.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

@@ -24,7 +24,5 @@ private:
 	void Continue();
 
 private:
-	// UI
-	std::unique_ptr<Sprite> spriteAttack_ = nullptr;
-	std::unique_ptr<Sprite> spriteMove_ = nullptr;
+	
 };

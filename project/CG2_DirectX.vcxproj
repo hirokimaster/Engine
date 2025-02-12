@@ -125,6 +125,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\GameObject\Player\Bullet\PlayerBullet.cpp" />
     <ClCompile Include="application\GameObject\Player\Player.cpp" />
     <ClCompile Include="application\GameObject\Rail\Rail.cpp" />
+    <ClCompile Include="application\GameState\StateGameStart.cpp" />
     <ClCompile Include="application\SceneSprite\GameSprite.cpp" />
     <ClCompile Include="application\SceneSprite\TitleSprite.cpp" />
     <ClCompile Include="application\SceneTransition\SceneTransition.cpp" />
@@ -193,6 +194,8 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\GameObject\Player\Bullet\PlayerBullet.h" />
     <ClInclude Include="application\GameObject\Player\Player.h" />
     <ClInclude Include="application\GameObject\Rail\Rail.h" />
+    <ClInclude Include="application\GameState\IGameState.h" />
+    <ClInclude Include="application\GameState\StateGameStart.h" />
     <ClInclude Include="application\SceneSprite\GameSprite.h" />
     <ClInclude Include="application\SceneSprite\TitleSprite.h" />
     <ClInclude Include="application\SceneTransition\SceneTransition.h" />

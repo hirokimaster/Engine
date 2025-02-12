@@ -28,6 +28,12 @@ void Player::Initialize(uint32_t texHandle)
 	// 死亡フラグ
 	isDead_ = false;
 	deadTimer_ = 60.0f;
+
+	// UI
+	spriteAttack_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/RB.png"), { 1000.0f , 500.0f }));
+	spriteAttack_->SetScale({ 2.0f,2.0f,2.0f });
+	spriteMove_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/L.png"), { 240.0f,500.0f }));
+	spriteMove_->SetScale({ 2.0f,2.0f,2.0f });
 }
 
 void Player::Update()
@@ -63,9 +69,6 @@ void Player::Draw(Camera& camera)
 			bullet->Draw(camera);
 		}
 	}
-
-	// UIの描画
-	DrawUI();
 }
 
 void Player::Move()
@@ -89,8 +92,8 @@ void Player::Attack()
 {
 
 	// Rトリガーを押していたら
-	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
-
+	if (Input::GetInstance()->PushButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
+		spriteAttack_->SetTexHandle(TextureManager::GetTexHandle("UI/RB2.png"));
 		// 弾の速度
 		Vector3 velocity = { 0,0,bulletSpeed_ };
 		std::list<Vector3> lockOnVelocity;
@@ -135,6 +138,9 @@ void Player::Attack()
 		}
 
 	}
+	else {
+		spriteAttack_->SetTexHandle(TextureManager::GetTexHandle("UI/RB.png"));
+	}
 
 }
 
@@ -165,7 +171,8 @@ void Player::OnCollision()
 
 void Player::DrawUI()
 {
-
+	spriteAttack_->Draw();
+	spriteMove_->Draw();
 }
 
 void Player::Rotate()
