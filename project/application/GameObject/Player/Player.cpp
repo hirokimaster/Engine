@@ -38,7 +38,7 @@ void Player::Update()
 	UpdateBullet(); // 弾の更新
 	object_->Update();
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
-
+	OnCollision(); // 当たったら
 	// ダメージ
 	IncurDamage();
 

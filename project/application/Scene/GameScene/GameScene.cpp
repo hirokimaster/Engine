@@ -56,12 +56,6 @@ void GameScene::Initialize()
 	loader_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
 	loader_->Arrangement();
 
-	// 仮のUI
-	spriteAttack_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/RB.png"),{ 1000.0f , 500.0f }));
-	spriteAttack_->SetScale({ 2.0f,2.0f,2.0f });
-	spriteMove_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/L.png"),{ 240.0f,500.0f }));
-	spriteMove_->SetScale({ 2.0f,2.0f,2.0f });
-
 	// ゲームオーバー用
 	texColor_ = { 1.0f,1.0f,1.0f,0.0f };
 	spriteYes_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/yes.png"), { 400.0f,400.0f }, texColor_));
@@ -75,6 +69,10 @@ void GameScene::Initialize()
 	// 天球
 	skydome_ = std::make_unique<Skydome>();
 	skydome_->Initialize();
+
+	// ゲームスプライト
+	gameSprite_ = std::make_unique<GameSprite>();
+	gameSprite_->Initialize();
 }
 
 void GameScene::Update()
@@ -157,10 +155,7 @@ void GameScene::Draw()
 
 	spriteContinue_->Draw();
 
-	spriteAttack_->Draw();
-
-	spriteMove_->Draw();
-
+	gameSprite_->Draw();
 }
 
 void GameScene::PostProcessDraw()

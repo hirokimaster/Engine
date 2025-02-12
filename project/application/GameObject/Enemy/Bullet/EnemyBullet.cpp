@@ -27,6 +27,7 @@ void EnemyBullet::Update()
 	BulletErase();
 	object_->Update();
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
+	OnCollision(); // 当たったら
 }
 
 void EnemyBullet::Draw(Camera& camera)

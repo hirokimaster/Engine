@@ -17,6 +17,7 @@
 #include "application/GameObject/Skydome/Skydome.h"
 #include "application/SceneTransition/SceneTransition.h"
 #include "application/GameObject/Gimmick/Laser.h"
+#include "application/SceneSprite/GameSprite.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -84,7 +85,7 @@ private:
 	std::unique_ptr<LockOn> lockOn_ = nullptr; // ロックオン
 	std::unique_ptr<Loader> loader_ = nullptr;
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
-	
+	std::unique_ptr<GameSprite> gameSprite_ = nullptr; // ゲームシーンのスプライト
 
 	// シーン遷移用
 	bool isTransition_ = false;

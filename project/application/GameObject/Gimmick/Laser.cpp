@@ -6,6 +6,7 @@ void Laser::Initialize()
 	object_->Initialize();
 	object_->SetModel("LevelEditorObj/laser.obj");
 	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/mount.jpg"));
+	object_->SetScale({ 0.1f,0.1f,0.1f });
 	
 	// collider設定
 	collider_ = std::make_unique<Collider>();
@@ -19,6 +20,7 @@ void Laser::Update()
 	object_->Update();
 	collider_->SetWorldPosition(GetWorldPosition());
 	collider_->SetScale(GetScale());
+	OnCollision(); // 当たったら
 }
 
 void Laser::Draw(Camera& camera)

@@ -26,6 +26,7 @@ void PlayerBullet::Update()
 	BulletErase(); // 弾を削除
 	object_->Update();
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
+	OnCollision(); // 当たったら
 }
 
 void PlayerBullet::Draw(Camera& camera)
@@ -52,7 +53,9 @@ void PlayerBullet::BulletErase()
 
 void PlayerBullet::OnCollision()
 {
-	isDead_ = true;
+	if (collider_->OnCollision()) {
+		isDead_ = true;
+	}	
 }
 
 Vector3 PlayerBullet::GetWorldPosition() const

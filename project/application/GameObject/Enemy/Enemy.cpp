@@ -36,6 +36,8 @@ void Enemy::Update()
 
 	BulletUpdate(); // 弾の更新処理
 
+	OnCollision(); // 当たったら
+
 	// 時間で消滅
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;

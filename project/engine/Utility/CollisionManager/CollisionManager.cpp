@@ -41,8 +41,8 @@ void CollisionManager::CheckCollisionPair(Collider* cA, Collider* cB) {
 		float cBRadious = cB->GetRadious();
 
 		if (CheckCollision(cApos, cARadious, cBpos, cBRadious)) {
-			cA->OnCollision();
-			cB->OnCollision();
+			cA->SetOnCollision(true);
+			cB->SetOnCollision(true);
 		}
 
 	}
@@ -59,8 +59,8 @@ void CollisionManager::CheckCollisionPair(Collider* cA, Collider* cB) {
 		aabb.max = cApos + cAScale;
 
 		if (CheckCollision(aabb, cBpos, cBRadius)) {
-			cA->OnCollision();
-			cB->OnCollision();
+			cA->SetOnCollision(true);
+			cB->SetOnCollision(true);
 		}
 	}
 	else if (cA->GetType() == ColliderType::Sphere && cB->GetType() == ColliderType::AABB) {
@@ -76,8 +76,8 @@ void CollisionManager::CheckCollisionPair(Collider* cA, Collider* cB) {
 		aabb.max = cBpos + cBScale;
 
 		if (CheckCollision(aabb, cApos, cARadius)) {
-			cA->OnCollision();
-			cB->OnCollision();
+			cA->SetOnCollision(true);
+			cB->SetOnCollision(true);
 		}
 	}																			  
 }

@@ -22,7 +22,8 @@ public:
 	/// <summary>
 	/// 当たった時
 	/// </summary>
-	bool OnCollision() { return true; }
+	bool OnCollision() { return onCollision_; }
+	void SetOnCollision(bool onCollision) { onCollision_ = onCollision; }
 
 #pragma region getter
 
@@ -60,4 +61,6 @@ private:
 	Vector3 scale_{};
 	// ワールド座標
 	Vector3 worldPosition_{};
+
+	bool onCollision_ = false;
 };
