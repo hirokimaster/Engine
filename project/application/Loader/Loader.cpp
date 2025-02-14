@@ -96,39 +96,46 @@ LevelData* Loader::Load(const std::string& fileName)
 
 			nlohmann::json& controlPoints = object["control_points"];
 
-			if (controlPoints.is_array() && controlPoints.size() == 2) {
-				// start
-				if (controlPoints[0].contains("start")) {
-					objectData.controlPointStart.x = (float)controlPoints[0]["start"][0];
-					objectData.controlPointStart.y = (float)controlPoints[0]["start"][2];
-					objectData.controlPointStart.z = (float)controlPoints[0]["start"][1];
+			if (controlPoints.is_array()) {
+				// 制御点を逆順で読み込む
+				int controlPointIndex = 0;
+				for (auto& point : controlPoints) {
+
+					if (point.contains("x") && point.contains("y") && point.contains("z")) {
+						// 各座標を設定
+						float x = point["x"];
+						float y = point["y"];
+						float z = point["z"];
+
+						Vector3 newControlPoint{};
+						newControlPoint.x = x;
+						newControlPoint.y = y;
+						newControlPoint.z = z;
+						objectData.controlPoint.push_back(newControlPoint);
+
+						// インデックスを更新
+						controlPointIndex++;
+
+						// modelのロード
+						ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
+
+					}
+
+					// オブジェクト走査を再帰関数にまとめ、再帰関数で枝を走査する
+					if (object.contains("children")) {
+
+					}
 				}
 
-				// end
-				if (controlPoints[1].contains("end")) {
-					objectData.controlPointEnd.x = (float)controlPoints[1]["end"][0];
-					objectData.controlPointEnd.y = (float)controlPoints[1]["end"][2];
-					objectData.controlPointEnd.z = (float)controlPoints[1]["end"][1];
-				}
+				return levelData;
 			}
-
-			// modelのロード
-			ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
-
-		}
-
-		// オブジェクト走査を再帰関数にまとめ、再帰関数で枝を走査する
-		if (object.contains("children")) {
-
 		}
 	}
-
-	return levelData;
 }
 
 void Loader::Arrangement()
 {
-    // 使うテクスチャ
+	// 使うテクスチャ
 	TextureManager::Load("resources/TempTexture/noise0.png");
 	TextureManager::Load("resources/Stage/road.png");
 	TextureManager::Load("resources/TempTexture/mount.jpg");
@@ -139,17 +146,17 @@ void Loader::Arrangement()
 	for (auto& objectData : levelData_->objects) {
 
 		// モデルを指定して3Dオブジェクトを生成
-		if (objectData.fileName == "enemy") {
+		if (objectData.fileName == "enemyMoveRoute") {
 			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 			newEnemy->Initialize(TextureManager::GetTexHandle("TempTexture/noise0.png"));
 			newEnemy->SetPlayer(player_);
-			newEnemy->SetPosition(objectData.controlPointStart);
-			newEnemy->SetStartPosition(objectData.controlPointStart);
-			newEnemy->SetEndPosition(objectData.controlPointEnd);
-
+			newEnemy->SetPosition(objectData.controlPoint[0]); // 初期位置は移動ルートの最初の制御点
+			for (auto& point : objectData.controlPoint) {
+				newEnemy->SetMoveControlPoints(point);
+			}
 			enemys_.push_back(std::move(newEnemy));
 		}
-		else if (objectData.fileName == "roads") {			
+		else if (objectData.fileName == "roads") {
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/grounds.obj");
@@ -160,7 +167,7 @@ void Loader::Arrangement()
 			newObject->SetUVTransform(uvTransform_);
 			objects_.push_back(std::move(newObject));
 		}
-		else if(objectData.fileName == "grounds"){
+		else if (objectData.fileName == "grounds") {
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
@@ -185,6 +192,16 @@ void Loader::Arrangement()
 			newLaser->Initialize();
 			newLaser->SetPosition(objectData.translate);
 			lasers_.push_back(std::move(newLaser));
+		}
+		else if (objectData.fileName == "rail") {
+	    // デバックの時だけ線描画する
+        #ifdef _DEBUG
+			for (uint32_t i = 0; i < 100; ++i) {
+				std::unique_ptr<Line> line = std::make_unique<Line>();
+				line->Initialize({ 0,0,0 }, { 0,0,0 });
+				railLine_.push_back(std::move(line));
+			}
+        #endif
 		}
 	}
 }

@@ -14,22 +14,12 @@ EnemyStateSortie::~EnemyStateSortie()
 
 void EnemyStateSortie::Update(Enemy* pEnemy)
 {
-	// 差分(距離)を求める
-	Vector3 playerPosition = player_->GetWorldPosition();
-	Vector3 enemyPosition = pEnemy->GetWorldPosition();
-	float diffZ = enemyPosition.z - playerPosition.z;
-	// この距離まで近づいたら出撃開始
-	if (diffZ <= 0.0f) {
-		isSortie_ = true;
-		pEnemy->SetIsSortie(true);
-	}
+	
 
 	// ポジションまで移動したら攻撃モードに移る
 	if (isSortie_) {
 		if (t_ <= 1.0f) {
-			Vector3 sortiePosition = Lerp(pEnemy->GetStartPosition(), pEnemy->GetEndPosition(), t_);
-			pEnemy->SetPosition(sortiePosition);
-			t_ += 0.08f;
+			
 		}
 		else {
 			isSortie_ = false;

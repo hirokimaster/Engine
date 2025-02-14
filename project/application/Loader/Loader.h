@@ -17,6 +17,7 @@
 #include "application/GameObject/Enemy/Enemy.h"
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "application/GameObject/Gimmick/Laser.h"
+#include "engine/3d/Line/Line.h"
 
 // レベルデータ
 struct LevelData {
@@ -26,8 +27,7 @@ struct LevelData {
 		Vector3 translate;
 		Vector3 rotate;
 		Vector3 scale;
-		Vector3 controlPointStart;
-		Vector3 controlPointEnd;
+		std::vector<Vector3> controlPoint;
 	};
 	// オブジェクトのコンテナ
 	std::vector<ObjectData>objects;
@@ -98,4 +98,5 @@ private:
 		{0.0f,0.0f,0.0f},
 	};
 	LevelData* levelData_;
+	std::vector<std::unique_ptr<Line>> railLine_;
 };

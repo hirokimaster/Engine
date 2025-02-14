@@ -81,11 +81,7 @@ public:
 
 	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const { return bullets_; }
 
-	bool GetIsDead()const { return isDead_; }
-
-	Vector3 GetStartPosition() { return startPosition_; }
-
-	Vector3 GetEndPosition() { return endPosition_; }
+	bool GetIsDead()const { return isDead_;}
 
 	bool GetIsSortie() { return isSortie_; }
 
@@ -101,13 +97,11 @@ public:
 
 	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
 
-	void SetStartPosition(const Vector3& start) { startPosition_ = start; }
-
-	void SetEndPosition(const Vector3& end) { endPosition_ = end; }
-
 	void SetIsSortie(bool isSortie) { isSortie_ = isSortie; }
 
 	void SetIsDead(bool isDead) { isDead_ = isDead; }
+
+	void SetMoveControlPoints(const Vector3& controlPoints) { moveControlPoints_.push_back(controlPoints); }
 
 #pragma endregion
 
@@ -120,8 +114,7 @@ private:
 	Player* player_ = nullptr; // playerのポインタ
 	std::unique_ptr<BasePhaseStateEnemy> phaseState_; // 行動フェーズ（状態）
 	Vector3 velocity_{}; // 移動ベクトル
-	Vector3 startPosition_{}; // スポーンする座標
-	Vector3 endPosition_{}; // でできた後の最終座標
+	std::vector<Vector3> moveControlPoints_{}; // 移動ルートの制御点を入れとくコンテナ
 	bool isSortie_ = false; // 出撃してるか
 	float bulletSpeed_ = 0.2f; // 弾のスピード
 	std::unique_ptr<Collider> collider_ = nullptr; // collider
