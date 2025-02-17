@@ -126,11 +126,11 @@ LevelData* Loader::Load(const std::string& fileName)
 
 					}
 				}
-
-				return levelData;
 			}
 		}
 	}
+
+	return levelData;
 }
 
 void Loader::Arrangement()
