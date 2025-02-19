@@ -91,6 +91,7 @@
     <FxCompile Include="resources\ShaderFile\LuminanceBasedOutline.PS.hlsl">
       <Filter>shaders</Filter>
     </FxCompile>
+    <FxCompile Include="resources\ShaderFile\PostEffectNone.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -286,6 +287,9 @@
     <ClCompile Include="engine\3d\Line\Line.cpp" />
     <ClCompile Include="application\SceneSprite\GameSprite.cpp" />
     <ClCompile Include="application\GameState\StateGameStart.cpp" />
+    <ClCompile Include="application\PostEffect\EffectState\PlayerDamageState.cpp" />
+    <ClCompile Include="application\PostEffect\PostEffect.cpp" />
+    <ClCompile Include="application\PostEffect\EffectState\NoneEffectState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -511,6 +515,10 @@
     <ClInclude Include="application\SceneSprite\GameSprite.h" />
     <ClInclude Include="application\GameState\IGameState.h" />
     <ClInclude Include="application\GameState\StateGameStart.h" />
+    <ClInclude Include="application\PostEffect\IPostEffect.h" />
+    <ClInclude Include="application\PostEffect\EffectState\PlayerDamageState.h" />
+    <ClInclude Include="application\PostEffect\PostEffect.h" />
+    <ClInclude Include="application\PostEffect\EffectState\NoneEffectState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

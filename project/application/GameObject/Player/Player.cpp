@@ -7,13 +7,13 @@
 #include "Player.h"
 #include "application/GameObject/LockOn/LockOn.h"
 
-void Player::Initialize(uint32_t texHandle)
+void Player::Initialize()
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
 	object_->SetModel("Player/Jet.obj");
 	object_->SetPosition({ 0,-20.0f,0 });
-	object_->SetTexHandle(texHandle);
+	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
 	
 	// collider
 	collider_ = std::make_unique<Collider>();

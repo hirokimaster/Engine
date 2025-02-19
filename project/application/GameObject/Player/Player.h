@@ -22,10 +22,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="object"></param>
-	/// <param name="texHandle"></param>
-	/// <param name="model"></param>
-	void Initialize(uint32_t texHandle);
+	void Initialize();
 
 	/// <summary>
 	/// 更新

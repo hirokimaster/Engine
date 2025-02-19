@@ -16,12 +16,11 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
-	// ポストエフェクトの初期化
-	isTransition_ = true;
-	postProcess_ = std::make_unique<PostProcess>();
-	postProcess_->Initialize();
-	postProcess_->SetEffect(PostEffectType::Vignette);
+	// postEffect
+	postEffect_ = std::make_unique<PostEffect>();
+	postEffect_->Initialize();
 
+	isTransition_ = true;
 	sceneTransition_ = SceneTransition::GetInstance();
 
 	// テクスチャ読み込み
@@ -32,7 +31,7 @@ void GameScene::Initialize()
 	lockOn_ = std::make_unique<LockOn>();
 	// player
 	player_ = std::make_unique<Player>();
-	player_->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
+	player_->Initialize();
 	lockOn_->Initialize();
 	player_->SetLockOn(lockOn_.get());
 	// collision
@@ -124,8 +123,12 @@ void GameScene::Update()
 	// 天球
 	skydome_->Update();
 
-	// ダメージエフェクト
-	DamegeEffect();
+	// 敵の攻撃が当たったら
+	if (player_->GetIsHitEnemyFire()) {
+		postEffect_->ChangeState(std::make_unique<PlayerDamegeState>());
+	}
+	// postEffect更新
+	postEffect_->Update();
 
 	// ゲームオーバー
 	GameOver();
@@ -147,7 +150,7 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	postProcess_->Draw();
+	postEffect_->GetPostProcess()->Draw();
 
 	spriteNo_->Draw();
 
@@ -162,7 +165,7 @@ void GameScene::Draw()
 
 void GameScene::PostProcessDraw()
 {
-	postProcess_->PreDraw();
+	postEffect_->GetPostProcess()->PreDraw();
 
 	skydome_->Draw(camera_);
 
@@ -175,8 +178,7 @@ void GameScene::PostProcessDraw()
 
 	sceneTransition_->Draw();
 
-	postProcess_->PostDraw();
-
+	postEffect_->GetPostProcess()->PostDraw();
 }
 
 void GameScene::Collision()
@@ -246,44 +248,10 @@ void GameScene::StartGame()
 			.center = Vector2(0.5f,0.5f),
 			.blurWidth = 0.005f,
 		};
-		postProcess_->SetEffect(PostEffectType::RadialBlur);
-		postProcess_->SetRadialParam(param);
+		//postProcess_->SetEffect(PostEffectType::RadialBlur);
+		//postProcess_->SetRadialParam(param);
 		rotateParam_ = 1.0f;
 	}
-}
-
-void GameScene::DamegeEffect()
-{
-	// プレイヤーがダメージを受けたら
-	if (player_->GetIsHitEnemyFire()) {
-		isPlayerIncurDamage_ = true;
-	}
-
-	if (isPlayerIncurDamage_) {
-		--effectTime_;
-	}
-	else {
-		effectTime_ = 10.0f;
-	}
-
-	// effectTimerが0になるまでにビネットをかける
-	if (effectTime_ > 0.0f && isPlayerIncurDamage_) {
-
-		VignetteParam param = {
-			.scale = 60.0f,
-			.exponent = 0.3f
-		};
-
-		postProcess_->SetEffect(PostEffectType::Vignette);
-		postProcess_->SetVignetteParam(param);
-		followCamera_->StartShake(0.1f, 0.4f); // シェイクさせる
-	}
-
-	// ダメージエフェクト終わり
-	if (effectTime_ < 0.0f) {
-		isPlayerIncurDamage_ = false;
-	}
-
 }
 
 void GameScene::GameOver()
@@ -295,7 +263,7 @@ void GameScene::GameOver()
 		spriteYes_->SetColor(texColor_);
 		spriteNo_->SetColor(texColor_);
 		texColor_.w += 0.05f;
-		postProcess_->SetEffect(PostEffectType::GaussianBlur);
+		//postProcess_->SetEffect(PostEffectType::GaussianBlur);
 		for (auto& enemys : loader_->GetEnemys()) {
 			enemys->SetIsDead(true);
 		}

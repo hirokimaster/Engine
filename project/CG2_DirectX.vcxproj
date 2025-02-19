@@ -126,6 +126,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\GameObject\Player\Player.cpp" />
     <ClCompile Include="application\GameObject\Rail\Rail.cpp" />
     <ClCompile Include="application\GameState\StateGameStart.cpp" />
+    <ClCompile Include="application\PostEffect\PostEffect.cpp" />
     <ClCompile Include="application\SceneSprite\GameSprite.cpp" />
     <ClCompile Include="application\SceneSprite\TitleSprite.cpp" />
     <ClCompile Include="application\SceneTransition\SceneTransition.cpp" />
@@ -136,6 +137,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\Scene\IScene\IScene.cpp" />
     <ClCompile Include="application\Scene\TitleScene\TitleScene.cpp" />
     <ClCompile Include="application\Loader\Loader.cpp" />
+    <ClCompile Include="application\PostEffect\EffectState\PlayerDamageState.cpp" />
     <ClCompile Include="engine\3d\Line\Line.cpp" />
     <ClCompile Include="engine\Graphics\Pipeline\ComputePipeline.cpp" />
     <ClCompile Include="engine\3d\Model\Animation\ModelAnimation.cpp" />
@@ -177,6 +179,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\Graphics\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Base\WinApp\WinApp.cpp" />
     <ClCompile Include="engine\Graphics\Transform\WorldTransform.cpp" />
+    <ClCompile Include="application\PostEffect\EffectState\NoneEffectState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h" />
@@ -196,6 +199,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\GameObject\Rail\Rail.h" />
     <ClInclude Include="application\GameState\IGameState.h" />
     <ClInclude Include="application\GameState\StateGameStart.h" />
+    <ClInclude Include="application\PostEffect\PostEffect.h" />
     <ClInclude Include="application\SceneSprite\GameSprite.h" />
     <ClInclude Include="application\SceneSprite\TitleSprite.h" />
     <ClInclude Include="application\SceneTransition\SceneTransition.h" />
@@ -206,6 +210,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\Scene\IScene\IScene.h" />
     <ClInclude Include="application\Scene\TitleScene\TitleScene.h" />
     <ClInclude Include="application\Loader\Loader.h" />
+    <ClInclude Include="application\PostEffect\EffectState\PlayerDamageState.h" />
     <ClInclude Include="engine\3d\Line\Line.h" />
     <ClInclude Include="engine\Graphics\Pipeline\ComputePipeline.h" />
     <ClInclude Include="engine\3d\Model\Animation\Animation.h" />
@@ -256,6 +261,8 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\Graphics\Camera\Camera.h" />
     <ClInclude Include="Engine\Base\WinApp\WinApp.h" />
     <ClInclude Include="engine\Graphics\Transform\WorldTransform.h" />
+    <ClInclude Include="application\PostEffect\IPostEffect.h" />
+    <ClInclude Include="application\PostEffect\EffectState\NoneEffectState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">
@@ -383,6 +390,12 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="resources\ShaderFile\PostEffectNone.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="resources\ShaderFile\PostProcess.VS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

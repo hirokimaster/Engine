@@ -18,6 +18,8 @@
 #include "application/SceneTransition/SceneTransition.h"
 #include "application/GameObject/Gimmick/Laser.h"
 #include "application/SceneSprite/GameSprite.h"
+#include "application/PostEffect/PostEffect.h"
+#include "application/PostEffect/EffectState/PlayerDamageState.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -69,11 +71,6 @@ private:
 	void StartGame();
 
 	/// <summary>
-	/// ダメージ食らったときのエフェクト
-	/// </summary>
-	void DamegeEffect();
-
-	/// <summary>
 	/// ゲームオーバー
 	/// </summary>
 	void GameOver();
@@ -93,10 +90,8 @@ private:
 	bool isTransitionClear_ = false;
 	SceneTransition* sceneTransition_ = nullptr;
 
-	// postEffect用
-	std::unique_ptr<PostProcess> postProcess_;
-	bool isPlayerIncurDamage_ = false;
-	float effectTime_ = 30.0f;
+	std::unique_ptr<PostEffect> postEffect_ = nullptr; // postEffect
+	
 	bool isGameStart_ = false;
 	
 	// カメラワーク用

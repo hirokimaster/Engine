@@ -42,6 +42,7 @@ struct PipelineState {
 	GraphicsPipelineData Line;
 	GraphicsPipelineData Random;
 	GraphicsPipelineData gpuParticle;
+	GraphicsPipelineData postEffectNone;
 };
 
 enum class Light {
@@ -52,6 +53,7 @@ enum class Light {
 };
 
 enum class PostEffectType {
+	None,
 	Bloom,
 	Grayscale,
 	Vignette,
@@ -266,6 +268,14 @@ private:
 	/// <param name="shaderName"></param>
 	/// <returns></returns>
 	static GraphicsPipelineData CreateGPUParticle(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
+
+	/// <summary>
+	/// postEffectかけない
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="shaderName"></param>
+	/// <returns></returns>
+	static GraphicsPipelineData CreatePostEffectNone(Microsoft::WRL::ComPtr <ID3D12Device> device, const std::wstring& shaderName);
 
 #pragma endregion
 

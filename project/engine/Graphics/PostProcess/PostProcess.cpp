@@ -137,7 +137,11 @@ void PostProcess::CreateBuffer()
 
 void PostProcess::CreatePipeLine()
 {
-	if (type_ == PostEffectType::Bloom) {
+
+	if (type_ == PostEffectType::None) {
+		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().postEffectNone;
+	}
+	else if (type_ == PostEffectType::Bloom) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Bloom;
 	}
 	else if (type_ == PostEffectType::Grayscale) {
