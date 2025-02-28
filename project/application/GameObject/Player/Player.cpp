@@ -58,7 +58,7 @@ void Player::Update()
 	}
 }
 
-void Player::Draw(Camera& camera)
+void Player::Draw(const Camera& camera)
 {
 	// 生きてるときだけ
 	if (!isDead_) {
@@ -207,14 +207,14 @@ void Player::Rotate()
 		rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, object_->GetWorldTransform().rotate.z - rotate.z, kLerpFactor);
 	}
 	else {
-		rotateVelo.z = std::lerp(rotateVelo.z, 0.0f, kReturnLerpFactor);
+		rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, 0.0f, kReturnLerpFactor);
 	}
 
 	if (!isAtMoveLimitY) {
-		rotateVelo.x = std::lerp(rotateVelo.x, object_->GetWorldTransform().rotate.x - rotate.x, kLerpFactor);
+		rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, object_->GetWorldTransform().rotate.x - rotate.x, kLerpFactor);
 	}
 	else {
-		rotateVelo.x = std::lerp(rotateVelo.x, 0.0f, kReturnLerpFactor);
+		rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, 0.0f, kReturnLerpFactor);
 	}
 
 	// z軸に制限をかける

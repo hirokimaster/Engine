@@ -23,7 +23,7 @@ void Laser::Update()
 	OnCollision(); // 当たったら
 }
 
-void Laser::Draw(Camera& camera)
+void Laser::Draw(const Camera& camera)
 {
 	object_->Draw(camera);
 }

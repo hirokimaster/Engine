@@ -76,7 +76,6 @@ private:
 	void GameOver();
 
 private:
-	Camera camera_{};
 	std::unique_ptr<Player> player_ = nullptr; // player
 	std::unique_ptr<CollisionManager> collisionManager_ = nullptr; // 衝突判定まとめ
 	std::unique_ptr<LockOn> lockOn_ = nullptr; // ロックオン
@@ -102,17 +101,8 @@ private:
 	Vector3 offsetEnd_ = { 0, 1.5f, -25.0f };
 	Vector3 cameraRotateEnd_ = { 0, 0, 0 };
 	float rotateParam_ = 0.0f;
-
 	// ゲームオーバー用
 	bool isGameOver_ = false;
-
-	// コンティニューの時のスプライト
-	std::unique_ptr<Sprite> spriteYes_;
-	std::unique_ptr<Sprite> spriteNo_;
-	std::unique_ptr<Sprite> spriteContinue_;
-	Vector4 texColor_{};
-	uint32_t selectNo_ = 0;
-
 	// 天球
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 };

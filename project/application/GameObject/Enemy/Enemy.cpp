@@ -44,7 +44,7 @@ void Enemy::Update()
 	}
 }
 
-void Enemy::Draw(Camera& camera)
+void Enemy::Draw(const Camera& camera)
 {
 	// 出撃するまで出さない
 	if (isSortie_) {

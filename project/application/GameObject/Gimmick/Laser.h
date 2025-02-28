@@ -19,7 +19,7 @@ public:
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
-	void Draw(Camera& camera);
+	void Draw(const Camera& camera);
 
 #pragma region getter
 

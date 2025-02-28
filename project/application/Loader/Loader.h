@@ -51,7 +51,7 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(Camera& camera);
+	void Draw(const Camera& camera);
 
 	/// <summary>
 	/// カメラの更新

@@ -233,7 +233,7 @@ void Loader::Update()
 		});
 }
 
-void Loader::Draw(Camera& camera)
+void Loader::Draw(const Camera& camera)
 {
 	for (auto& object : objects_) {
 		object->Draw(camera);

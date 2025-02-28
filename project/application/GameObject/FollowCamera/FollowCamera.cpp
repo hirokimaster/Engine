@@ -19,8 +19,13 @@ void FollowCamera::Update()
 {
 	// 追従する対象がいたら
 	if (target_) {
-
+		// 追従
 		camera_.translate = target_->translate + offset_;
+
+		// targrtの回転によって動かす
+		float cameraRotateZ = target_->rotate.z;
+		cameraRotateZ = std::clamp(cameraRotateZ, -0.1f, 0.1f);
+		camera_.rotate.z = cameraRotateZ;
 
 		// カメラの行列を更新
 		camera_.UpdateMatrix();

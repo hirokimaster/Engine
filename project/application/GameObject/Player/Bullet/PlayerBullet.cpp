@@ -29,7 +29,7 @@ void PlayerBullet::Update()
 	OnCollision(); // 当たったら
 }
 
-void PlayerBullet::Draw(Camera& camera)
+void PlayerBullet::Draw(const Camera& camera)
 {
 	object_->Draw(camera);
 }

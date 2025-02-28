@@ -26,7 +26,6 @@ void GameScene::Initialize()
 	// テクスチャ読み込み
 	LoadTextureFile();
 
-	camera_.Initialize();
 	// lockOn
 	lockOn_ = std::make_unique<LockOn>();
 	// player
@@ -55,12 +54,6 @@ void GameScene::Initialize()
 	loader_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
 	loader_->Arrangement();
 
-	// ゲームオーバー用
-	texColor_ = { 1.0f,1.0f,1.0f,0.0f };
-	spriteYes_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/yes.png"), { 400.0f,400.0f }, texColor_));
-	spriteNo_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/no.png"), { 750.0f,400.0f }, texColor_));
-	spriteContinue_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/continue.png"), { 450.0f,250.0f }, texColor_));
-
 	// ゲームスタート
 	isGameStart_ = false;
 	sceneTimer_ = 100;
@@ -72,6 +65,8 @@ void GameScene::Initialize()
 	// ゲームスプライト
 	gameSprite_ = std::make_unique<GameSprite>();
 	gameSprite_->Initialize();
+	gameSprite_->SetGameScene(this);
+	gameSprite_->SetPlayer(player_.get());
 }
 
 void GameScene::Update()
@@ -100,23 +95,16 @@ void GameScene::Update()
 
 	// player
 	player_->Update();
-	lockOn_->UpdateReticle(camera_, player_->GetWorldPosition(), isGameStart_);
+	lockOn_->UpdateReticle(followCamera_->GetCamera(), player_->GetWorldPosition(), isGameStart_);
 	
 	// loader
 	loader_->Update();
 
 	// followCamera
-	float cameraRotateZ = player_->GetRotate().z;
-	cameraRotateZ = std::clamp(cameraRotateZ, -0.1f, 0.1f);
-	followCamera_->SetRotateZ(-cameraRotateZ);
-
 	followCamera_->Update();
-	camera_.matView = followCamera_->GetCamera().matView;
-	camera_.matProjection = followCamera_->GetCamera().matProjection;
-	camera_.TransferMatrix();
 
 	// lockOn
-	lockOn_->Update(loader_->GetEnemys(), camera_);
+	lockOn_->Update(loader_->GetEnemys(), followCamera_->GetCamera());
 
 	Collision();
 
@@ -132,31 +120,11 @@ void GameScene::Update()
 
 	// ゲームオーバー
 	GameOver();
-
-	// クリア条件
-	if (player_->GetWorldPosition().z >= 8500.0f) {
-		isTransitionClear_ = true;
-	}
-
-#ifdef _DEBUG
-	// カメラの座標
-	ImGui::Begin("Camera");
-	ImGui::SliderFloat3("CmeraTranslation ", &camera_.translate.x, -50.0f, 50.0f);
-	ImGui::SliderFloat3("CmeraRotate ", &camera_.rotate.x, 0.0f, 10.0f);
-	ImGui::End();
-#endif
-
 }
 
 void GameScene::Draw()
 {
 	postEffect_->GetPostProcess()->Draw();
-
-	spriteNo_->Draw();
-
-	spriteYes_->Draw();
-
-	spriteContinue_->Draw();
 
 	gameSprite_->Draw();
 
@@ -167,11 +135,11 @@ void GameScene::PostProcessDraw()
 {
 	postEffect_->GetPostProcess()->PreDraw();
 
-	skydome_->Draw(camera_);
+	skydome_->Draw(followCamera_->GetCamera());
 
-	loader_->Draw(camera_);
+	loader_->Draw(followCamera_->GetCamera());
 	// player
-	player_->Draw(camera_);
+	player_->Draw(followCamera_->GetCamera());
 
 	// lockOn_(レティクル)
 	lockOn_->Draw();
@@ -243,13 +211,6 @@ void GameScene::StartGame()
 	if (rotateParam_ >= 1.0f) {
 		// ゲーム開始
 		isGameStart_ = true;
-		// ブラーをかける
-		RadialParam param = {
-			.center = Vector2(0.5f,0.5f),
-			.blurWidth = 0.005f,
-		};
-		//postProcess_->SetEffect(PostEffectType::RadialBlur);
-		//postProcess_->SetRadialParam(param);
 		rotateParam_ = 1.0f;
 	}
 }
@@ -259,61 +220,9 @@ void GameScene::GameOver()
 	// 追従をやめる
 	if (player_->GetDeadTimer() <= 0.0f) {
 		followCamera_->SetTarget(nullptr);
-		spriteContinue_->SetColor(texColor_);
-		spriteYes_->SetColor(texColor_);
-		spriteNo_->SetColor(texColor_);
-		texColor_.w += 0.05f;
-		//postProcess_->SetEffect(PostEffectType::GaussianBlur);
+		
 		for (auto& enemys : loader_->GetEnemys()) {
 			enemys->SetIsDead(true);
-		}
-	}
-
-	if (texColor_.w >= 2.0f) {
-		spriteYes_->SetColor(texColor_);
-		spriteNo_->SetColor(texColor_);
-		texColor_.w = 2.0f;
-	}
-
-	// コンティニューするかどうかの選択
-	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_DPAD_LEFT) && selectNo_ == 1) {
-		selectNo_ -= 1;
-	}
-	else if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_DPAD_RIGHT) && selectNo_ == 0) {
-		selectNo_ += 1;
-	}
-
-	// UIのアニメーション用の変数
-	static float scaleTimer = 0.0f;
-	const float scaleSpeed = 2.0f;
-	const float scaleRange = 0.2f;
-
-	// spriteNo,Yesのアニメーション
-	scaleTimer += scaleSpeed * 1.0f / 60.0f;
-	float scaleValue = 1.0f + scaleRange * sin(scaleTimer);
-
-	// 選択してるスプライトによって変える
-	if (selectNo_ == 0) {
-		spriteYes_->SetScale({ scaleValue, scaleValue, scaleValue });
-		spriteNo_->SetScale({ 1.0f, 1.0f, 1.0f });
-	}
-	else if (selectNo_ == 1) {
-		spriteNo_->SetScale({ scaleValue, scaleValue, scaleValue });
-		spriteYes_->SetScale({ 1.0f, 1.0f, 1.0f });
-	}
-	else {
-		spriteYes_->SetScale({ 1.0f, 1.0f, 1.0f });
-		spriteNo_->SetScale({ 1.0f, 1.0f, 1.0f });
-	}
-
-	// コンティニューするならリスタートやめるならタイトル
-	if (texColor_.w >= 2.0f) {
-		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A) && selectNo_ >= 1) {
-			GameManager::GetInstance()->ChangeScene("TITLE");
-		}
-
-		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A) && selectNo_ <= 0) {
-			Initialize();
 		}
 	}
 

@@ -30,7 +30,7 @@ void EnemyBullet::Update()
 	OnCollision(); // 当たったら
 }
 
-void EnemyBullet::Draw(Camera& camera)
+void EnemyBullet::Draw(const Camera& camera)
 {
 	object_->Draw(camera);
 }
