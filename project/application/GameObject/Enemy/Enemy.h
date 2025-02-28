@@ -87,6 +87,8 @@ public:
 
 	Collider* GetCollider() { return collider_.get(); }
 
+	const std::vector<Vector3>& GetMoveControlPoints_() const { return moveControlPoints_; }
+
 #pragma endregion
 
 #pragma region setter

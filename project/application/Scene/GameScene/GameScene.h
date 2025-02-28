@@ -6,17 +6,11 @@
 
 #pragma once
 #include "application/Scene/IScene/IScene.h"
-#include "engine/Graphics/PostProcess/PostProcess.h"
-#include "application/GameObject/Player/Player.h"
-#include "application/GameObject/Enemy/Enemy.h"
 #include "engine/Utility/CollisionManager/CollisionManager.h"
-#include "application/GameObject/Rail/Rail.h"
-#include "application/GameObject/LockOn/LockOn.h"
 #include "application/Loader/Loader.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Skydome/Skydome.h"
 #include "application/SceneTransition/SceneTransition.h"
-#include "application/GameObject/Gimmick/Laser.h"
 #include "application/SceneSprite/GameSprite.h"
 #include "application/PostEffect/PostEffect.h"
 #include "application/PostEffect/EffectState/PlayerDamageState.h"

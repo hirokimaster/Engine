@@ -97,15 +97,13 @@ LevelData* Loader::Load(const std::string& fileName)
 			nlohmann::json& controlPoints = object["control_points"];
 
 			if (controlPoints.is_array()) {
-				// 制御点を逆順で読み込む
-				int controlPointIndex = 0;
-				for (auto& point : controlPoints) {
+				for (auto it = controlPoints.rbegin(); it != controlPoints.rend(); ++it) {  // 逆順
+					auto& point = *it;
 
 					if (point.contains("x") && point.contains("y") && point.contains("z")) {
-						// 各座標を設定
 						float x = point["x"];
-						float y = point["y"];
-						float z = point["z"];
+						float y = point["z"];
+						float z = point["y"];
 
 						Vector3 newControlPoint{};
 						newControlPoint.x = x;
@@ -113,17 +111,11 @@ LevelData* Loader::Load(const std::string& fileName)
 						newControlPoint.z = z;
 						objectData.controlPoint.push_back(newControlPoint);
 
-						// インデックスを更新
-						controlPointIndex++;
-
-						// modelのロード
 						ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
-
 					}
 
-					// オブジェクト走査を再帰関数にまとめ、再帰関数で枝を走査する
 					if (object.contains("children")) {
-
+						// 再帰処理を追加（未実装部分）
 					}
 				}
 			}
@@ -146,7 +138,7 @@ void Loader::Arrangement()
 	for (auto& objectData : levelData_->objects) {
 
 		// モデルを指定して3Dオブジェクトを生成
-		if (objectData.fileName == "enemyMoveRoute") {
+		if (objectData.fileName == "enemy") {
 			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
 			newEnemy->Initialize(TextureManager::GetTexHandle("TempTexture/noise0.png"));
 			newEnemy->SetPlayer(player_);

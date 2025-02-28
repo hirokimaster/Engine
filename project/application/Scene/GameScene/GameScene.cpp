@@ -28,17 +28,17 @@ void GameScene::Initialize()
 
 	// lockOn
 	lockOn_ = std::make_unique<LockOn>();
+
 	// player
 	player_ = std::make_unique<Player>();
 	player_->Initialize();
 	lockOn_->Initialize();
 	player_->SetLockOn(lockOn_.get());
+
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
 
-	/*------------------------
-			追従カメラ
-	--------------------------*/
+	// 追従カメラ
 	followCamera_ = std::make_unique<FollowCamera>();
 	followCamera_->Initialize();
 	followCamera_->SetOffset(offsetStart_);

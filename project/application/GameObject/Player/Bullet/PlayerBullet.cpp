@@ -10,7 +10,7 @@ void PlayerBullet::Initialize(uint32_t texHandle)
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("Player/Jet.obj");
+	object_->SetModel("Player/cube.obj");
 	object_->SetTexHandle(texHandle);
 
 	// collider設定

@@ -6,6 +6,7 @@
 
 #pragma once
 #include "application/GameObject/Enemy/PhaseState/BasePhaseState/BasePhaseStateEnemy.h"
+#include "engine/Math/Mathfunction.h"
 
 class EnemyStateSortie : public BasePhaseStateEnemy {
 public:
@@ -21,4 +22,5 @@ public:
 private:
 	bool isSortie_ = false;	// 出撃してるか
 	float t_ = 0.0f; // 媒介変数
+	Vector3 move_{}; // 移動ベクトル
 };

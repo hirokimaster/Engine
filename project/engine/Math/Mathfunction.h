@@ -11,6 +11,8 @@
 #include "Vector4.h"
 #include <cassert>
 #include <numbers>
+#include <vector>
+#include <algorithm>
 
 struct AABB {
 	Vector3 min; // 最小点
@@ -158,6 +160,12 @@ Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
 Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
 // 回転を計算
 Quaternion CalculateRotationQuaternion(const Vector3& from, const Vector3& to);
+
+// catmulrom補間
+Vector3 CatmullRomInterpolation(const Vector3& p_mi1,const Vector3& p_0, const Vector3& p_1, const Vector3& p_2, float t);
+
+// catmulrom補間
+Vector3 CatmullRomPosition(const std::vector<Vector3>& points, float t);
 
 // 演算子のオーバーロード
 Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b);

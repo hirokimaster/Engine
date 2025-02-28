@@ -683,429 +683,11 @@
             "file_name": "grounds"
         },
         {
-            "type": "MESH",
-            "name": "Cube.008",
+            "type": "CURVE",
+            "name": "移動ルート",
             "transform": {
                 "translation": [
-                    -83.0,
-                    650.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    -3.141592502593994
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.001",
-            "transform": {
-                "translation": [
-                    83.0,
-                    650.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.002",
-            "transform": {
-                "translation": [
-                    83.0,
-                    1750.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.003",
-            "transform": {
-                "translation": [
-                    -83.0,
-                    1750.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    -3.141592502593994
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.004",
-            "transform": {
-                "translation": [
-                    83.0,
-                    2850.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.005",
-            "transform": {
-                "translation": [
-                    -83.0,
-                    2850.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    -3.141592502593994
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.006",
-            "transform": {
-                "translation": [
-                    -83.0,
-                    3950.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    -3.141592502593994
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.007",
-            "transform": {
-                "translation": [
-                    -83.0,
-                    5050.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    -3.141592502593994
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.009",
-            "transform": {
-                "translation": [
-                    83.0,
-                    3950.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.011",
-            "transform": {
-                "translation": [
-                    83.0,
-                    6150.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.012",
-            "transform": {
-                "translation": [
-                    83.0,
-                    7250.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.013",
-            "transform": {
-                "translation": [
-                    83.0,
-                    8350.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.015",
-            "transform": {
-                "translation": [
-                    -83.0,
-                    5050.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    -3.141592502593994
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.016",
-            "transform": {
-                "translation": [
-                    -83.0,
-                    6150.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    -3.141592502593994
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.017",
-            "transform": {
-                "translation": [
-                    -83.0,
-                    7250.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    -3.141592502593994
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.018",
-            "transform": {
-                "translation": [
-                    -83.0,
-                    8350.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    -3.141592502593994
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.010",
-            "transform": {
-                "translation": [
-                    83.0,
-                    5050.0,
-                    15.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    3.0,
-                    3.0,
-                    3.0
-                ]
-            },
-            "file_name": "mounts2"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube",
-            "transform": {
-                "translation": [
-                    75.0,
-                    9150.0,
-                    45.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    30.0,
-                    45.0,
-                    300.0
-                ]
-            },
-            "file_name": "cube"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.014",
-            "transform": {
-                "translation": [
-                    -75.0,
-                    9150.0,
-                    45.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    30.0,
-                    45.0,
-                    300.0
-                ]
-            },
-            "file_name": "cube"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.019",
-            "transform": {
-                "translation": [
-                    0.0,
+                    60.0,
                     1000.0,
                     20.0
                 ],
@@ -1115,88 +697,62 @@
                     0.0
                 ],
                 "scaling": [
-                    45.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "laser"
-        },
-        {
-            "type": "CURVE",
-            "name": "EnemySortieRoad",
-            "transform": {
-                "translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
                     1.0,
                     1.0,
                     1.0
                 ]
             },
+            "file_name": "enemy",
             "control_points": [
                 {
-                    "start": [
-                        100.0,
-                        20.0,
-                        300.0
-                    ]
+                    "name": "controlPoint0",
+                    "x": 17.365142822265625,
+                    "y": 1420.575927734375,
+                    "z": 20.0
                 },
                 {
-                    "end": [
-                        20.0,
-                        20.0,
-                        1000.0
-                    ]
-                }
-            ],
-            "file_name": "enemy"
-        },
-        {
-            "type": "CURVE",
-            "name": "EnemySortieRoad.001",
-            "transform": {
-                "translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "control_points": [
-                {
-                    "start": [
-                        100.0,
-                        100.0,
-                        20.0
-                    ]
+                    "name": "controlPoint1",
+                    "x": 49.945858001708984,
+                    "y": 1373.4642333984375,
+                    "z": 20.0
                 },
                 {
-                    "end": [
-                        20.0,
-                        1000.0,
-                        40.0
-                    ]
+                    "name": "controlPoint2",
+                    "x": 79.44464111328125,
+                    "y": 1329.8765869140625,
+                    "z": 20.0
+                },
+                {
+                    "name": "controlPoint3",
+                    "x": 99.25724792480469,
+                    "y": 1260.3114013671875,
+                    "z": 20.0
+                },
+                {
+                    "name": "controlPoint4",
+                    "x": 110.70451354980469,
+                    "y": 1170.494384765625,
+                    "z": 20.0
+                },
+                {
+                    "name": "controlPoint5",
+                    "x": 90.01136016845703,
+                    "y": 1100.4898681640625,
+                    "z": 20.0
+                },
+                {
+                    "name": "controlPoint6",
+                    "x": 70.12593078613281,
+                    "y": 1050.0225830078125,
+                    "z": 20.0
+                },
+                {
+                    "name": "controlPoint7",
+                    "x": 60.0,
+                    "y": 1000.0,
+                    "z": 20.0
                 }
-            ],
-            "file_name": "enemy"
+            ]
         }
     ]
 }

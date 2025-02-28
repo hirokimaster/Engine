@@ -24,6 +24,8 @@ void Enemy::Initialize(uint32_t texHandle)
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);
 	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
 	collider_->SetType(ColliderType::Sphere); // 形状
+
+	velocity_ = { 0.0f,0.0f,1.0f };
 }
 
 void Enemy::Update()
@@ -31,7 +33,6 @@ void Enemy::Update()
 	object_->Update();
 	collider_->SetWorldPosition(GetWorldPosition());
 	phaseState_->SetPlayer(player_);
-
 	phaseState_->Update(this); // 状態ごとの更新処理
 
 	BulletUpdate(); // 弾の更新処理
@@ -42,6 +43,11 @@ void Enemy::Update()
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
+
+	ImGui::Begin("enemy");
+	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
+		object_->GetWorldTransform().translate.y, object_->GetWorldTransform().translate.z);
+	ImGui::End();
 }
 
 void Enemy::Draw(const Camera& camera)

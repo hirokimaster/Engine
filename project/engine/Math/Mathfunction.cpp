@@ -871,6 +871,54 @@ Quaternion CalculateRotationQuaternion(const Vector3& from, const Vector3& to)
 	return q;
 }
 
+Vector3 CatmullRomInterpolation(const Vector3& p_mi1, const Vector3& p_0, const Vector3& p_1, const Vector3& p_2, float t)
+{
+	Vector3 a4 = p_0;
+	Vector3 a3 = (p_1 - p_mi1) / 2.0f;
+	Vector3 a1 = (p_2 - p_0) / 2.0f - 2.0f * p_1 + a3 + 2.0f * a4;
+	Vector3 a2 = 3.0f * p_1 - (p_2 - p_0) / 2.0f - 2.0f * a3 - 3.0f * a4;
+
+	return t * t * t * a1 + t * t * a2 + t * a3 + a4;
+}
+
+Vector3 CatmullRomPosition(const std::vector<Vector3>& points, float t)
+{
+	assert(points.size() >= 4 && "制御点は4点以上必要です");
+	size_t division = points.size() - 1;
+	float areaWidth = 1.0f / division;
+
+	float t_2 = std::fmod(t, areaWidth) * division;
+	t_2 = std::clamp(t_2, 0.0f, 1.0f);
+
+	size_t index = static_cast<size_t>(t / areaWidth);
+
+	// 上限を超えないようにする
+	if (index > points.size() - 2) {
+		index = points.size() - 2;
+	}
+
+	size_t index0 = index - 1;
+	size_t index1 = index;
+	size_t index2 = index + 1;
+	size_t index3 = index + 2;
+
+	if (index == 0) {
+		index0 = index1;
+	}
+
+	if (index3 >= points.size()) {
+		index3 = index2;
+	}
+
+
+	const Vector3& p0 = points[index0];
+	const Vector3& p1 = points[index1];
+	const Vector3& p2 = points[index2];
+	const Vector3& p3 = points[index3];
+
+	return CatmullRomInterpolation(p0, p1, p2, p3, t_2);
+}
+
 // 演算子のオーバーロード
 Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b)
 {
