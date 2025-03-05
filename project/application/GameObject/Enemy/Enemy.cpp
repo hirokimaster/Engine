@@ -44,10 +44,12 @@ void Enemy::Update()
 		isDead_ = true;
 	}
 
+#ifdef _DEBUG
 	ImGui::Begin("enemy");
 	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
 		object_->GetWorldTransform().translate.y, object_->GetWorldTransform().translate.z);
 	ImGui::End();
+#endif
 }
 
 void Enemy::Draw(const Camera& camera)

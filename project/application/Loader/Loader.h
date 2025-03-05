@@ -28,6 +28,7 @@ struct LevelData {
 		Vector3 rotate;
 		Vector3 scale;
 		std::vector<Vector3> controlPoint;
+		uint32_t eventNum;
 	};
 	// オブジェクトのコンテナ
 	std::vector<ObjectData>objects;

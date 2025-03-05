@@ -56,6 +56,12 @@ void Player::Update()
 		//lockOn_->SetIsLockOnMode(true);
 		destroyCount_ = 0;
 	}
+#ifdef _DEBUG
+	ImGui::Begin("player");
+	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
+		object_->GetWorldTransform().translate.y, object_->GetWorldTransform().translate.z);
+	ImGui::End();
+#endif
 }
 
 void Player::Draw(const Camera& camera)

@@ -62,6 +62,11 @@ LevelData* Loader::Load(const std::string& fileName)
 				objectData.fileName = object["file_name"];
 			}
 
+			if (object.contains("event_id")) {
+				// イベント番号
+				objectData.eventNum = object["event_id"];
+			}
+
 			// トランスフォームのパラメータ読み込み
 			nlohmann::json& transform = object["transform"];
 			// 平行移動
@@ -80,7 +85,9 @@ LevelData* Loader::Load(const std::string& fileName)
 			objectData.scale.z = (float)transform["scaling"][1];
 
 			// modelのロード
-			ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
+			if (objectData.fileName != "eventTrigger") {
+				ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
+			}
 
 		}
 		else if (type.compare("CURVE") == 0) {
@@ -143,6 +150,7 @@ void Loader::Arrangement()
 			newEnemy->Initialize(TextureManager::GetTexHandle("TempTexture/noise0.png"));
 			newEnemy->SetPlayer(player_);
 			newEnemy->SetPosition(objectData.controlPoint[0]); // 初期位置は移動ルートの最初の制御点
+			newEnemy->SetEventNum(objectData.eventNum);
 			for (auto& point : objectData.controlPoint) {
 				newEnemy->SetMoveControlPoints(point);
 			}
@@ -185,15 +193,12 @@ void Loader::Arrangement()
 			newLaser->SetPosition(objectData.translate);
 			lasers_.push_back(std::move(newLaser));
 		}
-		else if (objectData.fileName == "rail") {
-	    // デバックの時だけ線描画する
-        #ifdef _DEBUG
-			for (uint32_t i = 0; i < 100; ++i) {
-				std::unique_ptr<Line> line = std::make_unique<Line>();
-				line->Initialize({ 0,0,0 }, { 0,0,0 });
-				railLine_.push_back(std::move(line));
+		else if (objectData.fileName == "eventTrigger") {
+			for (auto& enemy : enemys_) {
+				if (enemy->GetEventNum() == objectData.eventNum) {
+					enemy->SetEventTrigger(objectData.translate);
+				}
 			}
-        #endif
 		}
 	}
 }

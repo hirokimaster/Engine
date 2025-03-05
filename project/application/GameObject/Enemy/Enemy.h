@@ -83,11 +83,15 @@ public:
 
 	bool GetIsDead()const { return isDead_;}
 
-	bool GetIsSortie() { return isSortie_; }
+	bool GetIsSortie()const { return isSortie_; }
 
 	Collider* GetCollider() { return collider_.get(); }
 
 	const std::vector<Vector3>& GetMoveControlPoints_() const { return moveControlPoints_; }
+
+	uint32_t GetEventNum()const { return eventNum_; }
+
+	const Vector3& GetEventTrigger()const { return eventTrigger_; }
 
 #pragma endregion
 
@@ -105,6 +109,10 @@ public:
 
 	void SetMoveControlPoints(const Vector3& controlPoints) { moveControlPoints_.push_back(controlPoints); }
 
+	void SetEventNum(uint32_t eventNum) { eventNum_ = eventNum; }
+
+	void SetEventTrigger(const Vector3& trigger) { eventTrigger_ = trigger; }
+
 #pragma endregion
 
 private:
@@ -120,5 +128,7 @@ private:
 	bool isSortie_ = false; // 出撃してるか
 	float bulletSpeed_ = 0.2f; // 弾のスピード
 	std::unique_ptr<Collider> collider_ = nullptr; // collider
+	uint32_t eventNum_ = 0; // イベント番号
+	Vector3 eventTrigger_{}; // イベントトリガー
 };
 

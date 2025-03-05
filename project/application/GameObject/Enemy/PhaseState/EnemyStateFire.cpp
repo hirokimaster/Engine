@@ -9,10 +9,6 @@ EnemyStateFire::~EnemyStateFire()
 
 void EnemyStateFire::Update(Enemy* pEnemy)
 {
-	// 差分もとめる
-	Vector3 playerPosition = player_->GetWorldPosition();
-	Vector3 enemyPosition = pEnemy->GetWorldPosition();
-
 	// 発射タイマーをデクリメント
 	--fireTimer_;
 
@@ -23,6 +19,7 @@ void EnemyStateFire::Update(Enemy* pEnemy)
 		fireTimer_ = kFireInterval_;
 	}
 
+	pEnemy->SetVelocity(Vector3(0.0f, 0.0f, 3.0f));
 	pEnemy->Move();
 
 }
