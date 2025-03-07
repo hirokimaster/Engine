@@ -20,7 +20,7 @@ void Model::InitializeObj(const std::string& filename)
 
 	resource_.indexResource = CreateResource::CreateBufferResource(sizeof(uint32_t) * modelData_.indices.size());
 	IBV_.BufferLocation = resource_.indexResource->GetGPUVirtualAddress();
-	IBV_.SizeInBytes = sizeof(uint32_t) * UINT(modelData_.indices.size());
+	IBV_.SizeInBytes = sizeof(uint32_t) * static_cast<uint32_t>(modelData_.indices.size());
 	IBV_.Format = DXGI_FORMAT_R32_UINT;
 
 	uint32_t* index = nullptr;
@@ -96,7 +96,7 @@ void Model::Draw()
 	DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
 
 	// 描画。(DrawCall/ドローコール)。
-	DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), 1, 0, 0, 0);
+	DirectXCommon::GetCommandList()->DrawIndexedInstanced(static_cast<uint32_t>(modelData_.indices.size()), 1, 0, 0, 0);
 }
 
 void Model::Draw(uint32_t numInstance)
@@ -105,7 +105,7 @@ void Model::Draw(uint32_t numInstance)
 	DirectXCommon::GetCommandList()->IASetIndexBuffer(&IBV_);
 
 	// 描画。(DrawCall/ドローコール)。
-	DirectXCommon::GetCommandList()->DrawIndexedInstanced(UINT(modelData_.indices.size()), numInstance, 0, 0, 0);
+	DirectXCommon::GetCommandList()->DrawIndexedInstanced(static_cast<uint32_t>(modelData_.indices.size()), numInstance, 0, 0, 0);
 }
 
 
@@ -115,37 +115,52 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 	Assimp::Importer importer;
 	std::string filePath = directoryPath + "/" + filename;
 	const aiScene* scene = importer.ReadFile(filePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
-	assert(scene->HasMeshes());
+	assert(scene && scene->HasMeshes());
 
 	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
 		aiMesh* mesh = scene->mMeshes[meshIndex];
 		assert(mesh->HasNormals());
 		assert(mesh->HasTextureCoords(0));
-		modelData.vertices.resize(mesh->mNumVertices);
 
-		for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
-			aiVector3D& position = mesh->mVertices[vertexIndex];
-			aiVector3D& normal = mesh->mNormals[vertexIndex];
-			aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
-			modelData.vertices[vertexIndex].position = { -position.x, position.y, position.z, 1.0f };
-			modelData.vertices[vertexIndex].normal = { -normal.x, normal.y, normal.z };
-			modelData.vertices[vertexIndex].texcoord = { texcoord.x, texcoord.y };
-		}
-
+		// 頂点リストとインデックスリストを構築
+		std::unordered_map<uint32_t, uint32_t> vertexMap; // 重複を防ぐためのマップ
+		
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
 			aiFace& face = mesh->mFaces[faceIndex];
 			assert(face.mNumIndices == 3);
 
 			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
 				uint32_t vertexIndex = face.mIndices[element];
-				modelData.indices.push_back(vertexIndex);
+
+				// すでに追加済みの頂点なら、同じインデックスを再利用
+				if (vertexMap.count(vertexIndex)) {
+					modelData.indices.push_back(vertexMap[vertexIndex]);
+					continue;
+				}
+
+				// 頂点データを作成
+				VertexData vertex{};
+				aiVector3D position = mesh->mVertices[vertexIndex];
+				aiVector3D normal = mesh->mNormals[vertexIndex];
+				aiVector3D texcoord = mesh->mTextureCoords[0][vertexIndex];
+
+				vertex.position = { -position.x, position.y, position.z, 1.0f };
+				vertex.normal = { -normal.x, normal.y, normal.z };
+				vertex.texcoord = { texcoord.x, texcoord.y };
+
+				// 頂点を追加してマップに登録
+				uint32_t newIndex = static_cast<uint32_t>(modelData.vertices.size());
+				modelData.vertices.push_back(vertex);
+				modelData.indices.push_back(newIndex);
+				vertexMap[vertexIndex] = newIndex;
 			}
 		}
 	}
 
+	// マテリアルの読み込み
 	for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
 		aiMaterial* material = scene->mMaterials[materialIndex];
-		if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
+		if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
 			aiString textureFilePath;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
 			modelData.material.textureFilePath = directoryPath + "/" + textureFilePath.C_Str();
@@ -154,6 +169,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 
 	return modelData;
 }
+
 
 ModelData Model::LoadGLTFFile(const std::string& directoryPath, const std::string& filename)
 {
