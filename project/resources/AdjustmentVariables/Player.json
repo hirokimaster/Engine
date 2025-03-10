@@ -1,12 +1,24 @@
 {
     "Player": {
-        "bulletSpeed": 7.0,
+        "bulletSpeed": 30.0,
         "hp": 1,
-        "moveSpeed": 3.0,
-        "translate": [
-            0.0,
-            20.0,
+        "moveMaxLimit": [
+            30.0,
+            50.0,
             0.0
-        ]
+        ],
+        "moveMinLimit": [
+            -30.0,
+            10.0,
+            0.0
+        ],
+        "moveSpeed": 10.0,
+        "rotate": [
+            -0.1,
+            0.0,
+            0.0
+        ],
+        "rotateLerpFactor": 0.8,
+        "rotateSpeed": 9.0
     }
 }

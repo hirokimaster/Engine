@@ -11,6 +11,7 @@ void PlayerBullet::Initialize(uint32_t texHandle)
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
 	object_->SetModel("Player/cube.obj");
+	object_->SetScale({ 0.3f,0.3f });
 	object_->SetTexHandle(texHandle);
 
 	// collider設定

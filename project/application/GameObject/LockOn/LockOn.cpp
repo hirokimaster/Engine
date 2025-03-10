@@ -23,29 +23,21 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 	// ロックオン状態なら
 	if (!target_.empty()) {
 
-		if (Input::GetInstance()->GetJoystickState(joyState)) {
-
-			if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
-				// ロックオンを外す
-				target_.clear();
-				isLockOnMode_ = false;
-			}
-		}
-		else {
-			// アンロック判定
-			for (auto itr = target_.begin(); itr != target_.end();) {
-				if (UnLock(camera, *itr)) {
-					itr = target_.erase(itr);
-				}
-				else {
-					++itr;
-				}
-			}
+		if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
+			// ロックオンを外す
+			target_.clear();
+			isLockOnMode_ = false;
 		}
 
-	}
-	else {
-		
+		// アンロック判定
+		for (auto itr = target_.begin(); itr != target_.end();) {
+			if (UnLock(camera, *itr)) {
+				itr = target_.erase(itr);
+			}
+			else {
+				++itr;
+			}
+		}
 	}
 
 	// 検索
@@ -134,8 +126,8 @@ void LockOn::ReticleRangeLimit()
 	// reticleの範囲制限
 	Vector2 positionLockOn = spriteLockOnReticle_->GetPosition();
 	Vector2 positionReticle = sprite2DReticle_->GetPosition();
-	positionReticle.x = std::clamp(positionReticle.x, 25.0f, 1255.0f);
-	positionReticle.y = std::clamp(positionReticle.y, 25.0f, 695.0f);
+	positionReticle.x = std::clamp(positionReticle.x, 590.0f, 710.0f);
+	positionReticle.y = std::clamp(positionReticle.y, 300.0f, 400.0f);
 
 	positionLockOn.x = std::clamp(positionLockOn.x, 25.0f, 1255.0f);
 	positionLockOn.y = std::clamp(positionLockOn.y, 25.0f, 695.0f);
@@ -195,7 +187,7 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 			screenPositionReticle_ = spritePosition;
 		}
 	}
-	
+
 	// レティクル
 	Reticle(camera, Vector2((float)spritePosition.x, (float)spritePosition.y), playerPosition);
 }
@@ -223,7 +215,6 @@ void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 			}
 			else {
-
 
 				// screen座標
 				Vector3 positionWorld = enemy->GetWorldPosition();

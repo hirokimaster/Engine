@@ -23,7 +23,7 @@ void Player::Initialize()
 
 	// 調整項目
 	AddAdjustmentVariables();
-	ApplyAdjustmentVariables();
+	
 
 	// 死亡フラグ
 	isDead_ = false;
@@ -41,7 +41,7 @@ void Player::Initialize()
 
 void Player::Update()
 {
-	
+
 	Move(); // 移動
 	Rotate(); // 回転
 
@@ -55,15 +55,15 @@ void Player::Update()
 
 		// 発射間隔をつける
 		if (attackTimer_ >= kAttackInterval) {
-			//Attack(); // 攻撃
+			Attack(); // 攻撃
 			attackTimer_ = 0.0f;
 		}
-		
+
 	}
 	else {
 		spriteAttack_->SetTexHandle(TextureManager::GetTexHandle("UI/RB.png"));
 	}
-	
+
 	UpdateBullet(); // 弾の更新
 	object_->Update();
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
@@ -79,19 +79,17 @@ void Player::Update()
 		//lockOn_->SetIsLockOnMode(true);
 		destroyCount_ = 0;
 	}
-
+	
+	ApplyAdjustmentVariables();
 }
 
 void Player::Draw(const Camera& camera)
 {
-	// 生きてるときだけ
-	if (!isDead_) {
-		object_->Draw(camera);
+	object_->Draw(camera);
 
-		// 弾の描画
-		for (const auto& bullet : bullets_) {
-			bullet->Draw(camera);
-		}
+	// 弾の描画
+	for (const auto& bullet : bullets_) {
+		bullet->Draw(camera);
 	}
 }
 
@@ -191,64 +189,32 @@ void Player::DrawUI()
 
 void Player::Rotate()
 {
-	Vector3 rotate = { 0, 0, 0 };
-	const float kRotateSpeedZ = 0.13f;
-	const float kRotateSpeedX = 0.13f;
-	const float kRotateLimitZ = 0.7f;
-	const float kRotateLimitX = 0.15f;
-	const float kLerpFactor = 0.1f;
-	const float kReturnLerpFactor = 0.07f;
-
-	// ゲームパッドの状態を得る変数(XINPUT)
-	XINPUT_STATE joyState;
-
-	// ゲームパッド状態取得
-	if (Input::GetInstance()->GetJoystickState(joyState)) {
-		// ゲームパッドの入力から回転速度を計算
-		rotate.z = (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kRotateSpeedZ;
-		rotate.x = (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kRotateSpeedX;
-	}
-
-	// 移動限界に達しているか
-	bool isAtMoveLimitX = (object_->GetWorldTransform().translate.x <= moveMinLimit_.x && rotate.z < 0) ||
-		(object_->GetWorldTransform().translate.x >= moveMaxLimit_.x && rotate.z > 0);
-	bool isAtMoveLimitY = (object_->GetWorldTransform().translate.y <= moveMinLimit_.y && rotate.x < 0) ||
-		(object_->GetWorldTransform().translate.y >= moveMaxLimit_.y && rotate.x > 0);
-
 	Vector3 rotateVelo{};
-	// 回転を適用
-	if (!isAtMoveLimitX) {
-		rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, object_->GetWorldTransform().rotate.z - rotate.z, kLerpFactor);
-	}
-	else {
-		rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, 0.0f, kReturnLerpFactor);
-	}
+	
+    // 自機とレティクル「の位置を取得
+	Vector3 playerPos = object_->GetWorldTransform().translate;
+	Vector3 reticlePos = lockOn_->GetWorldTransform();
 
-	if (!isAtMoveLimitY) {
-		rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, object_->GetWorldTransform().rotate.x - rotate.x, kLerpFactor);
-	}
-	else {
-		rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, 0.0f, kReturnLerpFactor);
-	}
+	// レティクル方向のベクトルを計算
+	Vector3 toReticle = Normalize(reticlePos - playerPos);
 
-	// z軸に制限をかける
-	rotateVelo.z = std::clamp(rotateVelo.z, -kRotateLimitZ, kRotateLimitZ);
+	// 現在の自機の前方ベクトル
+	Vector3 currentForward = { 0.0f, 0.0f, 1.0f };
 
-	// x軸に制限をかける
-	rotateVelo.x = std::clamp(rotateVelo.x, -kRotateLimitX, kRotateLimitX);
+	// 目標方向との差分を求める
+	Vector3 diff = toReticle - currentForward;
+	diff = rotateSpeed_ * diff;
 
-	// y軸は回転させないので0にしとく
+	// 回転速度を適用して補間
+	rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, object_->GetWorldTransform().rotate.x - diff.y, rotateLerpFactor_);
+	rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, object_->GetWorldTransform().rotate.z - diff.x, rotateLerpFactor_);
+
+	// y軸回転は不要なので0にする
 	rotateVelo.y = 0.0f;
 
-	// 操作がない場合は徐々に0に戻す
-	if (std::abs(rotate.z) < 0.005f) {
-		rotateVelo.z = std::lerp(rotateVelo.z, 0.0f, kReturnLerpFactor);
-	}
-	if (std::abs(rotate.x) < 0.005f) {
-		rotateVelo.x = std::lerp(rotateVelo.x, 0.0f, kReturnLerpFactor);
-	}
-
+	// 適用
 	object_->SetRotate(rotateVelo);
+
 }
 
 void Player::IncurDamage()
@@ -296,11 +262,13 @@ void Player::AddAdjustmentVariables()
 	variables->CreateGroup(groupName);
 	// アイテム追加
 	variables->AddItem(groupName, "moveSpeed", moveSpeed_);
-	variables->AddItem(groupName, "translate", object_->GetWorldTransform().translate);
+	variables->AddItem(groupName, "rotate", rotate_);
 	variables->AddItem(groupName, "hp", hp_);
 	variables->AddItem(groupName, "bulletSpeed", bulletSpeed_);
 	variables->AddItem(groupName, "moveMinLimit", moveMinLimit_);
 	variables->AddItem(groupName, "moveMaxLimit", moveMaxLimit_);
+	variables->AddItem(groupName, "rotateSpeed", rotateSpeed_);
+	variables->AddItem(groupName, "rotateLerpFactor", rotateLerpFactor_);
 }
 
 void Player::ApplyAdjustmentVariables()
@@ -308,11 +276,14 @@ void Player::ApplyAdjustmentVariables()
 	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
 	const char* groupName = "Player";
 	moveSpeed_ = variables->GetValue<float>(groupName, "moveSpeed");
-	object_->SetPosition(variables->GetValue<Vector3>(groupName, "translate"));
+	rotate_ = variables->GetValue<Vector3>(groupName, "rotate");
+	object_->SetRotate(rotate_);
 	bulletSpeed_ = variables->GetValue<float>(groupName, "bulletSpeed");
 	hp_ = variables->GetValue<int32_t>(groupName, "hp");
 	moveMinLimit_ = variables->GetValue<Vector3>(groupName, "moveMinLimit");
 	moveMaxLimit_ = variables->GetValue<Vector3>(groupName, "moveMaxLimit");
+	rotateSpeed_ = variables->GetValue<float>(groupName, "rotateSpeed");
+	rotateLerpFactor_ = variables->GetValue<float>(groupName, "rotateLerpFactor");
 }
 
 Vector3 Player::GetWorldPosition() const

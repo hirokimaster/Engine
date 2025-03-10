@@ -158,4 +158,8 @@ private:
 	std::unique_ptr<Sprite> spriteAttack_ = nullptr;
 	std::unique_ptr<Sprite> spriteMove_ = nullptr;
 	float attackTimer_ = 0.0f; // 弾の連射速度用のタイマー
+	Vector3 rotate_{}; // 回転の初期値
+	float rotateSpeed_; // 回転速度
+	float rotateLerpFactor_; // Lerpの強さ
+	
 };
