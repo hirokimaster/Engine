@@ -137,6 +137,8 @@ void Sprite::Draw()
 	CreateVertex();
 	worldTransform_.translate.x = GetPosition().x;
 	worldTransform_.translate.y = GetPosition().y;
+	worldTransform_.scale.x = GetScale().x;
+	worldTransform_.scale.y = GetScale().y;
 	worldTransform_.UpdateMatrix();
 
 	GraphicsPipelineData pipelineData = GraphicsPipeline::GetInstance()->GetPSO().Sprite2D;

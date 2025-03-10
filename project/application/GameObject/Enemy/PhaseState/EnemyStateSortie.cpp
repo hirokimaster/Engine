@@ -16,6 +16,7 @@ void EnemyStateSortie::Update(Enemy* pEnemy)
 {
 	if (player_->GetWorldPosition().z >= pEnemy->GetEventTrigger().z) {
 		isSortie_ = true;
+		pEnemy->SetIsSortie(isSortie_);
 	}
 	// ポジションまで移動したら攻撃モードに移る
 	if (isSortie_) {

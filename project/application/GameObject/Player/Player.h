@@ -157,4 +157,5 @@ private:
 	// UI
 	std::unique_ptr<Sprite> spriteAttack_ = nullptr;
 	std::unique_ptr<Sprite> spriteMove_ = nullptr;
+	float attackTimer_ = 0.0f; // 弾の連射速度用のタイマー
 };

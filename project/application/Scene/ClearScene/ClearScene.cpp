@@ -52,7 +52,7 @@ void ClearScene::Update()
 	// アニメーションする
 	scaleTimer_ += scaleSpeed * 1.0f / 60.0f;
 	float scaleValue = 1.0f + scaleRange * std::sin(scaleTimer_);
-	spriteClear_->SetScale({ scaleValue,scaleValue,scaleValue });
+	spriteClear_->SetScale({ scaleValue,scaleValue});
 
 	// このシーンに来た時
 	if (isTransition_) {

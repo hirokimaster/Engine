@@ -38,6 +38,24 @@ public: // メンバ関数
 	static void StaticUpdate();
 
 	/// <summary>
+	/// スプライト生成
+	/// </summary>
+	/// <param name="position"></param>
+	/// <returns></returns>
+	static Sprite* Create(uint32_t texHandle, const Vector2& position = {0,0}, const Vector4& color = {1,1,1,1});
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="v"></param>
+	/// <param name="t"></param>
+	void Draw();
+
+	void AdjustTextureSize(uint32_t texHandle);
+
+private:
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	void Initialize(uint32_t texHandle);
@@ -47,12 +65,7 @@ public: // メンバ関数
 	/// </summary>
 	void CreateVertex();
 
-	/// <summary>
-	/// スプライト生成
-	/// </summary>
-	/// <param name="position"></param>
-	/// <returns></returns>
-	static Sprite* Create(uint32_t texHandle, const Vector2& position = {0,0}, const Vector4& color = {1,1,1,1});
+public:
 
 #pragma region Getter
 	// 座標の取得
@@ -63,6 +76,8 @@ public: // メンバ関数
 	const Vector2& GetTextureLeftTop() const { return textureLeftTop_; }
 	// テクスチャ切り出しサイズ取得
 	const Vector2& GetTextureSize() const { return textureSize_; }
+	// scale取得
+	const Vector2& GetScale()const { return scale_; }
 
 #pragma endregion 
 
@@ -82,15 +97,8 @@ public: // メンバ関数
 	// サイズの設定
 	void SetSize(const Vector2& size) { size_ = size; }
 	// スケールの変更
-	void SetScale(const Vector3& scale) { worldTransform_.scale = scale; }
+	void SetScale(const Vector2& scale) { scale_ = scale; }
 #pragma endregion
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	/// <param name="v"></param>
-	/// <param name="t"></param>
-	void Draw();
 
 private: // メンバ変数
 
@@ -100,6 +108,7 @@ private: // メンバ変数
 	Resource resource_ = {};
 	WorldTransform worldTransform_ = {};
 	Vector2 position_ = {};
+	Vector2 scale_ = { 1.0f,1.0f };
 	Vector2 size_{};
 	Vector4* materialData_ = nullptr;
 	VertexData* vertexDataSprite_ = nullptr;
@@ -107,8 +116,4 @@ private: // メンバ変数
 	Vector2 textureLeftTop_ = {};
 	Vector2 textureSize_ = {};
 	uint32_t texHandle_ = 0;
-
-private:
-
-	void AdjustTextureSize(uint32_t texHandle);
 };

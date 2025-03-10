@@ -14,7 +14,7 @@ void Player::Initialize()
 	object_->SetModel("Player/player.obj");
 	object_->SetPosition({ 0,-20.0f,0 });
 	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
-	
+
 	// collider
 	collider_ = std::make_unique<Collider>();
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
@@ -29,18 +29,41 @@ void Player::Initialize()
 	isDead_ = false;
 	deadTimer_ = 60.0f;
 
+	// 発射タイマー
+	attackTimer_ = 0.0f;
+
 	// UI
 	spriteAttack_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/RB.png"), { 1000.0f , 500.0f }));
-	spriteAttack_->SetScale({ 2.0f,2.0f,2.0f });
+	spriteAttack_->SetScale({ 2.0f,2.0f });
 	spriteMove_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/L.png"), { 240.0f,500.0f }));
-	spriteMove_->SetScale({ 2.0f,2.0f,2.0f });
+	spriteMove_->SetScale({ 2.0f,2.0f });
 }
 
 void Player::Update()
 {
+	
 	Move(); // 移動
 	Rotate(); // 回転
-	Attack(); // 攻撃
+
+	// 発射間隔
+	const float kAttackInterval = 0.2f;
+	attackTimer_ += 1.0f / 60.0f;
+
+	// Rトリガーを押していたら攻撃
+	if (Input::GetInstance()->PushButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
+		spriteAttack_->SetTexHandle(TextureManager::GetTexHandle("UI/RB2.png"));
+
+		// 発射間隔をつける
+		if (attackTimer_ >= kAttackInterval) {
+			//Attack(); // 攻撃
+			attackTimer_ = 0.0f;
+		}
+		
+	}
+	else {
+		spriteAttack_->SetTexHandle(TextureManager::GetTexHandle("UI/RB.png"));
+	}
+	
 	UpdateBullet(); // 弾の更新
 	object_->Update();
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
@@ -56,12 +79,7 @@ void Player::Update()
 		//lockOn_->SetIsLockOnMode(true);
 		destroyCount_ = 0;
 	}
-#ifdef _DEBUG
-	ImGui::Begin("player");
-	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
-		object_->GetWorldTransform().translate.y, object_->GetWorldTransform().translate.z);
-	ImGui::End();
-#endif
+
 }
 
 void Player::Draw(const Camera& camera)
@@ -96,58 +114,48 @@ void Player::Move()
 
 void Player::Attack()
 {
-
-	// Rトリガーを押していたら
-	if (Input::GetInstance()->PushButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
-		spriteAttack_->SetTexHandle(TextureManager::GetTexHandle("UI/RB2.png"));
-		// 弾の速度
-		Vector3 velocity = { 0,0,bulletSpeed_ };
-		std::list<Vector3> lockOnVelocity;
-		// 自機から照準オブジェクトのベクトル
-		Vector3 WorldPos = GetWorldPosition();
-
-		if (!lockOn_->GetTarget().empty()) {
-			std::list<const Enemy*> targets = lockOn_->GetTarget(); // コピーしておく
-			for (std::list<const Enemy*>::iterator targetItr = targets.begin(); targetItr != targets.end(); ++targetItr) {
-				// ロックオン対象がいるかつ生きてたら対象に向かって弾を撃つ
-				if ((*targetItr) && !(*targetItr)->GetIsDead()) {
-					// レティクルのworld座標にターゲットのworld座標を入れる
-					Vector3 targetWorldPos = (*targetItr)->GetWorldPosition();
-					Vector3 diff = targetWorldPos - WorldPos;
-					diff = Normalize(diff);
-					velocity = Normalize(velocity);
-					velocity = Multiply(bulletSpeed_, diff);
-					std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-					bullet->SetLockOn(lockOn_);
-					bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
-					bullet->SetPosition(WorldPos);
-					bullet->SetVelocity(velocity);
-					bullets_.push_back(std::move(bullet));
-				}
+	// 弾の速度
+	Vector3 velocity = { 0,0,bulletSpeed_ };
+	std::list<Vector3> lockOnVelocity;
+	// 自機から照準オブジェクトのベクトル
+	Vector3 WorldPos = GetWorldPosition();
+	// ロックオンしているターゲットがいたら
+	if (!lockOn_->GetTarget().empty()) {
+		std::list<const Enemy*> targets = lockOn_->GetTarget(); // コピーしておく
+		for (std::list<const Enemy*>::iterator targetItr = targets.begin(); targetItr != targets.end(); ++targetItr) {
+			// ロックオン対象がいるかつ生きてたら対象に向かって弾を撃つ
+			if ((*targetItr) && !(*targetItr)->GetIsDead()) {
+				// レティクルのworld座標にターゲットのworld座標を入れる
+				Vector3 targetWorldPos = (*targetItr)->GetWorldPosition();
+				Vector3 diff = targetWorldPos - WorldPos;
+				diff = Normalize(diff);
+				velocity = Normalize(velocity);
+				velocity = Multiply(bulletSpeed_, diff);
+				std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
+				bullet->SetLockOn(lockOn_);
+				bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
+				bullet->SetPosition(WorldPos);
+				bullet->SetVelocity(velocity);
+				bullets_.push_back(std::move(bullet));
 			}
 		}
-		else {
-			Vector3 reticleWorldPos = lockOn_->GetWorldPosition3DReticle();
-
-			velocity = reticleWorldPos - WorldPos;
-			velocity = Normalize(velocity);
-			velocity = bulletSpeed_ * velocity;
-			// 弾を生成し、初期化
-			std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-			bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
-			const float kDistanceZ = 5.0f;
-			Vector3 position = WorldPos;
-			position.z = position.z + kDistanceZ;
-			bullet->SetPosition(position);
-			bullet->SetVelocity(velocity);
-			bullets_.push_back(std::move(bullet));
-		}
-
 	}
 	else {
-		spriteAttack_->SetTexHandle(TextureManager::GetTexHandle("UI/RB.png"));
-	}
+		Vector3 reticleWorldPos = lockOn_->GetWorldPosition3DReticle();
+		velocity = reticleWorldPos - WorldPos;
+		velocity = Normalize(velocity);
+		velocity = bulletSpeed_ * velocity;
 
+		// 弾を生成し、初期化
+		std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
+		bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
+		const float kDistanceZ = 5.0f;
+		Vector3 position = WorldPos;
+		position.z = position.z + kDistanceZ;
+		bullet->SetPosition(position);
+		bullet->SetVelocity(velocity);
+		bullets_.push_back(std::move(bullet));
+	}
 }
 
 void Player::UpdateBullet()
@@ -264,6 +272,11 @@ void Player::IncurDamage()
 void Player::DebugDraw()
 {
 #ifdef _DEBUG
+	ImGui::Begin("player");
+	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
+		object_->GetWorldTransform().translate.y, object_->GetWorldTransform().translate.z);
+	ImGui::End();
+
 	ImGui::Begin("PlayerRotate");
 	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", object_->GetWorldTransform().rotate.x,
 		object_->GetWorldTransform().rotate.y, object_->GetWorldTransform().rotate.z);

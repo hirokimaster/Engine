@@ -73,16 +73,16 @@ void GameSprite::Continue()
 
 	// 選択してるスプライトによって変える
 	if (selectNo_ == 0) {
-		spriteYes_->SetScale({ scaleValue, scaleValue, scaleValue });
-		spriteNo_->SetScale({ 1.0f, 1.0f, 1.0f });
+		spriteYes_->SetScale({ scaleValue, scaleValue});
+		spriteNo_->SetScale({ 1.0f, 1.0f});
 	}
 	else if (selectNo_ == 1) {
-		spriteNo_->SetScale({ scaleValue, scaleValue, scaleValue });
-		spriteYes_->SetScale({ 1.0f, 1.0f, 1.0f });
+		spriteNo_->SetScale({ scaleValue, scaleValue});
+		spriteYes_->SetScale({ 1.0f, 1.0f});
 	}
 	else {
-		spriteYes_->SetScale({ 1.0f, 1.0f, 1.0f });
-		spriteNo_->SetScale({ 1.0f, 1.0f, 1.0f });
+		spriteYes_->SetScale({ 1.0f, 1.0f});
+		spriteNo_->SetScale({ 1.0f, 1.0f});
 	}
 
 	// コンティニューするならリスタートやめるならタイトル
