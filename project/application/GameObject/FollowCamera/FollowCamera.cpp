@@ -24,7 +24,7 @@ void FollowCamera::Update()
 
 		// targrtの回転によって動かす
 		float cameraRotateZ = target_->rotate.z;
-		cameraRotateZ = std::clamp(cameraRotateZ, -0.1f, 0.1f);
+		cameraRotateZ = std::clamp(cameraRotateZ, -0.2f, 0.2f);
 		camera_.rotate.z = cameraRotateZ;
 
 		// カメラの行列を更新
