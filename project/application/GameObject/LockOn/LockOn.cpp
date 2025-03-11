@@ -115,6 +115,13 @@ void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector
 	Vector3 mouseDirection = Subtract(posNear, posFar);
 	mouseDirection = Normalize(mouseDirection);
 
+	// 補間の強さ
+	const float smoothingFactor = 0.2f;
+
+	static Vector3 prevMouseDirection = mouseDirection; // 前フレームのmousedirection
+	mouseDirection = Lerp(prevMouseDirection, mouseDirection, smoothingFactor);
+	prevMouseDirection = mouseDirection; // 更新
+
 	// カメラから照準オブジェクトの距離
 	const float kDistanceTestObject = 100.0f;
 	worldTransform3DReticle_.translate = kDistanceTestObject * mouseDirection + playerPosition;

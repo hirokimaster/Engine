@@ -5,6 +5,7 @@
 */
 
 #include "Object3DPlacer.h"
+#include <engine/Graphics/TextureManager/TextureManager.h>
 
 void Object3DPlacer::Initialize()
 {

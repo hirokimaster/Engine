@@ -191,14 +191,14 @@ void Player::Rotate()
 {
 	Vector3 rotateVelo{};
 	
-    // 自機とレティクル「の位置を取得
+    // 自機とレティクルの位置を取得
 	Vector3 playerPos = object_->GetWorldTransform().translate;
 	Vector3 reticlePos = lockOn_->GetWorldTransform();
 
 	// レティクル方向のベクトルを計算
 	Vector3 toReticle = Normalize(reticlePos - playerPos);
 
-	// 現在の自機の前方ベクトル
+	// 自機の前方ベクトル
 	Vector3 currentForward = { 0.0f, 0.0f, 1.0f };
 
 	// 目標方向との差分を求める
