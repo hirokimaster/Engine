@@ -95,15 +95,17 @@ void Player::Draw(const Camera& camera)
 
 void Player::Move()
 {
-	// レティクルに追従させる
-	Vector3 end = lockOn_->GetWorldTransform();
-	Vector3 start = object_->GetWorldTransform().translate;
-	// 差分
-	Vector3 diff = end - start;
-	diff = Normalize(diff);
-	Vector3 velocity = moveSpeed_ * diff;
-	Vector3 position = object_->GetWorldTransform().translate + velocity;
+	XINPUT_STATE joyState{};
+	Vector3 move{};
 
+	// ジョイスティック状態取得
+	if (Input::GetInstance()->GetJoystickState(joyState)) {
+		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 1.0f;
+		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 1.0f;
+	}
+
+	Vector3 position = object_->GetWorldTransform().translate + move;
+	position.z += moveSpeed_;
 	// 移動範囲を制限
 	position.x = std::clamp(position.x, moveMinLimit_.x, moveMaxLimit_.x);
 	position.y = std::clamp(position.y, moveMinLimit_.y, moveMaxLimit_.y);
@@ -189,32 +191,64 @@ void Player::DrawUI()
 
 void Player::Rotate()
 {
+	Vector3 rotate = { 0, 0, 0 };
+	const float kRotateSpeedZ = 0.13f;
+	const float kRotateSpeedX = 0.13f;
+	const float kRotateLimitZ = 0.7f;
+	const float kRotateLimitX = 0.15f;
+	const float kLerpFactor = 0.1f;
+	const float kReturnLerpFactor = 0.07f;
+
+	// ゲームパッドの状態を得る変数(XINPUT)
+	XINPUT_STATE joyState;
+
+	// ゲームパッド状態取得
+	if (Input::GetInstance()->GetJoystickState(joyState)) {
+		// ゲームパッドの入力から回転速度を計算
+		rotate.z = (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kRotateSpeedZ;
+		rotate.x = (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kRotateSpeedX;
+	}
+
+	// 移動限界に達しているか
+	bool isAtMoveLimitX = (object_->GetWorldTransform().translate.x <= moveMinLimit_.x && rotate.z < 0) ||
+		(object_->GetWorldTransform().translate.x >= moveMaxLimit_.x && rotate.z > 0);
+	bool isAtMoveLimitY = (object_->GetWorldTransform().translate.y <= moveMinLimit_.y && rotate.x < 0) ||
+		(object_->GetWorldTransform().translate.y >= moveMaxLimit_.y && rotate.x > 0);
+
 	Vector3 rotateVelo{};
-	
-    // 自機とレティクルの位置を取得
-	Vector3 playerPos = object_->GetWorldTransform().translate;
-	Vector3 reticlePos = lockOn_->GetWorldTransform();
+	// 回転を適用
+	if (!isAtMoveLimitX) {
+		rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, object_->GetWorldTransform().rotate.z - rotate.z, kLerpFactor);
+	}
+	else {
+		rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, 0.0f, kReturnLerpFactor);
+	}
 
-	// レティクル方向のベクトルを計算
-	Vector3 toReticle = Normalize(reticlePos - playerPos);
+	if (!isAtMoveLimitY) {
+		rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, object_->GetWorldTransform().rotate.x - rotate.x, kLerpFactor);
+	}
+	else {
+		rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, 0.0f, kReturnLerpFactor);
+	}
 
-	// 自機の前方ベクトル
-	Vector3 currentForward = { 0.0f, 0.0f, 1.0f };
+	// z軸に制限をかける
+	rotateVelo.z = std::clamp(rotateVelo.z, -kRotateLimitZ, kRotateLimitZ);
 
-	// 目標方向との差分を求める
-	Vector3 diff = toReticle - currentForward;
-	diff = rotateSpeed_ * diff;
+	// x軸に制限をかける
+	rotateVelo.x = std::clamp(rotateVelo.x, -kRotateLimitX, kRotateLimitX);
 
-	// 回転速度を適用して補間
-	rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, object_->GetWorldTransform().rotate.x - diff.y, rotateLerpFactor_);
-	rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, object_->GetWorldTransform().rotate.z - diff.x, rotateLerpFactor_);
-
-	// y軸回転は不要なので0にする
+	// y軸は回転させないので0にしとく
 	rotateVelo.y = 0.0f;
 
-	// 適用
-	object_->SetRotate(rotateVelo);
+	// 操作がない場合は徐々に0に戻す
+	if (std::abs(rotate.z) < 0.005f) {
+		rotateVelo.z = std::lerp(rotateVelo.z, 0.0f, kReturnLerpFactor);
+	}
+	if (std::abs(rotate.x) < 0.005f) {
+		rotateVelo.x = std::lerp(rotateVelo.x, 0.0f, kReturnLerpFactor);
+	}
 
+	object_->SetRotate(rotateVelo);
 }
 
 void Player::IncurDamage()

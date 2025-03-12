@@ -14,6 +14,10 @@ void LockOn::Initialize()
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
+	debugReticle_ = std::make_unique<Object3DPlacer>();
+	debugReticle_->Initialize();
+	debugReticle_->SetModel("Player/cube.obj");
+	debugReticle_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
 }
 
 void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
@@ -71,9 +75,11 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 	// 範囲制限
 	ReticleRangeLimit();
+
+	debugReticle_->Update();
 }
 
-void LockOn::Draw()
+void LockOn::Draw(const Camera& camera)
 {
 
 	if (isLockOnMode_) {
@@ -86,46 +92,17 @@ void LockOn::Draw()
 	for (const auto& sprite : sprite_) {
 		sprite->Draw();
 	}
+
+	debugReticle_->Draw(camera);
 }
 
-void LockOn::Reticle(const Camera& camera, const Vector2& position, const Vector3& playerPosition)
+void LockOn::Reticle(const Camera& camera)
 {
+	Vector3 positionReticle = GetWorldPosition3DReticle();
 
-	sprite2DReticle_->SetPosition(position);
-
-	// ビューポート行列
-	Matrix4x4 matViewport =
-		MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
-
-	// ビュープロジェクションビューポート合成行列
-	Matrix4x4 matVPN =
-		Multiply(camera.matView, Multiply(camera.matProjection, matViewport));
-	// 逆行列を計算
-	Matrix4x4 matInverseVPN = Inverse(matVPN);
-
-	// スクリーン座標
-	Vector3 posNear = Vector3((float)position.x, (float)position.y, 1);
-	Vector3 posFar = Vector3((float)position.x, (float)position.y, 0);
-
-	// スクリーン座標からワールド座標系へ
-	posNear = Transform(posNear, matInverseVPN);
-	posFar = Transform(posFar, matInverseVPN);
-
-	// マウスレイの方向
-	Vector3 mouseDirection = Subtract(posNear, posFar);
-	mouseDirection = Normalize(mouseDirection);
-
-	// 補間の強さ
-	const float smoothingFactor = 0.2f;
-
-	static Vector3 prevMouseDirection = mouseDirection; // 前フレームのmousedirection
-	mouseDirection = Lerp(prevMouseDirection, mouseDirection, smoothingFactor);
-	prevMouseDirection = mouseDirection; // 更新
-
-	// カメラから照準オブジェクトの距離
-	const float kDistanceTestObject = 100.0f;
-	worldTransform3DReticle_.translate = kDistanceTestObject * mouseDirection + playerPosition;
-	worldTransform3DReticle_.UpdateMatrix();
+	positionReticle = TransformPositionScreen(positionReticle, camera);
+	
+	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
 }
 
 void LockOn::ReticleRangeLimit()
@@ -157,17 +134,11 @@ Vector3 LockOn::GetWorldPosition3DReticle() const
 
 void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, bool isGameStart)
 {
-	POINT mousePosition;
-	// マウス座標(スクリーン座標)を取得する
-	GetCursorPos(&mousePosition);
-
-	// クライアントエリア座標に変換する
-	HWND hwnd = WinApp::GetInstance()->GetHwnd();
-	ScreenToClient(hwnd, &mousePosition);
-
 	Vector2 spritePosition;
 
-	if (isLockOnMode_) {
+	//Vector3 move{};
+
+	if (isLockOnMode_ || isGameStart) {
 		spritePosition = spriteLockOnReticle_->GetPosition();
 	}
 	else {
@@ -175,28 +146,26 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 		spriteLockOnReticle_->SetPosition(spritePosition);
 	}
 
-	if (isGameStart) {
-		XINPUT_STATE joyState{};
+	//if (isGameStart) {
+	//	XINPUT_STATE joyState{};
 
-		// ジョイスティック状態取得
-		if (Input::GetInstance()->GetJoystickState(joyState)) {
-			spritePosition.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 4.0f;
-			spritePosition.y -= (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 4.0f;
-			// スプライトの座標変更を反映
-			if (isLockOnMode_) {
-				spriteLockOnReticle_->SetPosition(spritePosition);
-				sprite2DReticle_->SetPosition(spritePosition);
-			}
-			else {
-				sprite2DReticle_->SetPosition(spritePosition);
-			}
+	//	// ジョイスティック状態取得
+	//	if (Input::GetInstance()->GetJoystickState(joyState)) {
+	//		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 4000.0f;
+	//		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 4000.0f;
+	//	
+	//		screenPositionReticle_ = spritePosition;
+	//	}
+	//}
 
-			screenPositionReticle_ = spritePosition;
-		}
-	}
-
+	const float kDistanceObject = 100.0f;
+	Vector3 offset = { 0,0,1.0f };
+	offset = kDistanceObject * Normalize(offset);
+	worldTransform3DReticle_.translate = worldTransform3DReticle_.translate + offset;
+	// playerとの距離
+	worldTransform3DReticle_.UpdateMatrix();
 	// レティクル
-	Reticle(camera, Vector2((float)spritePosition.x, (float)spritePosition.y), playerPosition);
+	Reticle(camera);
 }
 
 void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)

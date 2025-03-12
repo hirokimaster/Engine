@@ -142,7 +142,7 @@ void GameScene::PostProcessDraw()
 	player_->Draw(followCamera_->GetCamera());
 
 	// lockOn_(レティクル)
-	lockOn_->Draw();
+	lockOn_->Draw(followCamera_->GetCamera());
 
 	sceneTransition_->Draw();
 

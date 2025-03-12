@@ -29,7 +29,7 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw(const Camera& camera);
 
 	/// <summary>
 	/// レティクルの更新
@@ -85,7 +85,7 @@ private:
 	/// <param name="camera"></param>
 	/// <param name="position"></param>
 	/// <param name="playerPosition"></param>
-	void Reticle(const Camera& camera, const Vector2& position, const Vector3& playerPosition);
+	void Reticle(const Camera& camera);
 
 	/// <summary>
 	/// レティクルの範囲制限
