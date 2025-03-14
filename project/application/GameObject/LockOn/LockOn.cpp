@@ -136,7 +136,6 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 {
 	Vector2 spritePosition;
 
-	//Vector3 move{};
 
 	if (isLockOnMode_ || isGameStart) {
 		spritePosition = spriteLockOnReticle_->GetPosition();
@@ -145,18 +144,6 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 		spritePosition = sprite2DReticle_->GetPosition();
 		spriteLockOnReticle_->SetPosition(spritePosition);
 	}
-
-	//if (isGameStart) {
-	//	XINPUT_STATE joyState{};
-
-	//	// ジョイスティック状態取得
-	//	if (Input::GetInstance()->GetJoystickState(joyState)) {
-	//		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 4000.0f;
-	//		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 4000.0f;
-	//	
-	//		screenPositionReticle_ = spritePosition;
-	//	}
-	//}
 
 	const float kDistanceObject = 100.0f;
 	Vector3 offset = { 0,0,1.0f };
