@@ -161,5 +161,4 @@ private:
 	Vector3 rotate_{}; // 回転の初期値
 	float rotateSpeed_; // 回転速度
 	float rotateLerpFactor_; // Lerpの強さ
-	
 };

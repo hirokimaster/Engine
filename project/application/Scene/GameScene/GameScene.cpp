@@ -41,8 +41,8 @@ void GameScene::Initialize()
 	// 追従カメラ
 	followCamera_ = std::make_unique<FollowCamera>();
 	followCamera_->Initialize();
-	followCamera_->SetOffset(offsetStart_);
-	followCamera_->SetRotate(cameraRotateStart_);
+	followCamera_->SetOffset(offsetEnd_);
+	followCamera_->SetRotate(cameraRotateEnd_);
 	followCamera_->SetTarget(&player_->GetWorldTransform());
 	followCamera_->SetLockOn(lockOn_.get());
 	rotateParam_ = 0.0f;
@@ -135,7 +135,7 @@ void GameScene::PostProcessDraw()
 {
 	postEffect_->GetPostProcess()->PreDraw();
 
-	skydome_->Draw(followCamera_->GetCamera());
+	//skydome_->Draw(followCamera_->GetCamera());
 
 	loader_->Draw(followCamera_->GetCamera());
 	// player
@@ -193,26 +193,26 @@ void GameScene::LoadTextureFile()
 
 void GameScene::StartGame()
 {
-	// シーン遷移が終わったかつ補間が終わってない時
-	if (!isTransition_ && rotateParam_ <= 1.0f) {
-		// カメラの位置を補間する
-		Vector3 currentOffset = Lerp(offsetStart_, offsetEnd_, rotateParam_);
-		// 回転の補間をする
-		Vector3 currentCameraRotate = Lerp(cameraRotateStart_, cameraRotateEnd_, rotateParam_);
-		// 正規化
-		currentCameraRotate.y = NormalizeRotation(currentCameraRotate.y);
-		// カメラに適用
-		followCamera_->SetOffset(currentOffset);
-		followCamera_->SetRotate(currentCameraRotate);
-		rotateParam_ += 0.02f;
-	}
+	//// シーン遷移が終わったかつ補間が終わってない時
+	//if (!isTransition_ && rotateParam_ <= 1.0f) {
+	//	// カメラの位置を補間する
+	//	Vector3 currentOffset = Lerp(offsetStart_, offsetEnd_, rotateParam_);
+	//	// 回転の補間をする
+	//	Vector3 currentCameraRotate = Lerp(cameraRotateStart_, cameraRotateEnd_, rotateParam_);
+	//	// 正規化
+	//	currentCameraRotate.y = NormalizeRotation(currentCameraRotate.y);
+	//	// カメラに適用
+	//	followCamera_->SetOffset(currentOffset);
+	//	followCamera_->SetRotate(currentCameraRotate);
+	//	rotateParam_ += 0.02f;
+	//}
 
-	// 補間が終わったら
-	if (rotateParam_ >= 1.0f) {
-		// ゲーム開始
-		isGameStart_ = true;
-		rotateParam_ = 1.0f;
-	}
+	//// 補間が終わったら
+	//if (rotateParam_ >= 1.0f) {
+	//	// ゲーム開始
+	//	isGameStart_ = true;
+	//	rotateParam_ = 1.0f;
+	//}
 
 	isGameStart_ = true;
 }

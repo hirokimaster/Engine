@@ -14,7 +14,7 @@ EnemyStateSortie::~EnemyStateSortie()
 
 void EnemyStateSortie::Update(Enemy* pEnemy)
 {
-	if (player_->GetWorldPosition().z >= pEnemy->GetEventTrigger().z) {
+	if (player_->GetWorldPosition().z >= 1500.0f) {
 		isSortie_ = true;
 		pEnemy->SetIsSortie(isSortie_);
 	}

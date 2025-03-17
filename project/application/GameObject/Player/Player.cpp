@@ -23,7 +23,7 @@ void Player::Initialize()
 
 	// 調整項目
 	AddAdjustmentVariables();
-	
+
 
 	// 死亡フラグ
 	isDead_ = false;
@@ -79,7 +79,7 @@ void Player::Update()
 		//lockOn_->SetIsLockOnMode(true);
 		destroyCount_ = 0;
 	}
-	
+
 	ApplyAdjustmentVariables();
 }
 
@@ -100,8 +100,8 @@ void Player::Move()
 
 	// ジョイスティック状態取得
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
-		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 1.0f;
-		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 1.0f;
+		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX;
+		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX;
 	}
 
 	Vector3 position = object_->GetWorldTransform().translate + move;
@@ -192,44 +192,24 @@ void Player::DrawUI()
 void Player::Rotate()
 {
 	Vector3 rotate = { 0, 0, 0 };
-	const float kRotateSpeedZ = 0.13f;
-	const float kRotateSpeedX = 0.13f;
 	const float kRotateLimitZ = 0.7f;
 	const float kRotateLimitX = 0.15f;
-	const float kLerpFactor = 0.1f;
-	const float kReturnLerpFactor = 0.07f;
-
+	const float kLerpFactor = 0.5f;
+	
 	// ゲームパッドの状態を得る変数(XINPUT)
 	XINPUT_STATE joyState;
 
 	// ゲームパッド状態取得
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
 		// ゲームパッドの入力から回転速度を計算
-		rotate.z = (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kRotateSpeedZ;
-		rotate.x = (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kRotateSpeedX;
+		rotate.z += (float)joyState.Gamepad.sThumbLX / SHRT_MAX;
+		rotate.x += (float)joyState.Gamepad.sThumbLY / SHRT_MAX;
 	}
-
-	// 移動限界に達しているか
-	bool isAtMoveLimitX = (object_->GetWorldTransform().translate.x <= moveMinLimit_.x && rotate.z < 0) ||
-		(object_->GetWorldTransform().translate.x >= moveMaxLimit_.x && rotate.z > 0);
-	bool isAtMoveLimitY = (object_->GetWorldTransform().translate.y <= moveMinLimit_.y && rotate.x < 0) ||
-		(object_->GetWorldTransform().translate.y >= moveMaxLimit_.y && rotate.x > 0);
 
 	Vector3 rotateVelo{};
 	// 回転を適用
-	if (!isAtMoveLimitX) {
-		rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, object_->GetWorldTransform().rotate.z - rotate.z, kLerpFactor);
-	}
-	else {
-		rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, 0.0f, kReturnLerpFactor);
-	}
-
-	if (!isAtMoveLimitY) {
-		rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, object_->GetWorldTransform().rotate.x - rotate.x, kLerpFactor);
-	}
-	else {
-		rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, 0.0f, kReturnLerpFactor);
-	}
+	rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, object_->GetWorldTransform().rotate.z - rotate.z, kLerpFactor);
+	rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, object_->GetWorldTransform().rotate.x - rotate.x, kLerpFactor);
 
 	// z軸に制限をかける
 	rotateVelo.z = std::clamp(rotateVelo.z, -kRotateLimitZ, kRotateLimitZ);
@@ -239,14 +219,6 @@ void Player::Rotate()
 
 	// y軸は回転させないので0にしとく
 	rotateVelo.y = 0.0f;
-
-	// 操作がない場合は徐々に0に戻す
-	if (std::abs(rotate.z) < 0.005f) {
-		rotateVelo.z = std::lerp(rotateVelo.z, 0.0f, kReturnLerpFactor);
-	}
-	if (std::abs(rotate.x) < 0.005f) {
-		rotateVelo.x = std::lerp(rotateVelo.x, 0.0f, kReturnLerpFactor);
-	}
 
 	object_->SetRotate(rotateVelo);
 }

@@ -153,6 +153,7 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 	worldTransform3DReticle_.UpdateMatrix();
 	// レティクル
 	Reticle(camera);
+	playerPosition;
 }
 
 void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)

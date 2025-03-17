@@ -18,6 +18,7 @@
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "application/GameObject/Gimmick/Laser.h"
 #include "engine/3d/Line/Line.h"
+#include "application/GameObject/Rail/Rail.h"
 
 // レベルデータ
 struct LevelData {
