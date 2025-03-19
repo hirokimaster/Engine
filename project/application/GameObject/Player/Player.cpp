@@ -100,15 +100,12 @@ void Player::Move()
 
 	// ジョイスティック状態取得
 	if (Input::GetInstance()->GetJoystickState(joyState)) {
-		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX;
-		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX;
+		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 2.0f;
+		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 2.0f;
 	}
 
 	Vector3 position = object_->GetWorldTransform().translate + move;
 	position.z += moveSpeed_;
-	// 移動範囲を制限
-	position.x = std::clamp(position.x, moveMinLimit_.x, moveMaxLimit_.x);
-	position.y = std::clamp(position.y, moveMinLimit_.y, moveMaxLimit_.y);
 	object_->SetPosition(position);
 }
 

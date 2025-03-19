@@ -14,14 +14,14 @@ EnemyStateSortie::~EnemyStateSortie()
 
 void EnemyStateSortie::Update(Enemy* pEnemy)
 {
-	if (player_->GetWorldPosition().z >= 1500.0f) {
+	if (player_->GetWorldPosition().z >= pEnemy->GetEventTrigger().z) {
 		isSortie_ = true;
 		pEnemy->SetIsSortie(isSortie_);
 	}
 	// ポジションまで移動したら攻撃モードに移る
 	if (isSortie_) {
 		if (t_ <= 1.0f) {
-			t_ += 1.0f / 60.0f;
+			t_ += 1.0f / 30.0f;
 			move_ = CatmullRomPosition(pEnemy->GetMoveControlPoints_(), t_);
 			pEnemy->SetPosition(move_);
 		}

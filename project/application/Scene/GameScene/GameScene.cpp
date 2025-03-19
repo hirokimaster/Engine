@@ -135,7 +135,7 @@ void GameScene::PostProcessDraw()
 {
 	postEffect_->GetPostProcess()->PreDraw();
 
-	//skydome_->Draw(followCamera_->GetCamera());
+	skydome_->Draw(followCamera_->GetCamera());
 
 	loader_->Draw(followCamera_->GetCamera());
 	// player

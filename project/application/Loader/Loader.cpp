@@ -85,8 +85,8 @@ LevelData* Loader::Load(const std::string& fileName)
 			objectData.scale.z = (float)transform["scaling"][1];
 
 			// modelのロード
-			if (objectData.fileName != "eventTrigger") {
-				ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
+			if (objectData.fileName != "eventTrigger" && objectData.fileName != "floor" && objectData.fileName != "wall") {
+				ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");	
 			}
 
 		}
@@ -99,6 +99,12 @@ LevelData* Loader::Load(const std::string& fileName)
 			if (object.contains("file_name")) {
 				// ファイル名
 				objectData.fileName = object["file_name"];
+			}
+
+
+			if (object.contains("event_id")) {
+				// イベント番号
+				objectData.eventNum = object["event_id"];
 			}
 
 			nlohmann::json& controlPoints = object["control_points"];
@@ -138,6 +144,7 @@ void Loader::Arrangement()
 	TextureManager::Load("resources/TempTexture/noise0.png");
 	TextureManager::Load("resources/Stage/road.png");
 	TextureManager::Load("resources/TempTexture/mount.jpg");
+	TextureManager::Load("resources/TempTexture/uvChecker.png");
 
 	levelData_ = Load("level2");
 
@@ -155,6 +162,12 @@ void Loader::Arrangement()
 				newEnemy->SetMoveControlPoints(point);
 			}
 			enemys_.push_back(std::move(newEnemy));
+		}
+		else if (objectData.fileName == "laser") {
+			std::unique_ptr<Laser> newLaser = std::make_unique<Laser>();
+			newLaser->Initialize();
+			newLaser->SetPosition(objectData.translate);
+			lasers_.push_back(std::move(newLaser));
 		}
 		else if (objectData.fileName == "roads") {
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
@@ -187,13 +200,31 @@ void Loader::Arrangement()
 			newObject->SetScale(objectData.scale);
 			objects_.push_back(std::move(newObject));
 		}
-		else if (objectData.fileName == "laser") {
-			std::unique_ptr<Laser> newLaser = std::make_unique<Laser>();
-			newLaser->Initialize();
-			newLaser->SetPosition(objectData.translate);
-			lasers_.push_back(std::move(newLaser));
+		/*else if (objectData.fileName == "floor") {
+			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
+			newObject->Initialize();
+			newObject->SetModel("LevelEditorObj/plane.obj");
+			newObject->SetTexHandle(TextureManager::GetTexHandle("TempTexture/uvChecker.png"));
+			newObject->SetPosition(objectData.translate);
+			newObject->SetRotate(objectData.rotate);
+			newObject->SetScale(objectData.scale);
+			objects_.push_back(std::move(newObject));
+		}*/
+		else if (objectData.fileName == "wall") {
+			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
+			newObject->Initialize();
+			newObject->SetModel("Player/cube.obj");
+			newObject->SetTexHandle(TextureManager::GetTexHandle("TempTexture/uvChecker.png"));
+			newObject->SetPosition(objectData.translate);
+			newObject->SetRotate(objectData.rotate);
+			newObject->SetScale(objectData.scale);
+			objects_.push_back(std::move(newObject));
 		}
-		else if (objectData.fileName == "eventTrigger") {
+		
+	}
+
+	for (auto& objectData : levelData_->objects) {
+		if (objectData.fileName == "eventTrigger") {
 			for (auto& enemy : enemys_) {
 				if (enemy->GetEventNum() == objectData.eventNum) {
 					enemy->SetEventTrigger(objectData.translate);
