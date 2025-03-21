@@ -10,7 +10,9 @@
 #include "engine/Input/Input.h"
 #include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Skydome/Skydome.h"
-#include "application/SceneTransition/SceneTransition.h"
+#include "application/SceneTransition/FadeIn/FadeIn.h"
+#include "application/SceneTransition/FadeOut/FadeOut.h"
+#include "application/GameManager/GameManager.h"
 
 class ClearScene : public IScene {
 public:
@@ -52,5 +54,5 @@ private:
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 	bool isTransition_;
 	float scaleTimer_ = 0.0f; // claerSpriteのアニメーション用のタイマー
-	SceneTransition* sceneTransition_ = nullptr;
+	std::unique_ptr<ISceneTransition> transition_ = nullptr;
 };

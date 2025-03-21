@@ -11,8 +11,9 @@
 #include "application/GameObject/ModelResources/ModelResources.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Skydome/Skydome.h"
-#include "application/SceneTransition/SceneTransition.h"
+#include "application/SceneTransition/FadeIn/FadeIn.h"
 #include "application/SceneSprite/TitleSprite.h"
+#include "application/GameManager/GameManager.h"
 
 class TitleScene : public IScene {
 public:
@@ -62,6 +63,6 @@ private:
 	
 	// シーン遷移用
 	bool isTransition_ = false;
-	SceneTransition* sceneTransition_ = nullptr;
+	std::unique_ptr<ISceneTransition> transition_ = nullptr;
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 };

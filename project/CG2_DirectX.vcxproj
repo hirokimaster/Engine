@@ -129,7 +129,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\PostEffect\PostEffect.cpp" />
     <ClCompile Include="application\SceneSprite\GameSprite.cpp" />
     <ClCompile Include="application\SceneSprite\TitleSprite.cpp" />
-    <ClCompile Include="application\SceneTransition\SceneTransition.cpp" />
+    <ClCompile Include="application\SceneTransition\FadeOut\FadeOut.cpp" />
     <ClCompile Include="application\GameObject\Skydome\Skydome.cpp" />
     <ClCompile Include="application\Scene\ClearScene\ClearScene.cpp" />
     <ClCompile Include="application\Scene\Demo\Demo.cpp" />
@@ -168,6 +168,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\Graphics\Pipeline\GraphicsPipeline.cpp" />
     <ClCompile Include="Engine\Utility\ImGuiManager\ImGuiManager.cpp" />
     <ClCompile Include="Engine\Input\Input.cpp" />
+    <ClCompile Include="application\SceneTransition\FadeIn\FadeIn.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Math\Mathfunction.cpp" />
     <ClCompile Include="engine\Graphics\CreateResource\CreateResource.cpp" />
@@ -202,7 +203,8 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\PostEffect\PostEffect.h" />
     <ClInclude Include="application\SceneSprite\GameSprite.h" />
     <ClInclude Include="application\SceneSprite\TitleSprite.h" />
-    <ClInclude Include="application\SceneTransition\SceneTransition.h" />
+    <ClInclude Include="application\SceneTransition\FadeOut\FadeOut.h" />
+    <ClInclude Include="application\SceneTransition\ISceneTransition.h" />
     <ClInclude Include="application\GameObject\Skydome\Skydome.h" />
     <ClInclude Include="application\Scene\ClearScene\ClearScene.h" />
     <ClInclude Include="application\Scene\Demo\Demo.h" />
@@ -263,6 +265,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\Graphics\Transform\WorldTransform.h" />
     <ClInclude Include="application\PostEffect\IPostEffect.h" />
     <ClInclude Include="application\PostEffect\EffectState\NoneEffectState.h" />
+    <ClInclude Include="application\SceneTransition\FadeIn\FadeIn.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">

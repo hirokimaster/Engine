@@ -29,17 +29,30 @@ void GameManager::Update() {
 		ParticleManager::GetInstance()->Initialize();
 
 		scene_->Initialize();
+
+		// シーン遷移の演出開始
+		if (transition_) {
+			transition_->Start(nullptr);
+		}
 	}
 
 	// 更新
 	AdjustmentVariables::GetInstance()->Update();
 	ParticleManager::GetInstance()->UpdateEditor();
 	scene_->Update();
+
+	if (transition_) {
+		transition_->Update();
+	}
 }
 
 void GameManager::Draw()
 {
 	scene_->Draw();
+
+	if (transition_) {
+		transition_->Draw();
+	}
 }
 
 void GameManager::PostProcessDraw()
@@ -57,5 +70,15 @@ void GameManager::ChangeScene(const std::string& sceneName)
 	assert(sceneFactory_);
 	assert(nextScene_ == nullptr);
 
-	nextScene_ = sceneFactory_->CreateScene(sceneName);
+	if (transition_) {
+		// シーン遷移の演出開始
+		transition_->Start([this, sceneName]() {
+			nextScene_ = sceneFactory_->CreateScene(sceneName);
+			});
+	}
+	// 演出を設定していないなら普通に切り替える
+	else {
+		nextScene_ = sceneFactory_->CreateScene(sceneName);
+	}
+	
 }

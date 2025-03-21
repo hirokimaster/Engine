@@ -50,9 +50,10 @@ void TitleScene::Initialize()
 	followCamera_->SetTarget(&objectPlayer_->GetWorldTransform());
 
 	// シーン遷移用
+	transition_ = std::make_unique<FadeOut>();
+	transition_->Initialize();
+	GameManager::GetInstance()->SetSceneTransition(transition_.get());
 	isTransition_ = false;
-	sceneTransition_ = SceneTransition::GetInstance();
-	sceneTransition_->Initialize();
 
 	// 天球
 	skydome_ = std::make_unique<Skydome>();
@@ -66,21 +67,13 @@ void TitleScene::Update()
 
 	// Aボタンが押されたらシーン遷移処理を開始する
 	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A)) {
-		if (!isTransition_) {  // シーン遷移がまだ始まっていない場合のみ
+		if (!isTransition_) {// シーン遷移がまだ始まっていない場合のみ
 			isTransition_ = true;
+			transition_ = std::make_unique<FadeIn>();
+			transition_->Initialize();
+			GameManager::GetInstance()->SetSceneTransition(transition_.get());
+			GameManager::GetInstance()->ChangeScene("GAME");
 		}
-	}
-
-	// クリア、ゲームシーンから戻ってきたとき
-	if (sceneTransition_->GetPreScene() == PreScene::Clear ||
-		sceneTransition_->GetPreScene() == PreScene::Game) {
-		sceneTransition_->FadeOut();
-	}
-
-	// シーン遷移
-	if (isTransition_) {
-		sceneTransition_->SetPreScene(PreScene::Title);
-		sceneTransition_->FadeIn("GAME");
 	}
 
 	// 自機の移動
@@ -115,8 +108,6 @@ void TitleScene::PostProcessDraw()
 	objectPlayer_->Draw(followCamera_->GetCamera());
 
 	titleSprite_->Draw();
-
-	sceneTransition_->Draw();
 
 	postProcess_->PostDraw();
 

@@ -278,9 +278,6 @@
     <ClCompile Include="engine\Graphics\PostProcess\PostProcess.cpp">
       <Filter>engine\Graphics\PostProcess</Filter>
     </ClCompile>
-    <ClCompile Include="application\SceneTransition\SceneTransition.cpp">
-      <Filter>application\SceneTransition</Filter>
-    </ClCompile>
     <ClCompile Include="application\SceneSprite\TitleSprite.cpp">
       <Filter>application\SceneSprite\TitleSprite</Filter>
     </ClCompile>
@@ -290,6 +287,8 @@
     <ClCompile Include="application\PostEffect\EffectState\PlayerDamageState.cpp" />
     <ClCompile Include="application\PostEffect\PostEffect.cpp" />
     <ClCompile Include="application\PostEffect\EffectState\NoneEffectState.cpp" />
+    <ClCompile Include="application\SceneTransition\FadeIn\FadeIn.cpp" />
+    <ClCompile Include="application\SceneTransition\FadeOut\FadeOut.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -505,9 +504,6 @@
     <ClInclude Include="engine\Graphics\PostProcess\PostProcess.h">
       <Filter>engine\Graphics\PostProcess</Filter>
     </ClInclude>
-    <ClInclude Include="application\SceneTransition\SceneTransition.h">
-      <Filter>application\SceneTransition</Filter>
-    </ClInclude>
     <ClInclude Include="application\SceneSprite\TitleSprite.h">
       <Filter>application\SceneSprite\TitleSprite</Filter>
     </ClInclude>
@@ -519,6 +515,9 @@
     <ClInclude Include="application\PostEffect\EffectState\PlayerDamageState.h" />
     <ClInclude Include="application\PostEffect\PostEffect.h" />
     <ClInclude Include="application\PostEffect\EffectState\NoneEffectState.h" />
+    <ClInclude Include="application\SceneTransition\ISceneTransition.h" />
+    <ClInclude Include="application\SceneTransition\FadeIn\FadeIn.h" />
+    <ClInclude Include="application\SceneTransition\FadeOut\FadeOut.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

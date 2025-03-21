@@ -10,7 +10,8 @@
 #include "application/Loader/Loader.h"
 #include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Skydome/Skydome.h"
-#include "application/SceneTransition/SceneTransition.h"
+#include "application/SceneTransition/FadeOut/FadeOut.h"
+#include "application/SceneTransition/FadeIn/FadeIn.h"
 #include "application/SceneSprite/GameSprite.h"
 #include "application/PostEffect/PostEffect.h"
 #include "application/PostEffect/EffectState/PlayerDamageState.h"
@@ -78,10 +79,8 @@ private:
 	std::unique_ptr<GameSprite> gameSprite_ = nullptr; // ゲームシーンのスプライト
 
 	// シーン遷移用
-	bool isTransition_ = false;
-	uint32_t sceneTimer_ = 100;
 	bool isTransitionClear_ = false;
-	SceneTransition* sceneTransition_ = nullptr;
+	std::unique_ptr<ISceneTransition> transition_ = nullptr;
 
 	std::unique_ptr<PostEffect> postEffect_ = nullptr; // postEffect
 	

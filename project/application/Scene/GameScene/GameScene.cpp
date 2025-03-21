@@ -20,8 +20,9 @@ void GameScene::Initialize()
 	postEffect_ = std::make_unique<PostEffect>();
 	postEffect_->Initialize();
 
-	isTransition_ = true;
-	sceneTransition_ = SceneTransition::GetInstance();
+	transition_ = std::make_unique<FadeOut>();
+	transition_->Initialize();
+	GameManager::GetInstance()->SetSceneTransition(transition_.get());
 
 	// テクスチャ読み込み
 	LoadTextureFile();
@@ -56,7 +57,6 @@ void GameScene::Initialize()
 
 	// ゲームスタート
 	isGameStart_ = false;
-	sceneTimer_ = 100;
 
 	// 天球
 	skydome_ = std::make_unique<Skydome>();
@@ -71,24 +71,15 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	// シーン遷移
-	// ゲームシーンに来た時
-	if (isTransition_) {
-		sceneTransition_->FadeOut();
-	}
-
-	--sceneTimer_;
-
-	if (sceneTimer_ <= 0) {
-		isTransition_ = false;
-		sceneTimer_ = 0;
-	}
 
 	// ゲームシーンからクリアへ
-	if (isTransitionClear_) {
-		sceneTransition_->SetPreScene(PreScene::Game);
-		sceneTransition_->FadeIn("CLEAR");
-	}
+	if (!isTransitionClear_  && player_->GetWorldTransform().translate.z >= 2000.0f){
+		isTransitionClear_ = true;
+		transition_ = std::make_unique<FadeIn>();
+	    transition_->Initialize();
+	    GameManager::GetInstance()->SetSceneTransition(transition_.get());
+	    GameManager::GetInstance()->ChangeScene("CLEAR");
+    }
 
 	// ゲームスタート演出
 	StartGame();
@@ -143,8 +134,6 @@ void GameScene::PostProcessDraw()
 
 	// lockOn_(レティクル)
 	lockOn_->Draw(followCamera_->GetCamera());
-
-	sceneTransition_->Draw();
 
 	postEffect_->GetPostProcess()->PostDraw();
 }

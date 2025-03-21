@@ -10,6 +10,8 @@
 #include "engine/Graphics/PostProcess/PostProcess.h"
 #include "application/AdjustmentVariables/AdjustmentVariables.h"
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
+#include "application/SceneTransition/FadeIn/FadeIn.h"
+#include "application/SceneTransition/FadeOut/FadeOut.h"
 
 class GameManager {
 public:
@@ -50,6 +52,8 @@ public:
 	/// <param name="postProcess"></param>
 	void SetPostProcess(PostProcess* postProcess) { postProcess_ = postProcess; }
 
+	void SetSceneTransition(ISceneTransition* transition) { transition_ = transition; }
+
 #pragma endregion
 
 	/// <summary>
@@ -80,5 +84,6 @@ private:
 	std::unique_ptr<IScene> nextScene_ = nullptr; // 次のシーン
 	std::unique_ptr<AbstractSceneFactory> sceneFactory_ = nullptr;
 	PostProcess* postProcess_ = nullptr;
+	ISceneTransition* transition_ = nullptr; // シーン遷移
 
 };
