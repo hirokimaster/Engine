@@ -135,7 +135,7 @@ void GameScene::PostProcessDraw()
 {
 	postEffect_->GetPostProcess()->PreDraw();
 
-	skydome_->Draw(followCamera_->GetCamera());
+	//skydome_->Draw(followCamera_->GetCamera());
 
 	loader_->Draw(followCamera_->GetCamera());
 	// player
@@ -181,6 +181,7 @@ void GameScene::LoadTextureFile()
 {
 	TextureManager::Load("resources/TempTexture/white2.png");
 	TextureManager::Load("resources/TempTexture/white.png");
+	TextureManager::Load("resources/Stage/laser.png");
 	TextureManager::Load("resources/UI/RB.png");
 	TextureManager::Load("resources/UI/RB2.png");
 	TextureManager::Load("resources/UI/L.png");

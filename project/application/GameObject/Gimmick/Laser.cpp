@@ -4,15 +4,14 @@ void Laser::Initialize()
 {
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
-	object_->SetModel("LevelEditorObj/laser.obj");
-	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/mount.jpg"));
-	object_->SetScale({ 0.1f,0.1f,0.1f });
+	object_->SetModel("Player/cube.obj");
+	object_->SetTexHandle(TextureManager::GetTexHandle("Stage/laser.png"));
 	
 	// collider設定
 	collider_ = std::make_unique<Collider>();
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
-	collider_->SetType(ColliderType::Sphere); // 形状
+	collider_->SetType(ColliderType::AABB); // 形状
 }
 
 void Laser::Update()

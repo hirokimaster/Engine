@@ -25,7 +25,7 @@ public:
 
 	Vector3 GetWorldPosition() const;
 
-	Vector3 GetScale() const{ return object_->GetWorldTransform().scale; }
+	const Vector3& GetScale() const{ return object_->GetWorldTransform().scale; }
 
 	bool GetIsHit()const { return isHit_; }
 
@@ -35,7 +35,9 @@ public:
 
 #pragma region setter
 
-	void SetPosition(Vector3 position) { object_->SetPosition(position); }
+	void SetPosition(const Vector3& position) { object_->SetPosition(position); }
+
+	void SetScale(const Vector3& scale) { object_->SetScale(scale); }
 
 #pragma endregion
 

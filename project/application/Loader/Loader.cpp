@@ -145,6 +145,7 @@ void Loader::Arrangement()
 	TextureManager::Load("resources/Stage/road.png");
 	TextureManager::Load("resources/TempTexture/mount.jpg");
 	TextureManager::Load("resources/TempTexture/uvChecker.png");
+	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/grounds.obj");
 
 	levelData_ = Load("level2");
 
@@ -167,6 +168,7 @@ void Loader::Arrangement()
 			std::unique_ptr<Laser> newLaser = std::make_unique<Laser>();
 			newLaser->Initialize();
 			newLaser->SetPosition(objectData.translate);
+			newLaser->SetScale(objectData.scale);
 			lasers_.push_back(std::move(newLaser));
 		}
 		else if (objectData.fileName == "roads") {
@@ -214,7 +216,7 @@ void Loader::Arrangement()
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
 			newObject->SetModel("Player/cube.obj");
-			newObject->SetTexHandle(TextureManager::GetTexHandle("TempTexture/uvChecker.png"));
+			newObject->SetTexHandle(TextureManager::GetTexHandle("TempTexture/noise0.png"));
 			newObject->SetPosition(objectData.translate);
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
@@ -239,7 +241,6 @@ void Loader::Update()
 	// objectの更新
 	for (auto& object : objects_) {
 		object->Update();
-		object->SetUVTransform(uvTransform_);
 	}
 
 	// enemyの更新

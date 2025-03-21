@@ -12,7 +12,7 @@ void Player::Initialize()
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
 	object_->SetModel("Player/player.obj");
-	object_->SetPosition({ 0,-20.0f,0 });
+	object_->SetPosition({ 0,60.0f,0 });
 	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
 
 	// collider
