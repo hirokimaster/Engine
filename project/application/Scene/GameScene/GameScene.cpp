@@ -20,6 +20,7 @@ void GameScene::Initialize()
 	postEffect_ = std::make_unique<PostEffect>();
 	postEffect_->Initialize();
 
+	// シーン遷移
 	transition_ = std::make_unique<FadeOut>();
 	transition_->Initialize();
 	GameManager::GetInstance()->SetSceneTransition(transition_.get());

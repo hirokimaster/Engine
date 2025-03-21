@@ -1,3 +1,9 @@
+/**
+* @file FadeIn.cpp
+* @brief フェードイン
+* @author 仁平 琉乃
+*/
+
 #include "FadeIn.h"
 
 void FadeIn::Initialize()

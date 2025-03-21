@@ -1,3 +1,9 @@
+/**
+* @file FadeOut.cpp
+* @brief フェードアウト
+* @author 仁平 琉乃
+*/
+
 #include "FadeOut.h"
 
 void FadeOut::Initialize()

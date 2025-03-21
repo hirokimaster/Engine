@@ -2,6 +2,7 @@
 /**
 * @file FadeOut.h
 * @brief フェードアウト
+* @author 仁平 琉乃
 */
 
 #include "engine/2d/Sprite/Sprite.h"
