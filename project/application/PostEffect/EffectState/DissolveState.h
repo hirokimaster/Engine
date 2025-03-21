@@ -1,5 +1,6 @@
 #pragma once
 #include "application/PostEffect/IPostEffect.h"
+#include "engine/2d/Sprite/Sprite.h"
 
 class DissolveState : public IPostEffect {
 public:

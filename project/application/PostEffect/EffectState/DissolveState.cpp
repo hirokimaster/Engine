@@ -2,7 +2,10 @@
 
 void DissolveState::Apply(PostProcess* pPostProcess, PostEffect* pPostEffect)
 {
-	// dissolve適用
+	// マスク設定
+	pPostProcess->SetMaskTexture(TextureManager::GetTexHandle("TempTexture/noise0.png"));
+
+	// 変化させる
 	if (flag_) {
 		pPostProcess->SetDissolveParam(param_);
 		param_.threshold += 0.02f;

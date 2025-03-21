@@ -17,18 +17,10 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
 	// ポストエフェクト初期化
-	postProcess_ = std::make_unique<PostProcess>();
-	postProcess_->Initialize();
-	postProcess_->SetEffect(PostEffectType::Dissolve);
-	param_.threshold = 0.0f;
-	postProcess_->SetDissolveParam(param_);
+	postEffect_ = std::make_unique<PostEffect>();
+	postEffect_->Initialize();
 
 	LoadTextureFile(); // texture読み込み
-
-	// ディゾルブ用
-	spriteWhite_.reset(Sprite::Create(TextureManager::GetTexHandle("TempTexture/white2.png")));
-	postProcess_->SetMaskTexture(TextureManager::GetTexHandle("TempTexture/noise0.png"));
-
 	ModelResources::GetInstance()->LoadModel(); // 使うモデルをロードしておく
 
 	titleSprite_ = std::make_unique<TitleSprite>();
@@ -92,16 +84,12 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-
-	spriteWhite_->Draw();
-
-	postProcess_->Draw();
-
+	postEffect_->GetPostProcess()->Draw();
 }
 
 void TitleScene::PostProcessDraw()
 {
-	postProcess_->PreDraw();
+	postEffect_->GetPostProcess()->PreDraw();
 
 	skydome_->Draw(followCamera_->GetCamera());
 
@@ -109,8 +97,7 @@ void TitleScene::PostProcessDraw()
 
 	titleSprite_->Draw();
 
-	postProcess_->PostDraw();
-
+	postEffect_->GetPostProcess()->PostDraw();
 }
 
 void TitleScene::LoadTextureFile()

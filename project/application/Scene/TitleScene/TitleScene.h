@@ -14,6 +14,7 @@
 #include "application/SceneTransition/FadeIn/FadeIn.h"
 #include "application/SceneSprite/TitleSprite.h"
 #include "application/GameManager/GameManager.h"
+#include <application/PostEffect/PostEffect.h>
 
 class TitleScene : public IScene {
 public:
@@ -54,11 +55,9 @@ private:
 	void LoadTextureFile();
 
 private:
-	std::unique_ptr<PostProcess> postProcess_ = nullptr; // postProcess
+	std::unique_ptr<PostEffect> postEffect_ = nullptr; // postEffect
 	std::unique_ptr<Object3DPlacer> objectPlayer_ = nullptr;
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
-	DissolveParam param_{};
-	std::unique_ptr<Sprite> spriteWhite_;
 	std::unique_ptr<TitleSprite> titleSprite_ = nullptr;
 	
 	// シーン遷移用
