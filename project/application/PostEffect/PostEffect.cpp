@@ -5,7 +5,7 @@ void PostEffect::Initialize()
 {
 	postProcess_ = std::make_unique<PostProcess>();
 	postProcess_->Initialize();
-	postProcess_->SetEffect(PostEffectType::Vignette);
+	postProcess_->SetEffect(PostEffectType::None);
 	// 初期はエフェクトなし
 	effectState_ = std::make_unique<NoneEffectState>();
 }

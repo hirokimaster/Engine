@@ -289,6 +289,7 @@
     <ClCompile Include="application\PostEffect\EffectState\NoneEffectState.cpp" />
     <ClCompile Include="application\SceneTransition\FadeIn\FadeIn.cpp" />
     <ClCompile Include="application\SceneTransition\FadeOut\FadeOut.cpp" />
+    <ClCompile Include="application\PostEffect\EffectState\DissolveState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -518,6 +519,7 @@
     <ClInclude Include="application\SceneTransition\ISceneTransition.h" />
     <ClInclude Include="application\SceneTransition\FadeIn\FadeIn.h" />
     <ClInclude Include="application\SceneTransition\FadeOut\FadeOut.h" />
+    <ClInclude Include="application\PostEffect\EffectState\DissolveState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

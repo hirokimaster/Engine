@@ -72,16 +72,6 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-
-	// ゲームシーンからクリアへ
-	if (!isTransitionClear_  && player_->GetWorldTransform().translate.z >= 2000.0f){
-		isTransitionClear_ = true;
-		transition_ = std::make_unique<FadeIn>();
-	    transition_->Initialize();
-	    GameManager::GetInstance()->SetSceneTransition(transition_.get());
-	    GameManager::GetInstance()->ChangeScene("CLEAR");
-    }
-
 	// ゲームスタート演出
 	StartGame();
 

@@ -126,6 +126,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\GameObject\Player\Player.cpp" />
     <ClCompile Include="application\GameObject\Rail\Rail.cpp" />
     <ClCompile Include="application\GameState\StateGameStart.cpp" />
+    <ClCompile Include="application\PostEffect\EffectState\DissolveState.cpp" />
     <ClCompile Include="application\PostEffect\PostEffect.cpp" />
     <ClCompile Include="application\SceneSprite\GameSprite.cpp" />
     <ClCompile Include="application\SceneSprite\TitleSprite.cpp" />
@@ -200,6 +201,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\GameObject\Rail\Rail.h" />
     <ClInclude Include="application\GameState\IGameState.h" />
     <ClInclude Include="application\GameState\StateGameStart.h" />
+    <ClInclude Include="application\PostEffect\EffectState\DissolveState.h" />
     <ClInclude Include="application\PostEffect\PostEffect.h" />
     <ClInclude Include="application\SceneSprite\GameSprite.h" />
     <ClInclude Include="application\SceneSprite\TitleSprite.h" />
