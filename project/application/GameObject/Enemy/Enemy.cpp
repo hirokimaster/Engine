@@ -14,7 +14,11 @@ void Enemy::Initialize(uint32_t texHandle)
 	object_->SetModel("LevelEditorObj/enemy.obj");
 	object_->SetTexHandle(texHandle);
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-	bulletSpeed_ = 0.03f;
+	
+	// 調整項目追加
+	AddAdjustmentVariables();
+	// 調整項目適用
+	ApplyAdjustmentVariables();
 
 	// 最初の状態
 	phaseState_ = std::make_unique<EnemyStateSortie>();

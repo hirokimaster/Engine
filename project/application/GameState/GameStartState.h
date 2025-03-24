@@ -1,6 +1,7 @@
 #pragma once
 #include "application/GameState/IGameState.h"
 #include "application/GameObject/CameraManager/CameraManager.h"
+#include "application/AdjustmentVariables/AdjustmentVariables.h"
 
 class GameStartState : public IGameState {
 public:
@@ -13,6 +14,18 @@ public:
 	/// 更新
 	/// </summary>
 	void Update()override;
+
+private:
+
+	/// <summary>
+	/// 調整項目の追加
+	/// </summary>
+	void AddAdjustmentVariables();
+
+	/// <summary>
+	/// 調整項目の適用
+	/// </summary>
+	void ApplyAdjustmentVariables();
 
 private:
 	// カメラワーク用

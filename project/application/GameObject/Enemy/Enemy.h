@@ -126,7 +126,7 @@ private:
 	Vector3 velocity_{}; // 移動ベクトル
 	std::vector<Vector3> moveControlPoints_{}; // 移動ルートの制御点を入れとくコンテナ
 	bool isSortie_ = false; // 出撃してるか
-	float bulletSpeed_ = 0.2f; // 弾のスピード
+	float bulletSpeed_ = 0.0f; // 弾のスピード
 	std::unique_ptr<Collider> collider_ = nullptr; // collider
 	uint32_t eventNum_ = 0; // イベント番号
 	Vector3 eventTrigger_{}; // イベントトリガー

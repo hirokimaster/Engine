@@ -6,6 +6,7 @@
 
 #pragma once
 #include "engine/2d/Sprite/Sprite.h"
+#include "application/AdjustmentVariables/AdjustmentVariables.h"
 
 class TitleSprite {
 public:
@@ -26,7 +27,21 @@ public:
 	void Draw();
 
 private:
+
+	/// <summary>
+	/// 調整項目の追加
+	/// </summary>
+	void AddAdjustmentVariables();
+
+	/// <summary>
+	/// 調整項目の適用
+	/// </summary>
+	void ApplyAdjustmentVariables();
+
+private:
 	std::unique_ptr<Sprite> spriteTitle_ = nullptr; // Titleのsprite
+	Vector2 spriteTitlePosition_{};
 	std::unique_ptr<Sprite> spritePushA_ = nullptr; // pushAのsprite
+	Vector2 spritePushAPosition_{};
 	uint32_t animationTimer_ = 0; // Aボタン点滅用のタイマー
 };

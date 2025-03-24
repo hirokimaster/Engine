@@ -5,6 +5,7 @@
 */
 #pragma once
 #include "engine/2d/Sprite/Sprite.h"
+#include "application/AdjustmentVariables/AdjustmentVariables.h"
 
 class ClearSprite {
 public:
@@ -24,8 +25,22 @@ public:
 	void Draw();
 
 private:
+
+	/// <summary>
+	/// 調整項目の追加
+	/// </summary>
+	void AddAdjustmentVariables();
+
+	/// <summary>
+	/// 調整項目の適用
+	/// </summary>
+	void ApplyAdjustmentVariables();
+
+private:
 	uint32_t animationTimer_ = 0;
 	float scaleTimer_ = 0.0f; // claerSpriteのアニメーション用のタイマー
 	std::unique_ptr<Sprite> spriteClear_ = nullptr;
+	Vector2 spriteClearPosition_{};
 	std::unique_ptr<Sprite> spritePushA_ = nullptr; // pushAのsprite
+	Vector2 spritePushAPosition_{};
 };

@@ -9,6 +9,7 @@
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"
 #include "externals/Json/json.hpp"
 #include <Windows.h>
+#include "engine/Math/Vector2.h"
 
 using std::variant;
 using std::map;
@@ -24,7 +25,7 @@ public:
 	static AdjustmentVariables* GetInstance();
 
 	// 項目
-	using Item = variant<int32_t, float, Vector3>;
+	using Item = variant<int32_t, float, Vector2, Vector3>;
 
 	// グループ
 	using Group = map<string, Item>;

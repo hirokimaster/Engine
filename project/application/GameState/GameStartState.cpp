@@ -3,14 +3,11 @@
 void GameStartState::Initialize()
 {
 	cameraManager_ = CameraManager::GetInstance();
-	// 初期のカメラのオフセットと回転
-	offsetStart_ = { -12.0f, 0.5f, 13.0f };
-	cameraRotateStart_ = { 0, std::numbers::pi_v<float> *3.0f / 4.0f, 0 };
-	// 目的のカメラのオフセットと回転
-	offsetEnd_ = { 0, 1.5f, -25.0f };
-	cameraRotateEnd_ = { 0, 0, 0 };
-	rotateParam_ = 0.0f;
-	// 初期値を入れとく
+	// 調整項目追加
+	AddAdjustmentVariables();
+	// 調整項目適用
+	ApplyAdjustmentVariables();
+	// カメラに初期値を入れとく
 	cameraManager_->GetFollowCamera()->SetOffset(offsetEnd_);
 	cameraManager_->SetCameraRotate(cameraRotateEnd_);
 }
@@ -36,3 +33,26 @@ void GameStartState::Update()
 		rotateParam_ = 1.0f;
 	}
 }
+
+void GameStartState::AddAdjustmentVariables()
+{
+	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
+	const char* groupName = "GameStartParam";
+	// グループを追加
+	variables->CreateGroup(groupName);
+	variables->AddItem(groupName, "cameraOffsetStart", offsetStart_);
+	variables->AddItem(groupName, "cameraOffsetEnd", offsetEnd_);
+	variables->AddItem(groupName, "cameraRotateStart", cameraRotateStart_);
+	variables->AddItem(groupName, "cameraRotateEnd", cameraRotateEnd_);
+}
+
+void GameStartState::ApplyAdjustmentVariables()
+{
+	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
+	const char* groupName = "GameStartParam";
+	offsetStart_ = variables->GetValue<Vector3>(groupName, "cameraOffsetStart");
+	offsetEnd_ = variables->GetValue<Vector3>(groupName, "cameraOffsetEnd");
+	cameraRotateStart_ = variables->GetValue<Vector3>(groupName, "cameraRotateStart");
+	cameraRotateEnd_ = variables->GetValue<Vector3>(groupName, "cameraRotateEnd");
+}
+																		

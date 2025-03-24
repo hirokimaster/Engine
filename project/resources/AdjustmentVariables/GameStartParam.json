@@ -1,0 +1,24 @@
+{
+    "GameStartParam": {
+        "cameraOffsetEnd": [
+            0.0,
+            1.5,
+            -25.0
+        ],
+        "cameraOffsetStart": [
+            -12.0,
+            0.5,
+            13.0
+        ],
+        "cameraRotateEnd": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "cameraRotateStart": [
+            0.0,
+            2.356194496154785,
+            0.0
+        ]
+    }
+}

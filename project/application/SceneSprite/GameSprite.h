@@ -40,14 +40,29 @@ public:
 private:
 
 	/// <summary>
+	/// 調整項目の追加
+	/// </summary>
+	void AddAdjustmentVariables();
+
+	/// <summary>
+	/// 調整項目の適用
+	/// </summary>
+	void ApplyAdjustmentVariables();
+
+private:
+
+	/// <summary>
 	/// コンティニュー
 	/// </summary>
 	void Continue();
 
 private:
 	std::unique_ptr<Sprite> spriteYes_;
+	Vector2 spriteYesPosition_{};
 	std::unique_ptr<Sprite> spriteNo_;
+	Vector2 spriteNoPosition_{};
 	std::unique_ptr<Sprite> spriteContinue_;
+	Vector2 spriteContinuePosition_{};
 	Vector4 texColor_{};
 	uint32_t selectNo_ = 0;
 	GameScene* gameScene_ = nullptr; // ゲームシーンのポインタ

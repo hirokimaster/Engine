@@ -14,6 +14,10 @@ void GameSprite::Initialize()
 	spriteYes_ = nullptr;
 	spriteNo_ = nullptr;
 	spriteContinue_ = nullptr;
+	// 調整項目追加
+	AddAdjustmentVariables();
+	// 調整項目適用
+	ApplyAdjustmentVariables();
 }
 
 void GameSprite::Update()
@@ -38,9 +42,9 @@ void GameSprite::Continue()
 {
 	// 作ってなかったら
 	if (!spriteYes_ && !spriteNo_ && !spriteContinue_) {
-		spriteYes_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/yes.png"), { 400.0f,400.0f }, texColor_));
-		spriteNo_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/no.png"), { 750.0f,400.0f }, texColor_));
-		spriteContinue_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/continue.png"), { 450.0f,250.0f }, texColor_));
+		spriteYes_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/yes.png"), spriteYesPosition_, texColor_));
+		spriteNo_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/no.png"), spriteNoPosition_, texColor_));
+		spriteContinue_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/continue.png"), spriteContinuePosition_, texColor_));
 	}
 	
 	spriteContinue_->SetColor(texColor_);
@@ -96,4 +100,26 @@ void GameSprite::Continue()
 		}
 	}
 }
+
+void GameSprite::AddAdjustmentVariables()
+{
+	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
+	const char* groupName = "GameSprite";
+	// グループを追加
+	variables->CreateGroup(groupName);
+	// アイテム追加
+	variables->AddItem(groupName, "spriteYesPosition", spriteYesPosition_);
+	variables->AddItem(groupName, "spriteNoPosition", spriteNoPosition_);
+	variables->AddItem(groupName, "spriteContinuePosition", spriteContinuePosition_);
+}
+
+void GameSprite::ApplyAdjustmentVariables()
+{
+	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
+	const char* groupName = "GameSprite";
+	spriteYesPosition_ = variables->GetValue<Vector2>(groupName, "spriteYesPosition");
+	spriteNoPosition_ = variables->GetValue<Vector2>(groupName, "spriteNoPosition");
+	spriteContinuePosition_ = variables->GetValue<Vector2>(groupName, "spriteContinuePosition");
+}
+
 

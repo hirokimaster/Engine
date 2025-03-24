@@ -52,6 +52,11 @@ void AdjustmentVariables::Update()
 				float* ptr = get_if<float>(&item);
 				ImGui::DragFloat(itemName.c_str(), ptr, 0.0f, 1000.0f);
 			}
+			// Vector2型
+			else if (holds_alternative<Vector2>(item)) {
+				Vector2* ptr = get_if<Vector2>(&item);
+				ImGui::DragFloat2(itemName.c_str(), reinterpret_cast<float*>(ptr), 0.0f, 1280.0f);
+			}
 			// Vector3型
 			else if (holds_alternative<Vector3>(item)) {
 				Vector3* ptr = get_if<Vector3>(&item);
@@ -104,6 +109,11 @@ void AdjustmentVariables::SaveFile(const std::string& groupName)
 		// float型
 		else if (holds_alternative<float>(item)) {
 			root[groupName][itemName] = get<float>(item);
+		}
+		// Vector2型
+		else if (holds_alternative<Vector2>(item)) {
+			Vector2 value = get<Vector2>(item);
+			root[groupName][itemName] = json::array({ value.x, value.y });
 		}
 		// Vector3型
 		else if (holds_alternative<Vector3>(item)) {
@@ -209,6 +219,10 @@ void AdjustmentVariables::LoadFile(const string& groupName)
 		else if (itItem->is_number_float()) {
 			double value = itItem->get<double>();
 			SetValue(groupName, itemName, static_cast<float>(value));
+		}
+		else if (itItem->is_array() && itItem->size() == 2) {
+			Vector2 value = { itItem->at(0), itItem->at(1) };
+			SetValue(groupName, itemName, value);
 		}
 		// Vector3
 		else if (itItem->is_array() && itItem->size() == 3) {
