@@ -5,7 +5,8 @@ void Laser::Initialize()
 	object_ = std::make_unique<Object3DPlacer>();
 	object_->Initialize();
 	object_->SetModel("Player/cube.obj");
-	object_->SetTexHandle(TextureManager::GetTexHandle("Stage/laser.png"));
+	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
+	object_->SetColor({ 10.0f,10.0f,10.0f,10.0f });
 	
 	// collider設定
 	collider_ = std::make_unique<Collider>();

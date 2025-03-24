@@ -97,8 +97,8 @@ void PostProcess::CreateBuffer()
 		bloom_->Map(0, nullptr, reinterpret_cast<void**>(&bloomData_));
 		bloomData_->stepWidth = 0.001f;
 		bloomData_->sigma = 0.005f;
-		bloomData_->lightStrength = 1.0f;
-		bloomData_->bloomThreshold = 0.2f;
+		bloomData_->lightStrength = 10.0f;
+		bloomData_->bloomThreshold = 0.5f;
 	}
 	else if (type_ == PostEffectType::Vignette) {
 		vignette_ = CreateResource::CreateBufferResource(sizeof(VignetteParam));
