@@ -40,14 +40,16 @@ void GameScene::Initialize()
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
 
-	// 追従カメラ
-	followCamera_ = std::make_unique<FollowCamera>();
-	followCamera_->Initialize();
-	followCamera_->SetOffset(offsetEnd_);
-	followCamera_->SetRotate(cameraRotateEnd_);
-	followCamera_->SetTarget(&player_->GetWorldTransform());
-	followCamera_->SetLockOn(lockOn_.get());
-	rotateParam_ = 0.0f;
+	// ゲームの状態
+	gameState_ = std::make_unique<GameStartState>();
+	gameState_->Initialize();
+
+	// カメラ
+	cameraManager_ = CameraManager::GetInstance();
+	cameraManager_->Initialize();
+	cameraManager_->GetFollowCamera()->SetTarget(&player_->GetWorldTransform());
+	cameraManager_->GetFollowCamera()->SetLockOn(lockOn_.get());
+	isGameStart_ = true;
 
 	// loader
 	TextureManager::Load("resources/TempTexture/white.png");
@@ -55,9 +57,6 @@ void GameScene::Initialize()
 	loader_->SetPlayer(player_.get());
 	loader_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
 	loader_->Arrangement();
-
-	// ゲームスタート
-	isGameStart_ = false;
 
 	// 天球
 	skydome_ = std::make_unique<Skydome>();
@@ -72,21 +71,19 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	// ゲームスタート演出
-	StartGame();
 
 	// player
 	player_->Update();
-	lockOn_->UpdateReticle(followCamera_->GetCamera(), player_->GetWorldPosition(), isGameStart_);
+	lockOn_->UpdateReticle(cameraManager_->GetCamera(), player_->GetWorldPosition(), isGameStart_);
 	
 	// loader
 	loader_->Update();
 
-	// followCamera
-	followCamera_->Update();
+	// camera
+	cameraManager_->Update();
 
 	// lockOn
-	lockOn_->Update(loader_->GetEnemys(), followCamera_->GetCamera());
+	lockOn_->Update(loader_->GetEnemys(), cameraManager_->GetCamera());
 
 	Collision();
 
@@ -100,8 +97,6 @@ void GameScene::Update()
 	// postEffect更新
 	postEffect_->Update();
 
-	// ゲームオーバー
-	GameOver();
 }
 
 void GameScene::Draw()
@@ -117,14 +112,14 @@ void GameScene::PostProcessDraw()
 {
 	postEffect_->GetPostProcess()->PreDraw();
 
-	//skydome_->Draw(followCamera_->GetCamera());
+	//skydome_->Draw(cameraManager_->GetCamera());
 
-	loader_->Draw(followCamera_->GetCamera());
+	loader_->Draw(cameraManager_->GetCamera());
 	// player
-	player_->Draw(followCamera_->GetCamera());
+	player_->Draw(cameraManager_->GetCamera());
 
 	// lockOn_(レティクル)
-	lockOn_->Draw(followCamera_->GetCamera());
+	lockOn_->Draw(cameraManager_->GetCamera());
 
 	postEffect_->GetPostProcess()->PostDraw();
 }
@@ -170,44 +165,5 @@ void GameScene::LoadTextureFile()
 	TextureManager::Load("resources/UI/yes.png");
 	TextureManager::Load("resources/UI/no.png");
 	TextureManager::Load("resources/UI/continue.png");
-}
-
-void GameScene::StartGame()
-{
-	//// シーン遷移が終わったかつ補間が終わってない時
-	//if (!isTransition_ && rotateParam_ <= 1.0f) {
-	//	// カメラの位置を補間する
-	//	Vector3 currentOffset = Lerp(offsetStart_, offsetEnd_, rotateParam_);
-	//	// 回転の補間をする
-	//	Vector3 currentCameraRotate = Lerp(cameraRotateStart_, cameraRotateEnd_, rotateParam_);
-	//	// 正規化
-	//	currentCameraRotate.y = NormalizeRotation(currentCameraRotate.y);
-	//	// カメラに適用
-	//	followCamera_->SetOffset(currentOffset);
-	//	followCamera_->SetRotate(currentCameraRotate);
-	//	rotateParam_ += 0.02f;
-	//}
-
-	//// 補間が終わったら
-	//if (rotateParam_ >= 1.0f) {
-	//	// ゲーム開始
-	//	isGameStart_ = true;
-	//	rotateParam_ = 1.0f;
-	//}
-
-	isGameStart_ = true;
-}
-
-void GameScene::GameOver()
-{
-	// 追従をやめる
-	if (player_->GetDeadTimer() <= 0.0f) {
-		followCamera_->SetTarget(nullptr);
-		
-		for (auto& enemys : loader_->GetEnemys()) {
-			enemys->SetIsDead(true);
-		}
-	}
-
 }
 

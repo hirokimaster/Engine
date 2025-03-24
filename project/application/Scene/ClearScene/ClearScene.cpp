@@ -24,8 +24,9 @@ void ClearScene::Initialize()
 	sprite_ = std::make_unique<ClearSprite>();
 	sprite_->Initialize();
 
-	camera_.Initialize();
-	camera_.translate.z = -30.0f;
+	cameraManager_ = CameraManager::GetInstance();
+	cameraManager_->Initialize();
+	cameraManager_->SetCameraTranslate({ 0,-30.0f,0 });
 
 	// シーン遷移
 	isTransition_ = false;
@@ -37,7 +38,7 @@ void ClearScene::Initialize()
 void ClearScene::Update()
 {
 
-	camera_.UpdateMatrix();
+	cameraManager_->Update();
 
 	// Aボタン押したらシーン遷移
 	if (Input::GetInstance()->PressedButton(XINPUT_GAMEPAD_A) && !isTransition_) {
@@ -59,7 +60,7 @@ void ClearScene::Update()
 void ClearScene::Draw()
 {	
 
-	skydome_->Draw(camera_);
+	skydome_->Draw(cameraManager_->GetCamera());
 
 	sprite_->Draw();
 }

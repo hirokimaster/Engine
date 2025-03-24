@@ -32,14 +32,14 @@ void TitleScene::Initialize()
 	objectPlayer_->SetModel("Player/player.obj");
 	objectPlayer_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white2.png"));
 	
-	// 追従カメラ
-	followCamera_ = std::make_unique<FollowCamera>();
-	followCamera_->Initialize();
+	// カメラ
+	cameraManager_ = CameraManager::GetInstance();
+	cameraManager_->Initialize();
 	Vector3 offset = { -12.0f,0.5f,13.0f };
 	Vector3 cameraRotate = { 0,std::numbers::pi_v<float> *3.0f / 4.0f ,0 };
-	followCamera_->SetOffset(offset);
-	followCamera_->SetRotate(cameraRotate);
-	followCamera_->SetTarget(&objectPlayer_->GetWorldTransform());
+	cameraManager_->SetCameraRotate(cameraRotate);
+	cameraManager_->GetFollowCamera()->SetOffset(offset);
+	cameraManager_->GetFollowCamera()->SetTarget(&objectPlayer_->GetWorldTransform());
 
 	// シーン遷移用
 	transition_ = std::make_unique<FadeOut>();
@@ -76,7 +76,7 @@ void TitleScene::Update()
 	objectPlayer_->Update();
 
 	// カメラ
-	followCamera_->Update();
+	cameraManager_->Update();
 	
 	// 天球
 	skydome_->Update();
@@ -91,9 +91,9 @@ void TitleScene::PostProcessDraw()
 {
 	postEffect_->GetPostProcess()->PreDraw();
 
-	skydome_->Draw(followCamera_->GetCamera());
+	skydome_->Draw(cameraManager_->GetCamera());
 
-	objectPlayer_->Draw(followCamera_->GetCamera());
+	objectPlayer_->Draw(cameraManager_->GetCamera());
 
 	titleSprite_->Draw();
 

@@ -1,18 +1,21 @@
 #pragma once
 
-class GameScene;
-
 class IGameState {
 public:
 	/// <summary>
 	/// 仮想デストラクタ
 	/// </summary>
-	virtual ~IGameState() = 0;
+	virtual ~IGameState() = default;
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	virtual void Initialize() = 0;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	virtual void Update(GameScene* pGameScene) = 0;
+	virtual void Update() = 0;
 
 private:
 

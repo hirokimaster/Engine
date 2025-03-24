@@ -6,15 +6,14 @@
 
 #pragma once
 #include "application/Scene/IScene/IScene.h"
-#include "engine/Graphics/PostProcess/PostProcess.h"
 #include "engine/Input/Input.h"
 #include "application/GameObject/ModelResources/ModelResources.h"
-#include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Skydome/Skydome.h"
 #include "application/SceneTransition/FadeIn/FadeIn.h"
 #include "application/SceneSprite/TitleSprite.h"
 #include "application/GameManager/GameManager.h"
 #include <application/PostEffect/PostEffect.h>
+#include "application/GameObject/CameraManager/CameraManager.h"
 
 class TitleScene : public IScene {
 public:
@@ -57,7 +56,7 @@ private:
 private:
 	std::unique_ptr<PostEffect> postEffect_ = nullptr; // postEffect
 	std::unique_ptr<Object3DPlacer> objectPlayer_ = nullptr;
-	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
+	CameraManager* cameraManager_ = nullptr;
 	std::unique_ptr<TitleSprite> titleSprite_ = nullptr;
 	
 	// シーン遷移用

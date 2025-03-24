@@ -8,13 +8,13 @@
 #include "application/Scene/IScene/IScene.h"
 #include "engine/Utility/CollisionManager/CollisionManager.h"
 #include "application/Loader/Loader.h"
-#include "application/GameObject/FollowCamera/FollowCamera.h"
 #include "application/GameObject/Skydome/Skydome.h"
 #include "application/SceneTransition/FadeOut/FadeOut.h"
 #include "application/SceneTransition/FadeIn/FadeIn.h"
 #include "application/SceneSprite/GameSprite.h"
-#include "application/PostEffect/PostEffect.h"
 #include "application/PostEffect/EffectState/PlayerDamageState.h"
+#include "application/GameState/GameStartState.h"
+#include "application/PostEffect/PostEffect.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -60,42 +60,17 @@ private:
 	/// </summary>
 	void LoadTextureFile();
 
-	/// <summary>
-	/// ゲーム開始
-	/// </summary>
-	void StartGame();
-
-	/// <summary>
-	/// ゲームオーバー
-	/// </summary>
-	void GameOver();
-
 private:
 	std::unique_ptr<Player> player_ = nullptr; // player
 	std::unique_ptr<CollisionManager> collisionManager_ = nullptr; // 衝突判定まとめ
 	std::unique_ptr<LockOn> lockOn_ = nullptr; // ロックオン
 	std::unique_ptr<Loader> loader_ = nullptr;
-	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
+	CameraManager* cameraManager_ = nullptr; // カメラマネージャ
 	std::unique_ptr<GameSprite> gameSprite_ = nullptr; // ゲームシーンのスプライト
-
-	// シーン遷移用
-	bool isTransitionClear_ = false;
-	std::unique_ptr<ISceneTransition> transition_ = nullptr;
-
+	std::unique_ptr<ISceneTransition> transition_ = nullptr; // 遷移
+	bool isTransitionClear_ = false; // クリアに行くかどうか
+	bool isGameStart_ = false; // ゲームが開始しているか
 	std::unique_ptr<PostEffect> postEffect_ = nullptr; // postEffect
-	
-	bool isGameStart_ = false;
-	
-	// カメラワーク用
-	// 初期のカメラのオフセットと回転
-	Vector3 offsetStart_ = { -12.0f, 0.5f, 13.0f };
-	Vector3 cameraRotateStart_ = { 0, std::numbers::pi_v<float> *3.0f / 4.0f, 0 };
-	// 目的のカメラのオフセットと回転
-	Vector3 offsetEnd_ = { 0, 1.5f, -25.0f };
-	Vector3 cameraRotateEnd_ = { 0, 0, 0 };
-	float rotateParam_ = 0.0f;
-	// ゲームオーバー用
-	bool isGameOver_ = false;
-	// 天球
-	std::unique_ptr<Skydome> skydome_ = nullptr;
+	std::unique_ptr<Skydome> skydome_ = nullptr; // 天球
+	std::unique_ptr<IGameState> gameState_ = nullptr; // ゲームのスタート演出とか
 };

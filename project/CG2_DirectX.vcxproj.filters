@@ -254,7 +254,7 @@
     <ClCompile Include="engine\Graphics\CreateResource\CreateResource.cpp">
       <Filter>engine\Graphics\CreateResource</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\FollowCamera\FollowCamera.cpp">
+    <ClCompile Include="application\GameObject\CameraManager\FollowCamera\FollowCamera.cpp">
       <Filter>application\GameObject\FollowCamera</Filter>
     </ClCompile>
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp">
@@ -283,7 +283,7 @@
     </ClCompile>
     <ClCompile Include="engine\3d\Line\Line.cpp" />
     <ClCompile Include="application\SceneSprite\GameSprite.cpp" />
-    <ClCompile Include="application\GameState\StateGameStart.cpp" />
+    <ClCompile Include="application\GameState\GameStartState.cpp" />
     <ClCompile Include="application\PostEffect\EffectState\PlayerDamageState.cpp" />
     <ClCompile Include="application\PostEffect\PostEffect.cpp" />
     <ClCompile Include="application\PostEffect\EffectState\NoneEffectState.cpp" />
@@ -291,6 +291,7 @@
     <ClCompile Include="application\SceneTransition\FadeOut\FadeOut.cpp" />
     <ClCompile Include="application\PostEffect\EffectState\DissolveState.cpp" />
     <ClCompile Include="application\SceneSprite\ClearSprite.cpp" />
+    <ClCompile Include="application\GameObject\CameraManager\CameraManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -467,7 +468,7 @@
     <ClInclude Include="engine\Graphics\CreateResource\CreateResource.h">
       <Filter>engine\Graphics\CreateResource</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameObject\FollowCamera\FollowCamera.h">
+    <ClInclude Include="application\GameObject\CameraManager\FollowCamera\FollowCamera.h">
       <Filter>application\GameObject\FollowCamera</Filter>
     </ClInclude>
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h">
@@ -512,7 +513,7 @@
     <ClInclude Include="engine\3d\Line\Line.h" />
     <ClInclude Include="application\SceneSprite\GameSprite.h" />
     <ClInclude Include="application\GameState\IGameState.h" />
-    <ClInclude Include="application\GameState\StateGameStart.h" />
+    <ClInclude Include="application\GameState\GameStartState.h" />
     <ClInclude Include="application\PostEffect\IPostEffect.h" />
     <ClInclude Include="application\PostEffect\EffectState\PlayerDamageState.h" />
     <ClInclude Include="application\PostEffect\PostEffect.h" />
@@ -522,6 +523,7 @@
     <ClInclude Include="application\SceneTransition\FadeOut\FadeOut.h" />
     <ClInclude Include="application\PostEffect\EffectState\DissolveState.h" />
     <ClInclude Include="application\SceneSprite\ClearSprite.h" />
+    <ClInclude Include="application\GameObject\CameraManager\CameraManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

@@ -13,6 +13,7 @@
 #include "application/SceneTransition/FadeOut/FadeOut.h"
 #include "application/GameManager/GameManager.h"
 #include "application/SceneSprite/ClearSprite.h"
+#include "application/GameObject/CameraManager/CameraManager.h"
 
 class ClearScene : public IScene {
 public:
@@ -47,7 +48,7 @@ public:
 	void PostProcessDraw()override;
 
 private:
-	Camera camera_{};
+	CameraManager* cameraManager_ = nullptr;
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 	bool isTransition_ = false;
 	std::unique_ptr<ISceneTransition> transition_ = nullptr;
