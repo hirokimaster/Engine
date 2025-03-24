@@ -1,12 +1,12 @@
 {
     "ClearSprite": {
         "spriteClearPosition": [
-            0.0,
-            0.0
+            640.0,
+            260.0
         ],
         "spritePushAPosition": [
-            0.0,
-            0.0
+            620.0,
+            500.0
         ]
     }
 }

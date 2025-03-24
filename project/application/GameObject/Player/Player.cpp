@@ -76,7 +76,6 @@ void Player::Update()
 
 	// 撃破カウントが一定数いったらマルチロックオンにする(まだできてない)
 	if (destroyCount_ >= 5) {
-		//lockOn_->SetIsLockOnMode(true);
 		destroyCount_ = 0;
 	}
 

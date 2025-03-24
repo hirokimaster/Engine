@@ -127,9 +127,6 @@ LevelData* Loader::Load(const std::string& fileName)
 						ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
 					}
 
-					if (object.contains("children")) {
-						// 再帰処理を追加（未実装部分）
-					}
 				}
 			}
 		}
