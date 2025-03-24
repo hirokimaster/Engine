@@ -6,13 +6,13 @@
 
 #pragma once
 #include "application/Scene/IScene/IScene.h"
-#include "engine/2d/Sprite/Sprite.h"
 #include "engine/Input/Input.h"
 #include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Skydome/Skydome.h"
 #include "application/SceneTransition/FadeIn/FadeIn.h"
 #include "application/SceneTransition/FadeOut/FadeOut.h"
 #include "application/GameManager/GameManager.h"
+#include "application/SceneSprite/ClearSprite.h"
 
 class ClearScene : public IScene {
 public:
@@ -48,11 +48,8 @@ public:
 
 private:
 	Camera camera_{};
-	std::unique_ptr<Sprite> spriteClear_ = nullptr;
-	std::unique_ptr<Sprite> spritePushA_ = nullptr; // pushAのsprite
-	uint32_t animationTimer_ = 0;
 	std::unique_ptr<Skydome> skydome_ = nullptr;
-	bool isTransition_;
-	float scaleTimer_ = 0.0f; // claerSpriteのアニメーション用のタイマー
+	bool isTransition_ = false;
 	std::unique_ptr<ISceneTransition> transition_ = nullptr;
+	std::unique_ptr<ClearSprite> sprite_ = nullptr;
 };

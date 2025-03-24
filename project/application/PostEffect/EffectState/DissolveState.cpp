@@ -23,4 +23,6 @@ void DissolveState::Apply(PostProcess* pPostProcess, PostEffect* pPostEffect)
 			flag_ = true;
 		}
 	}
+
+	pPostEffect;
 }
