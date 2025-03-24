@@ -18,7 +18,6 @@
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "application/GameObject/Gimmick/Laser.h"
 #include "engine/3d/Line/Line.h"
-#include "application/GameObject/Rail/Rail.h"
 
 // レベルデータ
 struct LevelData {
@@ -100,5 +99,4 @@ private:
 		{0.0f,0.0f,0.0f},
 	};
 	LevelData* levelData_;
-	std::vector<std::unique_ptr<Line>> railLine_;
 };

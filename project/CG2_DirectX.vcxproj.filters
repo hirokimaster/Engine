@@ -269,9 +269,6 @@
     <ClCompile Include="Engine\Math\Mathfunction.cpp">
       <Filter>engine\Math</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Rail\Rail.cpp">
-      <Filter>application\GameObject\Rail</Filter>
-    </ClCompile>
     <ClCompile Include="application\GameObject\Skydome\Skydome.cpp">
       <Filter>application\GameObject\Skydome</Filter>
     </ClCompile>
@@ -497,9 +494,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Math\Vector4.h">
       <Filter>engine\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="application\GameObject\Rail\Rail.h">
-      <Filter>application\GameObject\Rail</Filter>
     </ClInclude>
     <ClInclude Include="application\GameObject\Skydome\Skydome.h">
       <Filter>application\GameObject\Skydome</Filter>

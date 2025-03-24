@@ -11,7 +11,6 @@
 #include "engine/2d/Sprite/Sprite.h"
 #include <vector>
 #include "engine/3d/Object3DPlacer/Object3DPlacer.h"
-#include "application/GameObject/Rail/Rail.h"
 #include "application/AdjustmentVariables/AdjustmentVariables.h"
 
 class LockOn;

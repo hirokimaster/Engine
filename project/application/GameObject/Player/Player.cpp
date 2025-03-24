@@ -107,7 +107,7 @@ void Player::Move()
 	Vector3 position = object_->GetWorldTransform().translate + move;
 	position.z += moveSpeed_;
 	object_->SetPosition(position);
-	spriteMove_->SetPosition(Vector2(move.x + 240.0f, move.y + 500.0f));
+	spriteMove_->SetPosition(Vector2((5.0f * move.x) + 240.0f, (5.0f * move.y) + 500.0f));
 }
 
 void Player::Attack()
