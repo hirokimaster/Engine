@@ -6,16 +6,16 @@
 
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
-#include "application/GameObject/Enemy/Bullet/EnemyBullet.h"
+#include "application/GameObject/EnemyManager/Enemy/Bullet/EnemyBullet.h"
 #include "engine/Graphics/TextureManager/TextureManager.h"
 #include "engine/3d/Object3DPlacer/Object3DPlacer.h"
-#include "application/GameObject/Enemy/PhaseState/EnemyStateSortie.h"
-#include "application/GameObject/Enemy/PhaseState/EnemyStateFire.h"
-#include "application/GameObject/Enemy/IEnemy.h"
+#include "application/GameObject/EnemyManager/Enemy/MoveEnemy/PhaseState/EnemyStateSortie.h"
+#include "application/GameObject/EnemyManager/Enemy/MoveEnemy/PhaseState/EnemyStateFire.h"
+#include "application/GameObject/EnemyManager/Enemy/IEnemy.h"
 
 class Player;
 
-class Enemy : public IEnemy{
+class MoveEnemy : public IEnemy {
 public:
 	/// <summary>
 	/// 初期化
@@ -77,11 +77,11 @@ public:
 
 	Vector3 GetWorldPosition() const override;
 
-	Collider* GetCollider() { return collider_.get(); }
+	Collider* GetCollider()override { return collider_.get(); }
 
-	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const { return bullets_; }
+	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const override{ return bullets_; }
 
-	bool GetIsDead()const { return isDead_;}
+	bool GetIsDead()const override { return isDead_; }
 
 	bool GetIsSortie()const { return isSortie_; }
 
@@ -127,4 +127,3 @@ private:
 	uint32_t eventNum_ = 0; // イベント番号
 	Vector3 eventTrigger_{}; // イベントトリガー
 };
-

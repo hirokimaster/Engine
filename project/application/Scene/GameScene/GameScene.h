@@ -15,6 +15,7 @@
 #include "application/PostEffect/EffectState/PlayerDamageState.h"
 #include "application/GameState/GameStartState.h"
 #include "application/PostEffect/PostEffect.h"
+#include <application/GameObject/EnemyManager/EnemyManager.h>
 
 class GameScene : public IScene {
 public: // メンバ関数

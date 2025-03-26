@@ -5,7 +5,7 @@
 */
 
 #pragma once
-#include "application/GameObject/Enemy/PhaseState/BasePhaseState/BasePhaseStateEnemy.h"
+#include "application/GameObject/EnemyManager/Enemy/MoveEnemy/PhaseState/BasePhaseState/BasePhaseStateEnemy.h"
 #include "engine/Math/Mathfunction.h"
 
 class EnemyStateSortie : public BasePhaseStateEnemy {
@@ -17,7 +17,7 @@ public:
 	/// 更新処理
 	/// </summary>
 	/// <param name="pEnemy"></param>
-	void Update(Enemy* pEnemy)override;
+	void Update(MoveEnemy* pEnemy)override;
 
 private:
 	bool isSortie_ = false;	// 出撃してるか

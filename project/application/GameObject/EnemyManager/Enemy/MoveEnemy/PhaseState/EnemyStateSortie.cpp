@@ -5,14 +5,14 @@
 */
 
 #include "EnemyStateSortie.h"
-#include "application/GameObject/Enemy/Enemy.h"
+#include "application/GameObject/EnemyManager/Enemy/MoveEnemy/MoveEnemy.h"
 #include "application/GameObject/Player/Player.h"
 
 EnemyStateSortie::~EnemyStateSortie()
 {
 }
 
-void EnemyStateSortie::Update(Enemy* pEnemy)
+void EnemyStateSortie::Update(MoveEnemy* pEnemy)
 {
 	if (player_->GetWorldPosition().z >= pEnemy->GetEventTrigger().z) {
 		isSortie_ = true;

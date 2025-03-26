@@ -4,10 +4,10 @@
 * @author 仁平 琉乃
 */
 
-#include "Enemy.h"
 #include "application/GameObject/Player/Player.h"
+#include "MoveEnemy.h"
 
-void Enemy::Initialize()
+void MoveEnemy::Initialize()
 {
 	// object共通の初期化
 	BaseObject::Initialize("LevelEditorObj/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
@@ -28,7 +28,7 @@ void Enemy::Initialize()
 	velocity_ = { 0.0f,0.0f,1.0f };
 }
 
-void Enemy::Update()
+void MoveEnemy::Update()
 {
 	BaseObject::Update(); // object共通の更新処理
 	collider_->SetWorldPosition(GetWorldPosition());
@@ -52,7 +52,7 @@ void Enemy::Update()
 #endif
 }
 
-void Enemy::Draw(const Camera& camera)
+void MoveEnemy::Draw(const Camera& camera)
 {
 	// 出撃するまで出さない
 	if (isSortie_) {
@@ -65,7 +65,7 @@ void Enemy::Draw(const Camera& camera)
 
 }
 
-void Enemy::OnCollision()
+void MoveEnemy::OnCollision()
 {
 	if (collider_->OnCollision()) {
 		isDead_ = true;
@@ -74,7 +74,7 @@ void Enemy::OnCollision()
 	}
 }
 
-void Enemy::Fire()
+void MoveEnemy::Fire()
 {
 	// playerがいなかったらそもそも撃つ対象がいない
 	if (player_) {
@@ -94,7 +94,7 @@ void Enemy::Fire()
 	}
 }
 
-void Enemy::BulletUpdate()
+void MoveEnemy::BulletUpdate()
 {
 
 	// 弾更新
@@ -112,7 +112,7 @@ void Enemy::BulletUpdate()
 		});
 }
 
-void Enemy::AddAdjustmentVariables()
+void MoveEnemy::AddAdjustmentVariables()
 {
 	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
 	const char* groupName = "Enemy";
@@ -122,19 +122,19 @@ void Enemy::AddAdjustmentVariables()
 	variables->AddItem(groupName, "bulletSpeed", bulletSpeed_);
 }
 
-void Enemy::ApplyAdjustmentVariables()
+void MoveEnemy::ApplyAdjustmentVariables()
 {
 	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
 	const char* groupName = "Enemy";
 	bulletSpeed_ = variables->GetValue<float>(groupName, "bulletSpeed");
 }
 
-void Enemy::ChangeState(std::unique_ptr<BasePhaseStateEnemy> newState)
+void MoveEnemy::ChangeState(std::unique_ptr<BasePhaseStateEnemy> newState)
 {
 	phaseState_ = std::move(newState);
 }
 
-void Enemy::Move()
+void MoveEnemy::Move()
 {
 	// 移動
 	Vector3 move{};
@@ -142,7 +142,7 @@ void Enemy::Move()
 	object_->SetPosition(move);
 }
 
-Vector3 Enemy::GetWorldPosition() const
+Vector3 MoveEnemy::GetWorldPosition() const
 {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;

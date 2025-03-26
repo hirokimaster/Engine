@@ -7,7 +7,7 @@
 */
 
 #pragma once
-#include "application/GameObject/Enemy/PhaseState/BasePhaseState/BasePhaseStateEnemy.h"
+#include "application/GameObject/EnemyManager/Enemy/MoveEnemy/PhaseState/BasePhaseState/BasePhaseStateEnemy.h"
 #include <cstdint>
 
 class EnemyStateLeave : public BasePhaseStateEnemy {
@@ -19,7 +19,7 @@ public:
 	/// 更新
 	/// </summary>
 	/// <param name="pEnemy"></param>
-	void Update(Enemy* pEnemy)override;
+	void Update(MoveEnemy* pEnemy)override;
 
 
 private:

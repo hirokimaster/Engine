@@ -98,22 +98,22 @@
     <ClCompile Include="application\AdjustmentVariables\AdjustmentVariables.cpp">
       <Filter>application\AdjustmentVariables</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Enemy\Enemy.cpp">
+    <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\MoveEnemy.cpp">
       <Filter>application\GameObject\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Enemy\Bullet\EnemyBullet.cpp">
+    <ClCompile Include="application\GameObject\EnemyManager\Enemy\Bullet\EnemyBullet.cpp">
       <Filter>application\GameObject\Enemy\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Enemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.cpp">
+    <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.cpp">
       <Filter>application\GameObject\Enemy\PhaseState\BasePhaseState</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateFire.cpp">
+    <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\EnemyStateFire.cpp">
       <Filter>application\GameObject\Enemy\PhaseState</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateLeave.cpp">
+    <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\EnemyStateLeave.cpp">
       <Filter>application\GameObject\Enemy\PhaseState</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateSortie.cpp">
+    <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\EnemyStateSortie.cpp">
       <Filter>application\GameObject\Enemy\PhaseState</Filter>
     </ClCompile>
     <ClCompile Include="application\GameObject\LockOn\LockOn.cpp">
@@ -289,29 +289,31 @@
     <ClCompile Include="application\PostEffect\EffectState\DissolveState.cpp" />
     <ClCompile Include="application\SceneSprite\ClearSprite.cpp" />
     <ClCompile Include="application\GameObject\CameraManager\CameraManager.cpp" />
-    <ClCompile Include="application\GameObject\Enemy\FixedEnemy\FixedEnemy.cpp" />
+    <ClCompile Include="application\GameObject\EnemyManager\Enemy\FixedEnemy\FixedEnemy.cpp" />
     <ClCompile Include="engine\3d\Object3DPlacer\BaseObject.cpp" />
+    <ClCompile Include="application\GameObject\EnemyManager\EnemyManager.cpp" />
+    <ClCompile Include="engine\3d\ObjectManager\ObjectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
       <Filter>application\AdjustmentVariables</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameObject\Enemy\Enemy.h">
+    <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\MoveEnemy.h">
       <Filter>application\GameObject\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameObject\Enemy\Bullet\EnemyBullet.h">
+    <ClInclude Include="application\GameObject\EnemyManager\Enemy\Bullet\EnemyBullet.h">
       <Filter>application\GameObject\Enemy\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameObject\Enemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.h">
+    <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.h">
       <Filter>application\GameObject\Enemy\PhaseState\BasePhaseState</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateFire.h">
+    <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\EnemyStateFire.h">
       <Filter>application\GameObject\Enemy\PhaseState</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateLeave.h">
+    <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\EnemyStateLeave.h">
       <Filter>application\GameObject\Enemy\PhaseState</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateSortie.h">
+    <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\EnemyStateSortie.h">
       <Filter>application\GameObject\Enemy\PhaseState</Filter>
     </ClInclude>
     <ClInclude Include="application\GameObject\LockOn\LockOn.h">
@@ -520,9 +522,11 @@
     <ClInclude Include="application\PostEffect\EffectState\DissolveState.h" />
     <ClInclude Include="application\SceneSprite\ClearSprite.h" />
     <ClInclude Include="application\GameObject\CameraManager\CameraManager.h" />
-    <ClInclude Include="application\GameObject\Enemy\IEnemy.h" />
-    <ClInclude Include="application\GameObject\Enemy\FixedEnemy\FixedEnemy.h" />
+    <ClInclude Include="application\GameObject\EnemyManager\Enemy\IEnemy.h" />
+    <ClInclude Include="application\GameObject\EnemyManager\Enemy\FixedEnemy\FixedEnemy.h" />
     <ClInclude Include="engine\3d\Object3DPlacer\BaseObject.h" />
+    <ClInclude Include="application\GameObject\EnemyManager\EnemyManager.h" />
+    <ClInclude Include="engine\3d\ObjectManager\ObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

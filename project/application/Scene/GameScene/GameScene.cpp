@@ -56,8 +56,8 @@ void GameScene::Initialize()
 	loader_ = std::make_unique<Loader>();
 	loader_->SetPlayer(player_.get());
 	loader_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
-	loader_->Arrangement();
-
+	loader_->Record();
+	
 	// 天球
 	skydome_ = std::make_unique<Skydome>();
 	skydome_->Initialize();
@@ -119,7 +119,7 @@ void GameScene::PostProcessDraw()
 	player_->Draw(cameraManager_->GetCamera());
 
 	// lockOn_(レティクル)
-	lockOn_->Draw(cameraManager_->GetCamera());
+	lockOn_->Draw();
 
 	postEffect_->GetPostProcess()->PostDraw();
 }

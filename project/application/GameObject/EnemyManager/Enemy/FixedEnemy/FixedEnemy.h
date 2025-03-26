@@ -1,5 +1,5 @@
 #pragma once
-#include "application/GameObject/Enemy/IEnemy.h"
+#include "application/GameObject/EnemyManager/Enemy/IEnemy.h"
 
 class FixedEnemy : public IEnemy {
 public:
@@ -33,10 +33,13 @@ public:
 
 	Vector3 GetWorldPosition()const override;
 
+	bool GetIsDead()const override { return isDead_; }
+
 #pragma endregion
 
 private:
 
-
+	// デスフラグ
+	bool isDead_;
 
 };

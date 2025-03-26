@@ -6,6 +6,7 @@
 
 #include "Loader.h"
 #include "application/GameObject/Player/Player.h"
+#include <application/GameObject/EnemyManager/Enemy/MoveEnemy/MoveEnemy.h>
 
 LevelData* Loader::Load(const std::string& fileName)
 {
@@ -41,9 +42,6 @@ LevelData* Loader::Load(const std::string& fileName)
 
 	// レベルデータ格納用インスタンスを生成
 	LevelData* levelData = new LevelData();
-
-	// カメラの初期化
-	camera_.Initialize();
 
 	// "objects"の全オブジェクトを走査
 	for (nlohmann::json& object : deserialized["objects"]) {
@@ -135,7 +133,7 @@ LevelData* Loader::Load(const std::string& fileName)
 	return levelData;
 }
 
-void Loader::Arrangement()
+void Loader::Record()
 {
 	// 使うテクスチャ
 	TextureManager::Load("resources/TempTexture/noise0.png");
@@ -149,9 +147,8 @@ void Loader::Arrangement()
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData_->objects) {
 
-		// モデルを指定して3Dオブジェクトを生成
 		if (objectData.fileName == "enemy") {
-			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
+			std::unique_ptr<MoveEnemy> newEnemy = std::make_unique<MoveEnemy>();
 			newEnemy->Initialize();
 			newEnemy->SetPlayer(player_);
 			newEnemy->SetPosition(objectData.controlPoint[0]); // 初期位置は移動ルートの最初の制御点
@@ -160,14 +157,14 @@ void Loader::Arrangement()
 				newEnemy->SetMoveControlPoints(point);
 			}
 			enemys_.push_back(std::move(newEnemy));
-		}
+			}
 		else if (objectData.fileName == "laser") {
 			std::unique_ptr<Laser> newLaser = std::make_unique<Laser>();
 			newLaser->Initialize();
 			newLaser->SetPosition(objectData.translate);
 			newLaser->SetScale(objectData.scale);
 			lasers_.push_back(std::move(newLaser));
-		}
+			}
 		else if (objectData.fileName == "roads") {
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
@@ -178,7 +175,7 @@ void Loader::Arrangement()
 			newObject->SetScale(objectData.scale);
 			newObject->SetUVTransform(uvTransform_);
 			objects_.push_back(std::move(newObject));
-		}
+			}
 		else if (objectData.fileName == "grounds") {
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
@@ -188,7 +185,7 @@ void Loader::Arrangement()
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
 			objects_.push_back(std::move(newObject));
-		}
+			}
 		else if (objectData.fileName == "mounts2") {
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
@@ -198,7 +195,7 @@ void Loader::Arrangement()
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
 			objects_.push_back(std::move(newObject));
-		}
+			}
 		/*else if (objectData.fileName == "floor") {
 			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
 			newObject->Initialize();
@@ -218,18 +215,7 @@ void Loader::Arrangement()
 			newObject->SetRotate(objectData.rotate);
 			newObject->SetScale(objectData.scale);
 			objects_.push_back(std::move(newObject));
-		}
-		
-	}
-
-	for (auto& objectData : levelData_->objects) {
-		if (objectData.fileName == "eventTrigger") {
-			for (auto& enemy : enemys_) {
-				if (enemy->GetEventNum() == objectData.eventNum) {
-					enemy->SetEventTrigger(objectData.translate);
-				}
-			}
-		}
+		}	
 	}
 }
 
@@ -251,7 +237,7 @@ void Loader::Update()
 	}
 
 	// デスフラグが立ったら要素を削除
-	enemys_.remove_if([](std::unique_ptr<Enemy>& enemy) {
+	enemys_.remove_if([](std::unique_ptr<IEnemy>& enemy) {
 		if (enemy->GetIsDead()) {
 			return true;
 		}
@@ -273,9 +259,3 @@ void Loader::Draw(const Camera& camera)
 		laser->Draw(camera);
 	}
 }
-
-void Loader::UpdateCamera()
-{
-	camera_.UpdateMatrix();
-}
-

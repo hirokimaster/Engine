@@ -1,7 +1,7 @@
 #pragma once
 
 class Player;
-class Enemy;
+class MoveEnemy;
 
 class BasePhaseStateEnemy {
 public:
@@ -15,7 +15,7 @@ public:
 	/// 更新処理
 	/// </summary>
 	/// <param name="pEnemy"></param>
-	virtual void Update(Enemy* pEnemy) = 0;
+	virtual void Update(MoveEnemy* pEnemy) = 0;
 
 	/// <summary>
 	/// playerのポインタを設定する

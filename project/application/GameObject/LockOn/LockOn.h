@@ -5,7 +5,7 @@
 */
 
 #pragma once
-#include "application/GameObject/Enemy/Enemy.h"
+#include "application/GameObject/EnemyManager/Enemy/IEnemy.h"
 #include "engine/2d/Sprite/Sprite.h"
 #include <math.h>
 #include "engine/Math/Mathfunction.h"
@@ -24,12 +24,12 @@ public:
 	/// </summary>
 	/// <param name="enemies"></param>
 	/// <param name="camera"></param>
-	void Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera);
+	void Update(const std::list<std::unique_ptr<IEnemy>>& enemies, const Camera& camera);
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(const Camera& camera);
+	void Draw();
 
 	/// <summary>
 	/// レティクルの更新
@@ -45,12 +45,12 @@ private:
 	/// </summary>
 	/// <param name="enemies"></param>
 	/// <param name="camera"></param>
-	void Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera);
+	void Search(const std::list<std::unique_ptr<IEnemy>>& enemies, const Camera& camera);
 
 	/// <summary>
 	/// ロックオン解除
 	/// </summary>
-	bool UnLock(const Camera& camera, const Enemy* target);
+	bool UnLock(const Camera& camera, const IEnemy* target);
 
 	/// <summary>
 	/// reticleのposition計算
@@ -98,7 +98,7 @@ public:
 
 	const std::list<Vector2> GetPosition() { return positionScreen_; } // reticleのposition
 
-	std::list<const Enemy*> GetTarget() { return target_; } // targetのポインタ
+	std::list<const IEnemy*> GetTarget() { return target_; } // targetのポインタ
 
 	Vector3 GetWorldPosition3DReticle()const; // reticleのworld座標
 
@@ -116,7 +116,7 @@ public:
 
 private:
 
-	std::list<const Enemy*> target_;	// ロックオン対象
+	std::list<const IEnemy*> target_;	// ロックオン対象
 	float minDistance_ = 10.0f;
 	float maxDistance_ = 100.0f;
 	std::list<Vector2> positionScreen_{};
@@ -129,5 +129,4 @@ private:
 	bool startLockOnTimer_ = false;
 	std::unique_ptr<Sprite> spriteLockOnReticle_;
 	Vector2 reticlePosition_ = { 640.0f, 360.0f }; // reticleの範囲制限用のposition
-	std::unique_ptr<Object3DPlacer> debugReticle_ = nullptr;
 };

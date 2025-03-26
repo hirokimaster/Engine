@@ -1,5 +1,5 @@
 #include "EnemyStateLeave.h"
-#include "application/GameObject/Enemy/Enemy.h"
+#include "application/GameObject/EnemyManager/Enemy/MoveEnemy/MoveEnemy.h"
 #include "application/GameObject/Player/Player.h"
 #include <random>
 
@@ -7,7 +7,7 @@ EnemyStateLeave::~EnemyStateLeave()
 {
 }
 
-void EnemyStateLeave::Update(Enemy* pEnemy)
+void EnemyStateLeave::Update(MoveEnemy* pEnemy)
 {
 	// 移動ベクトル
 	const Vector3 velocity = {

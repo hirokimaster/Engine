@@ -1,5 +1,5 @@
 #include "EnemyStateFire.h"
-#include "application/GameObject/Enemy/Enemy.h"
+#include "application/GameObject/EnemyManager/Enemy/MoveEnemy/MoveEnemy.h"
 #include "application/GameObject/Player/Player.h"
 
 EnemyStateFire::~EnemyStateFire()
@@ -7,7 +7,7 @@ EnemyStateFire::~EnemyStateFire()
 
 }
 
-void EnemyStateFire::Update(Enemy* pEnemy)
+void EnemyStateFire::Update(MoveEnemy* pEnemy)
 {
 	// 発射タイマーをデクリメント
 	--fireTimer_;

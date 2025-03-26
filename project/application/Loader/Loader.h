@@ -14,7 +14,7 @@
 #include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "engine/3d/Model/ModelManager.h"
 #include <numbers>
-#include "application/GameObject/Enemy/Enemy.h"
+#include "application/GameObject/EnemyManager/Enemy/IEnemy.h"
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "application/GameObject/Gimmick/Laser.h"
 #include "engine/3d/Line/Line.h"
@@ -40,9 +40,9 @@ class Loader {
 public:
 
 	/// <summary>
-	/// ロードしたデータを基に配置
+	/// ロードしたデータを記録
 	/// </summary>
-	void Arrangement();
+	void Record();
 
 	/// <summary>
 	/// 更新
@@ -54,16 +54,9 @@ public:
 	/// </summary>
 	void Draw(const Camera& camera);
 
-	/// <summary>
-	/// カメラの更新
-	/// </summary>
-	void UpdateCamera();
-
 #pragma region getter
 
-	const Camera& GetCamera() { return camera_; }
-
-	const std::list<std::unique_ptr<Enemy>>& GetEnemys() const{ return enemys_; }
+	const std::list<std::unique_ptr<IEnemy>>& GetEnemys() const{ return enemys_; }
 
 	const std::list<std::unique_ptr<Laser>>& GetLasers() const { return lasers_; }
 
@@ -88,10 +81,10 @@ private:
 private:
 	std::map<std::string, std::unique_ptr<Model>>  models_;
 	std::vector<std::unique_ptr<Object3DPlacer>> objects_;
-	std::list<std::unique_ptr<Enemy>> enemys_;
+	std::list<std::unique_ptr<IEnemy>> enemys_;
 	std::list<std::unique_ptr<Laser>> lasers_;
+	std::map<std::string, std::vector<LevelData::ObjectData>> objectDatas_;
 	uint32_t texHandle_ = 0;
-	Camera camera_{};
 	Player* player_ = nullptr;
 	UVTransform uvTransform_{
 		{1.0f,2.5f,1.0f},

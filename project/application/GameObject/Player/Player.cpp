@@ -112,8 +112,8 @@ void Player::Attack()
 	Vector3 WorldPos = GetWorldPosition();
 	// ロックオンしているターゲットがいたら
 	if (!lockOn_->GetTarget().empty()) {
-		std::list<const Enemy*> targets = lockOn_->GetTarget(); // コピーしておく
-		for (std::list<const Enemy*>::iterator targetItr = targets.begin(); targetItr != targets.end(); ++targetItr) {
+		std::list<const IEnemy*> targets = lockOn_->GetTarget(); // コピーしておく
+		for (std::list<const IEnemy*>::iterator targetItr = targets.begin(); targetItr != targets.end(); ++targetItr) {
 			// ロックオン対象がいるかつ生きてたら対象に向かって弾を撃つ
 			if ((*targetItr) && !(*targetItr)->GetIsDead()) {
 				// レティクルのworld座標にターゲットのworld座標を入れる

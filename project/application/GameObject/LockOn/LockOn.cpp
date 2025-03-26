@@ -14,13 +14,10 @@ void LockOn::Initialize()
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
-	debugReticle_ = std::make_unique<Object3DPlacer>();
-	debugReticle_->Initialize();
-	debugReticle_->SetModel("Player/cube.obj");
-	debugReticle_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
+
 }
 
-void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
+void LockOn::Update(const std::list<std::unique_ptr<IEnemy>>& enemies, const Camera& camera)
 {
 	XINPUT_STATE joyState{};
 
@@ -75,11 +72,9 @@ void LockOn::Update(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 	// 範囲制限
 	ReticleRangeLimit();
-
-	debugReticle_->Update();
 }
 
-void LockOn::Draw(const Camera& camera)
+void LockOn::Draw()
 {
 
 	if (isLockOnMode_) {
@@ -92,8 +87,6 @@ void LockOn::Draw(const Camera& camera)
 	for (const auto& sprite : sprite_) {
 		sprite->Draw();
 	}
-
-	debugReticle_->Draw(camera);
 }
 
 void LockOn::Reticle(const Camera& camera)
@@ -101,7 +94,7 @@ void LockOn::Reticle(const Camera& camera)
 	Vector3 positionReticle = GetWorldPosition3DReticle();
 
 	positionReticle = TransformPositionScreen(positionReticle, camera);
-	
+
 	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
 }
 
@@ -156,40 +149,40 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 	playerPosition;
 }
 
-void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Camera& camera)
+void LockOn::Search(const std::list<std::unique_ptr<IEnemy>>& enemies, const Camera& camera)
 {
 	// ロックオン目標
-	std::list<const Enemy*> targets;
+	std::list<const IEnemy*> targets;
 
-	for (const std::unique_ptr<Enemy>& enemy : enemies) {
-		if (enemy->GetIsSortie()) {
-			if (isLockOnMode_) {
+	for (const std::unique_ptr<IEnemy>& enemy : enemies) {
 
-				// screen座標
-				Vector3 positionWorld = enemy->GetWorldPosition();
-				Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
+		if (isLockOnMode_) {
 
-				// すでにロックオンされているかチェック
-				bool alreadyLockedOn = std::find(target_.begin(), target_.end(), enemy.get()) != target_.end();
+			// screen座標
+			Vector3 positionWorld = enemy->GetWorldPosition();
+			Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
-				// 新たにロックオンするか、すでにロックオンされている場合は対象として残す
-				if (alreadyLockedOn || CheckReticleRange(positionScreen)) {
-					targets.push_back(enemy.get());
-				}
+			// すでにロックオンされているかチェック
+			bool alreadyLockedOn = std::find(target_.begin(), target_.end(), enemy.get()) != target_.end();
 
+			// 新たにロックオンするか、すでにロックオンされている場合は対象として残す
+			if (alreadyLockedOn || CheckReticleRange(positionScreen)) {
+				targets.push_back(enemy.get());
 			}
-			else {
 
-				// screen座標
-				Vector3 positionWorld = enemy->GetWorldPosition();
-				Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
-
-				if (CheckReticleRange(positionScreen)) {
-					targets.push_back(enemy.get());
-				}
-
-			}
 		}
+		else {
+
+			// screen座標
+			Vector3 positionWorld = enemy->GetWorldPosition();
+			Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
+
+			if (CheckReticleRange(positionScreen)) {
+				targets.push_back(enemy.get());
+			}
+
+		}
+
 	}
 
 	// ロックオン対象をリセット
@@ -197,13 +190,13 @@ void LockOn::Search(const std::list<std::unique_ptr<Enemy>>& enemies, const Came
 
 	if (!targets.empty()) {
 		// ロックオン対象を設定
-		for (const Enemy* target : targets) {
+		for (const IEnemy* target : targets) {
 			target_.push_back(target);
 		}
 	}
 }
 
-bool LockOn::UnLock(const Camera& camera, const Enemy* target)
+bool LockOn::UnLock(const Camera& camera, const IEnemy* target)
 {
 	Vector3 positionWorld = target->GetWorldPosition();
 	Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
@@ -222,7 +215,7 @@ void LockOn::ReticlePositionCalc(const Camera& camera)
 	positionScreen_.clear();
 	sprite_.clear();
 
-	for (const Enemy* target : target_) {
+	for (const IEnemy* target : target_) {
 		// ロックオン状態なら
 		if (target && !target->GetIsDead()) {
 			// 敵のロックオン座標
