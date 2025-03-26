@@ -9,21 +9,15 @@
 
 void Player::Initialize()
 {
-	object_ = std::make_unique<Object3DPlacer>();
-	object_->Initialize();
-	object_->SetModel("Player/player.obj");
+	// object共通の初期化
+	BaseObject::Initialize("Player/player.obj", "TempTexture/white.png", ColliderType::Sphere);
 	object_->SetPosition({ 0,60.0f,0 });
-	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
-
-	// collider
-	collider_ = std::make_unique<Collider>();
+	// 属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
-	collider_->SetType(ColliderType::Sphere); // どの形状でとるか
 
 	// 調整項目
 	AddAdjustmentVariables();
-
 
 	// 死亡フラグ
 	isDead_ = false;
@@ -65,8 +59,8 @@ void Player::Update()
 	}
 
 	UpdateBullet(); // 弾の更新
-	object_->Update();
-	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
+	BaseObject::Update(); // object共通の更新処理
+	collider_->SetWorldPosition(GetWorldPosition());
 	OnCollision(); // 当たったら
 	// ダメージ
 	IncurDamage();
@@ -84,7 +78,7 @@ void Player::Update()
 
 void Player::Draw(const Camera& camera)
 {
-	object_->Draw(camera);
+	BaseObject::Draw(camera);
 
 	// 弾の描画
 	for (const auto& bullet : bullets_) {
@@ -257,6 +251,19 @@ void Player::DebugDraw()
 #endif
 }
 
+Vector3 Player::GetWorldPosition() const
+{
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+	// ワールド行列の平行移動成分を取得（ワールド座標）
+	worldPos.x = object_->GetWorldTransform().matWorld.m[3][0];
+	worldPos.y = object_->GetWorldTransform().matWorld.m[3][1];
+	worldPos.z = object_->GetWorldTransform().matWorld.m[3][2];
+
+	return worldPos;
+}
+
+
 void Player::AddAdjustmentVariables()
 {
 	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
@@ -287,16 +294,4 @@ void Player::ApplyAdjustmentVariables()
 	moveMaxLimit_ = variables->GetValue<Vector3>(groupName, "moveMaxLimit");
 	rotateSpeed_ = variables->GetValue<float>(groupName, "rotateSpeed");
 	rotateLerpFactor_ = variables->GetValue<float>(groupName, "rotateLerpFactor");
-}
-
-Vector3 Player::GetWorldPosition() const
-{
-	// ワールド座標を入れる変数
-	Vector3 worldPos;
-	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = object_->GetWorldTransform().matWorld.m[3][0];
-	worldPos.y = object_->GetWorldTransform().matWorld.m[3][1];
-	worldPos.z = object_->GetWorldTransform().matWorld.m[3][2];
-
-	return worldPos;
 }

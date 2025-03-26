@@ -115,6 +115,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\GameObject\CameraManager\CameraManager.cpp" />
     <ClCompile Include="application\GameObject\Enemy\Bullet\EnemyBullet.cpp" />
     <ClCompile Include="application\GameObject\Enemy\Enemy.cpp" />
+    <ClCompile Include="application\GameObject\Enemy\FixedEnemy\FixedEnemy.cpp" />
     <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateFire.cpp" />
     <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateLeave.cpp" />
     <ClCompile Include="application\GameObject\Enemy\PhaseState\EnemyStateSortie.cpp" />
@@ -141,6 +142,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\Loader\Loader.cpp" />
     <ClCompile Include="application\PostEffect\EffectState\PlayerDamageState.cpp" />
     <ClCompile Include="engine\3d\Line\Line.cpp" />
+    <ClCompile Include="engine\3d\Object3DPlacer\BaseObject.cpp" />
     <ClCompile Include="engine\Graphics\Pipeline\ComputePipeline.cpp" />
     <ClCompile Include="engine\3d\Model\Animation\ModelAnimation.cpp" />
     <ClCompile Include="Engine\Audio\Audio.cpp" />
@@ -190,6 +192,8 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\GameObject\CameraManager\CameraManager.h" />
     <ClInclude Include="application\GameObject\Enemy\Bullet\EnemyBullet.h" />
     <ClInclude Include="application\GameObject\Enemy\Enemy.h" />
+    <ClInclude Include="application\GameObject\Enemy\FixedEnemy\FixedEnemy.h" />
+    <ClInclude Include="application\GameObject\Enemy\IEnemy.h" />
     <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateLeave.h" />
     <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateSortie.h" />
     <ClInclude Include="application\GameObject\Enemy\PhaseState\EnemyStateFire.h" />
@@ -218,6 +222,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\Loader\Loader.h" />
     <ClInclude Include="application\PostEffect\EffectState\PlayerDamageState.h" />
     <ClInclude Include="engine\3d\Line\Line.h" />
+    <ClInclude Include="engine\3d\Object3DPlacer\BaseObject.h" />
     <ClInclude Include="engine\Graphics\Pipeline\ComputePipeline.h" />
     <ClInclude Include="engine\3d\Model\Animation\Animation.h" />
     <ClInclude Include="engine\3d\Model\Animation\ModelAnimation.h" />

@@ -18,6 +18,7 @@ void GameManager::Update() {
 
 	if (nextScene_) {
 
+		transition_ = nullptr;
 		scene_ = std::move(nextScene_);
 		nextScene_ = nullptr;
 

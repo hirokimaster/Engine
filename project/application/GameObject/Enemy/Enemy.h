@@ -11,18 +11,16 @@
 #include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/Enemy/PhaseState/EnemyStateSortie.h"
 #include "application/GameObject/Enemy/PhaseState/EnemyStateFire.h"
+#include "application/GameObject/Enemy/IEnemy.h"
 
 class Player;
 
-class Enemy{
+class Enemy : public IEnemy{
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="object"></param>
-	/// <param name="texHandle"></param>
-	/// <param name="model"></param>
-	void Initialize(uint32_t texHandle);
+	void Initialize();
 
 	/// <summary>
 	/// 更新
@@ -49,7 +47,7 @@ public:
 	/// <summary>
 	/// 攻撃
 	/// </summary>
-	void Fire();
+	void Fire()override;
 
 private:
 
@@ -77,15 +75,15 @@ public:
 
 #pragma region getter
 
-	Vector3 GetWorldPosition() const;
+	Vector3 GetWorldPosition() const override;
+
+	Collider* GetCollider() { return collider_.get(); }
 
 	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const { return bullets_; }
 
 	bool GetIsDead()const { return isDead_;}
 
 	bool GetIsSortie()const { return isSortie_; }
-
-	Collider* GetCollider() { return collider_.get(); }
 
 	const std::vector<Vector3>& GetMoveControlPoints_() const { return moveControlPoints_; }
 
@@ -118,7 +116,6 @@ public:
 private:
 	bool isDead_ = false; // デスフラグ
 	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
-	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	static const int32_t kLifeTime_ = 60 * 50; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	Player* player_ = nullptr; // playerのポインタ
@@ -127,7 +124,6 @@ private:
 	std::vector<Vector3> moveControlPoints_{}; // 移動ルートの制御点を入れとくコンテナ
 	bool isSortie_ = false; // 出撃してるか
 	float bulletSpeed_ = 0.0f; // 弾のスピード
-	std::unique_ptr<Collider> collider_ = nullptr; // collider
 	uint32_t eventNum_ = 0; // イベント番号
 	Vector3 eventTrigger_{}; // イベントトリガー
 };

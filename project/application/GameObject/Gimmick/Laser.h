@@ -1,9 +1,9 @@
 #pragma once
-#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
+#include "engine/3d/Object3DPlacer/BaseObject.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/Graphics/TextureManager/TextureManager.h"
 
-class Laser{
+class Laser : public BaseObject{
 public:
 	/// <summary>
 	/// 初期化
@@ -23,11 +23,9 @@ public:
 
 #pragma region getter
 
-	Vector3 GetWorldPosition() const;
-
-	const Vector3& GetScale() const{ return object_->GetWorldTransform().scale; }
-
 	bool GetIsHit()const { return isHit_; }
+
+	Vector3 GetWorldPosition()const;
 
 	Collider* GetCollider() { return collider_.get(); }
 
@@ -47,6 +45,4 @@ private:
 
 private:
 	bool isHit_ = false;
-	std::unique_ptr<Collider> collider_ = nullptr;
-	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 };

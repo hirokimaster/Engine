@@ -80,10 +80,10 @@ private:
 
 private:
 
-	std::unique_ptr<IScene> scene_ = nullptr; // 今のシーン
-	std::unique_ptr<IScene> nextScene_ = nullptr; // 次のシーン
-	std::unique_ptr<AbstractSceneFactory> sceneFactory_ = nullptr;
+	std::unique_ptr<IScene> scene_; // 今のシーン
+	std::unique_ptr<IScene> nextScene_; // 次のシーン
+	std::unique_ptr<AbstractSceneFactory> sceneFactory_;
 	PostProcess* postProcess_ = nullptr;
-	ISceneTransition* transition_ = nullptr; // シーン遷移
+    ISceneTransition* transition_; // シーン遷移
 
 };

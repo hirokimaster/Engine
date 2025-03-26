@@ -2,30 +2,35 @@
 
 void Laser::Initialize()
 {
-	object_ = std::make_unique<Object3DPlacer>();
-	object_->Initialize();
-	object_->SetModel("Player/cube.obj");
-	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
+	// object共通の初期化
+	BaseObject::Initialize("Player/cube.obj", "TempTexture/white.png", ColliderType::AABB);
 	object_->SetColor({ 10.0f,10.0f,10.0f,10.0f });
 	
-	// collider設定
-	collider_ = std::make_unique<Collider>();
+	// colliderの属性
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
-	collider_->SetType(ColliderType::AABB); // 形状
 }
 
 void Laser::Update()
 {
-	object_->Update();
+	BaseObject::Update(); // object共通の更新処理
 	collider_->SetWorldPosition(GetWorldPosition());
-	collider_->SetScale(GetScale());
+	collider_->SetScale(object_->GetWorldTransform().scale);
 	OnCollision(); // 当たったら
 }
 
 void Laser::Draw(const Camera& camera)
 {
-	object_->Draw(camera);
+	BaseObject::Draw(camera);
+}
+
+void Laser::OnCollision()
+{
+	if (collider_->OnCollision()) {
+		// 当たった
+		isHit_ = true;
+	}
+	
 }
 
 Vector3 Laser::GetWorldPosition() const
@@ -40,11 +45,3 @@ Vector3 Laser::GetWorldPosition() const
 	return worldPos;
 }
 
-void Laser::OnCollision()
-{
-	if (collider_->OnCollision()) {
-		// 当たった
-		isHit_ = true;
-	}
-	
-}

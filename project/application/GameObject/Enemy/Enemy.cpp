@@ -7,12 +7,10 @@
 #include "Enemy.h"
 #include "application/GameObject/Player/Player.h"
 
-void Enemy::Initialize(uint32_t texHandle)
+void Enemy::Initialize()
 {
-	object_ = std::make_unique<Object3DPlacer>();
-	object_->Initialize();
-	object_->SetModel("LevelEditorObj/enemy.obj");
-	object_->SetTexHandle(texHandle);
+	// object共通の初期化
+	BaseObject::Initialize("LevelEditorObj/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 	
 	// 調整項目追加
@@ -24,17 +22,15 @@ void Enemy::Initialize(uint32_t texHandle)
 	phaseState_ = std::make_unique<EnemyStateSortie>();
 
 	// 当たり判定の属性設定
-	collider_ = std::make_unique<Collider>();
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);
 	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
-	collider_->SetType(ColliderType::Sphere); // 形状
-
+	
 	velocity_ = { 0.0f,0.0f,1.0f };
 }
 
 void Enemy::Update()
 {
-	object_->Update();
+	BaseObject::Update(); // object共通の更新処理
 	collider_->SetWorldPosition(GetWorldPosition());
 	phaseState_->SetPlayer(player_);
 	phaseState_->Update(this); // 状態ごとの更新処理
@@ -60,7 +56,7 @@ void Enemy::Draw(const Camera& camera)
 {
 	// 出撃するまで出さない
 	if (isSortie_) {
-		object_->Draw(camera);
+		BaseObject::Draw(camera);
 	}
 
 	for (const auto& bullet : bullets_) {

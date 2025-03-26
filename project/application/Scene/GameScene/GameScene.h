@@ -61,16 +61,16 @@ private:
 	void LoadTextureFile();
 
 private:
-	std::unique_ptr<Player> player_ = nullptr; // player
-	std::unique_ptr<CollisionManager> collisionManager_ = nullptr; // 衝突判定まとめ
-	std::unique_ptr<LockOn> lockOn_ = nullptr; // ロックオン
-	std::unique_ptr<Loader> loader_ = nullptr;
+	std::unique_ptr<Player> player_; // player
+	std::unique_ptr<CollisionManager> collisionManager_; // 衝突判定まとめ
+	std::unique_ptr<LockOn> lockOn_; // ロックオン
+	std::unique_ptr<Loader> loader_;
 	CameraManager* cameraManager_ = nullptr; // カメラマネージャ
-	std::unique_ptr<GameSprite> gameSprite_ = nullptr; // ゲームシーンのスプライト
-	std::unique_ptr<ISceneTransition> transition_ = nullptr; // 遷移
+	std::unique_ptr<GameSprite> gameSprite_; // ゲームシーンのスプライト
+	std::unique_ptr<ISceneTransition> transition_; // 遷移
 	bool isTransitionClear_ = false; // クリアに行くかどうか
 	bool isGameStart_ = false; // ゲームが開始しているか
-	std::unique_ptr<PostEffect> postEffect_ = nullptr; // postEffect
-	std::unique_ptr<Skydome> skydome_ = nullptr; // 天球
-	std::unique_ptr<IGameState> gameState_ = nullptr; // ゲームのスタート演出とか
+	std::unique_ptr<PostEffect> postEffect_; // postEffect
+	std::unique_ptr<Skydome> skydome_; // 天球
+	std::unique_ptr<IGameState> gameState_; // ゲームのスタート演出とか
 };

@@ -289,6 +289,8 @@
     <ClCompile Include="application\PostEffect\EffectState\DissolveState.cpp" />
     <ClCompile Include="application\SceneSprite\ClearSprite.cpp" />
     <ClCompile Include="application\GameObject\CameraManager\CameraManager.cpp" />
+    <ClCompile Include="application\GameObject\Enemy\FixedEnemy\FixedEnemy.cpp" />
+    <ClCompile Include="engine\3d\Object3DPlacer\BaseObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -518,6 +520,9 @@
     <ClInclude Include="application\PostEffect\EffectState\DissolveState.h" />
     <ClInclude Include="application\SceneSprite\ClearSprite.h" />
     <ClInclude Include="application\GameObject\CameraManager\CameraManager.h" />
+    <ClInclude Include="application\GameObject\Enemy\IEnemy.h" />
+    <ClInclude Include="application\GameObject\Enemy\FixedEnemy\FixedEnemy.h" />
+    <ClInclude Include="engine\3d\Object3DPlacer\BaseObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

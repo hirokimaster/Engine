@@ -10,12 +10,12 @@
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/2d/Sprite/Sprite.h"
 #include <vector>
-#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "application/AdjustmentVariables/AdjustmentVariables.h"
+#include "engine/3d/Object3DPlacer/BaseObject.h"
 
 class LockOn;
 
-class Player
+class Player : BaseObject
 {
 public:
 	/// <summary>
@@ -98,27 +98,23 @@ public:
 
 	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() const { return bullets_; }
 
-	Vector3 GetWorldPosition()const;
-
-	Vector2 GetScreenPosition2DReticle() { return screenPositionReticle_; }
+	Vector2 GetScreenPosition2DReticle()const { return screenPositionReticle_; }
 
 	Vector3 GetRotate()const { return object_->GetWorldTransform().rotate; }
 
-	bool GetIsHitEnemyFire() { return isHitEnemyFire_; }
+	bool GetIsHitEnemyFire()const { return isHitEnemyFire_; }
 
-	bool GetIsDead() { return isDead_; }
+	bool GetIsDead()const { return isDead_; }
 
-	uint32_t GetHp() { return hp_; }
+	uint32_t GetHp()const { return hp_; }
 
-	float GetDeadTimer() { return deadTimer_; }
+	float GetDeadTimer()const { return deadTimer_; }
 
-	uint32_t GetDestroyCount() { return destroyCount_; }
+	uint32_t GetDestroyCount()const{ return destroyCount_; }
 
-	/// <summary>
-	/// ワールドトランスフォームを取得
-	/// </summary>
-	/// <returns></returns>
-	const WorldTransform& GetWorldTransform() { return object_->GetWorldTransform(); }
+	const WorldTransform& GetWorldTransform()const { return object_->GetWorldTransform(); }
+
+	Vector3 GetWorldPosition()const;
 
 	Collider* GetCollider() { return collider_.get(); }
 
@@ -132,30 +128,26 @@ public:
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
-	//void SetPositionZ(float positionZ) { object_->SetPosition({ 0,0,positionZ }); }
-
 	void SetHp(uint32_t hp) { hp_ = hp; }
 
 #pragma endregion
 
 private:
 	float moveSpeed_; // 移動スピード
-	float bulletSpeed_;
+	float bulletSpeed_; // 弾のスピード
 	std::list<std::unique_ptr<PlayerBullet>> bullets_; // 弾のリスト
 	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
 	Vector2 screenPositionReticle_{};
-	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	bool isDead_ = false; // 死んだか
 	bool isHitEnemyFire_ = false; // 敵の攻撃が当たったか
-	int32_t hp_ = 1;
-	float deadTimer_ = 60.0f;
+	int32_t hp_ = 1; // ヒットポイント
+	float deadTimer_ = 60.0f; // 死んだときのタイマー
 	uint32_t destroyCount_ = 0; // 敵を倒した数
 	Vector3 moveMinLimit_ = { -30.0f, 10.0f, 0.0f }; // 移動最小値
 	Vector3 moveMaxLimit_ = { 30.0f, 50.0f, 0.0f };    // 移動最大値
-	std::unique_ptr<Collider> collider_ = nullptr;
 	// UI
-	std::unique_ptr<Sprite> spriteAttack_ = nullptr;
-	std::unique_ptr<Sprite> spriteMove_ = nullptr;
+	std::unique_ptr<Sprite> spriteAttack_;
+	std::unique_ptr<Sprite> spriteMove_;
 	float attackTimer_ = 0.0f; // 弾の連射速度用のタイマー
 	Vector3 rotate_{}; // 回転の初期値
 	float rotateSpeed_; // 回転速度

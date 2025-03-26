@@ -11,6 +11,7 @@
 #include "ColliderConfig.h"
 
 enum class ColliderType {
+	None,
 	Sphere,
 	AABB,
 	OBB

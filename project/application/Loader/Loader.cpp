@@ -152,7 +152,7 @@ void Loader::Arrangement()
 		// モデルを指定して3Dオブジェクトを生成
 		if (objectData.fileName == "enemy") {
 			std::unique_ptr<Enemy> newEnemy = std::make_unique<Enemy>();
-			newEnemy->Initialize(TextureManager::GetTexHandle("TempTexture/noise0.png"));
+			newEnemy->Initialize();
 			newEnemy->SetPlayer(player_);
 			newEnemy->SetPosition(objectData.controlPoint[0]); // 初期位置は移動ルートの最初の制御点
 			newEnemy->SetEventNum(objectData.eventNum);
