@@ -6,38 +6,35 @@
 
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
-#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
+#include "application/GameObject/Bullet/IBullet.h"
 #include <random>
 
 class Player;
 
-class EnemyBullet{
+class EnemyBullet : public IBullet{
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="object"></param>
-	/// <param name="texHandle"></param>
-	/// <param name="model"></param>
-	void Initialize(uint32_t texHandle);
+	void Initialize()override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update()override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
-	void Draw(const Camera& camera);
+	void Draw(const Camera& camera)override;
 
 private:
 
 	/// <summary>
 	/// 移動
 	/// </summary>
-	void Move();
+	void Move()override;
 
 	/// <summary>
 	/// 弾の削除
@@ -53,13 +50,13 @@ public:
 
 #pragma region getter
 
-	Vector3 GetWorldPosition()const;
+	Vector3 GetWorldPosition()const override;
 
 	Vector3 GetScale() const{ return object_->GetWorldTransform().scale; }
 
-	bool GetIsDead() { return isDead_; }
+	bool GetIsDead()const override { return isDead_; }
 
-	Collider* GetCollider() { return collider_.get(); }
+	Collider* GetCollider()override { return collider_.get(); }
 
 #pragma endregion
 
@@ -75,6 +72,4 @@ private:
 	bool isDead_ = false; // bulletのデスフラグ
 	static const int32_t kLifeTime_ = 60 * 5; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
-	std::unique_ptr<Object3DPlacer> object_ = nullptr;
-	std::unique_ptr<Collider> collider_ = nullptr;
 };

@@ -19,6 +19,22 @@ public:
 	/// <param name="camera"></param>
 	void Draw(const Camera& camera);
 
+#pragma region getter
+
+	Vector3 GetWorldPosition()const override;
+
+	bool GetIsDead()const override { return isDead_; }
+
+#pragma endregion
+
+#pragma region setter
+
+	void SetPlayer(Player* player) { player_ = player; }
+
+#pragma endregion
+
+private:
+
 	/// <summary>
 	/// 攻撃
 	/// </summary>
@@ -29,17 +45,14 @@ public:
 	/// </summary>
 	void OnCollision();
 
-#pragma region getter
-
-	Vector3 GetWorldPosition()const override;
-
-	bool GetIsDead()const override { return isDead_; }
-
-#pragma endregion
-
 private:
 
 	// デスフラグ
 	bool isDead_;
-
+	// playerのポインタ
+	Player* player_ = nullptr;
+	// 弾のリスト
+	std::list<std::unique_ptr<EnemyBullet>> bullets_;
+	// 弾のスピード
+	float bulletSpeed_ = 0.0f;
 };

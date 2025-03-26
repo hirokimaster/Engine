@@ -114,7 +114,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\GameManager\GameManager.cpp" />
     <ClCompile Include="application\GameObject\CameraManager\CameraManager.cpp" />
     <ClCompile Include="application\GameObject\EnemyManager\EnemyManager.cpp" />
-    <ClCompile Include="application\GameObject\EnemyManager\Enemy\Bullet\EnemyBullet.cpp" />
+    <ClCompile Include="application\GameObject\Bullet\EnemyBullet\EnemyBullet.cpp" />
     <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\MoveEnemy.cpp" />
     <ClCompile Include="application\GameObject\EnemyManager\Enemy\FixedEnemy\FixedEnemy.cpp" />
     <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\EnemyStateFire.cpp" />
@@ -125,7 +125,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\GameObject\Gimmick\Laser.cpp" />
     <ClCompile Include="application\GameObject\LockOn\LockOn.cpp" />
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp" />
-    <ClCompile Include="application\GameObject\Player\Bullet\PlayerBullet.cpp" />
+    <ClCompile Include="application\GameObject\Bullet\PlayerBullet\PlayerBullet.cpp" />
     <ClCompile Include="application\GameObject\Player\Player.cpp" />
     <ClCompile Include="application\GameState\GameStartState.cpp" />
     <ClCompile Include="application\PostEffect\EffectState\DissolveState.cpp" />
@@ -191,9 +191,10 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h" />
     <ClInclude Include="application\GameManager\GameManager.h" />
+    <ClInclude Include="application\GameObject\Bullet\IBullet.h" />
     <ClInclude Include="application\GameObject\CameraManager\CameraManager.h" />
     <ClInclude Include="application\GameObject\EnemyManager\EnemyManager.h" />
-    <ClInclude Include="application\GameObject\EnemyManager\Enemy\Bullet\EnemyBullet.h" />
+    <ClInclude Include="application\GameObject\Bullet\EnemyBullet\EnemyBullet.h" />
     <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\MoveEnemy.h" />
     <ClInclude Include="application\GameObject\EnemyManager\Enemy\FixedEnemy\FixedEnemy.h" />
     <ClInclude Include="application\GameObject\EnemyManager\Enemy\IEnemy.h" />
@@ -205,7 +206,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\GameObject\Gimmick\Laser.h" />
     <ClInclude Include="application\GameObject\LockOn\LockOn.h" />
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
-    <ClInclude Include="application\GameObject\Player\Bullet\PlayerBullet.h" />
+    <ClInclude Include="application\GameObject\Bullet\PlayerBullet\PlayerBullet.h" />
     <ClInclude Include="application\GameObject\Player\Player.h" />
     <ClInclude Include="application\GameState\IGameState.h" />
     <ClInclude Include="application\GameState\GameStartState.h" />

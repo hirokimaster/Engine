@@ -4,6 +4,6 @@
 void NoneEffectState::Apply(PostProcess* pPostProcess, PostEffect* pPostEffect)
 {
 	// 何も適用しない
-	pPostProcess->SetEffect(PostEffectType::Bloom);
+	pPostProcess->SetEffect(PostEffectType::None);
 	pPostEffect;
 }

@@ -1,20 +1,34 @@
 #pragma once
-#include "engine/Graphics/Camera/Camera.h"
 #include "engine/3d/Object3DPlacer/BaseObject.h"
-#include "application/GameObject/Bullet/EnemyBullet/EnemyBullet.h"
 
-class IEnemy : public BaseObject{
+class IBullet : public BaseObject {
 public:
-
 	/// <summary>
 	/// 仮想デストラクタ
 	/// </summary>
-	virtual ~IEnemy() = default;
-	
+	virtual ~IBullet() = default;
+
 	/// <summary>
-	/// 攻撃
+	/// 初期化
 	/// </summary>
-	virtual void Fire() = 0;
+	virtual void Initialize() = 0;
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	virtual void Update() = 0;
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	virtual void Draw() = 0;
+
+	/// <summary>
+	/// 移動
+	/// </summary>
+	virtual void Move() = 0;
+
+#pragma region getter
 
 	/// <summary>
 	/// worldPosition取得
@@ -34,10 +48,5 @@ public:
 	/// <returns></returns>
 	virtual Collider* GetCollider() = 0;
 
-	/// <summary>
-	/// 弾のポインタ
-	/// </summary>
-	/// <returns></returns>
-	virtual const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const = 0;
-
+#pragma endregion
 };

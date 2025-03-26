@@ -101,7 +101,7 @@
     <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\MoveEnemy.cpp">
       <Filter>application\GameObject\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\EnemyManager\Enemy\Bullet\EnemyBullet.cpp">
+    <ClCompile Include="application\GameObject\Bullet\EnemyBullet\EnemyBullet.cpp">
       <Filter>application\GameObject\Enemy\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.cpp">
@@ -125,7 +125,7 @@
     <ClCompile Include="application\GameObject\Player\Player.cpp">
       <Filter>application\GameObject\Player</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Player\Bullet\PlayerBullet.cpp">
+    <ClCompile Include="application\GameObject\Bullet\PlayerBullet\PlayerBullet.cpp">
       <Filter>application\GameObject\Player\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="engine\3d\Model\Model.cpp">
@@ -301,7 +301,7 @@
     <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\MoveEnemy.h">
       <Filter>application\GameObject\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameObject\EnemyManager\Enemy\Bullet\EnemyBullet.h">
+    <ClInclude Include="application\GameObject\Bullet\EnemyBullet\EnemyBullet.h">
       <Filter>application\GameObject\Enemy\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.h">
@@ -325,7 +325,7 @@
     <ClInclude Include="application\GameObject\Player\Player.h">
       <Filter>application\GameObject\Player</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameObject\Player\Bullet\PlayerBullet.h">
+    <ClInclude Include="application\GameObject\Bullet\PlayerBullet\PlayerBullet.h">
       <Filter>application\GameObject\Player\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="engine\3d\Model\Animation\Animation.h">
@@ -527,6 +527,7 @@
     <ClInclude Include="engine\3d\Object3DPlacer\BaseObject.h" />
     <ClInclude Include="application\GameObject\EnemyManager\EnemyManager.h" />
     <ClInclude Include="engine\3d\ObjectManager\ObjectManager.h" />
+    <ClInclude Include="application\GameObject\Bullet\IBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

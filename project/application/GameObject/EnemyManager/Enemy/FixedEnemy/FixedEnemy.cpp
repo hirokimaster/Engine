@@ -1,4 +1,5 @@
 #include "FixedEnemy.h"
+#include "application/GameObject/Player/Player.h"
 
 void FixedEnemy::Initialize()
 {
@@ -23,7 +24,22 @@ void FixedEnemy::Draw(const Camera& camera)
 
 void FixedEnemy::Fire()
 {
-	// ここに攻撃書く
+	// playerがいなかったらそもそも撃つ対象がいない
+	if (player_) {
+		Vector3 playerWorldPos = player_->GetWorldPosition(); // 自キャラのワールド座標を取得
+		Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
+		Vector3 diff = Subtract(playerWorldPos, enemyWorldPos); // 差分ベクトルを求める
+		Normalize(diff); // 正規化
+		Vector3 velocity = Multiply(bulletSpeed_, diff); // ベクトルの速度
+
+		// 弾を生成して初期化
+		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+		bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
+		bullet->SetPosition(GetWorldPosition());
+		bullet->SetVelocity(velocity);
+		// 弾をセット
+		bullets_.push_back(std::move(bullet));
+	}
 }
 
 void FixedEnemy::OnCollision()

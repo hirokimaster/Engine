@@ -310,33 +310,11 @@
         },
         {
             "type": "MESH",
-            "name": "レーザー",
-            "transform": {
-                "translation": [
-                    0.0,
-                    2400.0,
-                    60.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    85.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "laser"
-        },
-        {
-            "type": "MESH",
             "name": "レーザー.001",
             "transform": {
                 "translation": [
                     -30.0,
-                    2500.0,
+                    2800.0,
                     45.0
                 ],
                 "rotation": [
@@ -358,7 +336,7 @@
             "transform": {
                 "translation": [
                     -10.0,
-                    2700.0,
+                    3200.0,
                     45.0
                 ],
                 "rotation": [
@@ -380,7 +358,7 @@
             "transform": {
                 "translation": [
                     10.0,
-                    2700.0,
+                    3200.0,
                     45.0
                 ],
                 "rotation": [
@@ -395,6 +373,160 @@
                 ]
             },
             "file_name": "laser"
+        },
+        {
+            "type": "MESH",
+            "name": "レーザー.004",
+            "transform": {
+                "translation": [
+                    -43.49385452270508,
+                    3600.0,
+                    45.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    45.0
+                ]
+            },
+            "file_name": "laser"
+        },
+        {
+            "type": "MESH",
+            "name": "レーザー.006",
+            "transform": {
+                "translation": [
+                    0.0,
+                    2400.0,
+                    60.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    85.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "laser"
+        },
+        {
+            "type": "MESH",
+            "name": "レーザー.007",
+            "transform": {
+                "translation": [
+                    0.0,
+                    3750.0,
+                    76.25712585449219
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    85.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "laser"
+        },
+        {
+            "type": "MESH",
+            "name": "レーザー.009",
+            "transform": {
+                "translation": [
+                    0.0,
+                    3900.0,
+                    25.224323272705078
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    85.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "laser"
+        },
+        {
+            "type": "MESH",
+            "name": "レーザー.012",
+            "transform": {
+                "translation": [
+                    50.120391845703125,
+                    3600.0,
+                    45.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    45.0
+                ]
+            },
+            "file_name": "laser"
+        },
+        {
+            "type": "MESH",
+            "name": "壁.006",
+            "transform": {
+                "translation": [
+                    0.0,
+                    5500.0,
+                    80.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    85.0,
+                    1.0,
+                    20.0
+                ]
+            },
+            "file_name": "wall"
+        },
+        {
+            "type": "MESH",
+            "name": "壁.013",
+            "transform": {
+                "translation": [
+                    0.0,
+                    5900.0,
+                    20.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    85.0,
+                    1.0,
+                    20.0
+                ]
+            },
+            "file_name": "wall"
         }
     ]
 }

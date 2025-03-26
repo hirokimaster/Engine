@@ -7,32 +7,28 @@
 #include "EnemyBullet.h"
 #include "application/GameObject/Player/Player.h"
 
-void EnemyBullet::Initialize(uint32_t texHandle)
+void EnemyBullet::Initialize()
 {
-	object_ = std::make_unique<Object3DPlacer>();
-	object_->Initialize();
-	object_->SetModel("Enemy/cube.obj");
-	object_->SetTexHandle(texHandle);
-
+	// object共通の初期化
+	BaseObject::Initialize("Enemy/cube.obj", "TempTexture/white.png", ColliderType::Sphere);
 	// collider設定
-	collider_ = std::make_unique<Collider>();
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
-	collider_->SetType(ColliderType::Sphere); // どの形状でとるか
 }
 
 void EnemyBullet::Update()
 {
 	Move();
 	BulletErase();
-	object_->Update();
+	// object共通の更新処理
+	BaseObject::Update();
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
 	OnCollision(); // 当たったら
 }
 
 void EnemyBullet::Draw(const Camera& camera)
 {
-	object_->Draw(camera);
+	BaseObject::Draw(camera);
 }
 
 void EnemyBullet::Move()
