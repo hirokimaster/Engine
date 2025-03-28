@@ -8,11 +8,15 @@ ParticleManager* ParticleManager::GetInstance()
 
 void ParticleManager::Initialize()
 {
-	// 読み込み
+	// パラメーター読み込み
 	ParticleEditor::GetInstance()->LoadFiles();
+	// あらかじめインスタンスを作っておく
+	for (uint32_t i = 0; i < kPoolSize; ++i) {
+		Create();
+	}
 }
 
-void ParticleManager::StartEditor(const char* particleName)
+void ParticleManager::CreateParam(const char* particleName)
 {
 	// particleの値を設定する
 	// エディター起動
@@ -47,7 +51,7 @@ void ParticleManager::StartEditor(const char* particleName)
 	editor->AddParam(particleName, "rangeAlpha_max", params_[particleName].rangeAlpha.max);
 }
 
-void ParticleManager::ApplyParticleInfo(const char* particleName, uint32_t id)
+void ParticleManager::ApplyParticleInfo(const char* particleName)
 {
 	ParticleEditor* editor = ParticleEditor::GetInstance();
 	// params_のparticleNameに対応するemitterを更新を適用する
@@ -78,24 +82,37 @@ void ParticleManager::ApplyParticleInfo(const char* particleName, uint32_t id)
 	// rangeAlphaのminとmaxを設定
 	params_[particleName].rangeAlpha.min = editor->GetValue<float>(particleName, "rangeAlpha_min");
 	params_[particleName].rangeAlpha.max = editor->GetValue<float>(particleName, "rangeAlpha_max");
-
-	particles_[particleName][id]->SetParticleParam(params_[particleName]);
 }
 
-void ParticleManager::CreateParticle(const string& particleName, const string& model, uint32_t texHandle)
+void ParticleManager::Create()
 {
 	unique_ptr<GPUParticle> particle = make_unique<GPUParticle>();
-	particle->SetModel(model);
-	particle->Initialize();
-	particle->SetTexHandle(texHandle);
-	particle->SetParticleParam(params_[particleName]);
-
-	particles_[particleName].emplace_back(move(particle));
+	particle->SetModel("Player/plane.obj");
+	
+	// キューに入れる
+	GPUParticle* ptr = particle.get();
+	particles_.push_back(std::move(particle));
+	pool_.push(ptr);
 }
 
-void ParticleManager::Update(const string& particleName, uint32_t id)
+void ParticleManager::Push(GPUParticle* particle)
 {
-	particles_[particleName][id]->Update();
+	// particleがnullだったら通っちゃだめ
+	if (!particle) return;
+
+	// アクティブ状態解除
+	particle->SetIsActive(false);
+	// キューに戻す
+	pool_.push(particle);
+}
+
+void ParticleManager::Update()
+{
+	for (auto& particle : particles_) {
+		if (particle->GetIsActive()) {
+			particle->Update();
+		}
+	}
 }
 
 void ParticleManager::UpdateEditor()
@@ -103,12 +120,31 @@ void ParticleManager::UpdateEditor()
 	ParticleEditor::GetInstance()->Update();
 }
 
-void ParticleManager::Draw(const string& particleName, const Camera& camera, uint32_t id)
+void ParticleManager::Draw(const Camera& camera)
 {
-	particles_[particleName][id]->Draw(camera);
+	for (auto& particle : particles_) {
+		if (particle->GetIsActive()) {
+			particle->Draw(camera);
+		}
+	}
 }
 
-void ParticleManager::Clear(const string& particleName, uint32_t id)
+GPUParticle* ParticleManager::GetParticle(const string& name)
 {
-	particles_[particleName].erase(particles_[particleName].begin() + id);
+	// 空のときは新しく作る
+	if (pool_.empty()) {
+		// 最大数を超えてたら
+		if (particles_.size() >= kPoolSize) {
+			return nullptr;
+		}
+		Create();
+	}
+
+	// 取り出す
+	GPUParticle* ptr = pool_.front();
+	pool_.pop();
+	ptr->Initialize();
+	ptr->SetParticleParam(params_[name]); // ここで指定したパラメーターを入れる
+	
+	return 	ptr;
 }

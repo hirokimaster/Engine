@@ -83,6 +83,14 @@ public:
 
 	void SetPosition(const Vector3& position) { emitterSphereData_->translate = position; }
 
+	void SetIsActive(bool isActive) { isActive_ = isActive; }
+
+#pragma endregion
+
+#pragma region getter
+
+	bool GetIsActive()const { return isActive_; }
+
 #pragma endregion
 
 private:
@@ -161,4 +169,5 @@ private:
 	uint32_t texHandle_ = 0;
 	D3D12_RESOURCE_BARRIER barrier_{};
 	const float kDeltaTime_ = 1.0f / 60.0f;
+	bool isActive_ = false;
 };

@@ -29,6 +29,8 @@ void GPUParticle::Initialize()
 	commandList_ = DirectXCommon::GetInstance()->GetCommandList();
 
 	InitializeParticleCS();
+
+	isActive_ = false;
 }
 
 void GPUParticle::Update()

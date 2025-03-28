@@ -28,25 +28,18 @@ public:
 	/// editorを起動する
 	/// </summary>
 	/// <param name="particleName"></param>
-	void StartEditor(const char* particleName);
+	void CreateParam(const char* particleName);
 
 	/// <summary>
 	/// particleの情報をエディターから読み込む
 	/// </summary>
 	/// <param name="particleName"></param>
-	void ApplyParticleInfo(const char* particleName, uint32_t id = 0);
+	void ApplyParticleInfo(const char* particleName);
 
 	/// <summary>
-	/// paticleのインスタンス生成
+	/// 更新
 	/// </summary>
-	/// <param name="particleName"></param>
-	void CreateParticle(const string& particleName, const string& model, uint32_t texHandle);
-
-	/// <summary>
-	/// particleの名前を指定して更新
-	/// </summary>
-	/// <param name="particleName"></param>
-	void Update(const string& particleName, uint32_t id = 0);
+	void Update();
 
 	/// <summary>
 	/// editorの更新
@@ -54,31 +47,28 @@ public:
 	void UpdateEditor();
 
 	/// <summary>
-	/// particleの名前を指定して描画
+	/// 描画
 	/// </summary>
-	/// <param name="particleName"></param>
-	/// <param name="camera"></param>
-	void Draw(const string& particleName, const Camera& camera, uint32_t id = 0);
+	void Draw(const Camera& camera);
 
-	/// <summary>
-	/// コンテナから削除
-	/// </summary>
-	/// <param name="particleName"></param>
-	/// <param name="id"></param>
-	void Clear(const string& particleName, uint32_t id);
+#pragma region getter
 
-#pragma region setter
-
-	void SetColor(const string& particleName, const Vector4& color) {
-		for (auto& particle : particles_[particleName]) {
-			particle->SetColor(color);
-		}
-	}
-
-	void SetPosition(const string& particleName, const Vector3& position, uint32_t id = 0) { particles_[particleName][id]->SetPosition(position); }
+	GPUParticle* GetParticle(const string& name);
 
 #pragma endregion
 
+private:
+
+	/// <summary>
+	/// paticleのインスタンス生成
+	/// </summary>
+	/// <param name="particleName"></param>
+	void Create();
+
+	/// <summary>
+	/// 使い終わったインスタンスをキューに戻す
+	/// </summary>
+	void Push(GPUParticle* particle);
 
 private:
 	ParticleManager() = default;
@@ -89,7 +79,10 @@ private:
 private:
 	// particleのパラメータ保存用のコンテナ
 	map<string, EmitterSphere> params_;
-	// particleのインスタンス保存用のコンテナ
-	unordered_map<string, vector<unique_ptr<GPUParticle>>> particles_;
-
+	// 使用可能なエフェクトのポインタ
+	std::queue<GPUParticle*> pool_;
+	// インスタンスを入れておくコンテナ
+	vector<unique_ptr<GPUParticle>> particles_;
+	// 同時に存在できるparticleの数
+	static const uint32_t kPoolSize = 30;
 };
