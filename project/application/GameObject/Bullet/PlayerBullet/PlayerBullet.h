@@ -7,40 +7,37 @@
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "application/GameObject/LockOn/LockOn.h"
-#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
+#include "application/GameObject/Bullet/IBullet.h"
 
-class PlayerBullet{
+class PlayerBullet : public IBullet{
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="object"></param>
-	/// <param name="texHandle"></param>
-	/// <param name="model"></param>
-	void Initialize(uint32_t texHandle);
+	void Initialize()override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update()override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
-	void Draw(const Camera& camera);
+	void Draw(const Camera& camera)override;
+
+	/// <summary>
+	/// 消滅時間のリセット
+	/// </summary>
+	void ResetDeathTimer()override;
 
 private: // クラス内でしか使わない
 
 	/// <summary>
 	/// 移動処理
 	/// </summary>
-	void Move();
-
-	/// <summary>
-	/// 消す
-	/// </summary>
-	void BulletErase();
+	void Move()override;
 
 	/// <summary>
 	/// 当たり判定
@@ -51,13 +48,17 @@ public:
 
 #pragma	region getter
 
-	bool GetIsDead() { return isDead_; }; // デスフラグ
+	bool GetIsDead()const override { return isDead_; }; // デスフラグ
 
-	Vector3 GetWorldPosition()const;
+	Vector3 GetWorldPosition()const override;
 
 	Vector3 GetScale() const { return object_->GetWorldTransform().scale; }
 
-	Collider* GetCollider() { return collider_.get(); }
+	Collider* GetCollider()override { return collider_.get(); }
+
+	BulletType GetBulletType()override { return type_; }
+
+	bool GetIsActive()const override { return isActive_; }
 
 #pragma endregion
 
@@ -69,6 +70,10 @@ public:
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 
+	void SetIsActive(bool isActive)override { isActive_ = isActive; }
+
+	void SetIsDead(bool isDead)override { isDead_ = isDead; }
+
 #pragma endregion
 
 private:
@@ -77,7 +82,7 @@ private:
 	static const int32_t kLifeTime_ = 60 * 5; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
-	std::unique_ptr<Object3DPlacer> object_ = nullptr;
 	int32_t particleTimer_ = 200;
-	std::unique_ptr<Collider> collider_ = nullptr;
+	BulletType type_;
+	bool isActive_ = false;
 };

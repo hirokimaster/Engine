@@ -58,7 +58,6 @@ void Player::Update()
 		spriteAttack_->SetTexHandle(TextureManager::GetTexHandle("UI/RB.png"));
 	}
 
-	UpdateBullet(); // 弾の更新
 	BaseObject::Update(); // object共通の更新処理
 	collider_->SetWorldPosition(GetWorldPosition());
 	OnCollision(); // 当たったら
@@ -79,11 +78,6 @@ void Player::Update()
 void Player::Draw(const Camera& camera)
 {
 	BaseObject::Draw(camera);
-
-	// 弾の描画
-	for (const auto& bullet : bullets_) {
-		bullet->Draw(camera);
-	}
 }
 
 void Player::Move()
@@ -122,12 +116,16 @@ void Player::Attack()
 				diff = Normalize(diff);
 				velocity = Normalize(velocity);
 				velocity = Multiply(bulletSpeed_, diff);
-				std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-				bullet->SetLockOn(lockOn_);
-				bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
-				bullet->SetPosition(WorldPos);
-				bullet->SetVelocity(velocity);
-				bullets_.push_back(std::move(bullet));
+				// プールから取ってくる
+				IBullet* baseBullet = bulletObjectPool_->GetBullet("player");
+				// 取ってこれたかチェックする
+				if (baseBullet) {
+					PlayerBullet* bullet = dynamic_cast<PlayerBullet*>(baseBullet);
+					bullet->SetIsActive(true);
+					bullet->SetLockOn(lockOn_);
+					bullet->SetPosition(WorldPos);
+					bullet->SetVelocity(velocity);
+				}
 			}
 		}
 	}
@@ -138,32 +136,20 @@ void Player::Attack()
 		velocity = bulletSpeed_ * velocity;
 
 		// 弾を生成し、初期化
-		std::unique_ptr<PlayerBullet> bullet = std::make_unique<PlayerBullet>();
-		bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
-		const float kDistanceZ = 5.0f;
-		Vector3 position = WorldPos;
-		position.z = position.z + kDistanceZ;
-		bullet->SetPosition(position);
-		bullet->SetVelocity(velocity);
-		bullets_.push_back(std::move(bullet));
-	}
-}
-
-void Player::UpdateBullet()
-{
-	// 弾更新
-	for (const auto& bullet : bullets_) {
-		bullet->Update();
-	}
-
-	// デスフラグが立ったら要素を削除
-	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {
-		if (bullet->GetIsDead()) {
-			return true;
+		// プールから取ってくる
+		IBullet* baseBullet = bulletObjectPool_->GetBullet("player");
+		// 取ってこれたかチェックする
+		if (baseBullet) {
+			PlayerBullet* bullet = dynamic_cast<PlayerBullet*>(baseBullet);
+			bullet->SetIsActive(true);
+			bullet->SetLockOn(lockOn_);
+			const float kDistanceZ = 10.0f;
+			Vector3 position = WorldPos;
+			position.z = position.z + kDistanceZ;
+			bullet->SetPosition(position);
+			bullet->SetVelocity(velocity);
 		}
-		return false;
-		});
-
+	}
 }
 
 void Player::OnCollision()

@@ -14,16 +14,23 @@ void EnemyBullet::Initialize()
 	// collider設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
+	type_ = BulletType::Enemy;
+	isDead_ = false;
+	isActive_ = false;
 }
 
 void EnemyBullet::Update()
 {
-	Move();
-	BulletErase();
+	Move(); // 移動
 	// object共通の更新処理
 	BaseObject::Update();
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
 	OnCollision(); // 当たったら
+
+	// 時間で消滅
+	if (--deathTimer_ <= 0) {
+		isDead_ = true;
+	}
 }
 
 void EnemyBullet::Draw(const Camera& camera)
@@ -31,19 +38,16 @@ void EnemyBullet::Draw(const Camera& camera)
 	BaseObject::Draw(camera);
 }
 
+void EnemyBullet::ResetDeathTimer()
+{
+	deathTimer_ = kLifeTime_;
+}
+
 void EnemyBullet::Move()
 {
 	Vector3 move{};
 	move = object_->GetWorldTransform().translate + velocity_;
 	object_->SetPosition(move);
-}
-
-void EnemyBullet::BulletErase()
-{
-	// 時間で消滅
-	if (--deathTimer_ <= 0) {
-		isDead_ = true;
-	}
 }
 
 void EnemyBullet::OnCollision()

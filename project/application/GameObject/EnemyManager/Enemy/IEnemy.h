@@ -33,11 +33,4 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	virtual Collider* GetCollider() = 0;
-
-	/// <summary>
-	/// 弾のポインタ
-	/// </summary>
-	/// <returns></returns>
-	virtual const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const = 0;
-
 };

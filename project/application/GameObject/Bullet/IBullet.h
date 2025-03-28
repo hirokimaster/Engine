@@ -1,8 +1,15 @@
 #pragma once
 #include "engine/3d/Object3DPlacer/BaseObject.h"
 
+// 弾のタイプ
+enum class BulletType {
+	Player,
+	Enemy
+};
+
 class IBullet : public BaseObject {
 public:
+
 	/// <summary>
 	/// 仮想デストラクタ
 	/// </summary>
@@ -21,12 +28,17 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	virtual void Draw() = 0;
+	virtual void Draw(const Camera& camera) = 0;
 
 	/// <summary>
 	/// 移動
 	/// </summary>
 	virtual void Move() = 0;
+
+	/// <summary>
+	/// 消滅時間のリセット
+	/// </summary>
+	virtual void ResetDeathTimer() = 0;
 
 #pragma region getter
 
@@ -47,6 +59,26 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	virtual Collider* GetCollider() = 0;
+
+	/// <summary>
+	/// 弾の種類取得
+	/// </summary>
+	/// <returns></returns>
+	virtual BulletType GetBulletType() = 0;
+
+	/// <summary>
+	/// アクティブかどうか
+	/// </summary>
+	/// <returns></returns>
+	virtual bool GetIsActive()const = 0;
+
+#pragma endregion
+
+#pragma region setter
+
+	virtual void SetIsActive(bool isActive) = 0;
+
+	virtual void SetIsDead(bool isDead) = 0;
 
 #pragma endregion
 };

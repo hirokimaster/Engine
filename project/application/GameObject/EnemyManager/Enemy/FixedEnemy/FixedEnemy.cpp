@@ -34,7 +34,7 @@ void FixedEnemy::Fire()
 
 		// 弾を生成して初期化
 		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
+		bullet->Initialize();
 		bullet->SetPosition(GetWorldPosition());
 		bullet->SetVelocity(velocity);
 		// 弾をセット

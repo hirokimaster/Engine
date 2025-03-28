@@ -293,6 +293,7 @@
     <ClCompile Include="engine\3d\Object3DPlacer\BaseObject.cpp" />
     <ClCompile Include="application\GameObject\EnemyManager\EnemyManager.cpp" />
     <ClCompile Include="engine\3d\ObjectManager\ObjectManager.cpp" />
+    <ClCompile Include="application\GameObject\Bullet\BulletObjectPool\BulletObjectPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -528,6 +529,7 @@
     <ClInclude Include="application\GameObject\EnemyManager\EnemyManager.h" />
     <ClInclude Include="engine\3d\ObjectManager\ObjectManager.h" />
     <ClInclude Include="application\GameObject\Bullet\IBullet.h" />
+    <ClInclude Include="application\GameObject\Bullet\BulletObjectPool\BulletObjectPool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

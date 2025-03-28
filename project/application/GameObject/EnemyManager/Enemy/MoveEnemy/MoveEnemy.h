@@ -6,7 +6,7 @@
 
 #pragma once
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
-#include "application/GameObject/EnemyManager/Enemy/Bullet/EnemyBullet.h"
+#include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
 #include "engine/Graphics/TextureManager/TextureManager.h"
 #include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "application/GameObject/EnemyManager/Enemy/MoveEnemy/PhaseState/EnemyStateSortie.h"
@@ -57,11 +57,6 @@ private:
 	void OnCollision();
 
 	/// <summary>
-	/// 弾の更新
-	/// </summary>
-	void BulletUpdate();
-
-	/// <summary>
 	/// 調整項目の追加
 	/// </summary>
 	void AddAdjustmentVariables();
@@ -78,8 +73,6 @@ public:
 	Vector3 GetWorldPosition() const override;
 
 	Collider* GetCollider()override { return collider_.get(); }
-
-	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() const override{ return bullets_; }
 
 	bool GetIsDead()const override { return isDead_; }
 
@@ -115,7 +108,6 @@ public:
 
 private:
 	bool isDead_ = false; // デスフラグ
-	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
 	static const int32_t kLifeTime_ = 60 * 50; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	Player* player_ = nullptr; // playerのポインタ
@@ -126,4 +118,5 @@ private:
 	float bulletSpeed_ = 0.0f; // 弾のスピード
 	uint32_t eventNum_ = 0; // イベント番号
 	Vector3 eventTrigger_{}; // イベントトリガー
+	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタを借りてくる
 };

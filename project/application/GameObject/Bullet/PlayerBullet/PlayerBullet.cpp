@@ -6,33 +6,39 @@
 
 #include "PlayerBullet.h"
 
-void PlayerBullet::Initialize(uint32_t texHandle)
+void PlayerBullet::Initialize()
 {
-	object_ = std::make_unique<Object3DPlacer>();
-	object_->Initialize();
-	object_->SetModel("Player/cube.obj");
-	object_->SetScale({ 0.3f,0.3f });
-	object_->SetTexHandle(texHandle);
-
+	// object共通の初期化
+	BaseObject::Initialize("Player/cube.obj", "TempTexture/white.png", ColliderType::Sphere);
 	// collider設定
-	collider_ = std::make_unique<Collider>();
 	collider_->SetCollosionAttribute(kCollisionAttributePlayerBullet);
 	collider_->SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
-	collider_->SetType(ColliderType::Sphere); // どの形状でとるか
+	type_ = BulletType::Player;
+	isDead_ = false;
+	isActive_ = false;
 }
 
 void PlayerBullet::Update()
 {
 	Move(); // 移動
-	BulletErase(); // 弾を削除
-	object_->Update();
+	BaseObject::Update(); // object共通の更新
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
 	OnCollision(); // 当たったら
+
+	// 時間で消滅
+	if (--deathTimer_ <= 0) {
+		isDead_ = true;
+	}
 }
 
 void PlayerBullet::Draw(const Camera& camera)
 {
-	object_->Draw(camera);
+	BaseObject::Draw(camera);
+}
+
+void PlayerBullet::ResetDeathTimer()
+{
+	deathTimer_ = kLifeTime_;
 }
 
 void PlayerBullet::Move()
@@ -41,15 +47,6 @@ void PlayerBullet::Move()
 	Vector3 move{};
 	move = object_->GetWorldTransform().translate + velocity_;
 	object_->SetPosition(move);
-}
-
-void PlayerBullet::BulletErase()
-{
-	// 時間で消滅
-	if (--deathTimer_ <= 0) {
-		isDead_ = true;
-	}
-
 }
 
 void PlayerBullet::OnCollision()

@@ -29,17 +29,17 @@ public:
 	/// <param name="camera"></param>
 	void Draw(const Camera& camera)override;
 
+	/// <summary>
+	/// 消滅時間のリセット
+	/// </summary>
+	void ResetDeathTimer()override;
+
 private:
 
 	/// <summary>
 	/// 移動
 	/// </summary>
 	void Move()override;
-
-	/// <summary>
-	/// 弾の削除
-	/// </summary>
-	void BulletErase();
 
 	/// <summary>
 	/// 当たり判定
@@ -58,6 +58,10 @@ public:
 
 	Collider* GetCollider()override { return collider_.get(); }
 
+	BulletType GetBulletType()override { return type_; }
+
+	bool GetIsActive()const override { return isActive_; }
+
 #pragma endregion
 
 #pragma region	setter
@@ -65,6 +69,11 @@ public:
 	void SetVelocity(Vector3 velocity) { velocity_ = velocity; }; // 速度ベクトル
 
 	void SetPosition(Vector3 position) { object_->SetPosition(position); } // 位置
+
+	void SetIsActive(bool isActive)override { isActive_ = isActive; }
+
+	void SetIsDead(bool isDead)override { isDead_ = isDead;}
+
 #pragma endregion
 
 private:
@@ -72,4 +81,6 @@ private:
 	bool isDead_ = false; // bulletのデスフラグ
 	static const int32_t kLifeTime_ = 60 * 5; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
+	BulletType type_;
+	bool isActive_ = false;
 };

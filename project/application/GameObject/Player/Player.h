@@ -5,13 +5,14 @@
 */
 
 #pragma once
-#include "application/GameObject/Player/Bullet/PlayerBullet.h"
+#include "application/GameObject/Bullet/PlayerBullet/PlayerBullet.h"
 #include "engine/Graphics/TextureManager/TextureManager.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/2d/Sprite/Sprite.h"
 #include <vector>
 #include "application/AdjustmentVariables/AdjustmentVariables.h"
 #include "engine/3d/Object3DPlacer/BaseObject.h"
+#include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
 
 class LockOn;
 
@@ -58,11 +59,6 @@ private: // クラス内でしか使わない
 	void Attack();
 
 	/// <summary>
-	/// 弾の更新処理
-	/// </summary>
-	void UpdateBullet();
-
-	/// <summary>
 	/// 当たり判定
 	/// </summary>
 	void OnCollision();
@@ -96,8 +92,6 @@ public:
 
 #pragma region getter
 
-	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() const { return bullets_; }
-
 	Vector2 GetScreenPosition2DReticle()const { return screenPositionReticle_; }
 
 	Vector3 GetRotate()const { return object_->GetWorldTransform().rotate; }
@@ -130,12 +124,13 @@ public:
 
 	void SetHp(uint32_t hp) { hp_ = hp; }
 
+	void SetBulletObjectPool(BulletObjectPool* ptr) { bulletObjectPool_ = ptr; }
+
 #pragma endregion
 
 private:
 	float moveSpeed_; // 移動スピード
 	float bulletSpeed_; // 弾のスピード
-	std::list<std::unique_ptr<PlayerBullet>> bullets_; // 弾のリスト
 	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
 	Vector2 screenPositionReticle_{};
 	bool isDead_ = false; // 死んだか
@@ -152,4 +147,5 @@ private:
 	Vector3 rotate_{}; // 回転の初期値
 	float rotateSpeed_; // 回転速度
 	float rotateLerpFactor_; // Lerpの強さ
+	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタ借りる
 };

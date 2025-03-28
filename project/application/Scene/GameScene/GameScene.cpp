@@ -37,6 +37,11 @@ void GameScene::Initialize()
 	lockOn_->Initialize();
 	player_->SetLockOn(lockOn_.get());
 
+	// 弾
+	bulletObjectPool_ = std::make_unique<BulletObjectPool>();
+	bulletObjectPool_->Initialize();
+	player_->SetBulletObjectPool(bulletObjectPool_.get());
+
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
 
@@ -75,6 +80,9 @@ void GameScene::Update()
 	// player
 	player_->Update();
 	lockOn_->UpdateReticle(cameraManager_->GetCamera(), player_->GetWorldPosition(), isGameStart_);
+
+	// 弾
+	bulletObjectPool_->Update();
 	
 	// loader
 	loader_->Update();
@@ -118,6 +126,9 @@ void GameScene::PostProcessDraw()
 	// player
 	player_->Draw(cameraManager_->GetCamera());
 
+	// 弾
+	bulletObjectPool_->Draw(cameraManager_->GetCamera());
+
 	// lockOn_(レティクル)
 	lockOn_->Draw();
 
@@ -130,18 +141,9 @@ void GameScene::Collision()
 
 	collisionManager_->ColliderPush(player_->GetCollider()); // playerのcolliderをリストに追加
 
-	// playerBullet
-	for (const auto& playerBullet : player_->GetBullets()) {
-		collisionManager_->ColliderPush(playerBullet->GetCollider()); // playerBulletをリストに登録
-	}
-
 	// enemy
 	for (const auto& enemy : loader_->GetEnemys()) {
 		collisionManager_->ColliderPush(enemy->GetCollider()); // enemyをリストに登録
-
-		for (const auto& enemyBullet : enemy->GetBullets()) {
-			collisionManager_->ColliderPush(enemyBullet->GetCollider()); // enemybulletをリストに追加
-		}
 	}
 
 	// laser

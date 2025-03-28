@@ -16,6 +16,7 @@
 #include "application/GameState/GameStartState.h"
 #include "application/PostEffect/PostEffect.h"
 #include <application/GameObject/EnemyManager/EnemyManager.h>
+#include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -74,4 +75,5 @@ private:
 	std::unique_ptr<PostEffect> postEffect_; // postEffect
 	std::unique_ptr<Skydome> skydome_; // 天球
 	std::unique_ptr<IGameState> gameState_; // ゲームのスタート演出とか
+	std::unique_ptr<BulletObjectPool> bulletObjectPool_; // 弾のプール
 };

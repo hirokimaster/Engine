@@ -35,8 +35,6 @@ void MoveEnemy::Update()
 	phaseState_->SetPlayer(player_);
 	phaseState_->Update(this); // 状態ごとの更新処理
 
-	BulletUpdate(); // 弾の更新処理
-
 	OnCollision(); // 当たったら
 
 	// 時間で消滅
@@ -58,11 +56,6 @@ void MoveEnemy::Draw(const Camera& camera)
 	if (isSortie_) {
 		BaseObject::Draw(camera);
 	}
-
-	for (const auto& bullet : bullets_) {
-		bullet->Draw(camera);
-	}
-
 }
 
 void MoveEnemy::OnCollision()
@@ -84,32 +77,16 @@ void MoveEnemy::Fire()
 		Normalize(diff); // 正規化
 		Vector3 velocity = Multiply(bulletSpeed_, diff); // ベクトルの速度
 
-		// 弾を生成して初期化
-		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize(TextureManager::GetTexHandle("TempTexture/white.png"));
-		bullet->SetPosition(GetWorldPosition());
-		bullet->SetVelocity(velocity);
-		// 弾をセット
-		bullets_.push_back(std::move(bullet));
-	}
-}
-
-void MoveEnemy::BulletUpdate()
-{
-
-	// 弾更新
-	for (const auto& bullet : bullets_) {
-		bullet->Update();
-	}
-
-	// デスフラグが立ったら要素を削除
-	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
-		if (bullet->GetIsDead()) {
-
-			return true;
+		// プールから取ってくる
+		IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
+		// 取ってこれたかチェックする
+		if (baseBullet) {
+			EnemyBullet* bullet = dynamic_cast<EnemyBullet*>(baseBullet);
+			bullet->Initialize();
+			bullet->SetPosition(GetWorldPosition());
+			bullet->SetVelocity(velocity);
 		}
-		return false;
-		});
+	}
 }
 
 void MoveEnemy::AddAdjustmentVariables()
