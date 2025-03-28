@@ -65,6 +65,11 @@ void GPUParticle::Draw(const Camera& camera)
 	}
 }
 
+void GPUParticle::ResetLifeTime()
+{
+	lifeTime_ = kLifeTime;
+}
+
 void GPUParticle::CreateUAV()
 {
 
@@ -202,6 +207,10 @@ void GPUParticle::UpdateEmitter()
 	}
 	else {
 		emitterSphereData_->emit = 0;
+	}
+
+	if (--lifeTime_) {
+		isDead_ = true;
 	}
 }
 

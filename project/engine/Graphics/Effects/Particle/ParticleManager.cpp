@@ -102,6 +102,8 @@ void ParticleManager::Push(GPUParticle* particle)
 
 	// アクティブ状態解除
 	particle->SetIsActive(false);
+	// 生存時間をリセットする
+	particle->ResetLifeTime();
 	// キューに戻す
 	pool_.push(particle);
 }
@@ -111,6 +113,12 @@ void ParticleManager::Update()
 	for (auto& particle : particles_) {
 		if (particle->GetIsActive()) {
 			particle->Update();
+		}
+
+		// パーティクルの生存時間を過ぎたら
+		if (particle->GetIsDead()) {
+			// キューに戻す
+			Push(particle.get());
 		}
 	}
 }

@@ -71,6 +71,8 @@ public:
 
 	void Draw(const Camera& camera);
 
+	void ResetLifeTime();
+
 #pragma region setter
 
 	void SetModel(const std::string& fileName) { model_ = ModelManager::CreateObj(fileName); }
@@ -85,11 +87,17 @@ public:
 
 	void SetIsActive(bool isActive) { isActive_ = isActive; }
 
+	void SetIsDead(bool isDead) { isDead_ = isDead; }
+
+	void SetLifeTime(float time) { lifeTime_ = time; }
+
 #pragma endregion
 
 #pragma region getter
 
 	bool GetIsActive()const { return isActive_; }
+
+	bool GetIsDead()const { return isDead_; }
 
 #pragma endregion
 
@@ -170,4 +178,7 @@ private:
 	D3D12_RESOURCE_BARRIER barrier_{};
 	const float kDeltaTime_ = 1.0f / 60.0f;
 	bool isActive_ = false;
+	bool isDead_ = false;
+	float lifeTime_ = 0.0f; // 生存時間
+    float kLifeTime = 0.0f;
 };
