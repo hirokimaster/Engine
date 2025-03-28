@@ -1,23 +1,24 @@
 #pragma once
 #include "application/GameObject/EnemyManager/Enemy/IEnemy.h"
+#include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
 
 class FixedEnemy : public IEnemy {
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize()override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update()override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
 	/// <param name="camera"></param>
-	void Draw(const Camera& camera);
+	void Draw(const Camera& camera)override;
 
 #pragma region getter
 
@@ -30,6 +31,8 @@ public:
 #pragma region setter
 
 	void SetPlayer(Player* player) { player_ = player; }
+
+	void SetBulletObjectPool(BulletObjectPool* ptr) { bulletObjectPool_ = ptr; }
 
 #pragma endregion
 
@@ -51,8 +54,8 @@ private:
 	bool isDead_;
 	// playerのポインタ
 	Player* player_ = nullptr;
-	// 弾のリスト
-	std::list<std::unique_ptr<EnemyBullet>> bullets_;
 	// 弾のスピード
 	float bulletSpeed_ = 0.0f;
+	// 弾のオブジェクトプール
+	BulletObjectPool* bulletObjectPool_ = nullptr;
 };

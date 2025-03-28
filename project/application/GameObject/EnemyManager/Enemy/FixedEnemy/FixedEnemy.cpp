@@ -33,12 +33,15 @@ void FixedEnemy::Fire()
 		Vector3 velocity = Multiply(bulletSpeed_, diff); // ベクトルの速度
 
 		// 弾を生成して初期化
-		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize();
-		bullet->SetPosition(GetWorldPosition());
-		bullet->SetVelocity(velocity);
-		// 弾をセット
-		bullets_.push_back(std::move(bullet));
+		// プールから取ってくる
+		IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
+		// 取ってこれたかチェックする
+		if (baseBullet) {
+			EnemyBullet* bullet = dynamic_cast<EnemyBullet*>(baseBullet);
+			bullet->Initialize();
+			bullet->SetPosition(GetWorldPosition());
+			bullet->SetVelocity(velocity);
+		}
 	}
 }
 
