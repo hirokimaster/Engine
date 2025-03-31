@@ -76,4 +76,5 @@ private:
 	std::unique_ptr<Skydome> skydome_; // 天球
 	std::unique_ptr<IGameState> gameState_; // ゲームのスタート演出とか
 	std::unique_ptr<BulletObjectPool> bulletObjectPool_; // 弾のプール
+	std::unique_ptr<EnemyManager> enemyManager_; // enemy
 };

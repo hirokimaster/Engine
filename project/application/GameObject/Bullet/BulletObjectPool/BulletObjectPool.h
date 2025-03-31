@@ -30,7 +30,7 @@ public:
 	IBullet* GetBullet(const std::string& name);
 
 	/// <summary>
-	/// 全ての弾
+	/// 弾のインスタンス
 	/// </summary>
 	/// <returns></returns>
 	const std::vector<std::unique_ptr<IBullet>>& GetBullets() const { return bullets_; }

@@ -56,10 +56,9 @@ public:
 
 #pragma region getter
 
-	const std::list<std::unique_ptr<IEnemy>>& GetEnemys() const{ return enemys_; }
-
 	const std::list<std::unique_ptr<Laser>>& GetLasers() const { return lasers_; }
 
+	const std::map<std::string, std::vector<LevelData::ObjectData>>& GetObjectDatas() const {return objectDatas_;}
 #pragma endregion
 
 #pragma region setter
@@ -81,7 +80,6 @@ private:
 private:
 	std::map<std::string, std::unique_ptr<Model>>  models_;
 	std::vector<std::unique_ptr<Object3DPlacer>> objects_;
-	std::list<std::unique_ptr<IEnemy>> enemys_;
 	std::list<std::unique_ptr<Laser>> lasers_;
 	std::map<std::string, std::vector<LevelData::ObjectData>> objectDatas_;
 	uint32_t texHandle_ = 0;

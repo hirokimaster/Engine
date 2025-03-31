@@ -243,10 +243,10 @@ bool LockOn::CheckReticleRange(const Vector3& position)
 	float reticleRadius; // レティクルの範囲
 
 	if (isLockOnMode_) {
-		reticleRadius = 30.0f;
+		reticleRadius = 100.0f;
 	}
 	else {
-		reticleRadius = 30.0f;
+		reticleRadius = 100.0f;
 	}
 
 	Vector2 reticleCenter = screenPositionReticle_;

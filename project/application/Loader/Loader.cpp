@@ -83,7 +83,7 @@ LevelData* Loader::Load(const std::string& fileName)
 			objectData.scale.z = (float)transform["scaling"][1];
 
 			// modelのロード
-			if (objectData.fileName != "eventTrigger" && objectData.fileName != "floor" && objectData.fileName != "wall") {
+			if (objectData.fileName != "eventTrigger" && objectData.fileName != "floor" && objectData.fileName != "wall" && objectData.fileName != "fixedEnemy") {
 				ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");	
 			}
 
@@ -144,28 +144,21 @@ void Loader::Record()
 
 	levelData_ = Load("level2");
 
+	for (auto& objectData : levelData_->objects) {
+		// 動く敵
+		if (objectData.fileName == "moveEnemy") {
+			objectDatas_[objectData.fileName].push_back(objectData);
+		}
+		// 固定の敵
+		else if (objectData.fileName == "fixedEnemy") {
+			objectDatas_[objectData.fileName].push_back(objectData);
+		}
+	}
+
 	// レベルデータからオブジェクトを生成、配置
 	for (auto& objectData : levelData_->objects) {
 
-		if (objectData.fileName == "enemy") {
-			std::unique_ptr<MoveEnemy> newEnemy = std::make_unique<MoveEnemy>();
-			newEnemy->Initialize();
-			newEnemy->SetPlayer(player_);
-			newEnemy->SetPosition(objectData.controlPoint[0]); // 初期位置は移動ルートの最初の制御点
-			newEnemy->SetEventNum(objectData.eventNum);
-			for (auto& point : objectData.controlPoint) {
-				newEnemy->SetMoveControlPoints(point);
-			}
-			enemys_.push_back(std::move(newEnemy));
-			}
-		else if (objectData.fileName == "fixedEnemy") {
-			std::unique_ptr<FixedEnemy> newEnemy = std::make_unique<FixedEnemy>();
-			newEnemy->Initialize();
-			newEnemy->SetPlayer(player_);
-			newEnemy->SetPosition(objectData.translate);
-			enemys_.push_back(std::move(newEnemy));
-		}
-		else if (objectData.fileName == "laser") {
+		if (objectData.fileName == "laser") {
 			std::unique_ptr<Laser> newLaser = std::make_unique<Laser>();
 			newLaser->Initialize();
 			newLaser->SetPosition(objectData.translate);
@@ -233,33 +226,17 @@ void Loader::Update()
 		object->Update();
 	}
 
-	// enemyの更新
-	for (auto& enemy : enemys_) {
-		enemy->Update();
-	}
-
 	// laserの更新
 	for (auto& laser : lasers_) {
 		laser->Update();
 	}
 
-	// デスフラグが立ったら要素を削除
-	enemys_.remove_if([](std::unique_ptr<IEnemy>& enemy) {
-		if (enemy->GetIsDead()) {
-			return true;
-		}
-		return false;
-		});
 }
 
 void Loader::Draw(const Camera& camera)
 {
 	for (auto& object : objects_) {
 		object->Draw(camera);
-	}
-
-	for (auto& enemy : enemys_) {
-		enemy->Draw(camera);
 	}
 
 	for (auto& laser : lasers_) {

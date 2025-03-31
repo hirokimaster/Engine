@@ -71,7 +71,7 @@
             "name": "壁.003",
             "transform": {
                 "translation": [
-                    0.0,
+                    1000.0,
                     7000.0,
                     95.0
                 ],
@@ -527,6 +527,94 @@
                 ]
             },
             "file_name": "wall"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵",
+            "transform": {
+                "translation": [
+                    -78.0,
+                    10000.0,
+                    90.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    8.0,
+                    8.0,
+                    8.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵.001",
+            "transform": {
+                "translation": [
+                    78.0,
+                    10000.0,
+                    90.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    8.0,
+                    8.0,
+                    8.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵.002",
+            "transform": {
+                "translation": [
+                    0.0,
+                    11800.0,
+                    10.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    8.0,
+                    8.0,
+                    8.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "レーザー.005",
+            "transform": {
+                "translation": [
+                    0.0,
+                    11500.0,
+                    26.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    85.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "laser"
         }
     ]
 }

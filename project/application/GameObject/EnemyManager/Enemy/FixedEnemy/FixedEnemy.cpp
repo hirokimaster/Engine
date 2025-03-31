@@ -4,7 +4,8 @@
 void FixedEnemy::Initialize()
 {
 	// object共通の初期化
-	BaseObject::Initialize("LevelEditorObj/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
+	BaseObject::Initialize("Player/cube.obj", "TempTexture/noise0.png", ColliderType::Sphere);
+	object_->SetColor({ 1.0f,0.0f,0.0f,1.0f });
 	// コライダーの属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);	  // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
@@ -14,6 +15,16 @@ void FixedEnemy::Update()
 {
     // object共通の更新処理
 	BaseObject::Update();
+	collider_->SetWorldPosition(GetWorldPosition());
+	// 衝突
+	OnCollision();
+
+#ifdef _DEBUG
+	ImGui::Begin("enemy");
+	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
+		object_->GetWorldTransform().translate.y, object_->GetWorldTransform().translate.z);
+	ImGui::End();
+#endif
 }
 
 void FixedEnemy::Draw(const Camera& camera)
@@ -49,7 +60,7 @@ void FixedEnemy::OnCollision()
 {
 	if (collider_->OnCollision()) {
 		// ここに衝突した時の処理書く
-
+		isDead_ = true;
 	}
 }
 

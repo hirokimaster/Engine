@@ -16,6 +16,13 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
+	// loader
+	TextureManager::Load("resources/TempTexture/white.png");
+	loader_ = std::make_unique<Loader>();
+	loader_->SetPlayer(player_.get());
+	loader_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
+	loader_->Record();
+
 	// postEffect
 	postEffect_ = std::make_unique<PostEffect>();
 	postEffect_->Initialize();
@@ -37,10 +44,17 @@ void GameScene::Initialize()
 	lockOn_->Initialize();
 	player_->SetLockOn(lockOn_.get());
 
+	// 敵
+	enemyManager_ = std::make_unique<EnemyManager>();
+	enemyManager_->SetPlayer(player_.get());
+	enemyManager_->SetLoader(loader_.get());
+	enemyManager_->Initialize();
+
 	// 弾
 	bulletObjectPool_ = std::make_unique<BulletObjectPool>();
 	bulletObjectPool_->Initialize();
 	player_->SetBulletObjectPool(bulletObjectPool_.get());
+	enemyManager_->SetBulletObjectPool(bulletObjectPool_.get());
 
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
@@ -56,13 +70,6 @@ void GameScene::Initialize()
 	cameraManager_->GetFollowCamera()->SetLockOn(lockOn_.get());
 	isGameStart_ = true;
 
-	// loader
-	TextureManager::Load("resources/TempTexture/white.png");
-	loader_ = std::make_unique<Loader>();
-	loader_->SetPlayer(player_.get());
-	loader_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
-	loader_->Record();
-	
 	// 天球
 	skydome_ = std::make_unique<Skydome>();
 	skydome_->Initialize();
@@ -87,11 +94,14 @@ void GameScene::Update()
 	// loader
 	loader_->Update();
 
+	// enemy
+	enemyManager_->Update();
+
 	// camera
 	cameraManager_->Update();
 
 	// lockOn
-	lockOn_->Update(loader_->GetEnemys(), cameraManager_->GetCamera());
+	lockOn_->Update(enemyManager_->GetEnemys(), cameraManager_->GetCamera());
 
 	Collision();
 
@@ -126,6 +136,8 @@ void GameScene::PostProcessDraw()
 	// player
 	player_->Draw(cameraManager_->GetCamera());
 
+	//enemy
+	enemyManager_->Draw(cameraManager_->GetCamera());
 	// 弾
 	bulletObjectPool_->Draw(cameraManager_->GetCamera());
 
@@ -142,12 +154,14 @@ void GameScene::Collision()
 	collisionManager_->ColliderPush(player_->GetCollider()); // playerのcolliderをリストに追加
 
 	for (const auto& bullet : bulletObjectPool_->GetBullets()) {
-		collisionManager_->ColliderPush(bullet->GetCollider()); // bulletのcolliderをリストに追加
+		if (bullet->GetIsActive()) {
+			collisionManager_->ColliderPush(bullet->GetCollider()); // bulletのcolliderをリストに追加
+		}
 	}
 
 	// enemy
-	for (const auto& enemy : loader_->GetEnemys()) {
-		collisionManager_->ColliderPush(enemy->GetCollider()); // enemyをリストに登録
+	for (const auto& enemy : enemyManager_->GetEnemys()) {
+		collisionManager_->ColliderPush(enemy->GetCollider()); // enemycolliderをリストに追加
 	}
 
 	// laser
