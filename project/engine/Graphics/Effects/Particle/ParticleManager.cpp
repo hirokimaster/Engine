@@ -51,7 +51,7 @@ void ParticleManager::CreateParam(const char* particleName)
 	editor->AddParam(particleName, "rangeAlpha_max", params_[particleName].rangeAlpha.max);
 }
 
-void ParticleManager::ApplyParticleInfo(const char* particleName)
+void ParticleManager::ApplyParam(const char* particleName)
 {
 	ParticleEditor* editor = ParticleEditor::GetInstance();
 	// params_のparticleNameに対応するemitterを更新を適用する
@@ -87,7 +87,6 @@ void ParticleManager::ApplyParticleInfo(const char* particleName)
 void ParticleManager::Create()
 {
 	unique_ptr<GPUParticle> particle = make_unique<GPUParticle>();
-	particle->SetModel("Player/plane.obj");
 	
 	// キューに入れる
 	GPUParticle* ptr = particle.get();
@@ -151,6 +150,7 @@ GPUParticle* ParticleManager::GetParticle(const string& name)
 	// 取り出す
 	GPUParticle* ptr = pool_.front();
 	pool_.pop();
+	ptr->SetModel("Player/plane.obj");
 	ptr->Initialize();
 	ptr->SetParticleParam(params_[name]); // ここで指定したパラメーターを入れる
 	

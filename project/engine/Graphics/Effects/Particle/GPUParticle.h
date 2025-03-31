@@ -180,5 +180,5 @@ private:
 	bool isActive_ = false;
 	bool isDead_ = false;
 	float lifeTime_ = 0.0f; // 生存時間
-    float kLifeTime = 0.0f;
+    float kLifeTime = 300.0f;
 };

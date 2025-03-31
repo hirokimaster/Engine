@@ -25,7 +25,7 @@ public:
 	void Initialize();
 
 	/// <summary>
-	/// editorを起動する
+	/// パラメーター追加
 	/// </summary>
 	/// <param name="particleName"></param>
 	void CreateParam(const char* particleName);
@@ -34,7 +34,7 @@ public:
 	/// particleの情報をエディターから読み込む
 	/// </summary>
 	/// <param name="particleName"></param>
-	void ApplyParticleInfo(const char* particleName);
+	void ApplyParam(const char* particleName);
 
 	/// <summary>
 	/// 更新

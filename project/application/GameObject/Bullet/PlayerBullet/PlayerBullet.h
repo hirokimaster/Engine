@@ -8,6 +8,7 @@
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "application/GameObject/LockOn/LockOn.h"
 #include "application/GameObject/Bullet/IBullet.h"
+#include "engine/Graphics/Effects/Particle/ParticleManager.h"
 
 class PlayerBullet : public IBullet{
 public:
@@ -85,4 +86,6 @@ private:
 	int32_t particleTimer_ = 200;
 	BulletType type_;
 	bool isActive_ = false;
+	ParticleManager* particleManager_ = nullptr; // particle
+	GPUParticle* particle_ = nullptr;
 };

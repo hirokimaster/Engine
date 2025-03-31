@@ -16,6 +16,11 @@ GameScene::~GameScene()
 
 void GameScene::Initialize()
 {
+	// particle
+	particleManager_ = ParticleManager::GetInstance();
+	particleManager_->CreateParam("explosion");
+	particleManager_->ApplyParam("explosion");
+
 	// loader
 	TextureManager::Load("resources/TempTexture/white.png");
 	loader_ = std::make_unique<Loader>();
@@ -79,6 +84,8 @@ void GameScene::Initialize()
 	gameSprite_->Initialize();
 	gameSprite_->SetGameScene(this);
 	gameSprite_->SetPlayer(player_.get());
+
+	
 }
 
 void GameScene::Update()
@@ -115,6 +122,9 @@ void GameScene::Update()
 	// postEffect更新
 	postEffect_->Update();
 
+	// particle
+	particleManager_->Update();
+
 }
 
 void GameScene::Draw()
@@ -131,6 +141,9 @@ void GameScene::PostProcessDraw()
 	postEffect_->GetPostProcess()->PreDraw();
 
 	//skydome_->Draw(cameraManager_->GetCamera());
+
+	// particle
+	particleManager_->Draw(cameraManager_->GetCamera());
 
 	loader_->Draw(cameraManager_->GetCamera());
 	// player
