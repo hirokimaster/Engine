@@ -2,5 +2,26 @@
 
 void ObjectManager::Initialize()
 {
-	
+	objects_.clear();
+}
+
+void ObjectManager::Update()
+{
+	for (auto& object : objects_) {
+		object->Update();
+	}
+}
+
+void ObjectManager::Draw(const Camera& camera)
+{
+	for (auto& object : objects_) {
+		object->Draw(camera);
+	}
+}
+
+BaseObject* ObjectManager::GetObjectData(const std::string& name)
+{
+	BaseObject* ptr = object_[name].front();
+
+	return ptr;
 }

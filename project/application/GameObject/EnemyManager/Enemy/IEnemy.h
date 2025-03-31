@@ -32,6 +32,12 @@ public:
 	/// </summary>
 	virtual void Fire() = 0;
 
+#pragma region setter
+
+	virtual void SetPosition(const Vector3& position) = 0;
+
+#pragma endregion
+
 #pragma region getter
 
 	/// <summary>

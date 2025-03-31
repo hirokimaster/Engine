@@ -141,6 +141,10 @@ void GameScene::Collision()
 
 	collisionManager_->ColliderPush(player_->GetCollider()); // playerのcolliderをリストに追加
 
+	for (const auto& bullet : bulletObjectPool_->GetBullets()) {
+		collisionManager_->ColliderPush(bullet->GetCollider()); // bulletのcolliderをリストに追加
+	}
+
 	// enemy
 	for (const auto& enemy : loader_->GetEnemys()) {
 		collisionManager_->ColliderPush(enemy->GetCollider()); // enemyをリストに登録

@@ -34,6 +34,8 @@ public:
 
 	void SetBulletObjectPool(BulletObjectPool* ptr) { bulletObjectPool_ = ptr; }
 
+	void SetPosition(const Vector3& position)override { object_->SetPosition(position); }
+
 #pragma endregion
 
 private:

@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <memory>
+#include <map>
 #include "engine/3d/Object3DPlacer/BaseObject.h"
 
 class ObjectManager {
@@ -19,21 +20,21 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw(const Camera& camera);
 
 	/// <summary>
-	/// オブジェクトの追加
+	/// objectの追加
 	/// </summary>
-	/// <param name="objects"></param>
-	void PushObject(std::unique_ptr<BaseObject> objects) { objects_.push_back(std::move(objects)); }
+	/// <param name="object"></param>
+	void PushObject(std::unique_ptr<BaseObject> object) { objects_.push_back(std::move(object)); }
 
-	/// <summary>
-	/// objectの情報
-	/// </summary>
-	void LoadObjectData();
+#pragma region getter
+
+	BaseObject* GetObjectData(const std::string& name);
+
+#pragma endregion
 
 private:
-
-	std::list<std::unique_ptr<BaseObject>> objects_;
-
+    std::list<std::unique_ptr<BaseObject>> objects_; // 全てのobject
+	std::map<std::string, std::queue<BaseObject*>> object_; // objectのポインタ
 };

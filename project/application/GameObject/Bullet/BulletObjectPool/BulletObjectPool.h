@@ -23,11 +23,17 @@ public:
 #pragma region getter
 
 	/// <summary>
-	/// 弾の取得
+	/// プールにある弾の取得
 	/// </summary>
 	/// <param name="name"></param>
 	/// <returns></returns>
 	IBullet* GetBullet(const std::string& name);
+
+	/// <summary>
+	/// 全ての弾
+	/// </summary>
+	/// <returns></returns>
+	const std::vector<std::unique_ptr<IBullet>>& GetBullets() const { return bullets_; }
 
 #pragma endregion
 

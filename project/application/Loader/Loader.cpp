@@ -158,6 +158,13 @@ void Loader::Record()
 			}
 			enemys_.push_back(std::move(newEnemy));
 			}
+		else if (objectData.fileName == "fixedEnemy") {
+			std::unique_ptr<FixedEnemy> newEnemy = std::make_unique<FixedEnemy>();
+			newEnemy->Initialize();
+			newEnemy->SetPlayer(player_);
+			newEnemy->SetPosition(objectData.translate);
+			enemys_.push_back(std::move(newEnemy));
+		}
 		else if (objectData.fileName == "laser") {
 			std::unique_ptr<Laser> newLaser = std::make_unique<Laser>();
 			newLaser->Initialize();

@@ -88,7 +88,7 @@ public:
 
 #pragma region setter
 
-	void SetPosition(const Vector3& position) { object_->SetPosition(position); }
+	void SetPosition(const Vector3& position)override { object_->SetPosition(position); }
 
 	void SetPlayer(Player* player) { player_ = player; }
 
