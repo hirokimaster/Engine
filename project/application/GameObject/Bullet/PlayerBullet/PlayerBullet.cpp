@@ -17,8 +17,6 @@ void PlayerBullet::Initialize()
 	type_ = BulletType::Player;
 	isDead_ = false;
 	isActive_ = false;
-	// particle
-	particleManager_ = ParticleManager::GetInstance();
 }
 
 void PlayerBullet::Update()
@@ -27,20 +25,9 @@ void PlayerBullet::Update()
 	BaseObject::Update(); // object共通の更新
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
 	OnCollision(); // 当たったら
-
-	// particle
-	if (!particle_) {
-		particle_ = particleManager_->GetParticle("bulletTrajectory");
-		particle_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
-		particle_->SetIsActive(true);
-	}
-
-	particle_->SetPosition(GetWorldPosition());
-
+    
 	// 時間で消滅
 	if (--deathTimer_ <= 0) {
-		particle_->SetIsActive(false);
-		particle_->SetIsDead(true);
 		isDead_ = true;
 	}
 }

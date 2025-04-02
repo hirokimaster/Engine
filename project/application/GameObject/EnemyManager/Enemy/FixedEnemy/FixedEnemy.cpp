@@ -14,7 +14,7 @@ void FixedEnemy::Initialize()
 
 void FixedEnemy::Update()
 {
-    // object共通の更新処理
+	// object共通の更新処理
 	BaseObject::Update();
 	collider_->SetWorldPosition(GetWorldPosition());
 	// 衝突
@@ -36,6 +36,7 @@ void FixedEnemy::Draw(const Camera& camera)
 {
 	// object共通の描画処理
 	BaseObject::Draw(camera);
+
 }
 
 void FixedEnemy::Fire()

@@ -127,6 +127,14 @@ void GameScene::Update()
 	// particle
 	particleManager_->Update();
 
+	if (player_->GetWorldPosition().z >= 8000.0f && !isTransitionClear_) {
+		isTransitionClear_ = true;
+		transition_ = std::make_unique<FadeIn>();
+		transition_->Initialize();
+		GameManager::GetInstance()->SetSceneTransition(transition_.get());
+		GameManager::GetInstance()->ChangeScene("CLEAR");
+	}
+
 }
 
 void GameScene::Draw()

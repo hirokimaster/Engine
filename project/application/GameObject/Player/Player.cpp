@@ -11,7 +11,7 @@ void Player::Initialize()
 {
 	// object共通の初期化
 	BaseObject::Initialize("Player/player.obj", "TempTexture/white.png", ColliderType::Sphere);
-	object_->SetPosition({ 0,60.0f,0 });
+	object_->SetPosition({ 0,40.0f,0 });
 	// 属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象

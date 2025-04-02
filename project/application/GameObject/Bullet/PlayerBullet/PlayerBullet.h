@@ -83,9 +83,6 @@ private:
 	static const int32_t kLifeTime_ = 60 * 3; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
-	int32_t particleTimer_ = 200;
 	BulletType type_;
 	bool isActive_ = false;
-	ParticleManager* particleManager_ = nullptr; // particle
-	GPUParticle* particle_ = nullptr;
 };

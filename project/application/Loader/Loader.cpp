@@ -142,7 +142,7 @@ void Loader::Record()
 	TextureManager::Load("resources/TempTexture/uvChecker.png");
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/grounds.obj");
 
-	levelData_ = Load("level2");
+	levelData_ = Load("demo");
 
 	for (auto& objectData : levelData_->objects) {
 		// 動く敵
