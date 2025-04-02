@@ -18,6 +18,8 @@ void GameScene::Initialize()
 {
 	// particle
 	particleManager_ = ParticleManager::GetInstance();
+	particleManager_->CreateParam("bulletTrajectory");
+	particleManager_->ApplyParam("bulletTrajectory");
 	particleManager_->CreateParam("explosion");
 	particleManager_->ApplyParam("explosion");
 
@@ -193,6 +195,9 @@ void GameScene::LoadTextureFile()
 	TextureManager::Load("resources/UI/RB.png");
 	TextureManager::Load("resources/UI/RB2.png");
 	TextureManager::Load("resources/UI/L.png");
+
+	// particle
+	TextureManager::Load("resources/Player/smoke.png");
 
 	// ゲームオーバー用
 	TextureManager::Load("resources/UI/yes.png");

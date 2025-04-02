@@ -29,16 +29,6 @@ void LockOn::Update(const std::list<std::unique_ptr<IEnemy>>& enemies, const Cam
 			target_.clear();
 			isLockOnMode_ = false;
 		}
-
-		// アンロック判定
-		for (auto itr = target_.begin(); itr != target_.end();) {
-			if (UnLock(camera, *itr)) {
-				itr = target_.erase(itr);
-			}
-			else {
-				++itr;
-			}
-		}
 	}
 
 	// 検索
@@ -108,6 +98,7 @@ void LockOn::ReticleRangeLimit()
 
 	positionLockOn.x = std::clamp(positionLockOn.x, 25.0f, 1255.0f);
 	positionLockOn.y = std::clamp(positionLockOn.y, 25.0f, 695.0f);
+	screenPositionReticle_ = positionReticle;
 
 	sprite2DReticle_->SetPosition(positionReticle);
 	spriteLockOnReticle_->SetPosition(positionLockOn);
@@ -243,10 +234,10 @@ bool LockOn::CheckReticleRange(const Vector3& position)
 	float reticleRadius; // レティクルの範囲
 
 	if (isLockOnMode_) {
-		reticleRadius = 100.0f;
+		reticleRadius = 20.0f;
 	}
 	else {
-		reticleRadius = 100.0f;
+		reticleRadius = 20.0f;
 	}
 
 	Vector2 reticleCenter = screenPositionReticle_;

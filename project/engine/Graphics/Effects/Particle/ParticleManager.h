@@ -84,5 +84,5 @@ private:
 	// インスタンスを入れておくコンテナ
 	vector<unique_ptr<GPUParticle>> particles_;
 	// 同時に存在できるparticleの数
-	static const uint32_t kPoolSize = 30;
+	static const uint32_t kPoolSize = 100;
 };

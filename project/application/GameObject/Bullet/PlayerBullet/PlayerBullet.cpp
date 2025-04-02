@@ -13,6 +13,7 @@ void PlayerBullet::Initialize()
 	// collider設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayerBullet);
 	collider_->SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
+	collider_->SetRadious(2.0f);
 	type_ = BulletType::Player;
 	isDead_ = false;
 	isActive_ = false;
@@ -29,11 +30,9 @@ void PlayerBullet::Update()
 
 	// particle
 	if (!particle_) {
-		particle_ = particleManager_->GetParticle("explosion");
-		particle_->SetLifeTime(300.0f);
+		particle_ = particleManager_->GetParticle("bulletTrajectory");
 		particle_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
 		particle_->SetIsActive(true);
-		
 	}
 
 	particle_->SetPosition(GetWorldPosition());

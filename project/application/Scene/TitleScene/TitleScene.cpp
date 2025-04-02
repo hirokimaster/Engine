@@ -69,10 +69,10 @@ void TitleScene::Update()
 	}
 
 	// 自機の移動
-	Vector3 velocity = { 0,0,2.0f };
+	/*Vector3 velocity = { 0,0,2.0f };
 	Vector3 move{};
 	move = objectPlayer_->GetWorldTransform().translate + velocity;
-	objectPlayer_->SetPosition(move);
+	objectPlayer_->SetPosition(move);*/
 	objectPlayer_->Update();
 
 	// カメラ

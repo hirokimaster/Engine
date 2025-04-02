@@ -209,8 +209,8 @@ void GPUParticle::UpdateEmitter()
 		emitterSphereData_->emit = 0;
 	}
 
-	if (--lifeTime_) {
-		isDead_ = true;
+	if (--lifeTime_ <= 0.0f) {
+	    isDead_ = true;
 	}
 }
 

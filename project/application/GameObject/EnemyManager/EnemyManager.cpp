@@ -32,12 +32,21 @@ void EnemyManager::Initialize()
         }
     }
 
+    // particle
+    particleManager_ = ParticleManager::GetInstance();
+
 }
 
 void EnemyManager::Update()
 {
 	for (auto& enemy : enemys_) {
 		enemy->Update();
+        if (enemy->GetIsDead() && enemy) {
+            GPUParticle* particle = particleManager_->GetParticle("explosion");
+            particle->SetTexHandle(TextureManager::GetTexHandle("Player/smoke.png"));
+            particle->SetIsActive(true);
+            particle->SetPosition(enemy->GetWorldPosition());
+        }
 	}
 
     // デスフラグが呼ばれたら削除

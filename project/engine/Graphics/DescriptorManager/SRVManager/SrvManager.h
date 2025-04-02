@@ -112,23 +112,23 @@ private:
 
 private:
 	// 最大SRV数
-	static const uint32_t kMaxSRVCount = 1024;
+	static const uint32_t kMaxSRVCount = 1024 * 6;
 
 	D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandle_[kMaxSRVCount];
 	D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandle_[kMaxSRVCount];
 
-	// texture用のsrvを作る場所を0～300まで
+	// texture用のsrvを作る場所を0～2047まで
 	uint32_t index_ = 0; // srvのインデックス
 	uint32_t beforeIndex_ = 0; // 前のインデックスを入れとく
 	std::queue<uint32_t> vacantIndices_; // 空きインデックスを管理
 
-	// structuredBuffer用のsrvを作る場所を301～663まで
+	// structuredBuffer用のsrvを作る場所を2048～4095まで
 	uint32_t structuredBufIndex_ = 0;
-	uint32_t beforestructuredBufIndex_ = 300;
+	uint32_t beforestructuredBufIndex_ = 2047;
 	std::queue<uint32_t> vacantStructuredBufIndices_;
 
-	// uavを作る場所を664～1024
+	// uavを作る場所を4095～6144
 	uint32_t uavIndex_ = 0;
-	uint32_t beforeUavIndex_ = 663;
+	uint32_t beforeUavIndex_ = 4095;
 	std::queue<uint32_t> vacantUavIndices_;
 };

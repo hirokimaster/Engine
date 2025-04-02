@@ -48,4 +48,6 @@ private:
 	Player* player_ = nullptr;
 	// bulletObjectPool
 	BulletObjectPool* bulletObjectPool_ = nullptr;
+	// パーティクルマネージャ
+	ParticleManager* particleManager_ = nullptr;
 };

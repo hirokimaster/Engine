@@ -179,6 +179,6 @@ private:
 	const float kDeltaTime_ = 1.0f / 60.0f;
 	bool isActive_ = false;
 	bool isDead_ = false;
-	float lifeTime_ = 0.0f; // 生存時間
+	float lifeTime_ = 180.0f; // 生存時間
     float kLifeTime = 300.0f;
 };

@@ -87,6 +87,8 @@ void ParticleManager::ApplyParam(const char* particleName)
 void ParticleManager::Create()
 {
 	unique_ptr<GPUParticle> particle = make_unique<GPUParticle>();
+	particle->SetModel("Player/plane.obj");
+	particle->Initialize();
 	
 	// キューに入れる
 	GPUParticle* ptr = particle.get();
@@ -101,6 +103,8 @@ void ParticleManager::Push(GPUParticle* particle)
 
 	// アクティブ状態解除
 	particle->SetIsActive(false);
+	// 生存にする
+	particle->SetIsDead(false);
 	// 生存時間をリセットする
 	particle->ResetLifeTime();
 	// キューに戻す
@@ -150,8 +154,6 @@ GPUParticle* ParticleManager::GetParticle(const string& name)
 	// 取り出す
 	GPUParticle* ptr = pool_.front();
 	pool_.pop();
-	ptr->SetModel("Player/plane.obj");
-	ptr->Initialize();
 	ptr->SetParticleParam(params_[name]); // ここで指定したパラメーターを入れる
 	
 	return 	ptr;

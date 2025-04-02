@@ -9,6 +9,7 @@ void FixedEnemy::Initialize()
 	// コライダーの属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);	  // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
+	collider_->SetRadious(8.0f); // コライダーのサイズ 
 }
 
 void FixedEnemy::Update()
@@ -18,6 +19,10 @@ void FixedEnemy::Update()
 	collider_->SetWorldPosition(GetWorldPosition());
 	// 衝突
 	OnCollision();
+	// playerが越えて見えなくなったら消す
+	if (GetWorldPosition().z <= player_->GetWorldPosition().z) {
+		isDead_ = true;
+	}
 
 #ifdef _DEBUG
 	ImGui::Begin("enemy");

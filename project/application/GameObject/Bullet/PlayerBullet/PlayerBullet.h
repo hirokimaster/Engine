@@ -80,7 +80,7 @@ public:
 private:
 	Vector3 velocity_ = {};	// 移動ベクトル
 	bool isDead_ = false; // bulletのデスフラグ
-	static const int32_t kLifeTime_ = 60 * 5; // 生きてる時間
+	static const int32_t kLifeTime_ = 60 * 3; // 生きてる時間
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
 	int32_t particleTimer_ = 200;
