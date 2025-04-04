@@ -17,6 +17,8 @@ void PlayerBullet::Initialize()
 	type_ = BulletType::Player;
 	isDead_ = false;
 	isActive_ = false;
+	// particle
+	particleManager_ = ParticleManager::GetInstance();
 }
 
 void PlayerBullet::Update()
@@ -25,7 +27,17 @@ void PlayerBullet::Update()
 	BaseObject::Update(); // object共通の更新
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
 	OnCollision(); // 当たったら
-    
+	// particle
+	if (isActive_ && !isMove_) {
+		particle_ = particleManager_->GetParticle("bulletTrajectory", "Player/smoke.png");
+		particle_->SetIsActive(true);
+		isMove_ = true;
+	}
+
+	if (particle_) {
+		particle_->SetPosition(GetWorldPosition());
+	}
+	
 	// 時間で消滅
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;

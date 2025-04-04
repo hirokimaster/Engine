@@ -10,6 +10,8 @@ void FixedEnemy::Initialize()
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);	  // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
 	collider_->SetRadious(8.0f); // コライダーのサイズ 
+	// パーティクル
+	particleManager_ = ParticleManager::GetInstance();
 }
 
 void FixedEnemy::Update()
@@ -24,6 +26,17 @@ void FixedEnemy::Update()
 		isDead_ = true;
 	}
 
+	if (isHit_ && !isExploded_) {
+		particle_ = particleManager_->GetParticle("explosion", "Player/smoke.png");
+		isExploded_ = true;
+	}
+	
+	// particleの位置
+	if (particle_) {
+		particle_->SetIsActive(true);
+		particle_->SetPosition(object_->GetWorldTransform().translate);
+	}
+	
 #ifdef _DEBUG
 	ImGui::Begin("enemy");
 	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
@@ -34,9 +47,11 @@ void FixedEnemy::Update()
 
 void FixedEnemy::Draw(const Camera& camera)
 {
-	// object共通の描画処理
-	BaseObject::Draw(camera);
-
+	if (!isHit_) {
+		// object共通の描画処理
+		BaseObject::Draw(camera);
+	}
+	
 }
 
 void FixedEnemy::Fire()
@@ -66,7 +81,7 @@ void FixedEnemy::OnCollision()
 {
 	if (collider_->OnCollision()) {
 		// ここに衝突した時の処理書く
-		isDead_ = true;
+		isHit_ = true;
 	}
 }
 

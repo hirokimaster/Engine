@@ -14,10 +14,8 @@
 #include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "engine/3d/Model/ModelManager.h"
 #include <numbers>
-#include "application/GameObject/EnemyManager/Enemy/IEnemy.h"
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
-#include "application/GameObject/Gimmick/Laser.h"
-#include "application/GameObject/EnemyManager/Enemy/FixedEnemy/FixedEnemy.h"
+#include "application/GameObject/Obstacles/Laser.h"
 
 // レベルデータ
 struct LevelData {
@@ -34,7 +32,8 @@ struct LevelData {
 	std::vector<ObjectData>objects;
 };
 
-class Player;
+// 前方宣言
+class ObjectManager;
 
 class Loader {
 public:
@@ -45,29 +44,17 @@ public:
 	void Record();
 
 	/// <summary>
-	/// 更新
+	/// objectを登録する
 	/// </summary>
-	void Update();
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw(const Camera& camera);
+	/// <param name="ptr"></param>
+	void ObjectRegister(ObjectManager* ptr);
 
 #pragma region getter
 
-	const std::list<std::unique_ptr<Laser>>& GetLasers() const { return lasers_; }
-
 	const std::map<std::string, std::vector<LevelData::ObjectData>>& GetObjectDatas() const {return objectDatas_;}
-#pragma endregion
-
-#pragma region setter
-
-	void SetPlayer(Player* player) { player_ = player; }
-
-	void SetTexHandle(uint32_t texHandle) { texHandle_ = texHandle; }
 
 #pragma endregion
+
 
 private:
 
@@ -79,11 +66,7 @@ private:
 
 private:
 	std::map<std::string, std::unique_ptr<Model>>  models_;
-	std::vector<std::unique_ptr<Object3DPlacer>> objects_;
-	std::list<std::unique_ptr<Laser>> lasers_;
 	std::map<std::string, std::vector<LevelData::ObjectData>> objectDatas_;
-	uint32_t texHandle_ = 0;
-	Player* player_ = nullptr;
 	UVTransform uvTransform_{
 		{1.0f,2.5f,1.0f},
 		{0.0f,0.0f,0.0f},

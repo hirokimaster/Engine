@@ -63,4 +63,6 @@ private:
 	bool isTransition_ = false;
 	std::unique_ptr<ISceneTransition> transition_ = nullptr;
 	std::unique_ptr<Skydome> skydome_ = nullptr;
+	// particle
+	ParticleManager* particleManager_ = nullptr;
 };

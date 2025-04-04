@@ -85,4 +85,7 @@ private:
 	LockOn* lockOn_ = nullptr; // ロックオンのポインタ
 	BulletType type_;
 	bool isActive_ = false;
+	ParticleManager* particleManager_ = nullptr;
+	GPUParticle* particle_ = nullptr;
+	bool isMove_ = false;
 };

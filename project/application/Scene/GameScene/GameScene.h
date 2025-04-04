@@ -18,6 +18,7 @@
 #include <application/GameObject/EnemyManager/EnemyManager.h>
 #include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
+#include "engine/3d/ObjectManager/ObjectManager.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -79,4 +80,5 @@ private:
 	std::unique_ptr<BulletObjectPool> bulletObjectPool_; // 弾のプール
 	std::unique_ptr<EnemyManager> enemyManager_; // enemy
 	ParticleManager* particleManager_ = nullptr; // particle
+	std::unique_ptr<ObjectManager> objectManager_; // objectManager
 };

@@ -148,4 +148,5 @@ private:
 	float rotateSpeed_; // 回転速度
 	float rotateLerpFactor_; // Lerpの強さ
 	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタ借りる
+	ParticleManager* particleManager_ = nullptr;
 };

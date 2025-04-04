@@ -64,4 +64,9 @@ private:
 	float bulletSpeed_ = 0.0f;
 	// 弾のオブジェクトプール
 	BulletObjectPool* bulletObjectPool_ = nullptr;
+	// パーティクル
+	ParticleManager* particleManager_ = nullptr;
+	GPUParticle* particle_ = nullptr;
+	bool isHit_ = false; // 当たったか
+	bool isExploded_ = false; // 爆発してるか
 };

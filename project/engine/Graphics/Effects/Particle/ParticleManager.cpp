@@ -8,6 +8,7 @@ ParticleManager* ParticleManager::GetInstance()
 
 void ParticleManager::Initialize()
 {
+	ModelManager::GetInstance()->LoadObjModel("Player/plane.obj");
 	// パラメーター読み込み
 	ParticleEditor::GetInstance()->LoadFiles();
 	// あらかじめインスタンスを作っておく
@@ -86,15 +87,19 @@ void ParticleManager::ApplyParam(const char* particleName)
 
 void ParticleManager::Create()
 {
-	unique_ptr<GPUParticle> particle = make_unique<GPUParticle>();
-	particle->SetModel("Player/plane.obj");
-	particle->Initialize();
-	
-	// キューに入れる
-	GPUParticle* ptr = particle.get();
-	particles_.push_back(std::move(particle));
-	pool_.push(ptr);
+	// 最大を越えないようにする
+	if (kPoolSize > particles_.size()) {
+		unique_ptr<GPUParticle> particle = make_unique<GPUParticle>();
+		particle->SetModel("Player/plane.obj");
+		particle->Initialize();
+
+		// キューに入れる
+		GPUParticle* ptr = particle.get();
+		particles_.push_back(std::move(particle));
+		pool_.push(ptr);
+	}
 }
+	
 
 void ParticleManager::Push(GPUParticle* particle)
 {
@@ -115,6 +120,7 @@ void ParticleManager::Update()
 {
 	for (auto& particle : particles_) {
 		if (particle->GetIsActive()) {
+			
 			particle->Update();
 		}
 
@@ -124,6 +130,10 @@ void ParticleManager::Update()
 			Push(particle.get());
 		}
 	}
+
+	ImGui::Begin("effectPool");
+	ImGui::Text("position = %d", pool_.size());
+	ImGui::End();
 }
 
 void ParticleManager::UpdateEditor()
@@ -140,7 +150,7 @@ void ParticleManager::Draw(const Camera& camera)
 	}
 }
 
-GPUParticle* ParticleManager::GetParticle(const string& name)
+GPUParticle* ParticleManager::GetParticle(const string& name, const string& texture)
 {
 	// 空のときは新しく作る
 	if (pool_.empty()) {
@@ -154,7 +164,7 @@ GPUParticle* ParticleManager::GetParticle(const string& name)
 	// 取り出す
 	GPUParticle* ptr = pool_.front();
 	pool_.pop();
+	ptr->SetTexHandle(TextureManager::GetTexHandle(texture)); // textureを決める(初期は白のtexture)
 	ptr->SetParticleParam(params_[name]); // ここで指定したパラメーターを入れる
-	
 	return 	ptr;
 }

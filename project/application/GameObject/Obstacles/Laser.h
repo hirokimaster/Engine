@@ -33,9 +33,9 @@ public:
 
 #pragma region setter
 
-	void SetPosition(const Vector3& position) { object_->SetPosition(position); }
+	void SetPosition(const Vector3& position)override { object_->SetPosition(position); }
 
-	void SetScale(const Vector3& scale) { object_->SetScale(scale); }
+	void SetScale(const Vector3& scale)override { object_->SetScale(scale); }
 
 #pragma endregion
 

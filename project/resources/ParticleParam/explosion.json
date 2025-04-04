@@ -6,7 +6,7 @@
         "frequencyTime": 0.10000000149011612,
         "radius": 1.0,
         "rangeAlpha_max": 1.0,
-        "rangeAlpha_min": 0.0,
+        "rangeAlpha_min": 1.0,
         "rangeColor_max": [
             5.0,
             0.009999999776482582,
@@ -20,16 +20,16 @@
         "rangeCurrentTime_max": 5.0,
         "rangeCurrentTime_min": 0.0,
         "rangeLifeTime_max": 1.0,
-        "rangeLifeTime_min": 1.0,
+        "rangeLifeTime_min": 0.0,
         "rangeScale_max": [
-            1.2,
-            1.2,
-            1.2
+            5.2,
+            5.2,
+            5.2
         ],
         "rangeScale_min": [
-            0.8,
-            0.8,
-            0.8
+            3.8,
+            3.8,
+            3.8
         ],
         "rangeTranslate_max": [
             0.0,

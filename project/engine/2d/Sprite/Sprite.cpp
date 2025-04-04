@@ -66,9 +66,6 @@ void Sprite::Initialize(uint32_t texHandle) {
 	AdjustTextureSize(texHandle_);
 
 	textureSize_ = size_;
-
-	worldTransform_.Initialize();
-
 }
 
 /// <summary>

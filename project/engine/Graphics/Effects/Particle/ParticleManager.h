@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/Graphics/Effects/Particle/ParticleEditor.h"
 #include "engine/Graphics/Effects/Particle/GPUParticle.h"
+#include "engine/Graphics/TextureManager/TextureManager.h"
 
 using std::string;
 using std::map;
@@ -53,7 +54,7 @@ public:
 
 #pragma region getter
 
-	GPUParticle* GetParticle(const string& name);
+	GPUParticle* GetParticle(const string& name, const string& texture = "TempTexture/circle.png");
 
 #pragma endregion
 
@@ -84,5 +85,5 @@ private:
 	// インスタンスを入れておくコンテナ
 	vector<unique_ptr<GPUParticle>> particles_;
 	// 同時に存在できるparticleの数
-	static const uint32_t kPoolSize = 200;
+	static const uint32_t kPoolSize = 100;
 };

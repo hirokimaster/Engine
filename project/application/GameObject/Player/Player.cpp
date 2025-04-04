@@ -11,7 +11,7 @@ void Player::Initialize()
 {
 	// object共通の初期化
 	BaseObject::Initialize("Player/player.obj", "TempTexture/white.png", ColliderType::Sphere);
-	object_->SetPosition({ 0,40.0f,0 });
+	object_->SetPosition({ 0,40.0f,-1000.0f });
 	// 属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
@@ -27,6 +27,9 @@ void Player::Initialize()
 	// 発射タイマー
 	attackTimer_ = 0.0f;
 
+	// particle
+	particleManager_ = ParticleManager::GetInstance();
+
 	// UI
 	spriteAttack_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/RB.png"), { 1000.0f , 500.0f }));
 	spriteAttack_->SetScale({ 2.0f,2.0f });
@@ -36,7 +39,6 @@ void Player::Initialize()
 
 void Player::Update()
 {
-
 	Move(); // 移動
 	Rotate(); // 回転
 

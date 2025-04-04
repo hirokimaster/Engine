@@ -23,12 +23,15 @@ void GameScene::Initialize()
 	particleManager_->CreateParam("explosion");
 	particleManager_->ApplyParam("explosion");
 
+	// objectManager
+	objectManager_ = std::make_unique<ObjectManager>();
+
 	// loader
 	TextureManager::Load("resources/TempTexture/white.png");
 	loader_ = std::make_unique<Loader>();
-	loader_->SetPlayer(player_.get());
 	loader_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
 	loader_->Record();
+	loader_->ObjectRegister(objectManager_.get());
 
 	// postEffect
 	postEffect_ = std::make_unique<PostEffect>();
@@ -100,8 +103,8 @@ void GameScene::Update()
 	// 弾
 	bulletObjectPool_->Update();
 	
-	// loader
-	loader_->Update();
+	// objectManager
+	objectManager_->Update();
 
 	// enemy
 	enemyManager_->Update();
@@ -126,15 +129,6 @@ void GameScene::Update()
 
 	// particle
 	particleManager_->Update();
-
-	if (player_->GetWorldPosition().z >= 8000.0f && !isTransitionClear_) {
-		isTransitionClear_ = true;
-		transition_ = std::make_unique<FadeIn>();
-		transition_->Initialize();
-		GameManager::GetInstance()->SetSceneTransition(transition_.get());
-		GameManager::GetInstance()->ChangeScene("CLEAR");
-	}
-
 }
 
 void GameScene::Draw()
@@ -144,6 +138,7 @@ void GameScene::Draw()
 	gameSprite_->Draw();
 
 	player_->DrawUI();
+
 }
 
 void GameScene::PostProcessDraw()
@@ -152,10 +147,9 @@ void GameScene::PostProcessDraw()
 
 	//skydome_->Draw(cameraManager_->GetCamera());
 
-	// particle
-	particleManager_->Draw(cameraManager_->GetCamera());
+	objectManager_->Draw(cameraManager_->GetCamera());
 
-	loader_->Draw(cameraManager_->GetCamera());
+	//loader_->Draw(cameraManager_->GetCamera());
 	// player
 	player_->Draw(cameraManager_->GetCamera());
 
@@ -166,6 +160,9 @@ void GameScene::PostProcessDraw()
 
 	// lockOn_(レティクル)
 	lockOn_->Draw();
+
+	// particle
+	particleManager_->Draw(cameraManager_->GetCamera());
 
 	postEffect_->GetPostProcess()->PostDraw();
 }

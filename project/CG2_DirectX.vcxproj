@@ -123,7 +123,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\EnemyStateSortie.cpp" />
     <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.cpp" />
     <ClCompile Include="application\GameObject\CameraManager\FollowCamera\FollowCamera.cpp" />
-    <ClCompile Include="application\GameObject\Gimmick\Laser.cpp" />
+    <ClCompile Include="application\GameObject\Obstacles\Laser.cpp" />
     <ClCompile Include="application\GameObject\LockOn\LockOn.cpp" />
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp" />
     <ClCompile Include="application\GameObject\Bullet\PlayerBullet\PlayerBullet.cpp" />
@@ -205,7 +205,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\EnemyStateFire.h" />
     <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.h" />
     <ClInclude Include="application\GameObject\CameraManager\FollowCamera\FollowCamera.h" />
-    <ClInclude Include="application\GameObject\Gimmick\Laser.h" />
+    <ClInclude Include="application\GameObject\Obstacles\Laser.h" />
     <ClInclude Include="application\GameObject\LockOn\LockOn.h" />
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
     <ClInclude Include="application\GameObject\Bullet\PlayerBullet\PlayerBullet.h" />

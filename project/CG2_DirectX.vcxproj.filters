@@ -119,7 +119,7 @@
     <ClCompile Include="application\GameObject\LockOn\LockOn.cpp">
       <Filter>application\GameObject\LockOn</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Gimmick\Laser.cpp">
+    <ClCompile Include="application\GameObject\Obstacles\Laser.cpp">
       <Filter>application\GameObject\Gimmick</Filter>
     </ClCompile>
     <ClCompile Include="application\GameObject\Player\Player.cpp">
@@ -320,7 +320,7 @@
     <ClInclude Include="application\GameObject\LockOn\LockOn.h">
       <Filter>application\GameObject\LockOn</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameObject\Gimmick\Laser.h">
+    <ClInclude Include="application\GameObject\Obstacles\Laser.h">
       <Filter>application\GameObject\Gimmick</Filter>
     </ClInclude>
     <ClInclude Include="application\GameObject\Player\Player.h">

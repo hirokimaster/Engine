@@ -7,6 +7,7 @@
 #include "Loader.h"
 #include "application/GameObject/Player/Player.h"
 #include <application/GameObject/EnemyManager/Enemy/MoveEnemy/MoveEnemy.h>
+#include "engine/3d/ObjectManager/ObjectManager.h"
 
 LevelData* Loader::Load(const std::string& fileName)
 {
@@ -84,7 +85,7 @@ LevelData* Loader::Load(const std::string& fileName)
 
 			// modelのロード
 			if (objectData.fileName != "eventTrigger" && objectData.fileName != "floor" && objectData.fileName != "wall" && objectData.fileName != "fixedEnemy") {
-				ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");	
+				ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
 			}
 
 		}
@@ -142,8 +143,9 @@ void Loader::Record()
 	TextureManager::Load("resources/TempTexture/uvChecker.png");
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/grounds.obj");
 
-	levelData_ = Load("demo");
+	levelData_ = Load("level2");
 
+	// jsonファイルから読み込んだ情報を保存する
 	for (auto& objectData : levelData_->objects) {
 		// 動く敵
 		if (objectData.fileName == "moveEnemy") {
@@ -153,93 +155,72 @@ void Loader::Record()
 		else if (objectData.fileName == "fixedEnemy") {
 			objectDatas_[objectData.fileName].push_back(objectData);
 		}
-	}
-
-	// レベルデータからオブジェクトを生成、配置
-	for (auto& objectData : levelData_->objects) {
-
-		if (objectData.fileName == "laser") {
-			std::unique_ptr<Laser> newLaser = std::make_unique<Laser>();
-			newLaser->Initialize();
-			newLaser->SetPosition(objectData.translate);
-			newLaser->SetScale(objectData.scale);
-			lasers_.push_back(std::move(newLaser));
-			}
+		// レーザー
+		else if (objectData.fileName == "laser") {
+			objectDatas_[objectData.fileName].push_back(objectData);
+		}
+		// 道
 		else if (objectData.fileName == "roads") {
-			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
-			newObject->Initialize();
-			newObject->SetModel("LevelEditorObj/grounds.obj");
-			newObject->SetTexHandle(TextureManager::GetTexHandle("Stage/road.png"));
-			newObject->SetPosition(objectData.translate);
-			newObject->SetRotate(objectData.rotate);
-			newObject->SetScale(objectData.scale);
-			newObject->SetUVTransform(uvTransform_);
-			objects_.push_back(std::move(newObject));
-			}
+			objectDatas_[objectData.fileName].push_back(objectData);
+		}
+		// 地面
 		else if (objectData.fileName == "grounds") {
-			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
-			newObject->Initialize();
-			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
-			newObject->SetTexHandle(TextureManager::GetTexHandle("TempTexture/mount.jpg"));
-			newObject->SetPosition(objectData.translate);
-			newObject->SetRotate(objectData.rotate);
-			newObject->SetScale(objectData.scale);
-			objects_.push_back(std::move(newObject));
-			}
-		else if (objectData.fileName == "mounts2") {
-			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
-			newObject->Initialize();
-			newObject->SetModel("LevelEditorObj/" + objectData.fileName + ".obj");
-			newObject->SetTexHandle(TextureManager::GetTexHandle("TempTexture/mount.jpg"));
-			newObject->SetPosition(objectData.translate);
-			newObject->SetRotate(objectData.rotate);
-			newObject->SetScale(objectData.scale);
-			objects_.push_back(std::move(newObject));
-			}
-		/*else if (objectData.fileName == "floor") {
-			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
-			newObject->Initialize();
-			newObject->SetModel("LevelEditorObj/plane.obj");
-			newObject->SetTexHandle(TextureManager::GetTexHandle("TempTexture/uvChecker.png"));
-			newObject->SetPosition(objectData.translate);
-			newObject->SetRotate(objectData.rotate);
-			newObject->SetScale(objectData.scale);
-			objects_.push_back(std::move(newObject));
-		}*/
+			objectDatas_[objectData.fileName].push_back(objectData);
+		}
 		else if (objectData.fileName == "wall") {
-			std::unique_ptr<Object3DPlacer> newObject = std::make_unique<Object3DPlacer>();
-			newObject->Initialize();
-			newObject->SetModel("Player/cube.obj");
-			newObject->SetTexHandle(TextureManager::GetTexHandle("TempTexture/noise0.png"));
-			newObject->SetPosition(objectData.translate);
-			newObject->SetRotate(objectData.rotate);
-			newObject->SetScale(objectData.scale);
-			objects_.push_back(std::move(newObject));
-		}	
+			objectDatas_[objectData.fileName].push_back(objectData);
+		}
 	}
 }
 
-void Loader::Update()
+void Loader::ObjectRegister(ObjectManager* ptr)
 {
-	// objectの更新
-	for (auto& object : objects_) {
-		object->Update();
+	// レーザー
+	auto it = GetObjectDatas().find("laser");
+	if (it != GetObjectDatas().end()) {
+		for (auto& objectData : it->second) {
+			std::unique_ptr<Laser> object = std::make_unique<Laser>();
+			object->Initialize();
+			object->SetPosition(objectData.translate);
+			object->SetScale(objectData.scale);
+			ptr->PushObject(std::move(object));
+		}
+	}
+	// 道
+	auto it2 = GetObjectDatas().find("roads");
+	if (it2 != GetObjectDatas().end()) {
+		for (auto& objectData : it2->second) {
+			std::unique_ptr<BaseObject> object = std::make_unique<BaseObject>();
+			object->Initialize("LevelEditorObj/grounds.obj", "Stage/road.png");
+			object->SetPosition(objectData.translate);
+			object->SetRotate(objectData.rotate);
+			object->SetScale(objectData.scale);
+			object->SetUVTransform(uvTransform_);
+			ptr->PushObject(std::move(object));
+		}
 	}
 
-	// laserの更新
-	for (auto& laser : lasers_) {
-		laser->Update();
+	auto it3 = GetObjectDatas().find("grounds");
+	if (it3 != GetObjectDatas().end()) {
+		for (auto& objectData : it3->second) {
+			std::unique_ptr<BaseObject> object = std::make_unique<BaseObject>();
+			object->Initialize("LevelEditorObj/" + objectData.fileName + ".obj", "TempTexture/mount.jpg");
+			object->SetPosition(objectData.translate);
+			object->SetRotate(objectData.rotate);
+			object->SetScale(objectData.scale);\
+			ptr->PushObject(std::move(object));
+		}
 	}
-
-}
-
-void Loader::Draw(const Camera& camera)
-{
-	for (auto& object : objects_) {
-		object->Draw(camera);
-	}
-
-	for (auto& laser : lasers_) {
-		laser->Draw(camera);
+	// 壁
+	auto it4 = GetObjectDatas().find("wall");
+	if (it4 != GetObjectDatas().end()) {
+		for (auto& objectData : it4->second) {
+			std::unique_ptr<BaseObject> object = std::make_unique<BaseObject>();
+			object->Initialize("Player/cube.obj", "TempTexture/noise0.png");
+			object->SetPosition(objectData.translate);
+			object->SetRotate(objectData.rotate);
+			object->SetScale(objectData.scale); \
+			ptr->PushObject(std::move(object));
+		}
 	}
 }

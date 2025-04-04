@@ -17,7 +17,6 @@ void ModelResources::LoadModel()
 	ModelManager::GetInstance()->LoadObjModel("Player/cube.obj");
 	ModelManager::GetInstance()->LoadObjModel("Enemy/cube.obj");
 	ModelManager::GetInstance()->LoadObjModel("Player/player.obj");
-	ModelManager::GetInstance()->LoadObjModel("Player/plane.obj");
 	ModelManager::GetInstance()->LoadObjModel("skydome/skydome.obj");
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/mounts2.obj");
 }

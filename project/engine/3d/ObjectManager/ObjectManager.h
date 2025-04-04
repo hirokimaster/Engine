@@ -3,6 +3,7 @@
 #include <memory>
 #include <map>
 #include "engine/3d/Object3DPlacer/BaseObject.h"
+#include "application/Loader/Loader.h"
 
 class ObjectManager {
 public:

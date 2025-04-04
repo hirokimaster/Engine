@@ -50,6 +50,9 @@ void TitleScene::Initialize()
 	// 天球
 	skydome_ = std::make_unique<Skydome>();
 	skydome_->Initialize();
+
+	// particle
+	particleManager_ = ParticleManager::GetInstance();
 }
 
 void TitleScene::Update()
