@@ -22,14 +22,14 @@
         "rangeLifeTime_max": 1.0,
         "rangeLifeTime_min": 0.0,
         "rangeScale_max": [
-            5.2,
-            5.2,
-            5.2
+            10.2,
+            10.2,
+            10.2
         ],
         "rangeScale_min": [
-            3.8,
-            3.8,
-            3.8
+            8.8,
+            8.8,
+            8.8
         ],
         "rangeTranslate_max": [
             0.0,
@@ -42,14 +42,14 @@
             0.0
         ],
         "rangeVelocity_max": [
-            0.08,
-            0.08,
-            0.08
+            0.4,
+            0.4,
+            0.4
         ],
         "rangeVelocity_min": [
-            -0.08,
-            -0.08,
-            -0.08
+            -0.6,
+            -0.6,
+            -0.6
         ],
         "translate": [
             0.0,

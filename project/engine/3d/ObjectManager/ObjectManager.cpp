@@ -18,10 +18,3 @@ void ObjectManager::Draw(const Camera& camera)
 		object->Draw(camera);
 	}
 }
-
-BaseObject* ObjectManager::GetObjectData(const std::string& name)
-{
-	BaseObject* ptr = object_[name].front();
-
-	return ptr;
-}

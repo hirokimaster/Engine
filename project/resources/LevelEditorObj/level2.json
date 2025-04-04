@@ -314,7 +314,7 @@
             "transform": {
                 "translation": [
                     -30.0,
-                    2800.0,
+                    4400.0,
                     45.0
                 ],
                 "rotation": [
@@ -336,7 +336,7 @@
             "transform": {
                 "translation": [
                     -10.0,
-                    3200.0,
+                    4000.0,
                     45.0
                 ],
                 "rotation": [
@@ -358,7 +358,7 @@
             "transform": {
                 "translation": [
                     10.0,
-                    3200.0,
+                    4000.0,
                     45.0
                 ],
                 "rotation": [
@@ -380,7 +380,7 @@
             "transform": {
                 "translation": [
                     -43.49385452270508,
-                    3600.0,
+                    4400.0,
                     45.0
                 ],
                 "rotation": [
@@ -402,7 +402,7 @@
             "transform": {
                 "translation": [
                     0.0,
-                    2400.0,
+                    3000.0,
                     60.0
                 ],
                 "rotation": [
@@ -424,7 +424,7 @@
             "transform": {
                 "translation": [
                     0.0,
-                    3750.0,
+                    4550.0,
                     76.25712585449219
                 ],
                 "rotation": [
@@ -446,7 +446,7 @@
             "transform": {
                 "translation": [
                     0.0,
-                    3900.0,
+                    4700.0,
                     25.224323272705078
                 ],
                 "rotation": [
@@ -468,7 +468,7 @@
             "transform": {
                 "translation": [
                     50.120391845703125,
-                    3600.0,
+                    4400.0,
                     45.0
                 ],
                 "rotation": [
@@ -490,7 +490,7 @@
             "transform": {
                 "translation": [
                     0.0,
-                    5500.0,
+                    6300.0,
                     80.0
                 ],
                 "rotation": [
@@ -512,7 +512,7 @@
             "transform": {
                 "translation": [
                     0.0,
-                    5900.0,
+                    6700.0,
                     20.0
                 ],
                 "rotation": [
@@ -637,6 +637,28 @@
                 ]
             },
             "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "床",
+            "transform": {
+                "translation": [
+                    0.0,
+                    22800.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    20.0,
+                    12.0,
+                    1.0
+                ]
+            },
+            "file_name": "floor"
         }
     ]
 }

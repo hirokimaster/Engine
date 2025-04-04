@@ -27,9 +27,7 @@ void GameScene::Initialize()
 	objectManager_ = std::make_unique<ObjectManager>();
 
 	// loader
-	TextureManager::Load("resources/TempTexture/white.png");
 	loader_ = std::make_unique<Loader>();
-	loader_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
 	loader_->Record();
 	loader_->ObjectRegister(objectManager_.get());
 
@@ -182,11 +180,6 @@ void GameScene::Collision()
 	// enemy
 	for (const auto& enemy : enemyManager_->GetEnemys()) {
 		collisionManager_->ColliderPush(enemy->GetCollider()); // enemycolliderをリストに追加
-	}
-
-	// laser
-	for (const auto& laser : loader_->GetLasers()) {
-		collisionManager_->ColliderPush(laser->GetCollider()); // laserをリストに登録
 	}
 
 	collisionManager_->CheckAllCollision(); // 判定

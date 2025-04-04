@@ -27,15 +27,14 @@ public:
 	/// objectの追加
 	/// </summary>
 	/// <param name="object"></param>
-	void PushObject(std::unique_ptr<BaseObject> object) { objects_.push_back(std::move(object)); }
+	void PushObject(std::unique_ptr<BaseObject> object) { 
+		objects_.push_back(std::move(object)); // 所有権はここ
+	}
 
 #pragma region getter
-
-	BaseObject* GetObjectData(const std::string& name);
 
 #pragma endregion
 
 private:
     std::list<std::unique_ptr<BaseObject>> objects_; // 全てのobject
-	std::map<std::string, std::queue<BaseObject*>> object_; // objectのポインタ
 };

@@ -139,6 +139,7 @@ void Loader::Record()
 	// 使うテクスチャ
 	TextureManager::Load("resources/TempTexture/noise0.png");
 	TextureManager::Load("resources/Stage/road.png");
+	TextureManager::Load("resources/Stage/floor.png");
 	TextureManager::Load("resources/TempTexture/mount.jpg");
 	TextureManager::Load("resources/TempTexture/uvChecker.png");
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/grounds.obj");
@@ -170,6 +171,9 @@ void Loader::Record()
 		else if (objectData.fileName == "wall") {
 			objectDatas_[objectData.fileName].push_back(objectData);
 		}
+		else if (objectData.fileName == "floor") {
+			objectDatas_[objectData.fileName].push_back(objectData);
+		}
 	}
 }
 
@@ -199,7 +203,7 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 			ptr->PushObject(std::move(object));
 		}
 	}
-
+	// 地面
 	auto it3 = GetObjectDatas().find("grounds");
 	if (it3 != GetObjectDatas().end()) {
 		for (auto& objectData : it3->second) {
@@ -207,7 +211,7 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 			object->Initialize("LevelEditorObj/" + objectData.fileName + ".obj", "TempTexture/mount.jpg");
 			object->SetPosition(objectData.translate);
 			object->SetRotate(objectData.rotate);
-			object->SetScale(objectData.scale);\
+			object->SetScale(objectData.scale);
 			ptr->PushObject(std::move(object));
 		}
 	}
@@ -219,7 +223,20 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 			object->Initialize("Player/cube.obj", "TempTexture/noise0.png");
 			object->SetPosition(objectData.translate);
 			object->SetRotate(objectData.rotate);
-			object->SetScale(objectData.scale); \
+			object->SetScale(objectData.scale);
+			ptr->PushObject(std::move(object));
+		}
+	}
+
+	// 床
+	auto it5 = GetObjectDatas().find("floor");
+	if (it5 != GetObjectDatas().end()) {
+		for (auto& objectData : it5->second) {
+			std::unique_ptr<BaseObject> object = std::make_unique<BaseObject>();
+			object->Initialize("LevelEditorObj/grounds.obj", "Stage/floor.png");
+			object->SetPosition(objectData.translate);
+			object->SetRotate(objectData.rotate);
+			object->SetScale(objectData.scale);
 			ptr->PushObject(std::move(object));
 		}
 	}

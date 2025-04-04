@@ -51,6 +51,7 @@ void PlayerBullet::Draw(const Camera& camera)
 
 void PlayerBullet::ResetDeathTimer()
 {
+	isMove_ = false;
 	deathTimer_ = kLifeTime_;
 }
 
