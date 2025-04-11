@@ -27,7 +27,7 @@ public:
 
 	Vector3 GetWorldPosition()const;
 
-	Collider* GetCollider() { return collider_.get(); }
+	Collider* GetCollider()override { return collider_.get(); }
 
 #pragma endregion
 

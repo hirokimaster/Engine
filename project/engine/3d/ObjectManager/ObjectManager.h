@@ -33,6 +33,22 @@ public:
 
 #pragma region getter
 
+	std::list<Collider*> GetCollider() {
+		std::list<Collider*> result;
+		for (auto& object : objects_) {
+			// colliderがあったら
+			if (object->GetCollider() != nullptr) {
+				result.push_back(object->GetCollider());
+			}
+		}
+
+		return result;
+	}
+
+#pragma endregion
+
+#pragma region 
+
 #pragma endregion
 
 private:

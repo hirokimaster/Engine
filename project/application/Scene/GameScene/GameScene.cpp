@@ -147,7 +147,6 @@ void GameScene::PostProcessDraw()
 
 	objectManager_->Draw(cameraManager_->GetCamera());
 
-	//loader_->Draw(cameraManager_->GetCamera());
 	// player
 	player_->Draw(cameraManager_->GetCamera());
 
@@ -180,6 +179,10 @@ void GameScene::Collision()
 	// enemy
 	for (const auto& enemy : enemyManager_->GetEnemys()) {
 		collisionManager_->ColliderPush(enemy->GetCollider()); // enemycolliderをリストに追加
+	}
+
+	for (const auto& collider : objectManager_->GetCollider()) {
+		collisionManager_->ColliderPush(collider);
 	}
 
 	collisionManager_->CheckAllCollision(); // 判定

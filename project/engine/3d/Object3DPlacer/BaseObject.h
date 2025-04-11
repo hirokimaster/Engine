@@ -24,6 +24,15 @@ public:
 	/// <param name="camera"></param>
 	virtual void Draw(const Camera& camera);
 
+#pragma region getter
+
+	virtual Collider* GetCollider() { 
+		if (collider_) {
+			return collider_.get();
+		}
+		return nullptr;
+	}
+
 #pragma region setter
 
 	virtual void SetPosition(const Vector3& position) { object_->SetPosition(position); }
