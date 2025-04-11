@@ -67,6 +67,8 @@ private:
 
 	void CreateUVTransformMatrix();
 
+	void CreateBuffer();
+
 private:
 	Model* model_ = nullptr;
 	ModelAnimation* modelAnimation_ = nullptr;
@@ -83,4 +85,6 @@ private:
 		{0.0f,0.0f,0.0f},
 		{0.0f,0.0f,0.0f},
 	};
+	Microsoft::WRL::ComPtr<ID3D12Resource> instancingResource_;
+	uint32_t kInstanceNum_ = 0;
 };

@@ -110,3 +110,9 @@ void Object3DPlacer::CreateUVTransformMatrix()
 	uvTransformMatrix = Multiply(uvTransformMatrix, MakeTranslateMatrix(uvTransform_.translate));
 	materialData_->uvTransform = uvTransformMatrix;
 }
+
+void Object3DPlacer::CreateBuffer()
+{
+	instancingResource_ = CreateResource::CreateBufferResource(sizeof(WorldTransform) * kInstanceNum_);
+
+}

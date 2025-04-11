@@ -13,9 +13,9 @@ struct CameraMatrix
     float32_t3 worldPosition;
 };
 
-ConstantBuffer<TransformationMatrix> gTransformationMatrix : register(b0);
+StructuredBuffer<TransformationMatrix> gTransformationMatrix : register(t0);
 
-ConstantBuffer<CameraMatrix> gCameraMatrix : register(b1);
+ConstantBuffer<CameraMatrix> gCameraMatrix : register(b0);
 
 struct VertexShaderInput
 {
@@ -25,12 +25,12 @@ struct VertexShaderInput
 };
 
 
-VertexShaderOutput main(VertexShaderInput input)
+VertexShaderOutput main(VertexShaderInput input, uint32_t instanceId : SV_InstanceID)
 {
     VertexShaderOutput output;
-    float32_t4x4 wvp = mul(gTransformationMatrix.matWorld, mul(gCameraMatrix.view, gCameraMatrix.projection));
-    output.position = mul(input.position, wvp);
+    float32_t4x4 wvp[instanceId] = mul(gTransformationMatrix.matWorld[instanceId], mul(gCameraMatrix.view, gCameraMatrix.projection));
+    output.position = mul(input.position, wvp[instanceId]);
     output.texcoord = input.texcoord;
-    output.normal = normalize(mul(input.normal, (float32_t3x3) gTransformationMatrix.world));
+    output.normal = normalize(mul(input.normal, (float32_t3x3) gTransformationMatrix.world[instanceId]));
     return output;
 }
