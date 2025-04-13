@@ -659,6 +659,226 @@
                 ]
             },
             "file_name": "floor"
+        },
+        {
+            "type": "MESH",
+            "name": "壁.014",
+            "transform": {
+                "translation": [
+                    -140.0,
+                    16000.0,
+                    50.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    140.0,
+                    1.0,
+                    50.0
+                ]
+            },
+            "file_name": "wall"
+        },
+        {
+            "type": "MESH",
+            "name": "壁.015",
+            "transform": {
+                "translation": [
+                    140.0,
+                    20000.0,
+                    50.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    140.0,
+                    1.0,
+                    50.0
+                ]
+            },
+            "file_name": "wall"
+        },
+        {
+            "type": "MESH",
+            "name": "道.001",
+            "transform": {
+                "translation": [
+                    140.0,
+                    42000.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    5.699999809265137,
+                    20.0,
+                    1.0
+                ]
+            },
+            "file_name": "roads"
+        },
+        {
+            "type": "MESH",
+            "name": "地面.002",
+            "transform": {
+                "translation": [
+                    1725.0,
+                    43199.671875,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    100.0,
+                    8.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "地面.003",
+            "transform": {
+                "translation": [
+                    -1445.0,
+                    43199.671875,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    100.0,
+                    8.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "地面.001",
+            "transform": {
+                "translation": [
+                    160.0,
+                    102500.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    300.0,
+                    65.0,
+                    1.0
+                ]
+            },
+            "file_name": "grounds"
+        },
+        {
+            "type": "MESH",
+            "name": "山",
+            "transform": {
+                "translation": [
+                    7448.3037109375,
+                    78044.703125,
+                    -1500.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    1.5707964897155762
+                ],
+                "scaling": [
+                    3500.0,
+                    800.0,
+                    1300.0
+                ]
+            },
+            "file_name": "mount"
+        },
+        {
+            "type": "MESH",
+            "name": "山.001",
+            "transform": {
+                "translation": [
+                    -7411.662109375,
+                    78044.703125,
+                    -1500.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -1.5707964897155762
+                ],
+                "scaling": [
+                    3500.0,
+                    800.0,
+                    1300.0
+                ]
+            },
+            "file_name": "mount"
+        },
+        {
+            "type": "MESH",
+            "name": "山.002",
+            "transform": {
+                "translation": [
+                    7448.3037109375,
+                    23932.1484375,
+                    -1500.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    1.5707964897155762
+                ],
+                "scaling": [
+                    3500.0,
+                    800.0,
+                    1300.0
+                ]
+            },
+            "file_name": "mount"
+        },
+        {
+            "type": "MESH",
+            "name": "山.003",
+            "transform": {
+                "translation": [
+                    -7411.662109375,
+                    27683.95703125,
+                    -1500.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -1.5707964897155762
+                ],
+                "scaling": [
+                    3500.0,
+                    800.0,
+                    1300.0
+                ]
+            },
+            "file_name": "mount"
         }
     ]
 }

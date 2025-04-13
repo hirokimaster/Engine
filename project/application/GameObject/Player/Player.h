@@ -13,6 +13,7 @@
 #include "application/AdjustmentVariables/AdjustmentVariables.h"
 #include "engine/3d/Object3DPlacer/BaseObject.h"
 #include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
+#include "engine/3d/PlaneProjectionShadow/PlaneProjectionShadow.h"
 
 class LockOn;
 
@@ -149,4 +150,5 @@ private:
 	float rotateLerpFactor_; // Lerpの強さ
 	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタ借りる
 	ParticleManager* particleManager_ = nullptr;
+	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
 };

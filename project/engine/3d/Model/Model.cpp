@@ -114,7 +114,10 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 	ModelData modelData;
 	Assimp::Importer importer;
 	std::string filePath = directoryPath + "/" + filename;
-	const aiScene* scene = importer.ReadFile(filePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
+	const aiScene* scene = importer.ReadFile(filePath.c_str(),
+		aiProcess_Triangulate |     
+		aiProcess_FlipWindingOrder |
+		aiProcess_FlipUVs);
 	assert(scene && scene->HasMeshes());
 
 	for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
@@ -127,7 +130,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 		
 		for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
 			aiFace& face = mesh->mFaces[faceIndex];
-			assert(face.mNumIndices == 3);
+			//assert(face.mNumIndices == 3);
 
 			for (uint32_t element = 0; element < face.mNumIndices; ++element) {
 				uint32_t vertexIndex = face.mIndices[element];

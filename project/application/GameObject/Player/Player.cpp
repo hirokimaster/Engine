@@ -35,6 +35,10 @@ void Player::Initialize()
 	spriteAttack_->SetScale({ 2.0f,2.0f });
 	spriteMove_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/L.png"), { 240.0f,500.0f }));
 	spriteMove_->SetScale({ 2.0f,2.0f });
+
+	// 影
+	shadow_ = std::make_unique<PlaneProjectionShadow>();
+	shadow_->Initialize("Player/player.obj", &object_->GetWorldTransform());
 }
 
 void Player::Update()
@@ -75,12 +79,17 @@ void Player::Update()
 		destroyCount_ = 0;
 	}
 
+	// 影
+	shadow_->Update();
+
 	ApplyAdjustmentVariables();
 }
 
 void Player::Draw(const Camera& camera)
 {
 	BaseObject::Draw(camera);
+	// 影
+	shadow_->Draw(camera);
 }
 
 void Player::Move()

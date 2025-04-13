@@ -188,6 +188,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\WinApp\WinApp.cpp" />
     <ClCompile Include="engine\Graphics\Transform\WorldTransform.cpp" />
     <ClCompile Include="application\PostEffect\EffectState\NoneEffectState.cpp" />
+    <ClCompile Include="engine\3d\PlaneProjectionShadow\PlaneProjectionShadow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h" />
@@ -282,6 +283,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\PostEffect\IPostEffect.h" />
     <ClInclude Include="application\PostEffect\EffectState\NoneEffectState.h" />
     <ClInclude Include="application\SceneTransition\FadeIn\FadeIn.h" />
+    <ClInclude Include="engine\3d\PlaneProjectionShadow\PlaneProjectionShadow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\Object3d.hlsli">

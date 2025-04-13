@@ -12,7 +12,7 @@
             10.0,
             0.0
         ],
-        "moveSpeed": 20.0,
+        "moveSpeed": 5.0,
         "rotate": [
             -0.1,
             0.0,
