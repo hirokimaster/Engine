@@ -78,7 +78,7 @@ public:
 
 	bool GetIsSortie()const { return isSortie_; }
 
-	const std::vector<Vector3>& GetMoveControlPoints_() const { return moveControlPoints_; }
+	const std::vector<Vector3>& GetMoveControlPoints() const { return moveControlPoints_; }
 
 	uint32_t GetEventNum()const { return eventNum_; }
 

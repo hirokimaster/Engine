@@ -20,13 +20,32 @@ void EnemyStateSortie::Update(MoveEnemy* pEnemy)
 	}
 	// ポジションまで移動したら攻撃モードに移る
 	if (isSortie_) {
-		if (t_ <= 1.0f) {
-			t_ += 1.0f / 30.0f;
-			move_ = CatmullRomPosition(pEnemy->GetMoveControlPoints_(), t_);
+		if (moveParam_ <= 1.0f) {
+			moveParam_ += 1.0f / 30.0f;
+			// 現在の位置と少し先の位置
+			Vector3 currentPosition = CatmullRomPosition(pEnemy->GetMoveControlPoints(), moveParam_);
+			Vector3 nextPosition = CatmullRomPosition(pEnemy->GetMoveControlPoints(), std::min(moveParam_ + 0.01f, 1.0f));
+			// 進行方向
+			Vector3 direction = nextPosition - currentPosition;
+			float length = Length(direction);
+			// 
+			if (length > 0.0001f) {
+				// 正規化
+				direction = Normalize(direction);
+				// y軸回転
+				float yaw = std::atan2(direction.x, direction.z);
+				// x軸回転
+				float pitch = std::asin(direction.y);
+				// z軸回転使わないゼロに
+				Vector3 rotate = Vector3(pitch, yaw, 0.0f);
+				pEnemy->SetRotate(rotate);
+			}
+			// 位置を更新
+			move_ = currentPosition;
 			pEnemy->SetPosition(move_);
 		}
 		else {
-			t_ = 1.0f;
+			moveParam_ = 1.0f;
 			isSortie_ = false;
 			pEnemy->ChangeState(std::make_unique<EnemyStateFire>());
 		}

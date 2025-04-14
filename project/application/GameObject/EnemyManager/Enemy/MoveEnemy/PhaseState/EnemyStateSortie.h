@@ -21,6 +21,6 @@ public:
 
 private:
 	bool isSortie_ = false;	// 出撃してるか
-	float t_ = 0.0f; // 媒介変数
+	float moveParam_ = 0.0f; // 媒介変数
 	Vector3 move_{}; // 移動ベクトル
 };

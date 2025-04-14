@@ -20,4 +20,5 @@ void ModelResources::LoadModel()
 	ModelManager::GetInstance()->LoadObjModel("skydome/skydome.obj");
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/grounds.obj");
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/part.obj");
+	ModelManager::GetInstance()->LoadObjModel("Enemy/enemy.obj");
 }
