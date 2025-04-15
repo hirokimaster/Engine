@@ -21,4 +21,5 @@ void ModelResources::LoadModel()
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/grounds.obj");
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/part.obj");
 	ModelManager::GetInstance()->LoadObjModel("Enemy/enemy.obj");
+	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/fixedEnemy.obj");
 }

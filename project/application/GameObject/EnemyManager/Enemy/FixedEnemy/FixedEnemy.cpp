@@ -4,7 +4,7 @@
 void FixedEnemy::Initialize()
 {
 	// object共通の初期化
-	BaseObject::Initialize("Enemy/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
+	BaseObject::Initialize("LevelEditorObj/fixedEnemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
 	object_->SetColor({ 1.0f,0.0f,0.0f,1.0f });
 	// コライダーの属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);	  // 自分の属性

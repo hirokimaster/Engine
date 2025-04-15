@@ -23,7 +23,7 @@ void FollowCamera::Update(Camera& camera)
 		cameraRotateZ = std::clamp(cameraRotateZ, -0.2f, 0.2f);
 		camera.rotate.z = cameraRotateZ;
 
-		camera.UpdateMatrix();
+		camera.TransferMatrix();
 	}
 
 	camera.UpdateMatrix();

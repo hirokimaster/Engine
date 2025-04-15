@@ -137,7 +137,7 @@
             "name": "壁.005",
             "transform": {
                 "translation": [
-                    0.0,
+                    842.9318237304688,
                     18000.0,
                     95.0
                 ],
@@ -530,72 +530,6 @@
         },
         {
             "type": "MESH",
-            "name": "固定敵",
-            "transform": {
-                "translation": [
-                    -78.0,
-                    10000.0,
-                    90.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    8.0,
-                    8.0,
-                    8.0
-                ]
-            },
-            "file_name": "fixedEnemy"
-        },
-        {
-            "type": "MESH",
-            "name": "固定敵.001",
-            "transform": {
-                "translation": [
-                    78.0,
-                    10000.0,
-                    90.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    8.0,
-                    8.0,
-                    8.0
-                ]
-            },
-            "file_name": "fixedEnemy"
-        },
-        {
-            "type": "MESH",
-            "name": "固定敵.002",
-            "transform": {
-                "translation": [
-                    0.0,
-                    11800.0,
-                    10.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    8.0,
-                    8.0,
-                    8.0
-                ]
-            },
-            "file_name": "fixedEnemy"
-        },
-        {
-            "type": "MESH",
             "name": "レーザー.005",
             "transform": {
                 "translation": [
@@ -879,6 +813,310 @@
                 ]
             },
             "file_name": "mount"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵",
+            "transform": {
+                "translation": [
+                    40.0,
+                    11800.0,
+                    30.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    35.0,
+                    35.0,
+                    35.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵.001",
+            "transform": {
+                "translation": [
+                    -40.0,
+                    11800.0,
+                    30.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    35.0,
+                    35.0,
+                    35.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵.002",
+            "transform": {
+                "translation": [
+                    265.888427734375,
+                    13023.6796875,
+                    30.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    35.0,
+                    35.0,
+                    35.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵.003",
+            "transform": {
+                "translation": [
+                    40.0,
+                    14577.943359375,
+                    30.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    35.0,
+                    35.0,
+                    35.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵.004",
+            "transform": {
+                "translation": [
+                    -265.80657958984375,
+                    13368.71484375,
+                    30.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    35.0,
+                    35.0,
+                    35.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵.005",
+            "transform": {
+                "translation": [
+                    152.91845703125,
+                    15902.853515625,
+                    30.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    35.0,
+                    35.0,
+                    35.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵.006",
+            "transform": {
+                "translation": [
+                    -159.48927307128906,
+                    19937.0546875,
+                    30.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    35.0,
+                    35.0,
+                    35.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵.007",
+            "transform": {
+                "translation": [
+                    254.54507446289062,
+                    19595.2890625,
+                    30.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    35.0,
+                    35.0,
+                    35.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵.008",
+            "transform": {
+                "translation": [
+                    -253.5880126953125,
+                    17653.08984375,
+                    30.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    35.0,
+                    35.0,
+                    35.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "固定敵.009",
+            "transform": {
+                "translation": [
+                    81.40343475341797,
+                    17344.4453125,
+                    30.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    35.0,
+                    35.0,
+                    35.0
+                ]
+            },
+            "file_name": "fixedEnemy"
+        },
+        {
+            "type": "CURVE",
+            "name": "移動ルート",
+            "transform": {
+                "translation": [
+                    -859.3311767578125,
+                    35000.0,
+                    50.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "moveEnemy",
+            "event_id": 0,
+            "control_points": [
+                {
+                    "name": "controlPoint0",
+                    "x": 76.4320068359375,
+                    "y": 44609.21484375,
+                    "z": 50.0
+                },
+                {
+                    "name": "controlPoint1",
+                    "x": 22.486083984375,
+                    "y": 43004.26953125,
+                    "z": 50.0
+                },
+                {
+                    "name": "controlPoint2",
+                    "x": -341.661865234375,
+                    "y": 41291.42578125,
+                    "z": 50.0
+                },
+                {
+                    "name": "controlPoint3",
+                    "x": -678.83544921875,
+                    "y": 39416.7421875,
+                    "z": 50.0
+                },
+                {
+                    "name": "controlPoint4",
+                    "x": -840.6783447265625,
+                    "y": 37717.38671875,
+                    "z": 50.0
+                },
+                {
+                    "name": "controlPoint5",
+                    "x": -859.3311767578125,
+                    "y": 35000.0,
+                    "z": 50.0
+                }
+            ]
+        },
+        {
+            "type": "MESH",
+            "name": "EventTrigger",
+            "transform": {
+                "translation": [
+                    140.0,
+                    36000.0,
+                    80.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    30.0,
+                    30.0,
+                    30.0
+                ]
+            },
+            "file_name": "EventTrigger",
+            "event_id": 0
         }
     ]
 }

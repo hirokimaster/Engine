@@ -172,6 +172,10 @@ void Loader::Record()
 		else if (objectData.fileName == "mount") {
 			objectDatas_[objectData.fileName].push_back(objectData);
 		}
+		// イベントトリガー
+		else if (objectData.fileName == "EventTrigger") {
+			objectDatas_[objectData.fileName].push_back(objectData);
+		}
 	}
 }
 
