@@ -21,7 +21,7 @@ void EnemyStateSortie::Update(MoveEnemy* pEnemy)
 	// ポジションまで移動したら攻撃モードに移る
 	if (isSortie_) {
 		if (moveParam_ <= 1.0f) {
-			moveParam_ += 1.0f / 30.0f;
+			moveParam_ += 1.0f / 60.0f;
 			// 現在の位置と少し先の位置
 			Vector3 currentPosition = CatmullRomPosition(pEnemy->GetMoveControlPoints(), moveParam_);
 			Vector3 nextPosition = CatmullRomPosition(pEnemy->GetMoveControlPoints(), std::min(moveParam_ + 0.01f, 1.0f));

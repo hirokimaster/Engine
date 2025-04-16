@@ -18,7 +18,7 @@ void CameraManager::Initialize()
 void CameraManager::Update()
 {
 	followCamera_->Update(camera_);
-	camera_.TransferMatrix();
+	camera_.UpdateMatrix();
 }
 
 
