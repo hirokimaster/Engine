@@ -8,7 +8,7 @@ void PlaneProjectionShadow::Initialize(const std::string& modelName, const World
 
 	// 平面投影行列
 	shadowMatrix_ = MakeIdentityMatrix();
-	shadowMatrix_.m[1][1] = 0.003f;
+	shadowMatrix_.m[1][1] = 0.006f;
 	casterWorldTransform_ = casterWorldTransform;
 	// objectを真っ黒にする
 	object_->SetColor({ 0.0f,0.0f,0.0f,1.0f });
