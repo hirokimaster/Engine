@@ -26,6 +26,13 @@ void MoveEnemy::Initialize()
 	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
 	
 	velocity_ = { 0.0f,0.0f,1.0f };
+
+	// パーティクル
+	particleManager_ = ParticleManager::GetInstance();
+
+	// 影
+	shadow_ = std::make_unique<PlaneProjectionShadow>();
+	shadow_->Initialize("LevelEditorObj/enemy.obj", &object_->GetWorldTransform());
 }
 
 void MoveEnemy::Update()
@@ -42,6 +49,24 @@ void MoveEnemy::Update()
 		isDead_ = true;
 	}
 
+	// パーティクル
+	if (isHit_ && !isExploded_) {
+		particle_ = particleManager_->GetParticle("explosion", "Player/smoke.png");
+		isExploded_ = true;
+		shadow_.reset();
+	}
+
+	// particleの位置
+	if (particle_) {
+		particle_->SetIsActive(true);
+		particle_->SetPosition(object_->GetWorldTransform().translate);
+	}
+
+	// 影
+	if (shadow_) {
+		shadow_->Update();
+	}
+
 #ifdef _DEBUG
 	ImGui::Begin("enemy");
 	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
@@ -53,15 +78,18 @@ void MoveEnemy::Update()
 void MoveEnemy::Draw(const Camera& camera)
 {
 	// 出撃するまで出さない
-	if (isSortie_) {
+	if (isSortie_ && !isHit_) {
 		BaseObject::Draw(camera);
+		if (shadow_) {
+			shadow_->Draw(camera);
+		}
 	}
 }
 
 void MoveEnemy::OnCollision()
 {
 	if (collider_->OnCollision()) {
-		isDead_ = true;
+		isHit_ = true;
 		// 撃破数を足す
 		player_->AddDestroyCount();
 	}

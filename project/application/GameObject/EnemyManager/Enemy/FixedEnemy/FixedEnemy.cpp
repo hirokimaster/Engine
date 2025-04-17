@@ -12,6 +12,9 @@ void FixedEnemy::Initialize()
 	collider_->SetRadious(8.0f); // コライダーのサイズ 
 	// パーティクル
 	particleManager_ = ParticleManager::GetInstance();
+	// 影
+	shadow_ = std::make_unique<PlaneProjectionShadow>();
+	shadow_->Initialize("LevelEditorObj/fixedEnemy.obj", &object_->GetWorldTransform());
 }
 
 void FixedEnemy::Update()
@@ -29,6 +32,7 @@ void FixedEnemy::Update()
 	if (isHit_ && !isExploded_) {
 		particle_ = particleManager_->GetParticle("explosion", "Player/smoke.png");
 		isExploded_ = true;
+		shadow_.reset();
 	}
 	
 	// particleの位置
@@ -36,6 +40,12 @@ void FixedEnemy::Update()
 		particle_->SetIsActive(true);
 		particle_->SetPosition(object_->GetWorldTransform().translate);
 	}
+
+	// 影
+	if (shadow_) {
+		shadow_->Update();
+	}
+	
 	
 #ifdef _DEBUG
 	ImGui::Begin("enemy");
@@ -50,6 +60,8 @@ void FixedEnemy::Draw(const Camera& camera)
 	if (!isHit_) {
 		// object共通の描画処理
 		BaseObject::Draw(camera);
+		// 影
+		shadow_->Draw(camera);
 	}
 	
 }

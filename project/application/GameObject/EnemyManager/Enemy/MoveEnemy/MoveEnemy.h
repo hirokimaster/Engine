@@ -12,6 +12,7 @@
 #include "application/GameObject/EnemyManager/Enemy/MoveEnemy/PhaseState/EnemyStateSortie.h"
 #include "application/GameObject/EnemyManager/Enemy/MoveEnemy/PhaseState/EnemyStateFire.h"
 #include "application/GameObject/EnemyManager/Enemy/IEnemy.h"
+#include "engine/3d/PlaneProjectionShadow/PlaneProjectionShadow.h"
 
 class Player;
 
@@ -119,4 +120,9 @@ private:
 	uint32_t eventNum_ = 0; // イベント番号
 	Vector3 eventTrigger_{}; // イベントトリガー
 	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタを借りてくる
+	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
+	ParticleManager* particleManager_ = nullptr; // ポインタ借りる
+	GPUParticle* particle_ = nullptr;
+	bool isHit_ = false;
+	bool isExploded_ = false;
 };
