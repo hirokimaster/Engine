@@ -111,57 +111,64 @@ void Player::Move()
 
 void Player::Attack()
 {
-	// 弾の速度
-	Vector3 velocity = { 0,0,bulletSpeed_ };
-	std::list<Vector3> lockOnVelocity;
-	// 自機から照準オブジェクトのベクトル
-	Vector3 WorldPos = GetWorldPosition();
-	// ロックオンしているターゲットがいたら
 	if (!lockOn_->GetTarget().empty()) {
-		std::list<const IEnemy*> targets = lockOn_->GetTarget(); // コピーしておく
-		for (std::list<const IEnemy*>::iterator targetItr = targets.begin(); targetItr != targets.end(); ++targetItr) {
-			// ロックオン対象がいるかつ生きてたら対象に向かって弾を撃つ
-			if ((*targetItr) && !(*targetItr)->GetIsDead()) {
-				// レティクルのworld座標にターゲットのworld座標を入れる
-				Vector3 targetWorldPos = (*targetItr)->GetWorldPosition();
-				Vector3 diff = targetWorldPos - WorldPos;
-				diff = Normalize(diff);
-				velocity = Normalize(velocity);
-				velocity = Multiply(bulletSpeed_, diff);
-				// プールから取ってくる
-				IBullet* baseBullet = bulletObjectPool_->GetBullet("player");
-				// 取ってこれたかチェックする
-				if (baseBullet) {
-					PlayerBullet* bullet = dynamic_cast<PlayerBullet*>(baseBullet);
-					bullet->SetIsActive(true);
-					bullet->SetLockOn(lockOn_);
-					bullet->SetPosition(WorldPos);
-					bullet->SetVelocity(velocity);
-				}
+		LockOnFire(GetWorldPosition());
+	}
+	else {
+		NormalFire(GetWorldPosition());
+	}
+}
+
+void Player::FireBullet(const Vector3& position, const Vector3& velocity)
+{
+	// poolから取り出す
+	IBullet* baseBullet = bulletObjectPool_->GetBullet("player");
+	// 取り出せてたら値を設定する
+	if (baseBullet) {
+		PlayerBullet* bullet = dynamic_cast<PlayerBullet*>(baseBullet);
+		bullet->SetIsActive(true); // アクティブにする
+		bullet->SetLockOn(lockOn_);
+		bullet->SetPosition(position); // 位置
+		bullet->SetVelocity(velocity); // 速度
+	}
+}
+
+void Player::LockOnFire(const Vector3& position)
+{
+	const IEnemy* nearestEnemy = nullptr;
+	float minDistance = (std::numeric_limits<float>::max)();
+	std::list<const IEnemy*> targets = lockOn_->GetTarget();
+
+	// 一番近い敵探す
+	for (const IEnemy* enemy : targets) {
+		if (enemy && !enemy->GetIsDead()) {
+			Vector3 toEnemy = enemy->GetWorldPosition() - position;
+			float dist = Length(toEnemy);
+
+			if (dist < minDistance) {
+				minDistance = dist;
+				nearestEnemy = enemy;
 			}
 		}
 	}
-	else {
-		Vector3 reticleWorldPos = lockOn_->GetWorldPosition3DReticle();
-		velocity = reticleWorldPos - WorldPos;
-		velocity = Normalize(velocity);
-		velocity = bulletSpeed_ * velocity;
 
-		// 弾を生成し、初期化
-		// プールから取ってくる
-		IBullet* baseBullet = bulletObjectPool_->GetBullet("player");
-		// 取ってこれたかチェックする
-		if (baseBullet) {
-			PlayerBullet* bullet = dynamic_cast<PlayerBullet*>(baseBullet);
-			bullet->SetIsActive(true);
-			bullet->SetLockOn(lockOn_);
-			const float kDistanceZ = 10.0f;
-			Vector3 position = WorldPos;
-			position.z = position.z + kDistanceZ;
-			bullet->SetPosition(position);
-			bullet->SetVelocity(velocity);
-		}
+	// 一番近いやつにだけ撃つ
+	if (nearestEnemy) {
+		Vector3 targetWorldPos = nearestEnemy->GetWorldPosition();
+		Vector3 diff = Normalize(targetWorldPos - position);
+		Vector3 velocity = bulletSpeed_ * diff;
+		FireBullet(position, velocity); // 弾を発射
 	}
+}
+
+void Player::NormalFire(const Vector3& position)
+{
+	Vector3 reticleWorldPos = lockOn_->GetWorldPosition3DReticle();
+	Vector3 velocity = reticleWorldPos - position;
+	velocity = bulletSpeed_ * Normalize(velocity);
+
+	// 弾を発射
+	FireBullet(position, velocity); // 弾を発射
 }
 
 void Player::OnCollision()

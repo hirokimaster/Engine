@@ -60,6 +60,25 @@ private: // クラス内でしか使わない
 	void Attack();
 
 	/// <summary>
+	/// 弾を発射
+	/// </summary>
+	/// <param name="position"></param>
+	/// <param name="velocity"></param>
+	void FireBullet(const Vector3& position, const Vector3& velocity);
+
+	/// <summary>
+	///  lockOnしてる時の攻撃
+	/// </summary>
+	/// <param name="position"></param>
+	void LockOnFire(const Vector3& position);
+
+	/// <summary>
+	/// 通常の攻撃
+	/// </summary>
+	/// <param name="position"></param>
+	void NormalFire(const Vector3& position);
+
+	/// <summary>
 	/// 当たり判定
 	/// </summary>
 	void OnCollision();
