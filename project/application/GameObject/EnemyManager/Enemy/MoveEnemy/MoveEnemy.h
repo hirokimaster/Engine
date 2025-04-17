@@ -125,4 +125,5 @@ private:
 	GPUParticle* particle_ = nullptr;
 	bool isHit_ = false;
 	bool isExploded_ = false;
+	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
 };

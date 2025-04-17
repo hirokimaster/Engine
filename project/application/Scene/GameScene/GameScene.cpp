@@ -92,7 +92,9 @@ void GameScene::Initialize()
 	gameSprite_->SetGameScene(this);
 	gameSprite_->SetPlayer(player_.get());
 
-	
+	timer_ = 60.0f;
+
+
 }
 
 void GameScene::Update()
@@ -104,7 +106,7 @@ void GameScene::Update()
 
 	// 弾
 	bulletObjectPool_->Update();
-	
+
 	// objectManager
 	objectManager_->Update();
 
@@ -132,10 +134,23 @@ void GameScene::Update()
 		cameraManager_->StartShake(0.1f, 0.4f); // シェイクさせる
 	}
 
+	if (player_->GetWorldPosition().z >= 80000.0f && !isTransitionClear_) {
+		isTransitionClear_ = true;
+		transition_ = std::make_unique<FadeIn>();
+		transition_->Initialize();
+		GameManager::GetInstance()->SetSceneTransition(transition_.get());
+		GameManager::GetInstance()->ChangeScene("CLAER");
+	}
+
 	gameSprite_->Update();
 
 	// postEffect更新
 	postEffect_->Update();
+
+	--timer_;
+	if (timer_ <= 0.0f) {
+		gameState_->Update();
+	}
 
 	// particle
 	particleManager_->Update();
@@ -208,7 +223,7 @@ void GameScene::LoadTextureFile()
 	TextureManager::Load("resources/UI/RB.png");
 	TextureManager::Load("resources/UI/RB2.png");
 	TextureManager::Load("resources/UI/L.png");
-	
+
 
 	// particle
 	TextureManager::Load("resources/Player/smoke.png");

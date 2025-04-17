@@ -11,7 +11,7 @@ void MoveEnemy::Initialize()
 {
 	// object共通の初期化
 	BaseObject::Initialize("Enemy/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
-	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+	object_->SetColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 	object_->SetScale({ 10.0f,10.0f,10.0f });
 	//object_->SetRotate({ 0.0f,std::numbers::pi_v<float>,0.0f });
 	
@@ -35,6 +35,8 @@ void MoveEnemy::Initialize()
 	// 影
 	shadow_ = std::make_unique<PlaneProjectionShadow>();
 	shadow_->Initialize("LevelEditorObj/enemy.obj", &object_->GetWorldTransform());
+
+	bulletSpeed_ = 10.0f;
 }
 
 void MoveEnemy::Update()
@@ -64,6 +66,20 @@ void MoveEnemy::Update()
 		shadow_->Update();
 	}
 
+	// 弾更新
+	for (const auto& bullet : bullets_) {
+		bullet->Update();
+	}
+
+	// デスフラグが立ったら要素を削除
+	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
+		if (bullet->GetIsDead()) {
+
+			return true;
+		}
+		return false;
+		});
+
 #ifdef _DEBUG
 	ImGui::Begin("enemy");
 	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
@@ -80,6 +96,11 @@ void MoveEnemy::Draw(const Camera& camera)
 		if (shadow_) {
 			shadow_->Draw(camera);
 		}
+
+		// 弾の描画
+		for (const auto& bullet : bullets_) {
+			bullet->Draw(camera);
+		}
 	}
 }
 
@@ -94,7 +115,6 @@ void MoveEnemy::OnCollision()
 
 void MoveEnemy::Fire()
 {
-	// playerがいなかったらそもそも撃つ対象がいない
 	if (player_) {
 		Vector3 playerWorldPos = player_->GetWorldPosition(); // 自キャラのワールド座標を取得
 		Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
@@ -102,15 +122,18 @@ void MoveEnemy::Fire()
 		Normalize(diff); // 正規化
 		Vector3 velocity = Multiply(bulletSpeed_, diff); // ベクトルの速度
 
+		// 弾を生成して初期化
 		// プールから取ってくる
-		IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
+		//IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
 		// 取ってこれたかチェックする
-		if (baseBullet) {
-			EnemyBullet* bullet = dynamic_cast<EnemyBullet*>(baseBullet);
-			bullet->Initialize();
-			bullet->SetPosition(GetWorldPosition());
-			bullet->SetVelocity(velocity);
-		}
+
+		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+		bullet->Initialize();
+		bullet->SetPosition(GetWorldPosition());
+		bullet->SetVelocity(velocity);
+		bullet->SetIsActive(true);
+		bullets_.push_back(std::move(bullet));
+
 	}
 }
 

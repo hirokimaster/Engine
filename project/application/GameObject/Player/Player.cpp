@@ -11,7 +11,7 @@ void Player::Initialize()
 {
 	// object共通の初期化
 	BaseObject::Initialize("Player/player.obj", "TempTexture/white.png", ColliderType::Sphere);
-	object_->SetPosition({ 0,40.0f,-1000.0f });
+	object_->SetPosition({ 0,40.0f,-1500.0f });
 	// 属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
@@ -115,27 +115,33 @@ void Player::Move()
 	XINPUT_STATE joyState{};
 	Vector3 move{};
 
-	// ジョイスティック状態取得
-	if (Input::GetInstance()->GetJoystickState(joyState)) {
-		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 2.0f;
-		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 2.0f;
-	}
+	if (!isDead_) {
+		// ジョイスティック状態取得
+		if (Input::GetInstance()->GetJoystickState(joyState)) {
+			move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 2.0f;
+			move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 2.0f;
+		}
 
-	Vector3 position = object_->GetWorldTransform().translate + move;
-	position.z += moveSpeed_;
-	object_->SetPosition(position);
-	spriteMove_->SetPosition(Vector2((5.0f * move.x) + 240.0f, (5.0f * move.y) + 500.0f));
+		Vector3 position = object_->GetWorldTransform().translate + move;
+		position.z += moveSpeed_;
+		object_->SetPosition(position);
+		spriteMove_->SetPosition(Vector2((5.0f * move.x) + 240.0f, (5.0f * move.y) + 500.0f));
+	}
 
 }
 
 void Player::Attack()
 {
-	if (!lockOn_->GetTarget().empty()) {
-		LockOnFire(GetWorldPosition());
+	if (!isDead_) {
+
+		if (!lockOn_->GetTarget().empty()) {
+			LockOnFire(GetWorldPosition());
+		}
+		else {
+			NormalFire(GetWorldPosition());
+		}
 	}
-	else {
-		NormalFire(GetWorldPosition());
-	}
+	
 }
 
 void Player::FireBullet(const Vector3& position, const Vector3& velocity)
@@ -214,13 +220,15 @@ void Player::Rotate()
 	// ゲームパッドの状態を得る変数(XINPUT)
 	XINPUT_STATE joyState;
 
-	// ゲームパッド状態取得
-	if (Input::GetInstance()->GetJoystickState(joyState)) {
-		// ゲームパッドの入力から回転速度を計算
-		rotate.z += (float)joyState.Gamepad.sThumbLX / SHRT_MAX;
-		rotate.x += (float)joyState.Gamepad.sThumbLY / SHRT_MAX;
+	if (!isDead_) {
+		// ゲームパッド状態取得
+		if (Input::GetInstance()->GetJoystickState(joyState)) {
+			// ゲームパッドの入力から回転速度を計算
+			rotate.z += (float)joyState.Gamepad.sThumbLX / SHRT_MAX;
+			rotate.x += (float)joyState.Gamepad.sThumbLY / SHRT_MAX;
+		}
 	}
-
+	
 	Vector3 rotateVelo{};
 	// 回転を適用
 	rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, object_->GetWorldTransform().rotate.z - rotate.z, kLerpFactor);

@@ -5,7 +5,7 @@ void FixedEnemy::Initialize()
 {
 	// object共通の初期化
 	BaseObject::Initialize("LevelEditorObj/fixedEnemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
-	object_->SetColor({ 1.0f,0.0f,0.0f,1.0f });
+	object_->SetColor({ 0.0f,0.0f,0.0f,1.0f });
 	// コライダーの属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);	  // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
@@ -35,7 +35,7 @@ void FixedEnemy::Update()
 		isExploded_ = true;
 		shadow_.reset();
 	}
-	
+
 	// particleの位置
 	if (particle_) {
 		particle_->SetIsActive(true);
@@ -49,13 +49,30 @@ void FixedEnemy::Update()
 
 	// 発射間隔つける
 	if (GetWorldPosition().z - player_->GetWorldPosition().z <= 5000.0f) {
-		fireTimer_ += 1.0f / 60.0f;
-		if (fireTimer_ >= kFireInterval_) {
+		// 発射タイマーをデクリメント
+		--fireTimer_;
+		if (fireTimer_ <= 0) {
+			// 弾を発射
 			Fire();
-			fireTimer_ = 0.0f;
+			// 発射タイマーの初期化
+			fireTimer_ = kFireInterval_;
 		}
 	}
-	
+
+	// 弾更新
+	for (const auto& bullet : bullets_) {
+		bullet->Update();
+	}
+
+	// デスフラグが立ったら要素を削除
+	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
+		if (bullet->GetIsDead()) {
+
+			return true;
+		}
+		return false;
+		});
+
 #ifdef _DEBUG
 	ImGui::Begin("enemy");
 	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
@@ -71,8 +88,13 @@ void FixedEnemy::Draw(const Camera& camera)
 		BaseObject::Draw(camera);
 		// 影
 		shadow_->Draw(camera);
+
+		// 弾の描画
+		for (const auto& bullet : bullets_) {
+			bullet->Draw(camera);
+		}
 	}
-	
+
 }
 
 void FixedEnemy::Fire()
@@ -87,14 +109,16 @@ void FixedEnemy::Fire()
 
 		// 弾を生成して初期化
 		// プールから取ってくる
-		IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
+		//IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
 		// 取ってこれたかチェックする
-		if (baseBullet) {
-			EnemyBullet* bullet = dynamic_cast<EnemyBullet*>(baseBullet);
-			bullet->Initialize();
-			bullet->SetPosition(GetWorldPosition());
-			bullet->SetVelocity(velocity);
-		}
+
+		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+		bullet->Initialize();
+		bullet->SetPosition(GetWorldPosition());
+		bullet->SetVelocity(velocity);
+		bullet->SetIsActive(true);
+		bullets_.push_back(std::move(bullet));
+
 	}
 }
 
