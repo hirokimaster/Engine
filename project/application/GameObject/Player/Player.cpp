@@ -123,10 +123,22 @@ void Player::Move()
 		}
 
 		Vector3 position = object_->GetWorldTransform().translate + move;
+
+		if (GetWorldPosition().z >= 36500.0f) {
+			// x軸の移動範囲を制限 [-500.0f, 280.0f]
+			position.x = std::clamp(position.x, -500.0f, 280.0f);
+			position.y = std::clamp(position.y, 8.0f, 1000.0f);
+		}
+		else{
+			position.y = std::clamp(position.y, 8.0f, 85.0f);
+		}
+		
 		position.z += moveSpeed_;
 		object_->SetPosition(position);
 		spriteMove_->SetPosition(Vector2((5.0f * move.x) + 240.0f, (5.0f * move.y) + 500.0f));
 	}
+
+
 
 }
 
