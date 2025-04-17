@@ -103,9 +103,11 @@ void Player::Update()
 
 void Player::Draw(const Camera& camera)
 {
-	BaseObject::Draw(camera);
-	// 影
-	shadow_->Draw(camera);
+	if (!isDead_) {
+		BaseObject::Draw(camera);
+		// 影
+		shadow_->Draw(camera);
+	}
 }
 
 void Player::Move()
@@ -239,7 +241,7 @@ void Player::Rotate()
 void Player::IncurDamage()
 {
 	// 敵の攻撃を食らったら
-	const uint32_t kDamage = 1; // 敵からの攻撃ダメージ
+	const uint32_t kDamage = 3; // 敵からの攻撃ダメージ
 	if (isHitEnemyFire_) {
 		hp_ -= kDamage;
 		isHitEnemyFire_ = false;

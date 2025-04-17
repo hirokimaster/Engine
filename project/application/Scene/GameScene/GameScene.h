@@ -19,6 +19,7 @@
 #include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "engine/3d/ObjectManager/ObjectManager.h"
+#include "application/PostEffect/EffectState/GaussianState.h"
 
 class GameScene : public IScene {
 public: // メンバ関数

@@ -10,8 +10,10 @@
 void MoveEnemy::Initialize()
 {
 	// object共通の初期化
-	BaseObject::Initialize("LevelEditorObj/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
+	BaseObject::Initialize("Enemy/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
 	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+	object_->SetScale({ 10.0f,10.0f,10.0f });
+	//object_->SetRotate({ 0.0f,std::numbers::pi_v<float>,0.0f });
 	
 	// 調整項目追加
 	AddAdjustmentVariables();
@@ -43,11 +45,6 @@ void MoveEnemy::Update()
 	phaseState_->Update(this); // 状態ごとの更新処理
 
 	OnCollision(); // 当たったら
-
-	// 時間で消滅
-	if (--deathTimer_ <= 0) {
-		isDead_ = true;
-	}
 
 	// パーティクル
 	if (isHit_ && !isExploded_) {

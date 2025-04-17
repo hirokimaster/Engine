@@ -17,6 +17,8 @@ void EnemyBullet::Initialize()
 	type_ = BulletType::Enemy;
 	isDead_ = false;
 	isActive_ = false;
+	// particle
+	particleManager_ = ParticleManager::GetInstance();
 }
 
 void EnemyBullet::Update()
@@ -31,6 +33,17 @@ void EnemyBullet::Update()
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
+
+	// particle
+	if (isActive_ && !isMove_) {
+		particle_ = particleManager_->GetParticle("bulletTrajectory", "Player/smoke.png");
+		particle_->SetIsActive(true);
+		isMove_ = true;
+	}
+
+	if (particle_) {
+		particle_->SetPosition(GetWorldPosition());
+	}
 }
 
 void EnemyBullet::Draw(const Camera& camera)
@@ -40,6 +53,7 @@ void EnemyBullet::Draw(const Camera& camera)
 
 void EnemyBullet::ResetDeathTimer()
 {
+	isMove_ = false;
 	deathTimer_ = kLifeTime_;
 }
 

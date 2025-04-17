@@ -14,12 +14,15 @@ void EnemyStateFire::Update(MoveEnemy* pEnemy)
 
 	if (fireTimer_ <= 0) {
 		// 弾を発射
-		//pEnemy->Fire();
+		pEnemy->Fire();
 		// 発射タイマーの初期化
 		fireTimer_ = kFireInterval_;
 	}
 
-	pEnemy->SetVelocity(Vector3(0.0f, 0.0f, 15.0f));
 	pEnemy->Move();
+	pEnemy->SetVelocity({ 0.0f,0.0f,5.0f });
 
+	if (player_->GetWorldPosition().z >= pEnemy->GetWorldPosition().z) {
+		pEnemy->SetIsDead(true);
+	}
 }

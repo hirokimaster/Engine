@@ -71,4 +71,6 @@ private:
 	bool isHit_ = false; // 当たったか
 	bool isExploded_ = false; // 爆発してるか
 	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
+	float kFireInterval_ = 60.0f;
+	float fireTimer_ = 0.0f;
 };

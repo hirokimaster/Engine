@@ -126,6 +126,14 @@ void GameScene::Update()
 	if (player_->GetIsHitEnemyFire()) {
 		postEffect_->ChangeState(std::make_unique<PlayerDamegeState>());
 	}
+
+	if (player_->GetIsDead()) {
+		postEffect_->ChangeState(std::make_unique<GaussianState>());
+		cameraManager_->StartShake(0.1f, 0.4f); // シェイクさせる
+	}
+
+	gameSprite_->Update();
+
 	// postEffect更新
 	postEffect_->Update();
 

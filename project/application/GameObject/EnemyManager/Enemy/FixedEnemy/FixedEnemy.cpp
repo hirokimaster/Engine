@@ -15,6 +15,7 @@ void FixedEnemy::Initialize()
 	// 影
 	shadow_ = std::make_unique<PlaneProjectionShadow>();
 	shadow_->Initialize("LevelEditorObj/fixedEnemy.obj", &object_->GetWorldTransform());
+	bulletSpeed_ = 20.0f;
 }
 
 void FixedEnemy::Update()
@@ -45,7 +46,15 @@ void FixedEnemy::Update()
 	if (shadow_) {
 		shadow_->Update();
 	}
-	
+
+	// 発射間隔つける
+	if (GetWorldPosition().z - player_->GetWorldPosition().z <= 5000.0f) {
+		fireTimer_ += 1.0f / 60.0f;
+		if (fireTimer_ >= kFireInterval_) {
+			Fire();
+			fireTimer_ = 0.0f;
+		}
+	}
 	
 #ifdef _DEBUG
 	ImGui::Begin("enemy");

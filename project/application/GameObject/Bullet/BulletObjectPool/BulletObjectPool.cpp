@@ -3,7 +3,7 @@
 void BulletObjectPool::Initialize()
 {
 	// 初期化時にあらかじめ最大の半分作っておく
-	for (uint32_t i = 0; i < kPoolSize / 4; ++i) {
+	for (uint32_t i = 0; i < kPoolSize / 2; ++i) {
 		Create("player");
 		Create("enemy");
 	}
@@ -43,10 +43,6 @@ void BulletObjectPool::Draw(const Camera& camera)
 
 IBullet* BulletObjectPool::GetBullet(const std::string& name)
 {
-	// poolに名前が無かったら
-	if (pool_.find(name) == pool_.end()) {
-		return nullptr;
-	}
 
 	// 空のときは新しく作る
 	if (pool_[name].empty()) {

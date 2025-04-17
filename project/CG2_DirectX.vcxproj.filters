@@ -296,6 +296,7 @@
     <ClCompile Include="application\GameObject\Bullet\BulletObjectPool\BulletObjectPool.cpp" />
     <ClCompile Include="engine\3d\PlaneProjectionShadow\PlaneProjectionShadow.cpp" />
     <ClCompile Include="application\GameObject\Obstacles\Wall\Wall.cpp" />
+    <ClCompile Include="application\PostEffect\EffectState\GaussianState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -534,6 +535,7 @@
     <ClInclude Include="application\GameObject\Bullet\BulletObjectPool\BulletObjectPool.h" />
     <ClInclude Include="engine\3d\PlaneProjectionShadow\PlaneProjectionShadow.h" />
     <ClInclude Include="application\GameObject\Obstacles\Wall\Wall.h" />
+    <ClInclude Include="application\PostEffect\EffectState\GaussianState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">
