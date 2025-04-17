@@ -26,6 +26,7 @@ void MoveEnemy::Initialize()
 	// 当たり判定の属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);
 	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
+	collider_->SetRadious(8.0f);
 	
 	velocity_ = { 0.0f,0.0f,1.0f };
 
