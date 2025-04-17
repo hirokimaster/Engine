@@ -36,7 +36,7 @@ void MoveEnemy::Initialize()
 	shadow_ = std::make_unique<PlaneProjectionShadow>();
 	shadow_->Initialize("LevelEditorObj/enemy.obj", &object_->GetWorldTransform());
 
-	bulletSpeed_ = 10.0f;
+	bulletSpeed_ = 5.0f;
 }
 
 void MoveEnemy::Update()
@@ -119,7 +119,7 @@ void MoveEnemy::Fire()
 		Vector3 playerWorldPos = player_->GetWorldPosition(); // 自キャラのワールド座標を取得
 		Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
 		Vector3 diff = Subtract(playerWorldPos, enemyWorldPos); // 差分ベクトルを求める
-		Normalize(diff); // 正規化
+		diff = Normalize(diff); // 正規化
 		Vector3 velocity = Multiply(bulletSpeed_, diff); // ベクトルの速度
 
 		// 弾を生成して初期化

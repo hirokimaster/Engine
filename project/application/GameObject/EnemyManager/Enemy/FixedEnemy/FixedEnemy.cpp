@@ -15,7 +15,7 @@ void FixedEnemy::Initialize()
 	// 影
 	shadow_ = std::make_unique<PlaneProjectionShadow>();
 	shadow_->Initialize("LevelEditorObj/fixedEnemy.obj", &object_->GetWorldTransform());
-	bulletSpeed_ = 20.0f;
+	bulletSpeed_ = 5.0f;
 }
 
 void FixedEnemy::Update()
@@ -104,7 +104,7 @@ void FixedEnemy::Fire()
 		Vector3 playerWorldPos = player_->GetWorldPosition(); // 自キャラのワールド座標を取得
 		Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
 		Vector3 diff = Subtract(playerWorldPos, enemyWorldPos); // 差分ベクトルを求める
-		Normalize(diff); // 正規化
+		diff = Normalize(diff); // 正規化
 		Vector3 velocity = Multiply(bulletSpeed_, diff); // ベクトルの速度
 
 		// 弾を生成して初期化

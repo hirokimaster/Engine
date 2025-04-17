@@ -134,12 +134,12 @@ void GameScene::Update()
 		cameraManager_->StartShake(0.1f, 0.4f); // シェイクさせる
 	}
 
-	if (player_->GetWorldPosition().z >= 80000.0f && !isTransitionClear_) {
+	if (player_->GetWorldPosition().z >= 85000.0f && !isTransitionClear_) {
 		isTransitionClear_ = true;
 		transition_ = std::make_unique<FadeIn>();
 		transition_->Initialize();
 		GameManager::GetInstance()->SetSceneTransition(transition_.get());
-		GameManager::GetInstance()->ChangeScene("CLAER");
+		GameManager::GetInstance()->ChangeScene("CLEAR");
 	}
 
 	gameSprite_->Update();
