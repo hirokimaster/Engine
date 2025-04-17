@@ -22,6 +22,10 @@ void GameScene::Initialize()
 	particleManager_->ApplyParam("bulletTrajectory");
 	particleManager_->CreateParam("explosion");
 	particleManager_->ApplyParam("explosion");
+	particleManager_->CreateParam("engine_left");
+	particleManager_->ApplyParam("engine_left");
+	particleManager_->CreateParam("engine_right");
+	particleManager_->ApplyParam("engine_right");
 
 	// objectManager
 	objectManager_ = std::make_unique<ObjectManager>();
@@ -196,6 +200,7 @@ void GameScene::LoadTextureFile()
 	TextureManager::Load("resources/UI/RB.png");
 	TextureManager::Load("resources/UI/RB2.png");
 	TextureManager::Load("resources/UI/L.png");
+	
 
 	// particle
 	TextureManager::Load("resources/Player/smoke.png");

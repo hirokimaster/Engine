@@ -28,7 +28,12 @@ void Player::Initialize()
 	attackTimer_ = 0.0f;
 
 	// particle
+	TextureManager::Load("resources/Player/engine.png");
 	particleManager_ = ParticleManager::GetInstance();
+	rightEngine_ = particleManager_->GetParticle("engine_right", "Player/engine.png");
+	leftEngine_ = particleManager_->GetParticle("engine_left", "Player/engine.png");
+	rightEngine_->SetLifeTime(60000);
+	leftEngine_->SetLifeTime(60000);
 
 	// UI
 	spriteAttack_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/RB.png"), { 1000.0f , 500.0f }));
@@ -82,6 +87,17 @@ void Player::Update()
 	// 影
 	shadow_->Update();
 
+	// particle
+	leftEngine_->SetParticleParam(particleManager_->GetParam("engine_left"));
+	leftEngine_->SetIsActive(true);
+	rightEngine_->SetParticleParam(particleManager_->GetParam("engine_right"));
+	rightEngine_->SetIsActive(true);
+	Matrix4x4 rotMat = MakeRotateMatrix(object_->GetWorldTransform().rotate);
+	Vector3 rotatedOffsetL = Transform(particleOffsetL_, rotMat);
+	leftEngine_->SetPosition(object_->GetWorldTransform().translate + rotatedOffsetL);
+	Vector3 rotatedOffsetR = Transform(particleOffsetR_, rotMat);
+	rightEngine_->SetPosition(object_->GetWorldTransform().translate + rotatedOffsetR);
+
 	ApplyAdjustmentVariables();
 }
 
@@ -107,6 +123,7 @@ void Player::Move()
 	position.z += moveSpeed_;
 	object_->SetPosition(position);
 	spriteMove_->SetPosition(Vector2((5.0f * move.x) + 240.0f, (5.0f * move.y) + 500.0f));
+
 }
 
 void Player::Attack()
@@ -300,3 +317,4 @@ void Player::ApplyAdjustmentVariables()
 	rotateSpeed_ = variables->GetValue<float>(groupName, "rotateSpeed");
 	rotateLerpFactor_ = variables->GetValue<float>(groupName, "rotateLerpFactor");
 }
+

@@ -169,5 +169,9 @@ private:
 	float rotateLerpFactor_; // Lerpの強さ
 	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタ借りる
 	ParticleManager* particleManager_ = nullptr;
+	GPUParticle* rightEngine_ = nullptr;
+	GPUParticle* leftEngine_ = nullptr;
+	Vector3 particleOffsetL_{ -0.3f,0.0f,-3.8f };
+	Vector3 particleOffsetR_{ 0.3f,0.0f,-3.8f };
 	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
 };

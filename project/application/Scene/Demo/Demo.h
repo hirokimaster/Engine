@@ -16,6 +16,7 @@
 #include "application/Loader/Loader.h"
 #include "application/GameObject/ModelResources/ModelResources.h"
 #include "engine/3d/Line/Line.h"
+#include "engine/Graphics/Effects/Particle/GPUParticle.h"
 
 class Demo : public IScene {
 public: // メンバ関数
@@ -51,7 +52,8 @@ public: // メンバ関数
 
 private:
 	Camera camera_;
-	std::unique_ptr<Line> line_ = nullptr;
+	ParticleManager* p_ = nullptr;
+	GPUParticle* particle_ = nullptr;
 };
 
 

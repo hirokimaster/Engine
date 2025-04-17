@@ -221,10 +221,9 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 	auto it4 = GetObjectDatas().find("wall");
 	if (it4 != GetObjectDatas().end()) {
 		for (auto& objectData : it4->second) {
-			std::unique_ptr<BaseObject> object = std::make_unique<BaseObject>();
-			object->Initialize("Player/cube.obj", "TempTexture/noise0.png");
+			std::unique_ptr<Wall> object = std::make_unique<Wall>();
+			object->Initialize();
 			object->SetPosition(objectData.translate);
-			object->SetRotate(objectData.rotate);
 			object->SetScale(objectData.scale);
 			ptr->PushObject(std::move(object));
 		}

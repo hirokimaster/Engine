@@ -17,19 +17,25 @@ Demo::~Demo()
 void Demo::Initialize()
 {
 	camera_.Initialize();
-	line_ = std::make_unique<Line>();
-	line_->Initialize({ -10.0f,0.0f,0.0f }, { 10.0f,0.0f,0.0f });
+	TextureManager::Load("resources/Player/engine.png");
+	p_ = ParticleManager::GetInstance();
+	p_->CreateParam("engine");
+	p_->ApplyParam("engine");
+	particle_ = p_->GetParticle("engine", "Player/engine.png");
 }
 
 void Demo::Update()
 {
-
+	p_->ApplyParam("engine");
+	particle_->SetIsActive(true);
+	particle_->SetParticleParam(p_->GetParam("engine"));
+	particle_->Update();
 	camera_.UpdateMatrix();		
 }
 
 void Demo::Draw()
 {
-	line_->Draw(camera_);
+	particle_->Draw(camera_);
 }
 
 void Demo::PostProcessDraw()

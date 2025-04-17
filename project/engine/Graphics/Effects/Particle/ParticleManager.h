@@ -56,6 +56,8 @@ public:
 
 	GPUParticle* GetParticle(const string& name, const string& texture = "TempTexture/circle.png");
 
+	EmitterSphere GetParam(const string& name) { return params_[name]; }
+
 #pragma endregion
 
 private:
