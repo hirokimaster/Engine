@@ -26,6 +26,7 @@ void Player::Initialize()
 
 	// 発射タイマー
 	attackTimer_ = 0.0f;
+	gameStartTimer_ = 120.0f;
 
 	// particle
 	TextureManager::Load("resources/Player/engine.png");
@@ -48,6 +49,7 @@ void Player::Initialize()
 
 void Player::Update()
 {
+	--gameStartTimer_;
 	Move(); // 移動
 	Rotate(); // 回転
 
@@ -116,11 +118,16 @@ void Player::Move()
 	Vector3 move{};
 
 	if (!isDead_) {
-		// ジョイスティック状態取得
-		if (Input::GetInstance()->GetJoystickState(joyState)) {
-			move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 2.0f;
-			move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 2.0f;
+
+		if (gameStartTimer_ <= 0.0f) {
+			// ジョイスティック状態取得
+			if (Input::GetInstance()->GetJoystickState(joyState)) {
+				move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 2.0f;
+				move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 2.0f;
+			}
+			gameStartTimer_ = 0.0f;
 		}
+		
 
 		Vector3 position = object_->GetWorldTransform().translate + move;
 
@@ -235,12 +242,16 @@ void Player::Rotate()
 	XINPUT_STATE joyState;
 
 	if (!isDead_) {
-		// ゲームパッド状態取得
-		if (Input::GetInstance()->GetJoystickState(joyState)) {
-			// ゲームパッドの入力から回転速度を計算
-			rotate.z += (float)joyState.Gamepad.sThumbLX / SHRT_MAX;
-			rotate.x += (float)joyState.Gamepad.sThumbLY / SHRT_MAX;
+		if (gameStartTimer_ <= 0.0f) {
+			// ゲームパッド状態取得
+			if (Input::GetInstance()->GetJoystickState(joyState)) {
+				// ゲームパッドの入力から回転速度を計算
+				rotate.z += (float)joyState.Gamepad.sThumbLX / SHRT_MAX;
+				rotate.x += (float)joyState.Gamepad.sThumbLY / SHRT_MAX;
+			}
+			gameStartTimer_ = 0.0f;
 		}
+		
 	}
 	
 	Vector3 rotateVelo{};

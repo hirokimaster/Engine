@@ -174,4 +174,5 @@ private:
 	Vector3 particleOffsetL_{ -0.3f,0.0f,-3.8f };
 	Vector3 particleOffsetR_{ 0.3f,0.0f,-3.8f };
 	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
+	float gameStartTimer_ = 120.0f;
 };
