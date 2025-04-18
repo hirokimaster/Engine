@@ -89,7 +89,28 @@ void LockOn::Draw()
 		sprite2DReticle_->Draw();
 	}
 
+	static float scale = 1.0f;
+	static float scaleSpeed = 0.01f;
+	static bool scalingUp = true;
+
+	// スケール更新
+	if (scalingUp) {
+		scale += scaleSpeed;
+		if (scale >= 1.3f) {
+			scale = 1.3f;
+			scalingUp = false;
+		}
+	}
+	else {
+		scale -= scaleSpeed;
+		if (scale <= 1.0f) {
+			scale = 1.0f;
+			scalingUp = true;
+		}
+	}
+
 	for (const auto& sprite : sprite_) {
+		sprite->SetScale({ scale, scale });
 		sprite->Draw();
 	}
 }
