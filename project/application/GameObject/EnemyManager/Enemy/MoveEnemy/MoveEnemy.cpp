@@ -37,7 +37,7 @@ void MoveEnemy::Initialize()
 	shadow_ = std::make_unique<PlaneProjectionShadow>();
 	shadow_->Initialize("LevelEditorObj/enemy.obj", &object_->GetWorldTransform());
 
-	bulletSpeed_ = 5.0f;
+	bulletSpeed_ = 10.0f;
 }
 
 void MoveEnemy::Update()

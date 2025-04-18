@@ -11,7 +11,7 @@ void EnemyBullet::Initialize()
 {
 	// object共通の初期化
 	BaseObject::Initialize("Player/cube.obj", "TempTexture/white.png", ColliderType::Sphere);
-	object_->SetScale({ 5.0f,5.0f,5.0f });
+	object_->SetScale({ 100.0f,100.0f,100.0f });
 	object_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 	// collider設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
@@ -62,8 +62,7 @@ void EnemyBullet::ResetDeathTimer()
 
 void EnemyBullet::Move()
 {
-	Vector3 move{};
-	move = object_->GetWorldTransform().translate + velocity_;
+	Vector3 move = object_->GetWorldTransform().translate + velocity_;
 	object_->SetPosition(move);
 }
 
