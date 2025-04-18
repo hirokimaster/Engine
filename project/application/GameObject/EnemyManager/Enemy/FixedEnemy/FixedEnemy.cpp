@@ -15,7 +15,7 @@ void FixedEnemy::Initialize()
 	// 影
 	shadow_ = std::make_unique<PlaneProjectionShadow>();
 	shadow_->Initialize("LevelEditorObj/fixedEnemy.obj", &object_->GetWorldTransform());
-	bulletSpeed_ = 5.0f;
+	bulletSpeed_ = 20.0f;
 }
 
 void FixedEnemy::Update()

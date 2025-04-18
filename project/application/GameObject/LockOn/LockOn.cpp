@@ -266,7 +266,7 @@ bool LockOn::CheckReticleRange(const Vector3& screenPosition, const Vector3& wor
 	float worldDistance = Length(enemyWorldPosition - playerPosition_);
 
 	// 3000以内かつレティクル範囲内か
-	if (screenDistance <= reticleRadius && worldDistance <= 3000.0f) {
+	if (screenDistance <= reticleRadius && worldDistance <= 4000.0f) {
 		return true;
 	}
 

@@ -213,6 +213,8 @@ void Player::OnCollision()
 
 	if (collider_->OnCollision()) {
 		isHitEnemyFire_ = true; // 敵の攻撃が当たった
+		rightEngine_->SetLifeTime(0);
+		leftEngine_->SetLifeTime(0);
 	}
 }
 

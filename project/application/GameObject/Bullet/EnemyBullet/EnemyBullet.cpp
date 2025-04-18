@@ -10,13 +10,16 @@
 void EnemyBullet::Initialize()
 {
 	// object共通の初期化
-	BaseObject::Initialize("Enemy/cube.obj", "TempTexture/white.png", ColliderType::Sphere);
+	BaseObject::Initialize("Player/cube.obj", "TempTexture/white.png", ColliderType::Sphere);
+	object_->SetScale({ 5.0f,5.0f,5.0f });
+	object_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 	// collider設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
+	collider_->SetRadious(2.0f);
 	type_ = BulletType::Enemy;
 	isDead_ = false;
-	isActive_ = false;
+	isActive_ = true;
 	// particle
 	particleManager_ = ParticleManager::GetInstance();
 }
