@@ -6,7 +6,7 @@ void Wall::Initialize()
 	BaseObject::Initialize("Player/cube.obj", "TempTexture/noise0.png", ColliderType::AABB);
 
 	// colliderの属性
-	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
+	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
 }
 

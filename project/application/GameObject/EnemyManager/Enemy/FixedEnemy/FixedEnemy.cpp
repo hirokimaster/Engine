@@ -8,7 +8,7 @@ void FixedEnemy::Initialize()
 	object_->SetColor({ 0.0f,0.0f,0.0f,1.0f });
 	// コライダーの属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);	  // 自分の属性
-	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
+	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
 	collider_->SetRadious(8.0f); // コライダーのサイズ 
 	// パーティクル
 	particleManager_ = ParticleManager::GetInstance();
@@ -47,17 +47,17 @@ void FixedEnemy::Update()
 		shadow_->Update();
 	}
 
-	// 発射間隔つける
-	if (GetWorldPosition().z - player_->GetWorldPosition().z <= 5000.0f) {
-		// 発射タイマーをデクリメント
-		--fireTimer_;
-		if (fireTimer_ <= 0) {
-			// 弾を発射
-			Fire();
-			// 発射タイマーの初期化
-			fireTimer_ = kFireInterval_;
-		}
-	}
+	//// 発射間隔つける
+	//if (GetWorldPosition().z - player_->GetWorldPosition().z <= 5000.0f) {
+	//	// 発射タイマーをデクリメント
+	//	--fireTimer_;
+	//	if (fireTimer_ <= 0) {
+	//		// 弾を発射
+	//		Fire();
+	//		// 発射タイマーの初期化
+	//		fireTimer_ = kFireInterval_;
+	//	}
+	//}
 
 	// 弾更新
 	for (const auto& bullet : bullets_) {

@@ -14,7 +14,7 @@ void EnemyStateFire::Update(MoveEnemy* pEnemy)
 
 	if (fireTimer_ <= 0) {
 		// 弾を発射
-		pEnemy->Fire();
+		//pEnemy->Fire();
 		// 発射タイマーの初期化
 		fireTimer_ = kFireInterval_;
 	}

@@ -14,7 +14,7 @@ void Player::Initialize()
 	object_->SetPosition({ 0,40.0f,-1500.0f });
 	// 属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
-	collider_->SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
+	collider_->SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
 	collider_->SetRadious(2.0f);
 
 	// 調整項目
