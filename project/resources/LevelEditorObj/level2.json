@@ -1997,6 +1997,94 @@
                 ]
             },
             "file_name": "laser"
+        },
+        {
+            "type": "MESH",
+            "name": "レーザー.014",
+            "transform": {
+                "translation": [
+                    140.0,
+                    31966.00390625,
+                    6.220060348510742
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    85.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "laser"
+        },
+        {
+            "type": "MESH",
+            "name": "レーザー.015",
+            "transform": {
+                "translation": [
+                    140.0,
+                    30500.0,
+                    4.7396392822265625
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    85.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "laser"
+        },
+        {
+            "type": "MESH",
+            "name": "レーザー.016",
+            "transform": {
+                "translation": [
+                    140.0,
+                    31500.0,
+                    70.93289184570312
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    85.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "laser"
+        },
+        {
+            "type": "MESH",
+            "name": "レーザー.017",
+            "transform": {
+                "translation": [
+                    140.0,
+                    33100.0,
+                    15.692943572998047
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    85.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "laser"
         }
     ]
 }
