@@ -9,13 +9,27 @@
 #include "engine/3d/Lighting/Lighting.h"
 #include "engine/3d/Model/Animation/ModelAnimation.h"
 #include "engine/Graphics/Transform/WorldTransform.h"
+#include "engine/Graphics/Transform/InstanceWorldTransform.h"
+
+struct Object3dData {
+	InstanceWorldTransform worldTransform;
+	Vector4 color;
+	uint32_t texHandel;
+	bool isAlive;
+};
 
 class Object3DPlacer {
 public:
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~Object3DPlacer();
+
 	/// <summary>
 	/// 普通のモデルの初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(bool isInstancing = false);
 
 	/// <summary>
 	/// 行列の更新
@@ -54,6 +68,7 @@ public:
 	// directionalLightの設定
 	DirectionalLight SetLightingProperty(const DirectionalLight& directionalLight) { return *directionalLightData_ = directionalLight; }
 	void SetUVTransform(const UVTransform& uvTransform) { uvTransform_ = uvTransform; }
+	void SetObject3dData(const std::shared_ptr<Object3dData>& data) { object3dData_.push_back(data); }
 
 #pragma endregion
 
@@ -61,13 +76,15 @@ public:
 
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
+	const std::vector<std::shared_ptr<Object3dData>>& GetObject3dData() { return object3dData_; }
+	
 #pragma endregion
 
 private:
 
 	void CreateUVTransformMatrix();
 
-	void CreateBuffer();
+	void CreateInstancingBuffer();
 
 private:
 	Model* model_ = nullptr;
@@ -86,5 +103,10 @@ private:
 		{0.0f,0.0f,0.0f},
 	};
 	Microsoft::WRL::ComPtr<ID3D12Resource> instancingResource_;
-	uint32_t kInstanceNum_ = 0;
+	InstanceWorldTransformForGPU* instancingData_ = nullptr;
+	uint32_t srvIndex_ = 0;
+	uint32_t numInstance_ = 0;
+	static const uint32_t kMaxInstance_ = 1000;
+	std::vector<std::shared_ptr<Object3dData>> object3dData_;
+	bool isInstancing_;
 };

@@ -7,9 +7,13 @@
 #include "Object3DPlacer.h"
 #include <engine/Graphics/TextureManager/TextureManager.h>
 
-void Object3DPlacer::Initialize()
+Object3DPlacer::~Object3DPlacer()
 {
-	worldTransform_.Initialize();
+	object3dData_.clear();
+}
+
+void Object3DPlacer::Initialize(bool isInstancing)
+{
 	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
@@ -25,11 +29,46 @@ void Object3DPlacer::Initialize()
 	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
 	directionalLightData_->direction = Normalize({ 0.0f, -30.0f, 0.0f });
 	directionalLightData_->intensity = 1.0f;
+
+	isInstancing_ = isInstancing;
+	// インスタンシングなら作る
+	if (isInstancing) {
+		CreateInstancingBuffer();
+	}
+	else {
+		worldTransform_.Initialize();
+	}
 }
 
 void Object3DPlacer::Update()
 {
-	worldTransform_.UpdateMatrix();
+	// インスタンシングなら
+	if (isInstancing_) {
+		numInstance_ = 0;
+		for (const auto& data : object3dData_) {
+			// 越えたら抜ける
+			if (numInstance_ >= kMaxInstance_) break;
+
+			// 生きてなかったらスキップする
+			if (!data->isAlive) continue;
+
+			// ワールド行列を更新
+			data->worldTransform.UpdateMatrix();
+
+			// instancingDataに書き込む
+			instancingData_[numInstance_].matWorld = data->worldTransform.matWorld;
+			instancingData_[numInstance_].world = data->worldTransform.world;
+			instancingData_[numInstance_].WorldInverseTranspose = Transpose(Inverse(data->worldTransform.matWorld));
+			instancingData_[numInstance_].color = data->color;
+
+			++numInstance_;
+		}
+	}
+	else {
+		// 1個だけなら
+		worldTransform_.UpdateMatrix();
+	}
+
 }
 
 void Object3DPlacer::Draw(const Camera& camera)
@@ -37,6 +76,10 @@ void Object3DPlacer::Draw(const Camera& camera)
 	CreateUVTransformMatrix();
 
 	if (lighting_ == nullptr) {
+		if (isInstancing_) {
+			pipelineData_ = GraphicsPipeline::GetInstance()->GetPSO().Object3DInstancing;
+		}
+		return;
 		pipelineData_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
 	}
 	else {
@@ -64,9 +107,14 @@ void Object3DPlacer::Draw(const Camera& camera)
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
 
 	// wvp用のCBufferの場所を設定
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff->GetGPUVirtualAddress());
+	if (isInstancing_) {
+		SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, srvIndex_);
+	}
+	else {
+		DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff->GetGPUVirtualAddress());
+	}
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(3, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, texHandle_);
 	// 平行光源
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(4, resource_.directionalLightResource->GetGPUVirtualAddress());
 
@@ -74,8 +122,11 @@ void Object3DPlacer::Draw(const Camera& camera)
 		lighting_->CreateCommand();
 	}
 
-	if (model_) {
+	if (model_ && !isInstancing_) {
 		model_->Draw();
+	}
+	else if (model_ && isInstancing_) {
+		model_->Draw(numInstance_);
 	}
 }
 
@@ -92,7 +143,7 @@ void Object3DPlacer::Draw(const Camera& camera, bool isAnimation)
 
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
-	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff->GetGPUVirtualAddress());
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, srvIndex_);
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(4, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 	// 平行光源
@@ -111,8 +162,11 @@ void Object3DPlacer::CreateUVTransformMatrix()
 	materialData_->uvTransform = uvTransformMatrix;
 }
 
-void Object3DPlacer::CreateBuffer()
+void Object3DPlacer::CreateInstancingBuffer()
 {
-	instancingResource_ = CreateResource::CreateBufferResource(sizeof(WorldTransform) * kInstanceNum_);
-
+	instancingResource_ = CreateResource::CreateBufferResource(sizeof(InstanceWorldTransformForGPU) * kMaxInstance_);
+	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));
+	SrvManager::GetInstance()->StructuredBufIndexAllocate();
+	srvIndex_ = SrvManager::GetInstance()->GetStructuredBufIndex();
+	SrvManager::GetInstance()->CreateStructuredBufferSrv(instancingResource_.Get(), kMaxInstance_, sizeof(InstanceWorldTransformForGPU), srvIndex_);
 }
