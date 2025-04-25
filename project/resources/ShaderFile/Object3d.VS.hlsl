@@ -13,7 +13,7 @@ struct CameraMatrix
     float32_t3 worldPosition;
 };
 
-StructuredBuffer<TransformationMatrix> gTransformationMatrix : register(b0);
+ConstantBuffer<TransformationMatrix> gTransformationMatrix : register(b0);
 
 ConstantBuffer<CameraMatrix> gCameraMatrix : register(b1);
 

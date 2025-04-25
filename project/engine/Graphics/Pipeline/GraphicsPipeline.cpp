@@ -103,6 +103,7 @@ void GraphicsPipeline::CreatePipeline(PipelineState& pso) {
 	pso.Random = CreateRandom(device.Get(), L"Random");
 	pso.gpuParticle = CreateGPUParticle(device.Get(), L"Particle");
 	pso.postEffectNone = CreatePostEffectNone(device.Get(), L"PostEffectNone");
+	pso.Object3DInstancing = CreateObject3DInstancing(device.Get(), L"Object3dInstancing");
 }
 
 /*-------------------------------------------------
@@ -296,7 +297,7 @@ GraphicsPipelineData GraphicsPipeline::CreateObject3DInstancing(Microsoft::WRL::
 	rootParameters[1].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
 	rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
-	rootParameters[2].Descriptor.ShaderRegister = 1;
+	rootParameters[2].Descriptor.ShaderRegister = 0;
 	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; // Descriptortableを使う
 	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; // PixelShaderで使う
 	rootParameters[3].DescriptorTable.pDescriptorRanges = descriptorRange; // Tableの中身の配列を指定
@@ -326,7 +327,7 @@ GraphicsPipelineData GraphicsPipeline::CreateObject3DInstancing(Microsoft::WRL::
 	CreateRootSignature(device, descriptionRootSignature, pipelineData);
 
 	// InputLayout
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3] = {};
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[4] = {};
 	inputElementDescs[0].SemanticName = "POSITION";
 	inputElementDescs[0].SemanticIndex = 0;
 	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -339,6 +340,10 @@ GraphicsPipelineData GraphicsPipeline::CreateObject3DInstancing(Microsoft::WRL::
 	inputElementDescs[2].SemanticIndex = 0;
 	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
 	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+	inputElementDescs[3].SemanticName = "COLOR";
+	inputElementDescs[3].SemanticIndex = 0;
+	inputElementDescs[3].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	inputElementDescs[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
 	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
 	inputLayoutDesc.pInputElementDescs = inputElementDescs;
 	inputLayoutDesc.NumElements = _countof(inputElementDescs);

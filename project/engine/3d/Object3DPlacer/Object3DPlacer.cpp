@@ -10,6 +10,7 @@
 Object3DPlacer::~Object3DPlacer()
 {
 	object3dData_.clear();
+	SrvManager::GetInstance()->StructuredBufIndexFree(srvIndex_);
 }
 
 void Object3DPlacer::Initialize(bool isInstancing)
@@ -79,8 +80,9 @@ void Object3DPlacer::Draw(const Camera& camera)
 		if (isInstancing_) {
 			pipelineData_ = GraphicsPipeline::GetInstance()->GetPSO().Object3DInstancing;
 		}
-		return;
-		pipelineData_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
+		else {
+			pipelineData_ = GraphicsPipeline::GetInstance()->GetPSO().Object3D;
+		}
 	}
 	else {
 		if (lighting_->GetLightType() == Light::None) {
@@ -143,7 +145,7 @@ void Object3DPlacer::Draw(const Camera& camera, bool isAnimation)
 
 	// マテリアルCBufferの場所を設定
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(0, resource_.materialResource->GetGPUVirtualAddress());
-	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, srvIndex_);
+	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(1, worldTransform_.constBuff->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootConstantBufferView(2, camera.constBuff_->GetGPUVirtualAddress());
 	DirectXCommon::GetCommandList()->SetGraphicsRootDescriptorTable(4, SrvManager::GetInstance()->GetGPUHandle(texHandle_));
 	// 平行光源

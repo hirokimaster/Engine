@@ -1,10 +1,10 @@
-#include "Object3d.hlsli"
+#include "Object3dInstancing.hlsli"
 struct TransformationMatrix
 {
     float32_t4x4 matWorld;
     float32_t4x4 world;
     float32_t4x4 WorldInverseTranspose;
-    float32_4 color;
+    float32_t4 color;
 };
 
 struct CameraMatrix

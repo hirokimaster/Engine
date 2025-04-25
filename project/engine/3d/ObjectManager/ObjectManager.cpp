@@ -31,6 +31,7 @@ std::shared_ptr<Object3dData> ObjectManager::CreateInstance(const std::string& m
         std::unique_ptr<Object3DPlacer> object = std::make_unique<Object3DPlacer>();
         object->Initialize(true);
         object->SetModel(modelName);
+        object->SetTexHandle(texHandle);
         // 新しく追加したオブジェクトは追加しないように保持する
         it = objectMap_.emplace(modelName, std::move(object)).first;
     }
@@ -40,6 +41,7 @@ std::shared_ptr<Object3dData> ObjectManager::CreateInstance(const std::string& m
     auto data = std::make_shared<Object3dData>();
     data->worldTransform.Initialize();
     data->texHandel = texHandle;
+    data->isAlive = true;
     data->color = { 1.0f, 1.0f, 1.0f, 1.0f };
     object.SetObject3dData(data);
 

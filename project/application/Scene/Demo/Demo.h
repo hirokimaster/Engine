@@ -16,6 +16,7 @@
 #include "application/Loader/Loader.h"
 #include "application/GameObject/ModelResources/ModelResources.h"
 #include "engine/3d/Line/Line.h"
+#include "engine/3d/ObjectManager/ObjectManager.h"
 
 class Demo : public IScene {
 public: // メンバ関数
@@ -51,7 +52,9 @@ public: // メンバ関数
 
 private:
 	Camera camera_;
-	std::unique_ptr<Line> line_ = nullptr;
+	std::unique_ptr<ObjectManager> objectManager_;
+	std::weak_ptr<Object3dData> object_;
+	std::weak_ptr<Object3dData> object2_;
 };
 
 
