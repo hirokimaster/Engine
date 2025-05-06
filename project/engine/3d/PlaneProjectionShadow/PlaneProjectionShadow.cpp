@@ -12,6 +12,11 @@ void PlaneProjectionShadow::Initialize(const std::string& modelName, const World
 	casterWorldTransform_ = casterWorldTransform;
 	// objectを真っ黒にする
 	object_->SetColor({ 0.0f,0.0f,0.0f,1.0f });
+  
+	if (casterWorldTransform_) {
+		Matrix4x4 matWorld = casterWorldTransform_->matWorld * shadowMatrix_;
+		object_->SetMatWorld(matWorld);
+	}
 
 }
 

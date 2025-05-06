@@ -92,6 +92,8 @@
       <Filter>shaders</Filter>
     </FxCompile>
     <FxCompile Include="resources\ShaderFile\PostEffectNone.PS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Object3dInstancing.VS.hlsl" />
+    <FxCompile Include="resources\ShaderFile\Object3dInstancing.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -294,6 +296,7 @@
     <ClCompile Include="application\GameObject\EnemyManager\EnemyManager.cpp" />
     <ClCompile Include="engine\3d\ObjectManager\ObjectManager.cpp" />
     <ClCompile Include="application\GameObject\Bullet\BulletObjectPool\BulletObjectPool.cpp" />
+    <ClCompile Include="engine\Graphics\Transform\InstanceWorldTransform.cpp" />
     <ClCompile Include="engine\3d\PlaneProjectionShadow\PlaneProjectionShadow.cpp" />
     <ClCompile Include="application\GameObject\Obstacles\Wall\Wall.cpp" />
     <ClCompile Include="application\PostEffect\EffectState\GaussianState.cpp" />
@@ -533,6 +536,7 @@
     <ClInclude Include="engine\3d\ObjectManager\ObjectManager.h" />
     <ClInclude Include="application\GameObject\Bullet\IBullet.h" />
     <ClInclude Include="application\GameObject\Bullet\BulletObjectPool\BulletObjectPool.h" />
+    <ClInclude Include="engine\Graphics\Transform\InstanceWorldTransform.h" />
     <ClInclude Include="engine\3d\PlaneProjectionShadow\PlaneProjectionShadow.h" />
     <ClInclude Include="application\GameObject\Obstacles\Wall\Wall.h" />
     <ClInclude Include="application\PostEffect\EffectState\GaussianState.h" />
@@ -553,6 +557,7 @@
     <None Include="resources\ShaderFile\Object3d.hlsli">
       <Filter>shaders</Filter>
     </None>
+    <None Include="resources\ShaderFile\Object3dInstancing.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="externals\imgui\LICENSE.txt" />

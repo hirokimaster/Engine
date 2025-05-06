@@ -189,7 +189,7 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 			object->Initialize();
 			object->SetPosition(objectData.translate);
 			object->SetScale(objectData.scale);
-			ptr->PushObject(std::move(object));
+			//ptr->PushObject(std::move(object));
 		}
 	}
 	// 道
@@ -202,7 +202,7 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 			object->SetRotate(objectData.rotate);
 			object->SetScale(objectData.scale);
 			object->SetUVTransform(uvTransform_);
-			ptr->PushObject(std::move(object));
+			//ptr->PushObject(std::move(object));
 		}
 	}
 	// 地面
@@ -214,7 +214,7 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 			object->SetPosition(objectData.translate);
 			object->SetRotate(objectData.rotate);
 			object->SetScale(objectData.scale);
-			ptr->PushObject(std::move(object));
+			//ptr->PushObject(std::move(object));
 		}
 	}
 	// 壁
@@ -225,7 +225,7 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 			object->Initialize();
 			object->SetPosition(objectData.translate);
 			object->SetScale(objectData.scale);
-			ptr->PushObject(std::move(object));
+			//ptr->PushObject(std::move(object));
 		}
 	}
 
@@ -238,7 +238,7 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 			object->SetPosition(objectData.translate);
 			object->SetRotate(objectData.rotate);
 			object->SetScale(objectData.scale);
-			ptr->PushObject(std::move(object));
+			//ptr->PushObject(std::move(object));
 		}
 	}
 
@@ -251,7 +251,9 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 			object->SetPosition(objectData.translate);
 			object->SetRotate(objectData.rotate);
 			object->SetScale(objectData.scale);
-			ptr->PushObject(std::move(object));
+			//ptr->PushObject(std::move(object));
 		}
 	}
+
+  ptr;
 }

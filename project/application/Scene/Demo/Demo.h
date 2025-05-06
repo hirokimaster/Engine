@@ -16,6 +16,7 @@
 #include "application/Loader/Loader.h"
 #include "application/GameObject/ModelResources/ModelResources.h"
 #include "engine/3d/Line/Line.h"
+#include "engine/3d/ObjectManager/ObjectManager.h"
 #include "engine/Graphics/Effects/Particle/GPUParticle.h"
 
 class Demo : public IScene {
@@ -52,8 +53,9 @@ public: // メンバ関数
 
 private:
 	Camera camera_;
-	ParticleManager* p_ = nullptr;
-	GPUParticle* particle_ = nullptr;
+	std::unique_ptr<ObjectManager> objectManager_;
+	std::weak_ptr<Object3dData> object_;
+	std::weak_ptr<Object3dData> object2_;
 };
 
 

@@ -2,7 +2,7 @@
 #include <list>
 #include <memory>
 #include <map>
-#include "engine/3d/Object3DPlacer/BaseObject.h"
+#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "application/Loader/Loader.h"
 
 class ObjectManager {
@@ -24,33 +24,21 @@ public:
 	void Draw(const Camera& camera);
 
 	/// <summary>
-	/// objectの追加
+	/// インスタンス生成あったら値だけ取る
 	/// </summary>
-	/// <param name="object"></param>
-	void PushObject(std::unique_ptr<BaseObject> object) { 
-		objects_.push_back(std::move(object)); // 所有権はここ
-	}
+	/// <param name="modelName"></param>
+	/// <param name="texHandle"></param>
+	/// <returns></returns>
+	std::shared_ptr<Object3dData> CreateInstance(const std::string& modelName, uint32_t texHandle);
 
-#pragma region getter
+	/// <summary>
+	///  mapの中を空にする
+	/// </summary>
+	void ClearObjectMap();
 
-	std::list<Collider*> GetCollider() {
-		std::list<Collider*> result;
-		for (auto& object : objects_) {
-			// colliderがあったら
-			if (object->GetCollider() != nullptr) {
-				result.push_back(object->GetCollider());
-			}
-		}
-
-		return result;
-	}
-
-#pragma endregion
-
-#pragma region 
-
-#pragma endregion
 
 private:
-    std::list<std::unique_ptr<BaseObject>> objects_; // 全てのobject
+	// モデルとインスタンス
+	std::unordered_map<std::string, std::unique_ptr<Object3DPlacer>> objectMap_;
+	
 };

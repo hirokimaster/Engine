@@ -208,9 +208,9 @@ void GameScene::Collision()
 		collisionManager_->ColliderPush(enemy->GetCollider()); // enemycolliderをリストに追加
 	}
 
-	for (const auto& collider : objectManager_->GetCollider()) {
+	/*for (const auto& collider : objectManager_->GetCollider()) {
 		collisionManager_->ColliderPush(collider);
-	}
+	}*/
 
 	collisionManager_->CheckAllCollision(); // 判定
 }
