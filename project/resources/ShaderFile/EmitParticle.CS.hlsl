@@ -88,6 +88,7 @@ struct Range3d
 struct EmitterSphere
 {
     float32_t3 translate;
+    float32_t3 velocity;
     float32_t radius;
     uint32_t count;
     float32_t frequency;
@@ -131,7 +132,7 @@ void main(uint32_t3 DTid : SV_DispatchThreadID)
                 gParticles[particleIndex].translate = gEmitter.translate + generator.ApplyRange3d(gEmitter.rangeTranslate.min,gEmitter.rangeTranslate.max);
                 gParticles[particleIndex].color.rgb = generator.ApplyRange3d(gEmitter.rangeColor.min,gEmitter.rangeColor.max);
                 gParticles[particleIndex].color.a = generator.ApplyRange1d(gEmitter.rangeAlpha.min, gEmitter.rangeAlpha.max);
-                gParticles[particleIndex].velocity = generator.ApplyRange3d(gEmitter.rangeVelocity.min,gEmitter.rangeVelocity.max);
+                gParticles[particleIndex].velocity = gEmitter.velocity + generator.ApplyRange3d(gEmitter.rangeVelocity.min,gEmitter.rangeVelocity.max);
                 gParticles[particleIndex].lifeTime = generator.ApplyRange1d(gEmitter.rangeLifeTime.min, gEmitter.rangeLifeTime.max);
                 gParticles[particleIndex].currentTime = generator.ApplyRange1d(gEmitter.rangeCurrentTime.min, gEmitter.rangeCurrentTime.max);
 

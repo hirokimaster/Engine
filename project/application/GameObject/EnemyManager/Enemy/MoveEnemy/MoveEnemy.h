@@ -12,6 +12,7 @@
 #include "application/GameObject/EnemyManager/Enemy/MoveEnemy/PhaseState/EnemyStateSortie.h"
 #include "application/GameObject/EnemyManager/Enemy/MoveEnemy/PhaseState/EnemyStateFire.h"
 #include "application/GameObject/EnemyManager/Enemy/IEnemy.h"
+#include "engine/3d/PlaneProjectionShadow/PlaneProjectionShadow.h"
 
 class Player;
 
@@ -78,7 +79,7 @@ public:
 
 	bool GetIsSortie()const { return isSortie_; }
 
-	const std::vector<Vector3>& GetMoveControlPoints_() const { return moveControlPoints_; }
+	const std::vector<Vector3>& GetMoveControlPoints() const { return moveControlPoints_; }
 
 	uint32_t GetEventNum()const { return eventNum_; }
 
@@ -119,4 +120,10 @@ private:
 	uint32_t eventNum_ = 0; // イベント番号
 	Vector3 eventTrigger_{}; // イベントトリガー
 	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタを借りてくる
+	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
+	ParticleManager* particleManager_ = nullptr; // ポインタ借りる
+	GPUParticle* particle_ = nullptr;
+	bool isHit_ = false;
+	bool isExploded_ = false;
+	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
 };

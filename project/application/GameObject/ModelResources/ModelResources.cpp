@@ -18,5 +18,8 @@ void ModelResources::LoadModel()
 	ModelManager::GetInstance()->LoadObjModel("Enemy/cube.obj");
 	ModelManager::GetInstance()->LoadObjModel("Player/player.obj");
 	ModelManager::GetInstance()->LoadObjModel("skydome/skydome.obj");
-	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/mounts2.obj");
+	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/grounds.obj");
+	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/part.obj");
+	ModelManager::GetInstance()->LoadObjModel("Enemy/enemy.obj");
+	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/fixedEnemy.obj");
 }

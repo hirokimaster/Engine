@@ -10,6 +10,7 @@
 #include <math.h>
 #include "engine/Math/Mathfunction.h"
 #include "engine/Input/Input.h"
+#include <limits>
 
 class LockOn {
 public:
@@ -77,7 +78,7 @@ private:
 	/// レティクルの範囲にいるか判定する
 	/// </summary>
 	/// <param name="position"></param>
-	bool CheckReticleRange(const Vector3& position);
+	bool CheckReticleRange(const Vector3& screenPosition, const Vector3& worldposition);
 
 	/// <summary>
 	/// レティクル
@@ -129,4 +130,5 @@ private:
 	bool startLockOnTimer_ = false;
 	std::unique_ptr<Sprite> spriteLockOnReticle_;
 	Vector2 reticlePosition_ = { 640.0f, 360.0f }; // reticleの範囲制限用のposition
+	Vector3 playerPosition_{};
 };

@@ -196,6 +196,42 @@ void GPUParticle::PerViewUpdate(const Camera& camera)
 	perViewData_->viewProjection = Multiply(camera.matView, camera.matProjection);
 }
 
+void GPUParticle::YBillboard(const Camera& camera)
+{
+	// カメラのワールド行列を取得
+	Matrix4x4 cameraMatrix = Inverse(camera.matView);
+
+	// カメラの前方・右方向ベクトルを取り出す
+	Vector3 cameraForward = {
+		cameraMatrix.m[2][0],
+		0.0f, // Y軸成分を無視（平面に投影）
+		cameraMatrix.m[2][2]
+	};
+	cameraForward = Normalize(cameraForward);
+
+	// カメラの右ベクトルを再計算（Y軸ビルボードなのでY軸は固定）
+	Vector3 cameraRight = Cross({ 0.0f, 1.0f, 0.0f }, cameraForward);
+	cameraRight = Normalize(cameraRight);
+
+	// カメラの上方向（Y軸）固定
+	Vector3 cameraUp = { 0.0f, 1.0f, 0.0f };
+
+	Matrix4x4 billboardMatrix = {
+		cameraRight.x, cameraRight.y, cameraRight.z, 0.0f,
+		cameraUp.x,    cameraUp.y,    cameraUp.z,    0.0f,
+		cameraForward.x, cameraForward.y, cameraForward.z, 0.0f,
+		0.0f,          0.0f,          0.0f,          1.0f
+	};
+
+	// 180度回転（後ろ向き対策）
+	Matrix4x4 backToFrontMatrix = MakeRotateYMatrix(std::numbers::pi_v<float>);
+	billboardMatrix = Multiply(backToFrontMatrix, billboardMatrix);
+
+	// 適用
+	perViewData_->billboardMatrix = billboardMatrix;
+	perViewData_->viewProjection = Multiply(camera.matView, camera.matProjection);
+}
+
 void GPUParticle::UpdateEmitter()
 {
 	perFrameData_->time += perFrameData_->deltaTime;

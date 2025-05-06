@@ -20,16 +20,7 @@ void EnemyStateSortie::Update(MoveEnemy* pEnemy)
 	}
 	// ポジションまで移動したら攻撃モードに移る
 	if (isSortie_) {
-		if (t_ <= 1.0f) {
-			t_ += 1.0f / 30.0f;
-			move_ = CatmullRomPosition(pEnemy->GetMoveControlPoints_(), t_);
-			pEnemy->SetPosition(move_);
-		}
-		else {
-			t_ = 1.0f;
-			isSortie_ = false;
-			pEnemy->ChangeState(std::make_unique<EnemyStateFire>());
-		}
+		pEnemy->ChangeState(std::make_unique<EnemyStateFire>());
 	}
 
 	

@@ -9,8 +9,9 @@
 void LockOn::Initialize()
 {
 	TextureManager::Load("resources/Player/reticle.png");
+	TextureManager::Load("resources/Player/lockOnReticle.png");
 	sprite2DReticle_.reset(Sprite::Create(TextureManager::GetTexHandle("Player/reticle.png"), reticlePosition_));
-	spriteLockOnReticle_.reset(Sprite::Create(TextureManager::GetTexHandle("Player/reticle.png"), { 640.0f,360.0f }));
+	spriteLockOnReticle_.reset(Sprite::Create(TextureManager::GetTexHandle("Player/lockOnReticle.png"), { 640.0f,360.0f }));
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
@@ -47,12 +48,26 @@ void LockOn::Update(const std::list<std::unique_ptr<IEnemy>>& enemies, const Cam
 	// ロックオンした敵にレティクルを出す
 	if (!target_.empty()) {
 
-		for (auto itr = positionScreen_.begin(); itr != positionScreen_.end(); ++itr) {
-			std::unique_ptr<Sprite> sprite;
-			sprite.reset(Sprite::Create(TextureManager::GetTexHandle("Player/reticle.png"), { (*itr).x,(*itr).y }));
-			sprite->SetAnchorPoint({ 0.5f,0.5f });
-			sprite_.push_back(std::move(sprite));
+		// プレイヤーの位置から最も近い敵を探す
+		float minDistance = (std::numeric_limits<float>::max)();
+		Vector3 nearestTarget;
+
+		for (const auto& target : target_) {
+			Vector3 diff = target->GetWorldPosition() - playerPosition_;
+			float distance = Length(diff);
+			if (distance < minDistance) {
+				minDistance = distance;
+				nearestTarget = target->GetWorldPosition();
+			}
 		}
+
+		Vector3 screenPos = TransformPositionScreen(nearestTarget, camera);
+		positionScreen_.push_back({ screenPos.x,screenPos.y });
+
+		std::unique_ptr<Sprite> sprite;
+		sprite.reset(Sprite::Create(TextureManager::GetTexHandle("Player/lockOnReticle.png"), { screenPos.x,screenPos.y }));
+		sprite->SetAnchorPoint({ 0.5f,0.5f });
+		sprite_.push_back(std::move(sprite));
 
 	}
 	else {
@@ -74,7 +89,28 @@ void LockOn::Draw()
 		sprite2DReticle_->Draw();
 	}
 
+	static float scale = 1.0f;
+	static float scaleSpeed = 0.01f;
+	static bool scalingUp = true;
+
+	// スケール更新
+	if (scalingUp) {
+		scale += scaleSpeed;
+		if (scale >= 1.3f) {
+			scale = 1.3f;
+			scalingUp = false;
+		}
+	}
+	else {
+		scale -= scaleSpeed;
+		if (scale <= 1.0f) {
+			scale = 1.0f;
+			scalingUp = true;
+		}
+	}
+
 	for (const auto& sprite : sprite_) {
+		sprite->SetScale({ scale, scale });
 		sprite->Draw();
 	}
 }
@@ -136,8 +172,9 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 	// playerとの距離
 	worldTransform3DReticle_.UpdateMatrix();
 	// レティクル
+	playerPosition_ = playerPosition;
 	Reticle(camera);
-	playerPosition;
+
 }
 
 void LockOn::Search(const std::list<std::unique_ptr<IEnemy>>& enemies, const Camera& camera)
@@ -157,7 +194,7 @@ void LockOn::Search(const std::list<std::unique_ptr<IEnemy>>& enemies, const Cam
 			bool alreadyLockedOn = std::find(target_.begin(), target_.end(), enemy.get()) != target_.end();
 
 			// 新たにロックオンするか、すでにロックオンされている場合は対象として残す
-			if (alreadyLockedOn || CheckReticleRange(positionScreen)) {
+			if (alreadyLockedOn || CheckReticleRange(positionScreen, positionWorld)) {
 				targets.push_back(enemy.get());
 			}
 
@@ -168,7 +205,7 @@ void LockOn::Search(const std::list<std::unique_ptr<IEnemy>>& enemies, const Cam
 			Vector3 positionWorld = enemy->GetWorldPosition();
 			Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
-			if (CheckReticleRange(positionScreen)) {
+			if (CheckReticleRange(positionScreen, positionWorld)) {
 				targets.push_back(enemy.get());
 			}
 
@@ -193,7 +230,7 @@ bool LockOn::UnLock(const Camera& camera, const IEnemy* target)
 	Vector3 positionScreen = TransformPositionScreen(positionWorld, camera);
 
 	// 距離判定
-	if (CheckReticleRange(positionScreen)) {
+	if (CheckReticleRange(positionScreen, positionWorld)) {
 		return false;
 	}
 
@@ -227,10 +264,9 @@ Vector3 LockOn::TransformPositionWorld(const Vector3& positionWorld, const Camer
 	return positionView;
 }
 
-bool LockOn::CheckReticleRange(const Vector3& position)
+bool LockOn::CheckReticleRange(const Vector3& screenPosition, const Vector3& worldposition)
 {
 	// レティクルの範囲内にあるかを判定
-
 	float reticleRadius; // レティクルの範囲
 
 	if (isLockOnMode_) {
@@ -241,12 +277,17 @@ bool LockOn::CheckReticleRange(const Vector3& position)
 	}
 
 	Vector2 reticleCenter = screenPositionReticle_;
+	Vector2 enemyPosition = Vector2(screenPosition.x, screenPosition.y); // enemyのスクリーン座標
+	float screenDistance = Length(enemyPosition - reticleCenter); // スクリーン上での距離
 
-	Vector2 enemyPosition = Vector2(position.x, position.y); // enemyのスクリーン座標
+	// ワールド座標での距離計算（3000以内）
+	Vector3 enemyWorldPosition = worldposition;// 敵のワールド座標
 
-	float distance = Length(enemyPosition - reticleCenter); // 距離
+	// プレイヤーと敵の距離を計算（3D空間で）
+	float worldDistance = Length(enemyWorldPosition - playerPosition_);
 
-	if (distance <= reticleRadius) {
+	// 3000以内かつレティクル範囲内か
+	if (screenDistance <= reticleRadius && worldDistance <= 4000.0f) {
 		return true;
 	}
 

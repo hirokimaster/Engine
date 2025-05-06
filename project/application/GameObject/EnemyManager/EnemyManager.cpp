@@ -15,9 +15,21 @@ void EnemyManager::Initialize()
             for (const auto& point : objectData.controlPoint) {
                 enemy->SetMoveControlPoints(point);
             }
+
+            // イベントトリガー
+            auto eventIt = loader_->GetObjectDatas().find("EventTrigger");
+            if (eventIt != loader_->GetObjectDatas().end()) {
+                for (auto& event : eventIt->second) {
+                    if (objectData.eventNum == event.eventNum) {
+                        enemy->SetEventTrigger(event.translate);
+                    }
+                }
+            }
+
             enemys_.push_back(std::move(enemy));
         }
     }
+
     // 固定の敵
     auto it2 = loader_->GetObjectDatas().find("fixedEnemy");
     if (it2 != loader_->GetObjectDatas().end()) {

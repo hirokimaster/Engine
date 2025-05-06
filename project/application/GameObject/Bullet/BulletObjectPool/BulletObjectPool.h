@@ -53,5 +53,5 @@ private:
 
 	std::vector<std::unique_ptr<IBullet>> bullets_; // 全ての弾
 	std::map<std::string, std::queue<IBullet*>> pool_; // 使用可能のやつを入れとく
-	static const uint32_t kPoolSize = 400; // poolのサイズ
+	static const uint32_t kPoolSize = 600; // poolのサイズ
 };

@@ -130,10 +130,6 @@ void ParticleManager::Update()
 			Push(particle.get());
 		}
 	}
-
-	ImGui::Begin("effectPool");
-	ImGui::Text("position = %d", pool_.size());
-	ImGui::End();
 }
 
 void ParticleManager::UpdateEditor()

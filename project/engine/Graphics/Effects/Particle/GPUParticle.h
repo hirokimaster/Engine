@@ -40,6 +40,8 @@ struct ParticleRange3d {
 
 struct EmitterSphere {
 	Vector3 translate;
+	float padding1[1];
+	Vector3 velocity;
 	float radius;
 	uint32_t count;
 	float frequency;
@@ -85,6 +87,8 @@ public:
 
 	void SetPosition(const Vector3& position) { emitterSphereData_->translate = position; }
 
+	void SetVelocity(const Vector3& velocity) { emitterSphereData_->velocity = velocity; }
+
 	void SetIsActive(bool isActive) { isActive_ = isActive; }
 
 	void SetIsDead(bool isDead) { isDead_ = isDead; }
@@ -121,6 +125,8 @@ private:
 	/// perViewに値を入れる
 	/// </summary>
 	void PerViewUpdate(const Camera& camera);
+
+	void YBillboard(const Camera& camera);
 
 	/// <summary>
 	/// emitterの更新

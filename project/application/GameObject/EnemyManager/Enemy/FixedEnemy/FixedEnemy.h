@@ -1,6 +1,7 @@
 #pragma once
 #include "application/GameObject/EnemyManager/Enemy/IEnemy.h"
 #include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
+#include "engine/3d/PlaneProjectionShadow/PlaneProjectionShadow.h"
 
 class FixedEnemy : public IEnemy {
 public:
@@ -69,4 +70,9 @@ private:
 	GPUParticle* particle_ = nullptr;
 	bool isHit_ = false; // 当たったか
 	bool isExploded_ = false; // 爆発してるか
+	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
+	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
+	// 攻撃間隔
+	const uint32_t kFireInterval_ = 120;
+	uint32_t fireTimer_ = 120; // 攻撃タイマー
 };

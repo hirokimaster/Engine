@@ -16,6 +16,7 @@
 #include <numbers>
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "application/GameObject/Obstacles/Laser.h"
+#include "application/GameObject/Obstacles/Wall/Wall.h"
 
 // レベルデータ
 struct LevelData {

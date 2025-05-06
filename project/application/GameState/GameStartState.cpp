@@ -8,8 +8,8 @@ void GameStartState::Initialize()
 	// 調整項目適用
 	ApplyAdjustmentVariables();
 	// カメラに初期値を入れとく
-	cameraManager_->GetFollowCamera()->SetOffset(offsetEnd_);
-	cameraManager_->SetCameraRotate(cameraRotateEnd_);
+	cameraManager_->GetFollowCamera()->SetOffset(offsetStart_);
+	cameraManager_->SetCameraRotate(cameraRotateStart_);
 }
 
 void GameStartState::Update()

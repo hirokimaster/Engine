@@ -22,6 +22,10 @@ void GameScene::Initialize()
 	particleManager_->ApplyParam("bulletTrajectory");
 	particleManager_->CreateParam("explosion");
 	particleManager_->ApplyParam("explosion");
+	particleManager_->CreateParam("engine_left");
+	particleManager_->ApplyParam("engine_left");
+	particleManager_->CreateParam("engine_right");
+	particleManager_->ApplyParam("engine_right");
 
 	// objectManager
 	objectManager_ = std::make_unique<ObjectManager>();
@@ -88,7 +92,9 @@ void GameScene::Initialize()
 	gameSprite_->SetGameScene(this);
 	gameSprite_->SetPlayer(player_.get());
 
-	
+	timer_ = 60.0f;
+
+
 }
 
 void GameScene::Update()
@@ -100,7 +106,7 @@ void GameScene::Update()
 
 	// 弾
 	bulletObjectPool_->Update();
-	
+
 	// objectManager
 	objectManager_->Update();
 
@@ -122,8 +128,29 @@ void GameScene::Update()
 	if (player_->GetIsHitEnemyFire()) {
 		postEffect_->ChangeState(std::make_unique<PlayerDamegeState>());
 	}
+
+	if (player_->GetIsDead()) {
+		postEffect_->ChangeState(std::make_unique<GaussianState>());
+		cameraManager_->StartShake(0.1f, 0.4f); // シェイクさせる
+	}
+
+	if (player_->GetWorldPosition().z >= 85000.0f && !isTransitionClear_) {
+		isTransitionClear_ = true;
+		transition_ = std::make_unique<FadeIn>();
+		transition_->Initialize();
+		GameManager::GetInstance()->SetSceneTransition(transition_.get());
+		GameManager::GetInstance()->ChangeScene("CLEAR");
+	}
+
+	gameSprite_->Update();
+
 	// postEffect更新
 	postEffect_->Update();
+
+	--timer_;
+	if (timer_ <= 0.0f) {
+		gameState_->Update();
+	}
 
 	// particle
 	particleManager_->Update();
@@ -143,7 +170,7 @@ void GameScene::PostProcessDraw()
 {
 	postEffect_->GetPostProcess()->PreDraw();
 
-	//skydome_->Draw(cameraManager_->GetCamera());
+	skydome_->Draw(cameraManager_->GetCamera());
 
 	objectManager_->Draw(cameraManager_->GetCamera());
 
@@ -197,6 +224,7 @@ void GameScene::LoadTextureFile()
 	TextureManager::Load("resources/UI/RB2.png");
 	TextureManager::Load("resources/UI/L.png");
 
+
 	// particle
 	TextureManager::Load("resources/Player/smoke.png");
 
@@ -204,5 +232,7 @@ void GameScene::LoadTextureFile()
 	TextureManager::Load("resources/UI/yes.png");
 	TextureManager::Load("resources/UI/no.png");
 	TextureManager::Load("resources/UI/continue.png");
+
+
 }
 

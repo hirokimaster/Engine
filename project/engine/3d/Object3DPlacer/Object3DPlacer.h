@@ -64,6 +64,7 @@ public:
 	void SetRotate(const Vector3& rotate) { worldTransform_.rotate = rotate; }
 	void SetScale(const Vector3& scale) { worldTransform_.scale = scale; }
 	void SetParent(const WorldTransform* parent) { worldTransform_.parent = parent; }
+	void SetMatWorld(const Matrix4x4& mat) { worldTransform_.matWorld = mat; worldTransform_.TransferMatrix(); }
 	Material SetMaterialProperty(const Material& materialdata) { return *materialData_ = materialdata; }
 	// directionalLightの設定
 	DirectionalLight SetLightingProperty(const DirectionalLight& directionalLight) { return *directionalLightData_ = directionalLight; }

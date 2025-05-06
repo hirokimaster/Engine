@@ -17,6 +17,7 @@
 #include "application/GameObject/ModelResources/ModelResources.h"
 #include "engine/3d/Line/Line.h"
 #include "engine/3d/ObjectManager/ObjectManager.h"
+#include "engine/Graphics/Effects/Particle/GPUParticle.h"
 
 class Demo : public IScene {
 public: // メンバ関数

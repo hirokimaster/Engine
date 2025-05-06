@@ -83,11 +83,6 @@ LevelData* Loader::Load(const std::string& fileName)
 			objectData.scale.y = (float)transform["scaling"][2];
 			objectData.scale.z = (float)transform["scaling"][1];
 
-			// modelのロード
-			if (objectData.fileName != "eventTrigger" && objectData.fileName != "floor" && objectData.fileName != "wall" && objectData.fileName != "fixedEnemy") {
-				ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
-			}
-
 		}
 		else if (type.compare("CURVE") == 0) {
 			// 要素追加
@@ -122,8 +117,6 @@ LevelData* Loader::Load(const std::string& fileName)
 						newControlPoint.y = y;
 						newControlPoint.z = z;
 						objectData.controlPoint.push_back(newControlPoint);
-
-						ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/" + objectData.fileName + ".obj");
 					}
 
 				}
@@ -142,7 +135,6 @@ void Loader::Record()
 	TextureManager::Load("resources/Stage/floor.png");
 	TextureManager::Load("resources/TempTexture/mount.jpg");
 	TextureManager::Load("resources/TempTexture/uvChecker.png");
-	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/grounds.obj");
 
 	levelData_ = Load("level2");
 
@@ -168,10 +160,20 @@ void Loader::Record()
 		else if (objectData.fileName == "grounds") {
 			objectDatas_[objectData.fileName].push_back(objectData);
 		}
+		// 壁
 		else if (objectData.fileName == "wall") {
 			objectDatas_[objectData.fileName].push_back(objectData);
 		}
+		// 床
 		else if (objectData.fileName == "floor") {
+			objectDatas_[objectData.fileName].push_back(objectData);
+		}
+		// 山
+		else if (objectData.fileName == "mount") {
+			objectDatas_[objectData.fileName].push_back(objectData);
+		}
+		// イベントトリガー
+		else if (objectData.fileName == "EventTrigger") {
 			objectDatas_[objectData.fileName].push_back(objectData);
 		}
 	}
@@ -208,7 +210,7 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 	if (it3 != GetObjectDatas().end()) {
 		for (auto& objectData : it3->second) {
 			std::unique_ptr<BaseObject> object = std::make_unique<BaseObject>();
-			object->Initialize("LevelEditorObj/" + objectData.fileName + ".obj", "TempTexture/mount.jpg");
+			object->Initialize("LevelEditorObj/grounds.obj", "TempTexture/mount.jpg");
 			object->SetPosition(objectData.translate);
 			object->SetRotate(objectData.rotate);
 			object->SetScale(objectData.scale);
@@ -219,10 +221,9 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 	auto it4 = GetObjectDatas().find("wall");
 	if (it4 != GetObjectDatas().end()) {
 		for (auto& objectData : it4->second) {
-			std::unique_ptr<BaseObject> object = std::make_unique<BaseObject>();
-			object->Initialize("Player/cube.obj", "TempTexture/noise0.png");
+			std::unique_ptr<Wall> object = std::make_unique<Wall>();
+			object->Initialize();
 			object->SetPosition(objectData.translate);
-			object->SetRotate(objectData.rotate);
 			object->SetScale(objectData.scale);
 			//ptr->PushObject(std::move(object));
 		}
@@ -241,5 +242,18 @@ void Loader::ObjectRegister(ObjectManager* ptr)
 		}
 	}
 
-	ptr;
+	// 山
+	auto it6 = GetObjectDatas().find("mount");
+	if (it6 != GetObjectDatas().end()) {
+		for (auto& objectData : it6->second) {
+			std::unique_ptr<BaseObject> object = std::make_unique<BaseObject>();
+			object->Initialize("LevelEditorObj/part.obj", "TempTexture/mount.jpg");
+			object->SetPosition(objectData.translate);
+			object->SetRotate(objectData.rotate);
+			object->SetScale(objectData.scale);
+			//ptr->PushObject(std::move(object));
+		}
+	}
+
+  ptr;
 }

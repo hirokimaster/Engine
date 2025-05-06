@@ -1,18 +1,16 @@
-#include "Laser.h"
+#include "Wall.h"
 
-void Laser::Initialize()
+void Wall::Initialize()
 {
-	TextureManager::Load("resources/Stage/laser.png");
 	// object共通の初期化
-	BaseObject::Initialize("Player/cube.obj", "Stage/laser.png", ColliderType::AABB);
-	object_->SetColor({ 10.0f,10.0f,10.0f,10.0f });
-	
+	BaseObject::Initialize("Player/cube.obj", "TempTexture/noise0.png", ColliderType::AABB);
+
 	// colliderの属性
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
 }
 
-void Laser::Update()
+void Wall::Update()
 {
 	BaseObject::Update(); // object共通の更新処理
 	collider_->SetWorldPosition(GetWorldPosition());
@@ -20,24 +18,12 @@ void Laser::Update()
 	OnCollision(); // 当たったら
 }
 
-void Laser::Draw(const Camera& camera)
+void Wall::Draw(const Camera& camera)
 {
 	BaseObject::Draw(camera);
 }
 
-void Laser::OnCollision()
-{
-	if (collider_->OnCollision()) {
-		// 当たった
-		isHit_ = true;
-	}
-	else {
-		isHit_ = false;
-	}
-	
-}
-
-Vector3 Laser::GetWorldPosition() const
+Vector3 Wall::GetWorldPosition() const
 {
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
@@ -49,3 +35,9 @@ Vector3 Laser::GetWorldPosition() const
 	return worldPos;
 }
 
+void Wall::OnCollision()
+{
+	if(collider_->OnCollision()) {
+		isHit_ = true;
+	}
+}

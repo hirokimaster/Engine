@@ -8,6 +8,7 @@ void BaseObject::Initialize(const std::string& modelName, const std::string& tex
 	object_->Initialize();
 	object_->SetModel(modelName);
 	object_->SetTexHandle(TextureManager::GetTexHandle(textureName));
+	object_->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 
 	// 形状だけ設定する
 	// 形状を指定しなかったら作らない

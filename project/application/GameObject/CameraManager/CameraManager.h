@@ -19,6 +19,10 @@ public:
 	/// </summary>
 	void Update();
 
+	void StartShake(float intensity, float duration);
+
+	void ApplyShake();
+
 #pragma region getter
 
 	const Camera& GetCamera()const { return camera_; }
@@ -42,6 +46,11 @@ private:
 	Camera camera_{};
 	// 追従カメラ
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
+
+	float shakeIntensity_ = 0.0f;
+	float shakeDuration_ = 0.0f;
+	float shakeTimeElapsed_ = 0.0f;
+	const float deltaTime_ = 1.0f / 60.0f;
 
 private:
 	CameraManager() = default;

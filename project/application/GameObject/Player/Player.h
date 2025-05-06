@@ -13,6 +13,7 @@
 #include "application/AdjustmentVariables/AdjustmentVariables.h"
 #include "engine/3d/Object3DPlacer/BaseObject.h"
 #include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
+#include "engine/3d/PlaneProjectionShadow/PlaneProjectionShadow.h"
 
 class LockOn;
 
@@ -57,6 +58,25 @@ private: // クラス内でしか使わない
 	/// 攻撃処理
 	/// </summary>
 	void Attack();
+
+	/// <summary>
+	/// 弾を発射
+	/// </summary>
+	/// <param name="position"></param>
+	/// <param name="velocity"></param>
+	void FireBullet(const Vector3& position, const Vector3& velocity);
+
+	/// <summary>
+	///  lockOnしてる時の攻撃
+	/// </summary>
+	/// <param name="position"></param>
+	void LockOnFire(const Vector3& position);
+
+	/// <summary>
+	/// 通常の攻撃
+	/// </summary>
+	/// <param name="position"></param>
+	void NormalFire(const Vector3& position);
 
 	/// <summary>
 	/// 当たり判定
@@ -149,4 +169,10 @@ private:
 	float rotateLerpFactor_; // Lerpの強さ
 	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタ借りる
 	ParticleManager* particleManager_ = nullptr;
+	GPUParticle* rightEngine_ = nullptr;
+	GPUParticle* leftEngine_ = nullptr;
+	Vector3 particleOffsetL_{ -0.3f,0.0f,-3.8f };
+	Vector3 particleOffsetR_{ 0.3f,0.0f,-3.8f };
+	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
+	float gameStartTimer_ = 120.0f;
 };

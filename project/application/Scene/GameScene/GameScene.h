@@ -19,6 +19,7 @@
 #include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "engine/3d/ObjectManager/ObjectManager.h"
+#include "application/PostEffect/EffectState/GaussianState.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -81,4 +82,5 @@ private:
 	std::unique_ptr<EnemyManager> enemyManager_; // enemy
 	ParticleManager* particleManager_ = nullptr; // particle
 	std::unique_ptr<ObjectManager> objectManager_; // objectManager
+	float timer_ = 60.0f;
 };

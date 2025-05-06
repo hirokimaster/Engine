@@ -22,10 +22,10 @@ public:
 	void Update(MoveEnemy* pEnemy)override;
 
 	// 攻撃間隔
-	const uint32_t kFireInterval_ = 60;
+	const uint32_t kFireInterval_ = 120;
 
 private:
 
-	uint32_t fireTimer_ = 60; // 攻撃タイマー
+	uint32_t fireTimer_ = 120; // 攻撃タイマー
 
 };

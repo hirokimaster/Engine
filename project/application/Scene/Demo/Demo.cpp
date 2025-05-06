@@ -27,12 +27,10 @@ void Demo::Initialize()
 	object2_.lock()->worldTransform.scale = { 5.0f,5.0f,5.0f };
 	object2_.lock()->worldTransform.translate = { 15.0f,0,0 };
 
-
 }
 
 void Demo::Update()
 {
-
 	camera_.UpdateMatrix();	
 	objectManager_->Update();
 
@@ -52,7 +50,6 @@ void Demo::Update()
 		object2_.reset();
 	}
 
-	
 }
 
 void Demo::Draw()

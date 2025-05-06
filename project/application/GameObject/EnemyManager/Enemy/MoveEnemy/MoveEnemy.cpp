@@ -10,8 +10,10 @@
 void MoveEnemy::Initialize()
 {
 	// object共通の初期化
-	BaseObject::Initialize("LevelEditorObj/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
-	object_->SetColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+	BaseObject::Initialize("Enemy/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
+	object_->SetColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+	object_->SetScale({ 10.0f,10.0f,10.0f });
+	//object_->SetRotate({ 0.0f,std::numbers::pi_v<float>,0.0f });
 	
 	// 調整項目追加
 	AddAdjustmentVariables();
@@ -23,9 +25,19 @@ void MoveEnemy::Initialize()
 
 	// 当たり判定の属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);
-	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
+	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
+	collider_->SetRadious(8.0f);
 	
 	velocity_ = { 0.0f,0.0f,1.0f };
+
+	// パーティクル
+	particleManager_ = ParticleManager::GetInstance();
+
+	// 影
+	shadow_ = std::make_unique<PlaneProjectionShadow>();
+	shadow_->Initialize("LevelEditorObj/enemy.obj", &object_->GetWorldTransform());
+
+	bulletSpeed_ = 10.0f;
 }
 
 void MoveEnemy::Update()
@@ -37,10 +49,37 @@ void MoveEnemy::Update()
 
 	OnCollision(); // 当たったら
 
-	// 時間で消滅
-	if (--deathTimer_ <= 0) {
-		isDead_ = true;
+	// パーティクル
+	if (isHit_ && !isExploded_) {
+		particle_ = particleManager_->GetParticle("explosion", "Player/smoke.png");
+		isExploded_ = true;
+		shadow_.reset();
 	}
+
+	// particleの位置
+	if (particle_) {
+		particle_->SetIsActive(true);
+		particle_->SetPosition(object_->GetWorldTransform().translate);
+	}
+
+	// 影
+	if (shadow_) {
+		shadow_->Update();
+	}
+
+	// 弾更新
+	for (const auto& bullet : bullets_) {
+		bullet->Update();
+	}
+
+	// デスフラグが立ったら要素を削除
+	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
+		if (bullet->GetIsDead()) {
+
+			return true;
+		}
+		return false;
+		});
 
 #ifdef _DEBUG
 	ImGui::Begin("enemy");
@@ -53,15 +92,23 @@ void MoveEnemy::Update()
 void MoveEnemy::Draw(const Camera& camera)
 {
 	// 出撃するまで出さない
-	if (isSortie_) {
+	if (isSortie_ && !isHit_) {
 		BaseObject::Draw(camera);
+		if (shadow_) {
+			shadow_->Draw(camera);
+		}
+
+		// 弾の描画
+		for (const auto& bullet : bullets_) {
+			bullet->Draw(camera);
+		}
 	}
 }
 
 void MoveEnemy::OnCollision()
 {
 	if (collider_->OnCollision()) {
-		isDead_ = true;
+		isHit_ = true;
 		// 撃破数を足す
 		player_->AddDestroyCount();
 	}
@@ -69,23 +116,25 @@ void MoveEnemy::OnCollision()
 
 void MoveEnemy::Fire()
 {
-	// playerがいなかったらそもそも撃つ対象がいない
 	if (player_) {
 		Vector3 playerWorldPos = player_->GetWorldPosition(); // 自キャラのワールド座標を取得
 		Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
 		Vector3 diff = Subtract(playerWorldPos, enemyWorldPos); // 差分ベクトルを求める
-		Normalize(diff); // 正規化
+		diff = Normalize(diff); // 正規化
 		Vector3 velocity = Multiply(bulletSpeed_, diff); // ベクトルの速度
 
+		// 弾を生成して初期化
 		// プールから取ってくる
-		IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
+		//IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
 		// 取ってこれたかチェックする
-		if (baseBullet) {
-			EnemyBullet* bullet = dynamic_cast<EnemyBullet*>(baseBullet);
-			bullet->Initialize();
-			bullet->SetPosition(GetWorldPosition());
-			bullet->SetVelocity(velocity);
-		}
+
+		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+		bullet->Initialize();
+		bullet->SetPosition(GetWorldPosition());
+		bullet->SetVelocity(velocity);
+		bullet->SetIsActive(true);
+		bullets_.push_back(std::move(bullet));
+
 	}
 }
 
