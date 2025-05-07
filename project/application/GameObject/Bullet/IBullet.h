@@ -1,5 +1,5 @@
 #pragma once
-#include "engine/3d/Object3DPlacer/BaseObject.h"
+#include "engine/3d/BaseObject/BaseInstancingObject.h"
 
 // 弾のタイプ
 enum class BulletType {
@@ -7,7 +7,7 @@ enum class BulletType {
 	Enemy
 };
 
-class IBullet : public BaseObject {
+class IBullet : public BaseInstancingObject {
 public:
 
 	/// <summary>
@@ -24,11 +24,6 @@ public:
 	/// 更新
 	/// </summary>
 	virtual void Update() = 0;
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	virtual void Draw(const Camera& camera) = 0;
 
 	/// <summary>
 	/// 移動

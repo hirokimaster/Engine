@@ -55,7 +55,7 @@ private:
 
 private:
 	std::unique_ptr<PostEffect> postEffect_ = nullptr; // postEffect
-	std::unique_ptr<Object3DPlacer> objectPlayer_ = nullptr;
+	std::unique_ptr<Object3dPlacer> objectPlayer_;
 	CameraManager* cameraManager_ = nullptr;
 	std::unique_ptr<TitleSprite> titleSprite_ = nullptr;
 	

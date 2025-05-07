@@ -37,9 +37,9 @@ public:
 
 	void SetBulletObjectPool(BulletObjectPool* ptr) { bulletObjectPool_ = ptr; }
 
-	void SetPosition(const Vector3& position)override { object_->SetPosition(position); }
+	void SetPosition(const Vector3& position)override { BaseInstancingObject::SetPosition(position); }
 
-	void SetScale(const Vector3& scale) { object_->SetScale(scale); }
+	void SetScale(const Vector3& scale) { BaseInstancingObject::SetScale(scale); }
 
 #pragma endregion
 
@@ -70,7 +70,6 @@ private:
 	GPUParticle* particle_ = nullptr;
 	bool isHit_ = false; // 当たったか
 	bool isExploded_ = false; // 爆発してるか
-	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
 	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
 	// 攻撃間隔
 	const uint32_t kFireInterval_ = 120;

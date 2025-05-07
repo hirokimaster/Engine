@@ -7,7 +7,7 @@
 #pragma once
 #include "application/Scene/IScene/IScene.h"
 #include "engine/Input/Input.h"
-#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
+#include "engine/3d/Object3dPlacer/Object3dPlacer.h"
 #include "application/GameObject/Skydome/Skydome.h"
 #include "application/SceneTransition/FadeIn/FadeIn.h"
 #include "application/SceneTransition/FadeOut/FadeOut.h"

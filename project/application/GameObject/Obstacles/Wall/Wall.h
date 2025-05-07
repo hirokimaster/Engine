@@ -1,11 +1,7 @@
 #pragma once
+#include "engine/3d/BaseObject/BaseInstancingObject.h"
 
-#pragma once
-#include "engine/3d/Object3DPlacer/BaseObject.h"
-#include "engine/Utility/CollisionManager/Collider/Collider.h"
-#include "engine/Graphics/TextureManager/TextureManager.h"
-
-class Wall : public BaseObject {
+class Wall : public BaseInstancingObject {
 public:
 	/// <summary>
 	/// 初期化
@@ -17,27 +13,21 @@ public:
 	/// </summary>
 	void Update();
 
-	/// <summary>
-	/// 描画
-	/// </summary>
-	/// <param name="camera"></param>
-	void Draw(const Camera& camera);
-
 #pragma region getter
 
 	bool GetIsHit()const { return isHit_; }
 
 	Vector3 GetWorldPosition()const;
 
-	Collider* GetCollider()override { return collider_.get(); }
+	Collider* GetCollider() { return BaseInstancingObject::GetCollider(); }
 
 #pragma endregion
 
 #pragma region setter
 
-	void SetPosition(const Vector3& position)override { object_->SetPosition(position); }
+	void SetPosition(const Vector3& position) { BaseInstancingObject::SetPosition(position); }
 
-	void SetScale(const Vector3& scale)override { object_->SetScale(scale); }
+	void SetScale(const Vector3& scale) { BaseInstancingObject::SetScale(scale); }
 
 #pragma endregion
 

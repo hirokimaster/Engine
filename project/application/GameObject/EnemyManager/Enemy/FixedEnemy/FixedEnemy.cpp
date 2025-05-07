@@ -4,24 +4,21 @@
 void FixedEnemy::Initialize()
 {
 	// object共通の初期化
-	BaseObject::Initialize("LevelEditorObj/fixedEnemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
-	object_->SetColor({ 0.0f,0.0f,0.0f,1.0f });
+	BaseInstancingObject::Initialize("LevelEditorObj/fixedEnemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
+	object_.lock()->color = {0.0f,0.0f,0.0f,1.0f};
 	// コライダーの属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);	  // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
 	collider_->SetRadious(8.0f); // コライダーのサイズ 
 	// パーティクル
 	particleManager_ = ParticleManager::GetInstance();
-	// 影
-	shadow_ = std::make_unique<PlaneProjectionShadow>();
-	shadow_->Initialize("LevelEditorObj/fixedEnemy.obj", &object_->GetWorldTransform());
 	bulletSpeed_ = 10.0f;
 }
 
 void FixedEnemy::Update()
 {
 	// object共通の更新処理
-	BaseObject::Update();
+	BaseInstancingObject::Update();
 	collider_->SetWorldPosition(GetWorldPosition());
 	// 衝突
 	OnCollision();
@@ -33,18 +30,12 @@ void FixedEnemy::Update()
 	if (isHit_ && !isExploded_) {
 		particle_ = particleManager_->GetParticle("explosion", "Player/smoke.png");
 		isExploded_ = true;
-		shadow_.reset();
 	}
 
 	// particleの位置
 	if (particle_) {
 		particle_->SetIsActive(true);
-		particle_->SetPosition(object_->GetWorldTransform().translate);
-	}
-
-	// 影
-	if (shadow_) {
-		shadow_->Update();
+		particle_->SetPosition(object_.lock()->worldTransform.translate);
 	}
 
 	//// 発射間隔つける
@@ -72,27 +63,13 @@ void FixedEnemy::Update()
 		}
 		return false;
 		});
-
-#ifdef _DEBUG
-	ImGui::Begin("enemy");
-	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
-		object_->GetWorldTransform().translate.y, object_->GetWorldTransform().translate.z);
-	ImGui::End();
-#endif
 }
 
 void FixedEnemy::Draw(const Camera& camera)
 {
 	if (!isHit_) {
-		// object共通の描画処理
-		BaseObject::Draw(camera);
-		// 影
-		shadow_->Draw(camera);
-
 		// 弾の描画
-		for (const auto& bullet : bullets_) {
-			bullet->Draw(camera);
-		}
+		camera;
 	}
 
 }
@@ -135,9 +112,9 @@ Vector3 FixedEnemy::GetWorldPosition() const
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = object_->GetWorldTransform().matWorld.m[3][0];
-	worldPos.y = object_->GetWorldTransform().matWorld.m[3][1];
-	worldPos.z = object_->GetWorldTransform().matWorld.m[3][2];
+	worldPos.x = object_.lock()->worldTransform.matWorld.m[3][0];
+	worldPos.y = object_.lock()->worldTransform.matWorld.m[3][1];
+	worldPos.z = object_.lock()->worldTransform.matWorld.m[3][2];
 
 	return worldPos;
 }

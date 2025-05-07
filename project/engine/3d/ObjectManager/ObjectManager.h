@@ -2,11 +2,16 @@
 #include <list>
 #include <memory>
 #include <map>
-#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
-#include "application/Loader/Loader.h"
+#include "engine/3d/Object3dPlacer/Object3dPlacer.h"
 
 class ObjectManager {
 public:
+
+	/// <summary>
+	/// シングルトン
+	/// </summary>
+	/// <returns></returns>
+	static ObjectManager* GetInstance();
 
 	/// <summary>
 	/// 初期化
@@ -29,16 +34,31 @@ public:
 	/// <param name="modelName"></param>
 	/// <param name="texHandle"></param>
 	/// <returns></returns>
-	std::shared_ptr<Object3dData> CreateInstance(const std::string& modelName, uint32_t texHandle);
+	std::shared_ptr<Object3dInstancing> CreateInstancingObject(const std::string& modelName, uint32_t texHandle);
+
+	/// <summary>
+	/// インスタンスが1個のみのObject
+	/// </summary>
+	/// <param name="modelName"></param>
+	/// <param name="texHandle"></param>
+	/// <returns></returns>
+	std::shared_ptr<Object3dPlacer> CreateIndividualObject(const std::string& modelName, uint32_t texHandle);
 
 	/// <summary>
 	///  mapの中を空にする
 	/// </summary>
-	void ClearObjectMap();
+	void ClearObject();
 
 
 private:
 	// モデルとインスタンス
-	std::unordered_map<std::string, std::unique_ptr<Object3DPlacer>> objectMap_;
+	std::unordered_map<std::string, std::unique_ptr<Object3dPlacer>> instancingObjects_;
+	std::vector<std::shared_ptr<Object3dPlacer>> individualObjects_;
+
+private:
+	ObjectManager() = default;
+	~ObjectManager() = default;
+	ObjectManager(const ObjectManager&) = delete;
+	ObjectManager& operator=(const ObjectManager&) = delete;
 	
 };

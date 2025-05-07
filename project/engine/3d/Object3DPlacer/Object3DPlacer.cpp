@@ -7,13 +7,15 @@
 #include "Object3DPlacer.h"
 #include <engine/Graphics/TextureManager/TextureManager.h>
 
-Object3DPlacer::~Object3DPlacer()
+Object3dPlacer::~Object3dPlacer()
 {
-	object3dData_.clear();
-	SrvManager::GetInstance()->StructuredBufIndexFree(srvIndex_);
+	if (isInstancing_) {
+		object3dInstancing_.clear();
+		SrvManager::GetInstance()->StructuredBufIndexFree(srvIndex_);
+	}
 }
 
-void Object3DPlacer::Initialize(bool isInstancing)
+void Object3dPlacer::Initialize(bool isInstancing)
 {
 	resource_.materialResource = CreateResource::CreateBufferResource(sizeof(Material));
 	resource_.materialResource->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
@@ -28,7 +30,7 @@ void Object3DPlacer::Initialize(bool isInstancing)
 	// 書き込むためのアドレスを取得
 	resource_.directionalLightResource->Map(0, nullptr, reinterpret_cast<void**>(&directionalLightData_));
 	directionalLightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	directionalLightData_->direction = Normalize({ 0.0f, -10.0f, 0.0f });
+	directionalLightData_->direction = Normalize({ 0.0f, -20.0f, 0.0f });
 	directionalLightData_->intensity = 1.0f;
 
 	isInstancing_ = isInstancing;
@@ -41,15 +43,15 @@ void Object3DPlacer::Initialize(bool isInstancing)
 	}
 }
 
-void Object3DPlacer::Update()
+void Object3dPlacer::Update()
 {
 	// インスタンシングなら
 	if (isInstancing_) {
 		numInstance_ = 0;
-		for (const auto& data : object3dData_) {
+		for (const auto& data : object3dInstancing_) {
 			// 越えたら抜ける
 			if (numInstance_ >= kMaxInstance_) break;
-
+			
 			// 生きてなかったらスキップする
 			if (!data->isAlive) continue;
 
@@ -72,7 +74,7 @@ void Object3DPlacer::Update()
 
 }
 
-void Object3DPlacer::Draw(const Camera& camera)
+void Object3dPlacer::Draw(const Camera& camera)
 {
 	CreateUVTransformMatrix();
 
@@ -132,7 +134,7 @@ void Object3DPlacer::Draw(const Camera& camera)
 	}
 }
 
-void Object3DPlacer::Draw(const Camera& camera, bool isAnimation)
+void Object3dPlacer::Draw(const Camera& camera, bool isAnimation)
 {
 	pipelineData_ = GraphicsPipeline::GetInstance()->GetPSO().SkinningObject3D;
 
@@ -156,7 +158,7 @@ void Object3DPlacer::Draw(const Camera& camera, bool isAnimation)
 	}
 }
 
-void Object3DPlacer::CreateUVTransformMatrix()
+void Object3dPlacer::CreateUVTransformMatrix()
 {
 	Matrix4x4 uvTransformMatrix = MakeScaleMatrix(uvTransform_.scale);
 	uvTransformMatrix = Multiply(uvTransformMatrix, MakeRotateZMatrix(uvTransform_.rotate.z));
@@ -164,7 +166,7 @@ void Object3DPlacer::CreateUVTransformMatrix()
 	materialData_->uvTransform = uvTransformMatrix;
 }
 
-void Object3DPlacer::CreateInstancingBuffer()
+void Object3dPlacer::CreateInstancingBuffer()
 {
 	instancingResource_ = CreateResource::CreateBufferResource(sizeof(InstanceWorldTransformForGPU) * kMaxInstance_);
 	instancingResource_->Map(0, nullptr, reinterpret_cast<void**>(&instancingData_));

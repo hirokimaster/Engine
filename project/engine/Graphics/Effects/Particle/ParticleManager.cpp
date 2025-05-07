@@ -15,6 +15,15 @@ void ParticleManager::Initialize()
 	for (uint32_t i = 0; i < kPoolSize; ++i) {
 		Create();
 	}
+
+	CreateParam("bulletTrajectory");
+	ApplyParam("bulletTrajectory");
+	CreateParam("explosion");
+	ApplyParam("explosion");
+    CreateParam("engine_left");
+	ApplyParam("engine_left");
+	CreateParam("engine_right");
+	ApplyParam("engine_right");
 }
 
 void ParticleManager::CreateParam(const char* particleName)

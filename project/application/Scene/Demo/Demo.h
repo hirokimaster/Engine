@@ -11,7 +11,7 @@
 #include "engine/Input/Input.h"
 #include "engine/Graphics/PostProcess/PostProcess.h"
 #include "engine/3d/Model/Animation/ModelAnimation.h"
-#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
+#include "engine/3d/Object3dPlacer/Object3dPlacer.h"
 #include "application/GameManager/GameManager.h"
 #include "application/Loader/Loader.h"
 #include "application/GameObject/ModelResources/ModelResources.h"
@@ -53,9 +53,6 @@ public: // メンバ関数
 
 private:
 	Camera camera_;
-	std::unique_ptr<ObjectManager> objectManager_;
-	std::weak_ptr<Object3dData> object_;
-	std::weak_ptr<Object3dData> object2_;
 };
 
 

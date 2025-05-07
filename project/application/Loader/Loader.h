@@ -11,7 +11,6 @@
 #include <fstream>
 #include "externals/Json/json.hpp"
 #include "engine/Math/Vector3.h"
-#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
 #include "engine/3d/Model/ModelManager.h"
 #include <numbers>
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
@@ -74,4 +73,5 @@ private:
 		{0.0f,0.0f,0.0f},
 	};
 	LevelData* levelData_;
+	ObjectManager* objectManager_ = nullptr;
 };

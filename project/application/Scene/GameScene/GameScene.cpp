@@ -18,22 +18,15 @@ void GameScene::Initialize()
 {
 	// particle
 	particleManager_ = ParticleManager::GetInstance();
-	particleManager_->CreateParam("bulletTrajectory");
-	particleManager_->ApplyParam("bulletTrajectory");
-	particleManager_->CreateParam("explosion");
-	particleManager_->ApplyParam("explosion");
-	particleManager_->CreateParam("engine_left");
-	particleManager_->ApplyParam("engine_left");
-	particleManager_->CreateParam("engine_right");
-	particleManager_->ApplyParam("engine_right");
+	particleManager_->Initialize();
 
 	// objectManager
-	objectManager_ = std::make_unique<ObjectManager>();
+	objectManager_ = ObjectManager::GetInstance();
 
 	// loader
 	loader_ = std::make_unique<Loader>();
 	loader_->Record();
-	loader_->ObjectRegister(objectManager_.get());
+	//loader_->ObjectRegister(objectManager_.get());
 
 	// postEffect
 	postEffect_ = std::make_unique<PostEffect>();
@@ -107,9 +100,6 @@ void GameScene::Update()
 	// 弾
 	bulletObjectPool_->Update();
 
-	// objectManager
-	objectManager_->Update();
-
 	// enemy
 	enemyManager_->Update();
 
@@ -142,6 +132,8 @@ void GameScene::Update()
 		GameManager::GetInstance()->ChangeScene("CLEAR");
 	}
 
+	objectManager_->Update();
+
 	gameSprite_->Update();
 
 	// postEffect更新
@@ -172,15 +164,14 @@ void GameScene::PostProcessDraw()
 
 	skydome_->Draw(cameraManager_->GetCamera());
 
-	objectManager_->Draw(cameraManager_->GetCamera());
-
 	// player
 	player_->Draw(cameraManager_->GetCamera());
 
 	//enemy
 	enemyManager_->Draw(cameraManager_->GetCamera());
-	// 弾
-	bulletObjectPool_->Draw(cameraManager_->GetCamera());
+
+	// objectManager
+	objectManager_->Draw(cameraManager_->GetCamera());
 
 	// lockOn_(レティクル)
 	lockOn_->Draw();

@@ -9,7 +9,7 @@
 void PlayerBullet::Initialize()
 {
 	// object共通の初期化
-	BaseObject::Initialize("Player/cube.obj", "TempTexture/white.png", ColliderType::Sphere);
+	BaseInstancingObject::Initialize("Player/cube.obj", "TempTexture/white.png", ColliderType::Sphere);
 	// collider設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer);
 	collider_->SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
@@ -24,7 +24,7 @@ void PlayerBullet::Initialize()
 void PlayerBullet::Update()
 {
 	Move(); // 移動
-	BaseObject::Update(); // object共通の更新
+	BaseInstancingObject::Update(); // object共通の更新
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
 	OnCollision(); // 当たったら
 	// particle
@@ -44,11 +44,6 @@ void PlayerBullet::Update()
 	}
 }
 
-void PlayerBullet::Draw(const Camera& camera)
-{
-	BaseObject::Draw(camera);
-}
-
 void PlayerBullet::ResetDeathTimer()
 {
 	isMove_ = false;
@@ -59,8 +54,8 @@ void PlayerBullet::Move()
 {
 	//移動
 	Vector3 move{};
-	move = object_->GetWorldTransform().translate + velocity_;
-	object_->SetPosition(move);
+	move = object_.lock()->worldTransform.translate + velocity_;
+	SetPosition(move);
 }
 
 void PlayerBullet::OnCollision()
@@ -75,9 +70,9 @@ Vector3 PlayerBullet::GetWorldPosition() const
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = object_->GetWorldTransform().matWorld.m[3][0];
-	worldPos.y = object_->GetWorldTransform().matWorld.m[3][1];
-	worldPos.z = object_->GetWorldTransform().matWorld.m[3][2];
+	worldPos.x = object_.lock()->worldTransform.matWorld.m[3][0];
+	worldPos.y = object_.lock()->worldTransform.matWorld.m[3][1];
+	worldPos.z = object_.lock()->worldTransform.matWorld.m[3][2];
 
 	return worldPos;
 }

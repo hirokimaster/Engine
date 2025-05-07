@@ -23,12 +23,6 @@ public:
 	void Update()override;
 
 	/// <summary>
-	/// 描画
-	/// </summary>
-	/// <param name="camera"></param>
-	void Draw(const Camera& camera)override;
-
-	/// <summary>
 	/// 消滅時間のリセット
 	/// </summary>
 	void ResetDeathTimer()override;
@@ -53,7 +47,7 @@ public:
 
 	Vector3 GetWorldPosition()const override;
 
-	Vector3 GetScale() const { return object_->GetWorldTransform().scale; }
+	Vector3 GetScale() const { return object_.lock()->worldTransform.scale; }
 
 	Collider* GetCollider()override { return collider_.get(); }
 
@@ -67,7 +61,7 @@ public:
 
 	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }; // 速度ベクトル
 
-	void SetPosition(const Vector3& position) { object_->SetPosition(position); } // 位置
+	void SetPosition(const Vector3& position) { BaseInstancingObject::SetPosition(position); } // 位置
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 

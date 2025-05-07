@@ -145,7 +145,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\Loader\Loader.cpp" />
     <ClCompile Include="application\PostEffect\EffectState\PlayerDamageState.cpp" />
     <ClCompile Include="engine\3d\Line\Line.cpp" />
-    <ClCompile Include="engine\3d\Object3DPlacer\BaseObject.cpp" />
+    <ClCompile Include="engine\3d\BaseObject\BaseInstancingObject.cpp" />
     <ClCompile Include="engine\3d\ObjectManager\ObjectManager.cpp" />
     <ClCompile Include="engine\Graphics\Pipeline\ComputePipeline.cpp" />
     <ClCompile Include="engine\3d\Model\Animation\ModelAnimation.cpp" />
@@ -156,7 +156,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="engine\3d\Lighting\Lighting.cpp" />
     <ClCompile Include="engine\3d\Model\ModelManager.cpp" />
     <ClCompile Include="engine\3d\SkyBox\SkyBox.cpp" />
-    <ClCompile Include="engine\3d\Object3DPlacer\Object3DPlacer.cpp" />
+    <ClCompile Include="engine\3d\Object3dPlacer\Object3dPlacer.cpp" />
     <ClCompile Include="engine\Graphics\Effects\Particle\ParticleManager.cpp" />
     <ClCompile Include="engine\Graphics\Effects\Particle\GPUParticle.cpp" />
     <ClCompile Include="engine\Graphics\Effects\Particle\ParticleEditor.cpp" />
@@ -233,7 +233,8 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\Loader\Loader.h" />
     <ClInclude Include="application\PostEffect\EffectState\PlayerDamageState.h" />
     <ClInclude Include="engine\3d\Line\Line.h" />
-    <ClInclude Include="engine\3d\Object3DPlacer\BaseObject.h" />
+    <ClInclude Include="engine\3d\BaseObject\BaseInstancingObject.h" />
+    <ClInclude Include="engine\3d\BaseObject\BaseIndividualObject.h" />
     <ClInclude Include="engine\3d\ObjectManager\ObjectManager.h" />
     <ClInclude Include="engine\Graphics\Pipeline\ComputePipeline.h" />
     <ClInclude Include="engine\3d\Model\Animation\Animation.h" />
@@ -245,7 +246,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\3d\Lighting\Lighting.h" />
     <ClInclude Include="engine\3d\Model\ModelManager.h" />
     <ClInclude Include="engine\3d\SkyBox\SkyBox.h" />
-    <ClInclude Include="engine\3d\Object3DPlacer\Object3DPlacer.h" />
+    <ClInclude Include="engine\3d\Object3dPlacer\Object3dPlacer.h" />
     <ClInclude Include="engine\Graphics\Effects\Particle\ParticleManager.h" />
     <ClInclude Include="engine\Graphics\Effects\Particle\GPUParticle.h" />
     <ClInclude Include="engine\Graphics\Effects\Particle\ParticleEditor.h" />
@@ -292,6 +293,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\PostEffect\EffectState\GaussianState.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="engine\3d\BaseObject\BaseIndividualObject.cpp" />
     <None Include="resources\ShaderFile\Object3d.hlsli">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

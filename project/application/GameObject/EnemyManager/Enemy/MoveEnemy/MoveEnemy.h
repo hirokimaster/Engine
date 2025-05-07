@@ -8,7 +8,7 @@
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
 #include "engine/Graphics/TextureManager/TextureManager.h"
-#include "engine/3d/Object3DPlacer/Object3DPlacer.h"
+#include "engine/3d/Object3dPlacer/Object3dPlacer.h"
 #include "application/GameObject/EnemyManager/Enemy/MoveEnemy/PhaseState/EnemyStateSortie.h"
 #include "application/GameObject/EnemyManager/Enemy/MoveEnemy/PhaseState/EnemyStateFire.h"
 #include "application/GameObject/EnemyManager/Enemy/IEnemy.h"
@@ -89,7 +89,7 @@ public:
 
 #pragma region setter
 
-	void SetPosition(const Vector3& position)override { object_->SetPosition(position); }
+	void SetPosition(const Vector3& position)override { BaseInstancingObject::SetPosition(position); }
 
 	void SetPlayer(Player* player) { player_ = player; }
 
@@ -120,7 +120,6 @@ private:
 	uint32_t eventNum_ = 0; // イベント番号
 	Vector3 eventTrigger_{}; // イベントトリガー
 	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタを借りてくる
-	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
 	ParticleManager* particleManager_ = nullptr; // ポインタ借りる
 	GPUParticle* particle_ = nullptr;
 	bool isHit_ = false;

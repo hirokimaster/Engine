@@ -10,7 +10,7 @@
 void Skydome::Initialize()
 {
 	TextureManager::GetInstance()->Load("resources/skydome/sky2.png");
-	object_ = std::make_unique<Object3DPlacer>();
+	object_ = std::make_unique<Object3dPlacer>();
 	object_->Initialize();
 	object_->SetModel("skydome/skydome.obj");
 	Vector3 scale{ 100000.0f,100000.0f,100000.0f };

@@ -33,7 +33,7 @@ VertexShaderOutput main(VertexShaderInput input, uint32_t instanceId : SV_Instan
     float32_t4x4 wvp = mul(gTransformationMatrix[instanceId].matWorld, mul(gCameraMatrix.view, gCameraMatrix.projection));
     output.position = mul(input.position, wvp);
     output.texcoord = input.texcoord;
-    output.normal = normalize(mul((float32_t3x3) gTransformationMatrix[instanceId].WorldInverseTranspose, input.normal));
+    output.normal = normalize(mul((float32_t3x3) gTransformationMatrix[instanceId].world, input.normal));
     output.color = input.color;
     return output;
 }

@@ -142,7 +142,7 @@
     <ClCompile Include="engine\3d\Lighting\Lighting.cpp">
       <Filter>engine\3d\Lighting</Filter>
     </ClCompile>
-    <ClCompile Include="engine\3d\Object3DPlacer\Object3DPlacer.cpp">
+    <ClCompile Include="engine\3d\Object3dPlacer\Object3dPlacer.cpp">
       <Filter>engine\3d\Object3dPlacer</Filter>
     </ClCompile>
     <ClCompile Include="engine\3d\SkyBox\SkyBox.cpp">
@@ -292,7 +292,6 @@
     <ClCompile Include="application\SceneSprite\ClearSprite.cpp" />
     <ClCompile Include="application\GameObject\CameraManager\CameraManager.cpp" />
     <ClCompile Include="application\GameObject\EnemyManager\Enemy\FixedEnemy\FixedEnemy.cpp" />
-    <ClCompile Include="engine\3d\Object3DPlacer\BaseObject.cpp" />
     <ClCompile Include="application\GameObject\EnemyManager\EnemyManager.cpp" />
     <ClCompile Include="engine\3d\ObjectManager\ObjectManager.cpp" />
     <ClCompile Include="application\GameObject\Bullet\BulletObjectPool\BulletObjectPool.cpp" />
@@ -300,6 +299,8 @@
     <ClCompile Include="engine\3d\PlaneProjectionShadow\PlaneProjectionShadow.cpp" />
     <ClCompile Include="application\GameObject\Obstacles\Wall\Wall.cpp" />
     <ClCompile Include="application\PostEffect\EffectState\GaussianState.cpp" />
+    <ClCompile Include="engine\3d\BaseObject\BaseInstancingObject.cpp" />
+    <ClCompile Include="engine\3d\BaseObject\BaseIndividualObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -350,7 +351,7 @@
     <ClInclude Include="engine\3d\Lighting\Lighting.h">
       <Filter>engine\3d\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="engine\3d\Object3DPlacer\Object3DPlacer.h">
+    <ClInclude Include="engine\3d\Object3dPlacer\Object3dPlacer.h">
       <Filter>engine\3d\Object3dPlacer</Filter>
     </ClInclude>
     <ClInclude Include="engine\3d\SkyBox\SkyBox.h">
@@ -531,7 +532,7 @@
     <ClInclude Include="application\GameObject\CameraManager\CameraManager.h" />
     <ClInclude Include="application\GameObject\EnemyManager\Enemy\IEnemy.h" />
     <ClInclude Include="application\GameObject\EnemyManager\Enemy\FixedEnemy\FixedEnemy.h" />
-    <ClInclude Include="engine\3d\Object3DPlacer\BaseObject.h" />
+    <ClInclude Include="engine\3d\BaseObject\BaseIndividualObject.h" />
     <ClInclude Include="application\GameObject\EnemyManager\EnemyManager.h" />
     <ClInclude Include="engine\3d\ObjectManager\ObjectManager.h" />
     <ClInclude Include="application\GameObject\Bullet\IBullet.h" />
@@ -540,6 +541,7 @@
     <ClInclude Include="engine\3d\PlaneProjectionShadow\PlaneProjectionShadow.h" />
     <ClInclude Include="application\GameObject\Obstacles\Wall\Wall.h" />
     <ClInclude Include="application\PostEffect\EffectState\GaussianState.h" />
+    <ClInclude Include="engine\3d\BaseObject\BaseInstancingObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

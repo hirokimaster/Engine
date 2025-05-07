@@ -11,20 +11,20 @@
 #include "engine/Graphics/Transform/WorldTransform.h"
 #include "engine/Graphics/Transform/InstanceWorldTransform.h"
 
-struct Object3dData {
+struct Object3dInstancing {
 	InstanceWorldTransform worldTransform;
 	Vector4 color;
 	uint32_t texHandel;
 	bool isAlive;
 };
 
-class Object3DPlacer {
+class Object3dPlacer {
 public:
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~Object3DPlacer();
+	~Object3dPlacer();
 
 	/// <summary>
 	/// 普通のモデルの初期化
@@ -69,7 +69,7 @@ public:
 	// directionalLightの設定
 	DirectionalLight SetLightingProperty(const DirectionalLight& directionalLight) { return *directionalLightData_ = directionalLight; }
 	void SetUVTransform(const UVTransform& uvTransform) { uvTransform_ = uvTransform; }
-	void SetObject3dData(const std::shared_ptr<Object3dData>& data) { object3dData_.push_back(data); }
+	void SetObject3dInstancing(const std::shared_ptr<Object3dInstancing>& data) { object3dInstancing_.push_back(data); }
 
 #pragma endregion
 
@@ -77,7 +77,7 @@ public:
 
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
-	const std::vector<std::shared_ptr<Object3dData>>& GetObject3dData() { return object3dData_; }
+	const std::vector<std::shared_ptr<Object3dInstancing>>& GetObject3dInstancing() { return object3dInstancing_; }
 	
 #pragma endregion
 
@@ -108,6 +108,6 @@ private:
 	uint32_t srvIndex_ = 0;
 	uint32_t numInstance_ = 0;
 	static const uint32_t kMaxInstance_ = 1000;
-	std::vector<std::shared_ptr<Object3dData>> object3dData_;
+	std::vector<std::shared_ptr<Object3dInstancing>> object3dInstancing_;
 	bool isInstancing_;
 };

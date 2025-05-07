@@ -81,6 +81,6 @@ private:
 	std::unique_ptr<BulletObjectPool> bulletObjectPool_; // 弾のプール
 	std::unique_ptr<EnemyManager> enemyManager_; // enemy
 	ParticleManager* particleManager_ = nullptr; // particle
-	std::unique_ptr<ObjectManager> objectManager_; // objectManager
+	ObjectManager* objectManager_; // objectManager
 	float timer_ = 60.0f;
 };

@@ -12,6 +12,7 @@
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "application/SceneTransition/FadeIn/FadeIn.h"
 #include "application/SceneTransition/FadeOut/FadeOut.h"
+#include "engine/3d/ObjectManager/ObjectManager.h"
 
 class GameManager {
 public:
@@ -85,5 +86,4 @@ private:
 	std::unique_ptr<AbstractSceneFactory> sceneFactory_;
 	PostProcess* postProcess_ = nullptr;
     ISceneTransition* transition_; // シーン遷移
-
 };

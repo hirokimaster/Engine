@@ -1,9 +1,9 @@
 #pragma once
 #include "engine/Graphics/Camera/Camera.h"
-#include "engine/3d/Object3DPlacer/BaseObject.h"
+#include "engine/3d/BaseObject/BaseInstancingObject.h"
 #include "application/GameObject/Bullet/EnemyBullet/EnemyBullet.h"
 
-class IEnemy : public BaseObject{
+class IEnemy : public BaseInstancingObject {
 public:
 
 	/// <summary>
@@ -26,7 +26,7 @@ public:
 	/// </summary>
 	/// <param name="camera"></param>
 	virtual void Draw(const Camera& camera) = 0;
-	
+
 	/// <summary>
 	/// 攻撃
 	/// </summary>
@@ -59,4 +59,5 @@ public:
 	virtual Collider* GetCollider() = 0;
 
 #pragma endregion
+
 };

@@ -1,7 +1,7 @@
-#include "engine/3d/Object3DPlacer/BaseObject.h"
+#include "engine/3d/BaseObject/BaseInstancingObject.h"
 
 #pragma once
-class PlaneProjectionShadow : public BaseObject
+class PlaneProjectionShadow : public BaseInstancingObject
 {
 public:
 	/// <summary>

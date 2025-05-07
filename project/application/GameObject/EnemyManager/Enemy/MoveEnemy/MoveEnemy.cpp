@@ -10,9 +10,9 @@
 void MoveEnemy::Initialize()
 {
 	// object共通の初期化
-	BaseObject::Initialize("Enemy/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
-	object_->SetColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f));
-	object_->SetScale({ 10.0f,10.0f,10.0f });
+	BaseInstancingObject::Initialize("Enemy/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
+	object_.lock()->color = (Vector4(0.0f, 0.0f, 0.0f, 1.0f));
+	object_.lock()->worldTransform.scale = { 10.0f,10.0f,10.0f };
 	//object_->SetRotate({ 0.0f,std::numbers::pi_v<float>,0.0f });
 	
 	// 調整項目追加
@@ -33,16 +33,12 @@ void MoveEnemy::Initialize()
 	// パーティクル
 	particleManager_ = ParticleManager::GetInstance();
 
-	// 影
-	shadow_ = std::make_unique<PlaneProjectionShadow>();
-	shadow_->Initialize("LevelEditorObj/enemy.obj", &object_->GetWorldTransform());
-
 	bulletSpeed_ = 10.0f;
 }
 
 void MoveEnemy::Update()
 {
-	BaseObject::Update(); // object共通の更新処理
+	BaseInstancingObject::Update(); // object共通の更新処理
 	collider_->SetWorldPosition(GetWorldPosition());
 	phaseState_->SetPlayer(player_);
 	phaseState_->Update(this); // 状態ごとの更新処理
@@ -53,18 +49,12 @@ void MoveEnemy::Update()
 	if (isHit_ && !isExploded_) {
 		particle_ = particleManager_->GetParticle("explosion", "Player/smoke.png");
 		isExploded_ = true;
-		shadow_.reset();
 	}
 
 	// particleの位置
 	if (particle_) {
 		particle_->SetIsActive(true);
-		particle_->SetPosition(object_->GetWorldTransform().translate);
-	}
-
-	// 影
-	if (shadow_) {
-		shadow_->Update();
+		particle_->SetPosition(object_.lock()->worldTransform.translate);
 	}
 
 	// 弾更新
@@ -80,28 +70,13 @@ void MoveEnemy::Update()
 		}
 		return false;
 		});
-
-#ifdef _DEBUG
-	ImGui::Begin("enemy");
-	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
-		object_->GetWorldTransform().translate.y, object_->GetWorldTransform().translate.z);
-	ImGui::End();
-#endif
 }
 
 void MoveEnemy::Draw(const Camera& camera)
 {
 	// 出撃するまで出さない
 	if (isSortie_ && !isHit_) {
-		BaseObject::Draw(camera);
-		if (shadow_) {
-			shadow_->Draw(camera);
-		}
-
-		// 弾の描画
-		for (const auto& bullet : bullets_) {
-			bullet->Draw(camera);
-		}
+		camera;
 	}
 }
 
@@ -164,8 +139,8 @@ void MoveEnemy::Move()
 {
 	// 移動
 	Vector3 move{};
-	move = object_->GetWorldTransform().translate + velocity_;
-	object_->SetPosition(move);
+	move = object_.lock()->worldTransform.translate + velocity_;
+	SetPosition(move);
 }
 
 Vector3 MoveEnemy::GetWorldPosition() const
@@ -173,9 +148,9 @@ Vector3 MoveEnemy::GetWorldPosition() const
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = object_->GetWorldTransform().matWorld.m[3][0];
-	worldPos.y = object_->GetWorldTransform().matWorld.m[3][1];
-	worldPos.z = object_->GetWorldTransform().matWorld.m[3][2];
+	worldPos.x = object_.lock()->worldTransform.matWorld.m[3][0];
+	worldPos.y = object_.lock()->worldTransform.matWorld.m[3][1];
+	worldPos.z = object_.lock()->worldTransform.matWorld.m[3][2];
 
 	return worldPos;
 }

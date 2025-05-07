@@ -11,13 +11,13 @@
 #include "engine/2d/Sprite/Sprite.h"
 #include <vector>
 #include "application/AdjustmentVariables/AdjustmentVariables.h"
-#include "engine/3d/Object3DPlacer/BaseObject.h"
+#include "engine/3d/BaseObject/BaseIndividualObject.h"
 #include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
 #include "engine/3d/PlaneProjectionShadow/PlaneProjectionShadow.h"
 
 class LockOn;
 
-class Player : BaseObject
+class Player : public BaseIndividualObject
 {
 public:
 	/// <summary>
@@ -114,7 +114,7 @@ public:
 
 	Vector2 GetScreenPosition2DReticle()const { return screenPositionReticle_; }
 
-	Vector3 GetRotate()const { return object_->GetWorldTransform().rotate; }
+	Vector3 GetRotate()const { return object_.lock()->GetWorldTransform().rotate; }
 
 	bool GetIsHitEnemyFire()const { return isHitEnemyFire_; }
 
@@ -126,19 +126,19 @@ public:
 
 	uint32_t GetDestroyCount()const{ return destroyCount_; }
 
-	const WorldTransform& GetWorldTransform()const { return object_->GetWorldTransform(); }
+	const WorldTransform& GetWorldTransform()const { return object_.lock()->GetWorldTransform(); }
 
 	Vector3 GetWorldPosition()const;
 
-	Collider* GetCollider() { return collider_.get(); }
+	Collider* GetCollider() { return BaseIndividualObject::GetCollider(); }
 
 #pragma endregion
 
 #pragma region setter
 
-	void SetParent(const WorldTransform* parent) { object_->SetParent(parent); }
+	void SetParent(const WorldTransform* parent) { object_.lock()->SetParent(parent); }
 
-	void SetPosition(const Vector3& position) { object_->SetPosition(position); }
+	void SetPosition(const Vector3& position) { BaseIndividualObject::SetPosition(position); }
 
 	void SetLockOn(LockOn* lockOn) { lockOn_ = lockOn; }
 

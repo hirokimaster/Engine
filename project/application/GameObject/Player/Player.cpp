@@ -10,8 +10,8 @@
 void Player::Initialize()
 {
 	// object共通の初期化
-	BaseObject::Initialize("Player/player.obj", "TempTexture/white.png", ColliderType::Sphere);
-	object_->SetPosition({ 0,40.0f,-1500.0f });
+	BaseIndividualObject::Initialize("Player/player.obj", "TempTexture/white.png", ColliderType::Sphere);
+	object_.lock()->SetPosition({ 0,40.0f,-1500.0f });
 	// 属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
@@ -44,7 +44,7 @@ void Player::Initialize()
 
 	// 影
 	shadow_ = std::make_unique<PlaneProjectionShadow>();
-	shadow_->Initialize("Player/player.obj", &object_->GetWorldTransform());
+	shadow_->Initialize("Player/player.obj", &object_.lock()->GetWorldTransform());
 }
 
 void Player::Update()
@@ -72,7 +72,7 @@ void Player::Update()
 		spriteAttack_->SetTexHandle(TextureManager::GetTexHandle("UI/RB.png"));
 	}
 
-	BaseObject::Update(); // object共通の更新処理
+	BaseIndividualObject::Update(); // object共通の更新処理
 	collider_->SetWorldPosition(GetWorldPosition());
 	OnCollision(); // 当たったら
 	// ダメージ
@@ -94,11 +94,11 @@ void Player::Update()
 	leftEngine_->SetIsActive(true);
 	rightEngine_->SetParticleParam(particleManager_->GetParam("engine_right"));
 	rightEngine_->SetIsActive(true);
-	Matrix4x4 rotMat = MakeRotateMatrix(object_->GetWorldTransform().rotate);
+	Matrix4x4 rotMat = MakeRotateMatrix(object_.lock()->GetWorldTransform().rotate);
 	Vector3 rotatedOffsetL = Transform(particleOffsetL_, rotMat);
-	leftEngine_->SetPosition(object_->GetWorldTransform().translate + rotatedOffsetL);
+	leftEngine_->SetPosition(object_.lock()->GetWorldTransform().translate + rotatedOffsetL);
 	Vector3 rotatedOffsetR = Transform(particleOffsetR_, rotMat);
-	rightEngine_->SetPosition(object_->GetWorldTransform().translate + rotatedOffsetR);
+	rightEngine_->SetPosition(object_.lock()->GetWorldTransform().translate + rotatedOffsetR);
 
 	ApplyAdjustmentVariables();
 }
@@ -106,7 +106,6 @@ void Player::Update()
 void Player::Draw(const Camera& camera)
 {
 	if (!isDead_) {
-		BaseObject::Draw(camera);
 		// 影
 		shadow_->Draw(camera);
 	}
@@ -129,7 +128,7 @@ void Player::Move()
 		}
 		
 
-		Vector3 position = object_->GetWorldTransform().translate + move;
+		Vector3 position = object_.lock()->GetWorldTransform().translate + move;
 
 		if (GetWorldPosition().z >= 36500.0f) {
 			// x軸の移動範囲を制限 [-500.0f, 280.0f]
@@ -141,7 +140,7 @@ void Player::Move()
 		}
 		
 		position.z += moveSpeed_;
-		object_->SetPosition(position);
+		object_.lock()->SetPosition(position);
 		spriteMove_->SetPosition(Vector2((5.0f * move.x) + 240.0f, (5.0f * move.y) + 500.0f));
 	}
 
@@ -256,8 +255,8 @@ void Player::Rotate()
 	
 	Vector3 rotateVelo{};
 	// 回転を適用
-	rotateVelo.z = std::lerp(object_->GetWorldTransform().rotate.z, object_->GetWorldTransform().rotate.z - rotate.z, kLerpFactor);
-	rotateVelo.x = std::lerp(object_->GetWorldTransform().rotate.x, object_->GetWorldTransform().rotate.x - rotate.x, kLerpFactor);
+	rotateVelo.z = std::lerp(object_.lock()->GetWorldTransform().rotate.z, object_.lock()->GetWorldTransform().rotate.z - rotate.z, kLerpFactor);
+	rotateVelo.x = std::lerp(object_.lock()->GetWorldTransform().rotate.x, object_.lock()->GetWorldTransform().rotate.x - rotate.x, kLerpFactor);
 
 	// z軸に制限をかける
 	rotateVelo.z = std::clamp(rotateVelo.z, -kRotateLimitZ, kRotateLimitZ);
@@ -268,7 +267,7 @@ void Player::Rotate()
 	// y軸は回転させないので0にしとく
 	rotateVelo.y = 0.0f;
 
-	object_->SetRotate(rotateVelo);
+	BaseIndividualObject::SetRotate(rotateVelo);
 }
 
 void Player::IncurDamage()
@@ -293,13 +292,13 @@ void Player::DebugDraw()
 {
 #ifdef _DEBUG
 	ImGui::Begin("player");
-	ImGui::Text("position = %f : %f : %f", object_->GetWorldTransform().translate.x,
-		object_->GetWorldTransform().translate.y, object_->GetWorldTransform().translate.z);
+	ImGui::Text("position = %f : %f : %f", object_.lock()->GetWorldTransform().translate.x,
+		object_.lock()->GetWorldTransform().translate.y, object_.lock()->GetWorldTransform().translate.z);
 	ImGui::End();
 
 	ImGui::Begin("PlayerRotate");
-	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", object_->GetWorldTransform().rotate.x,
-		object_->GetWorldTransform().rotate.y, object_->GetWorldTransform().rotate.z);
+	ImGui::Text("rotate [x: %.3f ] [y: %.3f] [z: %.3f]", object_.lock()->GetWorldTransform().rotate.x,
+		object_.lock()->GetWorldTransform().rotate.y, object_.lock()->GetWorldTransform().rotate.z);
 	ImGui::End();
 
 	ImGui::Begin("playerHp");
@@ -313,9 +312,9 @@ Vector3 Player::GetWorldPosition() const
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = object_->GetWorldTransform().matWorld.m[3][0];
-	worldPos.y = object_->GetWorldTransform().matWorld.m[3][1];
-	worldPos.z = object_->GetWorldTransform().matWorld.m[3][2];
+	worldPos.x = object_.lock()->GetWorldTransform().matWorld.m[3][0];
+	worldPos.y = object_.lock()->GetWorldTransform().matWorld.m[3][1];
+	worldPos.z = object_.lock()->GetWorldTransform().matWorld.m[3][2];
 
 	return worldPos;
 }
@@ -344,7 +343,7 @@ void Player::ApplyAdjustmentVariables()
 	const char* groupName = "Player";
 	moveSpeed_ = variables->GetValue<float>(groupName, "moveSpeed");
 	rotate_ = variables->GetValue<Vector3>(groupName, "rotate");
-	object_->SetRotate(rotate_);
+	object_.lock()->SetRotate(rotate_);
 	bulletSpeed_ = variables->GetValue<float>(groupName, "bulletSpeed");
 	hp_ = variables->GetValue<int32_t>(groupName, "hp");
 	moveMinLimit_ = variables->GetValue<Vector3>(groupName, "moveMinLimit");

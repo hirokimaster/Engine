@@ -27,7 +27,7 @@ void TitleScene::Initialize()
 	titleSprite_->Initialize();
 
 	// 自機モデル
-	objectPlayer_ = std::make_unique<Object3DPlacer>();
+	objectPlayer_ = std::make_unique<Object3dPlacer>();
 	objectPlayer_->Initialize();
 	objectPlayer_->SetModel("Player/player.obj");
 	objectPlayer_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white2.png"));

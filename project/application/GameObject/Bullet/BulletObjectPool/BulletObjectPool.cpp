@@ -31,16 +31,6 @@ void BulletObjectPool::Update()
 	}
 }
 
-void BulletObjectPool::Draw(const Camera& camera)
-{
-	for (auto& bullet : bullets_) {
-		// アクティブ状態で生きてる弾のみ描画
-		if (bullet->GetIsActive() && !bullet->GetIsDead()) {
-			bullet->Draw(camera);
-		}
-	}
-}
-
 IBullet* BulletObjectPool::GetBullet(const std::string& name)
 {
 
