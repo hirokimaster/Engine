@@ -37,6 +37,7 @@ void Object3dPlacer::Initialize(bool isInstancing)
 	// インスタンシングなら作る
 	if (isInstancing) {
 		CreateInstancingBuffer();
+		uvTransform_ = { 1.0f,1.0f,1.0f };
 	}
 	else {
 		worldTransform_.Initialize();
