@@ -9,7 +9,7 @@
 void PlayerBullet::Initialize()
 {
 	// object共通の初期化
-	BaseInstancingObject::Initialize("Player/cube.obj", "TempTexture/white.png", ColliderType::Sphere);
+	BaseInstancingObject::Initialize("Player/bullet.obj", "TempTexture/white.png", ColliderType::Sphere);
 	// collider設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer);
 	collider_->SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象

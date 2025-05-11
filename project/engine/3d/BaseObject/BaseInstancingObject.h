@@ -57,6 +57,8 @@ public:
 		}
 	}
 
+	void SetTexHandle(uint32_t handle) { object_.lock()->texHandel = handle; }
+
 #pragma endregion
 
 protected:

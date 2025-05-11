@@ -3,7 +3,7 @@
 void Wall::Initialize()
 {
 	// object共通の初期化
-	BaseInstancingObject::Initialize("Player/cube.obj", "TempTexture/noise0.png", ColliderType::AABB);
+	BaseInstancingObject::Initialize("Stage/wall.obj", "TempTexture/noise0.png", ColliderType::AABB);
 
 	// colliderの属性
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);

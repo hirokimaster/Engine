@@ -26,7 +26,7 @@ void GameScene::Initialize()
 	// loader
 	loader_ = std::make_unique<Loader>();
 	loader_->Record();
-	//loader_->ObjectRegister(objectManager_.get());
+	loader_->ObjectRegister();
 
 	// postEffect
 	postEffect_ = std::make_unique<PostEffect>();
@@ -86,8 +86,6 @@ void GameScene::Initialize()
 	gameSprite_->SetPlayer(player_.get());
 
 	timer_ = 60.0f;
-
-
 }
 
 void GameScene::Update()

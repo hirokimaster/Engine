@@ -22,4 +22,9 @@ void ModelResources::LoadModel()
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/part.obj");
 	ModelManager::GetInstance()->LoadObjModel("Enemy/enemy.obj");
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/fixedEnemy.obj");
+	ModelManager::GetInstance()->LoadObjModel("Player/bullet.obj");
+	ModelManager::GetInstance()->LoadObjModel("Stage/wall.obj");
+	ModelManager::GetInstance()->LoadObjModel("Stage/laser.obj");
+	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/roads.obj");
+	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/floor.obj");
 }

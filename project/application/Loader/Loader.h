@@ -13,9 +13,9 @@
 #include "engine/Math/Vector3.h"
 #include "engine/3d/Model/ModelManager.h"
 #include <numbers>
-#include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "application/GameObject/Obstacles/Laser.h"
 #include "application/GameObject/Obstacles/Wall/Wall.h"
+#include "engine/3d/BaseObject/BaseInstancingObject.h"
 
 // レベルデータ
 struct LevelData {
@@ -46,8 +46,7 @@ public:
 	/// <summary>
 	/// objectを登録する
 	/// </summary>
-	/// <param name="ptr"></param>
-	void ObjectRegister(ObjectManager* ptr);
+	void ObjectRegister();
 
 #pragma region getter
 
@@ -73,5 +72,4 @@ private:
 		{0.0f,0.0f,0.0f},
 	};
 	LevelData* levelData_;
-	ObjectManager* objectManager_ = nullptr;
 };

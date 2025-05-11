@@ -19,7 +19,7 @@ public:
 
 	Vector3 GetWorldPosition()const;
 
-	Collider* GetCollider() { return collider_.get(); }
+	Collider* GetCollider() { return BaseInstancingObject::GetCollider(); }
 
 
 #pragma endregion

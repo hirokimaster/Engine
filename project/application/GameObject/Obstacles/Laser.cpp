@@ -4,7 +4,7 @@ void Laser::Initialize()
 {
 	TextureManager::Load("resources/Stage/laser.png");
 	// object共通の初期化
-	BaseInstancingObject::Initialize("Player/cube.obj", "Stage/laser.png", ColliderType::AABB);
+	BaseInstancingObject::Initialize("Stage/laser.obj", "Stage/laser.png", ColliderType::AABB);
 	object_.lock()->color = { 10.0f,10.0f,10.0f,10.0f };
 	
 	// colliderの属性
