@@ -43,17 +43,11 @@ void CameraManager::StartShake(float intensity, float duration)
 
 void CameraManager::ApplyShake()
 {
-	std::random_device rd;
-	std::mt19937 seed(rd());
-	std::uniform_real_distribution<float> dist(-8.0f, 8.0f);
-
-	// ランダムな値を生成してカメラの位置に加算
 	Vector3 shakeOffset(
-		dist(seed) * shakeIntensity_,
-		dist(seed) * shakeIntensity_,
-		dist(seed) * shakeIntensity_
+		Random::Range(-8.0f, 8.0f) * shakeIntensity_,
+		Random::Range(-8.0f, 8.0f) * shakeIntensity_,
+		Random::Range(-8.0f, 8.0f) * shakeIntensity_
 	);
-
 	camera_.translate = camera_.translate + shakeOffset;
 }
 

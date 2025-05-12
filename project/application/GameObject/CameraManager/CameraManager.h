@@ -6,6 +6,7 @@
 
 #pragma once
 #include "application/GameObject/CameraManager/FollowCamera/FollowCamera.h"
+#include "engine/Utility/Random/Random.h"
 
 class CameraManager {
 public:
