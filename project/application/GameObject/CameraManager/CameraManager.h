@@ -1,3 +1,9 @@
+/**
+* @file CameraManager.h
+* @brief ゲーム中のカメラのマネージャ
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/GameObject/CameraManager/FollowCamera/FollowCamera.h"
 
@@ -19,9 +25,27 @@ public:
 	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// シェイク開始
+	/// </summary>
+	/// <param name="intensity"></param>
+	/// <param name="duration"></param>
 	void StartShake(float intensity, float duration);
 
+
+private:
+
+	/// <summary>
+	/// シェイク適用
+	/// </summary>
 	void ApplyShake();
+
+	/// <summary>
+	/// シェイク
+	/// </summary>
+	void Shake();
+
+public:
 
 #pragma region getter
 

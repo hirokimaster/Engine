@@ -1,3 +1,9 @@
+/**
+* @file Laser.cpp
+* @brief レーザー(障害物)
+* @author 仁平 琉乃
+*/
+
 #include "Laser.h"
 
 void Laser::Initialize()

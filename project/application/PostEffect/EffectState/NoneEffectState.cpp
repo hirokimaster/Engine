@@ -1,3 +1,9 @@
+/**
+* @file NoneEffectState.cpp
+* @brief エフェクトなし
+* @author 仁平 琉乃
+*/
+
 #include "NoneEffectState.h"
 #include "application/PostEffect/PostEffect.h"
 

@@ -1,3 +1,10 @@
+/**
+* @file GameStartState.cpp
+* @brief ゲームスタート演出
+* @author 仁平 琉乃
+*/
+
+
 #include "GameStartState.h"
 
 void GameStartState::Initialize()

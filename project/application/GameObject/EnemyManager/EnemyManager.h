@@ -1,3 +1,9 @@
+/**
+* @file EnemyManager.h
+* @brief 敵の一括管理
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include <list>
 #include "application/GameObject/EnemyManager/Enemy/IEnemy.h"

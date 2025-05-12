@@ -1,3 +1,9 @@
+/**
+* @file IBullet.h
+* @brief 弾の基底クラス
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/3d/BaseObject/BaseInstancingObject.h"
 

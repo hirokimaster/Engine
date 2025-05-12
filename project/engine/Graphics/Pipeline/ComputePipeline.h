@@ -1,5 +1,8 @@
-
-#pragma once
+/**
+* @file ComputePipeline.h
+* @brief コンピュートシェーダーの読み込み
+* @author 仁平 琉乃
+*/
 
 #pragma once
 #include "engine/Base/DX/DirectXCommon.h"

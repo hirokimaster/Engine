@@ -1,3 +1,9 @@
+/**
+* @file IEnemy.h
+* @brief 敵の基底クラス
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Graphics/Camera/Camera.h"
 #include "engine/3d/BaseObject/BaseInstancingObject.h"

@@ -1,3 +1,9 @@
+/**
+* @file FixedEnemy.cpp
+* @brief 動かない敵
+* @author 仁平 琉乃
+*/
+
 #include "FixedEnemy.h"
 #include "application/GameObject/Player/Player.h"
 

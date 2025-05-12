@@ -1,3 +1,9 @@
+/**
+* @file PlayerDamageState.cpp
+* @brief playerがダメージを食らったとき(ビネット)
+* @author 仁平 琉乃
+*/
+
 #include "PlayerDamageState.h"
 #include "application/PostEffect/PostEffect.h"
 

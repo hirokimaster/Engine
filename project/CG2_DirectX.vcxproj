@@ -113,6 +113,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\AdjustmentVariables\AdjustmentVariables.cpp" />
     <ClCompile Include="application\GameManager\GameManager.cpp" />
     <ClCompile Include="application\GameObject\Bullet\BulletObjectPool\BulletObjectPool.cpp" />
+    <ClCompile Include="application\GameObject\Bullet\BulletTrajectory\BulletTrajectory.cpp" />
     <ClCompile Include="application\GameObject\CameraManager\CameraManager.cpp" />
     <ClCompile Include="application\GameObject\EnemyManager\EnemyManager.cpp" />
     <ClCompile Include="application\GameObject\Bullet\EnemyBullet\EnemyBullet.cpp" />
@@ -123,7 +124,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\EnemyStateSortie.cpp" />
     <ClCompile Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.cpp" />
     <ClCompile Include="application\GameObject\CameraManager\FollowCamera\FollowCamera.cpp" />
-    <ClCompile Include="application\GameObject\Obstacles\Laser.cpp" />
+    <ClCompile Include="application\GameObject\Obstacles\Laser\Laser.cpp" />
     <ClCompile Include="application\GameObject\LockOn\LockOn.cpp" />
     <ClCompile Include="application\GameObject\ModelResources\ModelResources.cpp" />
     <ClCompile Include="application\GameObject\Bullet\PlayerBullet\PlayerBullet.cpp" />
@@ -166,6 +167,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="engine\Framework\Framework.cpp" />
     <ClCompile Include="engine\SceneFactory\SceneFactory.cpp" />
+    <ClCompile Include="engine\Utility\Random\Random.cpp" />
     <ClCompile Include="externals\imgui\imgui.cpp" />
     <ClCompile Include="externals\imgui\imgui_demo.cpp" />
     <ClCompile Include="externals\imgui\imgui_draw.cpp" />
@@ -197,6 +199,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h" />
     <ClInclude Include="application\GameManager\GameManager.h" />
     <ClInclude Include="application\GameObject\Bullet\BulletObjectPool\BulletObjectPool.h" />
+    <ClInclude Include="application\GameObject\Bullet\BulletTrajectory\BulletTrajectory.h" />
     <ClInclude Include="application\GameObject\Bullet\IBullet.h" />
     <ClInclude Include="application\GameObject\CameraManager\CameraManager.h" />
     <ClInclude Include="application\GameObject\EnemyManager\EnemyManager.h" />
@@ -209,7 +212,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\EnemyStateFire.h" />
     <ClInclude Include="application\GameObject\EnemyManager\Enemy\MoveEnemy\PhaseState\BasePhaseState\BasePhaseStateEnemy.h" />
     <ClInclude Include="application\GameObject\CameraManager\FollowCamera\FollowCamera.h" />
-    <ClInclude Include="application\GameObject\Obstacles\Laser.h" />
+    <ClInclude Include="application\GameObject\Obstacles\Laser\Laser.h" />
     <ClInclude Include="application\GameObject\LockOn\LockOn.h" />
     <ClInclude Include="application\GameObject\ModelResources\ModelResources.h" />
     <ClInclude Include="application\GameObject\Bullet\PlayerBullet\PlayerBullet.h" />
@@ -259,6 +262,7 @@ copy "$(WindowsSdkdir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="engine\Framework\Framework.h" />
     <ClInclude Include="engine\SceneFactory\AbstractSceneFactory.h" />
     <ClInclude Include="engine\SceneFactory\SceneFactory.h" />
+    <ClInclude Include="engine\Utility\Random\Random.h" />
     <ClInclude Include="externals\imgui\imconfig.h" />
     <ClInclude Include="externals\imgui\imgui.h" />
     <ClInclude Include="externals\imgui\imgui_impl_dx12.h" />

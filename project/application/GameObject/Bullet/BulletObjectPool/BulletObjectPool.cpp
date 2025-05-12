@@ -1,3 +1,9 @@
+/**
+* @file BulletObjectPool.cpp
+* @brief 弾のオブジェクトプール
+* @author 仁平 琉乃
+*/
+
 #include "BulletObjectPool.h"
 
 void BulletObjectPool::Initialize()

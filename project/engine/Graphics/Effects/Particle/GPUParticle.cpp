@@ -1,3 +1,9 @@
+/**
+* @file GPUParticle.cpp
+* @brief GPUParticleの生成
+* @author 仁平 琉乃
+*/
+
 #include "GPUParticle.h"
 
 GPUParticle::GPUParticle()

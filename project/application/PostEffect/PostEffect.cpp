@@ -1,3 +1,9 @@
+/**
+* @file PostEffect.cpp
+* @brief ポストエフェクト切り替え
+* @author 仁平 琉乃
+*/
+
 #include "PostEffect.h"
 
 

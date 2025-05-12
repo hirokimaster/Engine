@@ -1,3 +1,9 @@
+/**
+* @file PostEffect.h
+* @brief ポストエフェクト切り替え
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/PostEffect/IPostEffect.h"
 #include "application/PostEffect/EffectState/NoneEffectState.h"

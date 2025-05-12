@@ -1,3 +1,9 @@
+/**
+* @file PlaneProjectionShadow.cpp
+* @brief 影
+* @author 仁平 琉乃
+*/
+
 #include "PlaneProjectionShadow.h"
 
 void PlaneProjectionShadow::Initialize(const std::string& modelName, const WorldTransform* casterWorldTransform)

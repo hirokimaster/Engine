@@ -107,6 +107,7 @@ void GameScene::Update()
 	// lockOn
 	lockOn_->Update(enemyManager_->GetEnemys(), cameraManager_->GetCamera());
 
+	// collision
 	Collision();
 
 	// 天球
@@ -212,16 +213,9 @@ void GameScene::LoadTextureFile()
 	TextureManager::Load("resources/UI/RB.png");
 	TextureManager::Load("resources/UI/RB2.png");
 	TextureManager::Load("resources/UI/L.png");
-
-
-	// particle
 	TextureManager::Load("resources/Player/smoke.png");
-
-	// ゲームオーバー用
 	TextureManager::Load("resources/UI/yes.png");
 	TextureManager::Load("resources/UI/no.png");
 	TextureManager::Load("resources/UI/continue.png");
-
-
 }
 

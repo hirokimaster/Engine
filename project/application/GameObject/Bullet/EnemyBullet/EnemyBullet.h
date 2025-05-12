@@ -78,7 +78,5 @@ private:
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	BulletType type_;
 	bool isActive_ = false;
-	ParticleManager* particleManager_ = nullptr;
-	GPUParticle* particle_ = nullptr;
 	bool isMove_ = false;
 };

@@ -1,3 +1,9 @@
+/**
+* @file ParticleEditor.cpp
+* @brief jsonからparamを読み込む
+* @author 仁平 琉乃
+*/
+
 #include "ParticleEditor.h"
 
 ParticleEditor* ParticleEditor::GetInstance()

@@ -1,3 +1,9 @@
+/**
+* @file DissolveState.h
+* @brief ディゾルブ
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/PostEffect/IPostEffect.h"
 #include "engine/2d/Sprite/Sprite.h"

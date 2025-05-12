@@ -1,3 +1,10 @@
+/**
+* @file Laser.h
+* @brief レーザー(障害物)
+* @author 仁平 琉乃
+*/
+
+
 #pragma once
 #include "engine/3d/BaseObject/BaseInstancingObject.h"
 

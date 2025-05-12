@@ -121,7 +121,7 @@
     <ClCompile Include="application\GameObject\LockOn\LockOn.cpp">
       <Filter>application\GameObject\LockOn</Filter>
     </ClCompile>
-    <ClCompile Include="application\GameObject\Obstacles\Laser.cpp">
+    <ClCompile Include="application\GameObject\Obstacles\Laser\Laser.cpp">
       <Filter>application\GameObject\Gimmick</Filter>
     </ClCompile>
     <ClCompile Include="application\GameObject\Player\Player.cpp">
@@ -301,6 +301,8 @@
     <ClCompile Include="application\PostEffect\EffectState\GaussianState.cpp" />
     <ClCompile Include="engine\3d\BaseObject\BaseInstancingObject.cpp" />
     <ClCompile Include="engine\3d\BaseObject\BaseIndividualObject.cpp" />
+    <ClCompile Include="application\GameObject\Bullet\BulletTrajectory\BulletTrajectory.cpp" />
+    <ClCompile Include="engine\Utility\Random\Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -327,7 +329,7 @@
     <ClInclude Include="application\GameObject\LockOn\LockOn.h">
       <Filter>application\GameObject\LockOn</Filter>
     </ClInclude>
-    <ClInclude Include="application\GameObject\Obstacles\Laser.h">
+    <ClInclude Include="application\GameObject\Obstacles\Laser\Laser.h">
       <Filter>application\GameObject\Gimmick</Filter>
     </ClInclude>
     <ClInclude Include="application\GameObject\Player\Player.h">
@@ -542,6 +544,8 @@
     <ClInclude Include="application\GameObject\Obstacles\Wall\Wall.h" />
     <ClInclude Include="application\PostEffect\EffectState\GaussianState.h" />
     <ClInclude Include="engine\3d\BaseObject\BaseInstancingObject.h" />
+    <ClInclude Include="application\GameObject\Bullet\BulletTrajectory\BulletTrajectory.h" />
+    <ClInclude Include="engine\Utility\Random\Random.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

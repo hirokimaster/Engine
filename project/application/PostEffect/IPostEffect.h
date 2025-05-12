@@ -1,3 +1,9 @@
+/**
+* @file IPostEffect.h
+* @brief ポストエフェクトの基底クラス
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Graphics/PostProcess/PostProcess.h"
 

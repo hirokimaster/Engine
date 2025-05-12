@@ -1,3 +1,9 @@
+/**
+* @file DissolveState.cpp
+* @brief ディゾルブ
+* @author 仁平 琉乃
+*/
+
 #include "DissolveState.h"
 
 void DissolveState::Apply(PostProcess* pPostProcess, PostEffect* pPostEffect)

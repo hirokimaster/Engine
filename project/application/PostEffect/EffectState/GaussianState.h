@@ -1,4 +1,9 @@
-#pragma once
+/**
+* @file GaussianState.h
+* @brief ガウシアンブラー
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/PostEffect/IPostEffect.h"
 #include "application/PostEffect/EffectState/NoneEffectState.h"

@@ -1,3 +1,9 @@
+/**
+* @file PlaneProjectionShadow.h
+* @brief 影
+* @author 仁平 琉乃
+*/
+
 #include "engine/3d/BaseObject/BaseInstancingObject.h"
 
 #pragma once

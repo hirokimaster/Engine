@@ -1,3 +1,9 @@
+/**
+* @file IGameState.h
+* @brief ゲームの状態の基底クラス(例えばゲームオーバーとかスタートとか)
+* @author 仁平 琉乃
+*/
+
 #pragma once
 
 class IGameState {

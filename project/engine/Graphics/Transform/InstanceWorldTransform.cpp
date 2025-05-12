@@ -1,3 +1,9 @@
+/**
+* @file InstanceWorldTransform.cpp
+* @brief instancing用のワールド座標
+* @author 仁平 琉乃
+*/
+
 #include "InstanceWorldTransform.h"
 
 void InstanceWorldTransform::Initialize()

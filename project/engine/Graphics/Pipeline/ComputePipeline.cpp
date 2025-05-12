@@ -1,4 +1,8 @@
-
+/**
+* @file ComputePipeline.cpp
+* @brief コンピュートシェーダーの読み込み
+* @author 仁平 琉乃
+*/
 
 #include "ComputePipeline.h"
 

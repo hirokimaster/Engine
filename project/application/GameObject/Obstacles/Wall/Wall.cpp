@@ -1,3 +1,9 @@
+/**
+* @file Wall.cpp
+* @brief 壁(障害物)
+* @author 仁平 琉乃
+*/
+
 #include "Wall.h"
 
 void Wall::Initialize()

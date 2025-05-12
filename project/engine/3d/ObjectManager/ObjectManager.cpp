@@ -1,3 +1,9 @@
+/**
+* @file ObjectManager.cpp
+* @brief objectの一括管理
+* @author 仁平 琉乃
+*/
+
 #include "ObjectManager.h"
 
 ObjectManager* ObjectManager::GetInstance()

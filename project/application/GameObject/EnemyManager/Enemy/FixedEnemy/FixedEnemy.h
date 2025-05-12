@@ -1,3 +1,9 @@
+/**
+* @file FixedEnemy.h
+* @brief 動かない敵
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/GameObject/EnemyManager/Enemy/IEnemy.h"
 #include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"

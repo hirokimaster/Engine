@@ -18,8 +18,6 @@ void EnemyBullet::Initialize()
 	type_ = BulletType::Enemy;
 	isDead_ = false;
 	isActive_ = true;
-	// particle
-	particleManager_ = ParticleManager::GetInstance();
 }
 
 void EnemyBullet::Update()
@@ -33,17 +31,6 @@ void EnemyBullet::Update()
 	// 時間で消滅
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
-	}
-
-	// particle
-	if (isActive_ && !isMove_) {
-		particle_ = particleManager_->GetParticle("bulletTrajectory", "Player/smoke.png");
-		particle_->SetIsActive(true);
-		isMove_ = true;
-	}
-
-	if (particle_) {
-		particle_->SetPosition(GetWorldPosition());
 	}
 }
 

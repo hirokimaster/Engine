@@ -1,3 +1,9 @@
+/**
+* @file GPUParticle.h
+* @brief GPUParticleの生成
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/Math/Vector3.h"
 #include "engine/Math/Vector4.h"

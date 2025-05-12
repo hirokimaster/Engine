@@ -1,3 +1,9 @@
+/**
+* @file CameraManager.cpp
+* @brief ゲーム中のカメラのマネージャ
+* @author 仁平 琉乃
+*/
+
 #include "CameraManager.h"
 
 CameraManager* CameraManager::GetInstance()
@@ -22,16 +28,8 @@ void CameraManager::Initialize()
 void CameraManager::Update()
 {
 	followCamera_->Update(camera_);
-	// シェイクの適用
-	if (shakeTimeElapsed_ < shakeDuration_) {
-		ApplyShake();
-		shakeTimeElapsed_ += deltaTime_;
-	}
-	else {
-		shakeIntensity_ = 0.0f;
-		shakeDuration_ = 0.0f;
-		shakeTimeElapsed_ = 0.0f;
-	}
+
+	Shake(); // シェイク
 
 	camera_.UpdateMatrix();
 }
@@ -57,6 +55,20 @@ void CameraManager::ApplyShake()
 	);
 
 	camera_.translate = camera_.translate + shakeOffset;
+}
+
+void CameraManager::Shake()
+{
+	// シェイクの適用
+	if (shakeTimeElapsed_ < shakeDuration_) {
+		ApplyShake();
+		shakeTimeElapsed_ += deltaTime_;
+	}
+	else {
+		shakeIntensity_ = 0.0f;
+		shakeDuration_ = 0.0f;
+		shakeTimeElapsed_ = 0.0f;
+	}
 }
 
 

@@ -1,3 +1,9 @@
+/**
+* @file PlayerDamageState.h
+* @brief playerがダメージを食らったとき(ビネット)
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/PostEffect/IPostEffect.h"
 #include "application/PostEffect/EffectState/NoneEffectState.h"

@@ -1,4 +1,8 @@
-#pragma once
+/**
+* @file ParticleEditor.h
+* @brief jsonからparamを読み込む
+* @author 仁平 琉乃
+*/
 
 #pragma once
 #include <variant>

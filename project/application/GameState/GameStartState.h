@@ -1,3 +1,9 @@
+/**
+* @file GameStartState.h
+* @brief ゲームスタート演出
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/GameState/IGameState.h"
 #include "application/GameObject/CameraManager/CameraManager.h"

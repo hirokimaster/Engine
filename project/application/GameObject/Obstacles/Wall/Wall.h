@@ -1,3 +1,9 @@
+/**
+* @file Wall.h
+* @brief 壁(障害物)
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "engine/3d/BaseObject/BaseInstancingObject.h"
 

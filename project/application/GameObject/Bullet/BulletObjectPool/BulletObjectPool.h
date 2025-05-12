@@ -1,3 +1,9 @@
+/**
+* @file BulletObjectPool.h
+* @brief 弾のオブジェクトプール
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include "application/GameObject/Bullet/PlayerBullet/PlayerBullet.h"
 #include "application/GameObject/Bullet/EnemyBullet/EnemyBullet.h"

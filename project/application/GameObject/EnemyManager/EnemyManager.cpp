@@ -1,3 +1,9 @@
+/**
+* @file EnemyManager.cpp
+* @brief 敵の一括管理
+* @author 仁平 琉乃
+*/
+
 #include "EnemyManager.h"
 
 void EnemyManager::Initialize()

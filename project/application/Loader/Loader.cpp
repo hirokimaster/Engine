@@ -1,6 +1,6 @@
 /**
 * @file Loader.cpp
-* @brief Blenderから出力したjsonファイルの読み込み。それを基にオブジェクトを配置
+* @brief Blenderから出力したjsonファイルの読み込み
 * @author 仁平 琉乃
 */
 

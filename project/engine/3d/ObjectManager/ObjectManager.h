@@ -1,3 +1,9 @@
+/**
+* @file ObjectManager.h
+* @brief objectの一括管理
+* @author 仁平 琉乃
+*/
+
 #pragma once
 #include <list>
 #include <memory>
