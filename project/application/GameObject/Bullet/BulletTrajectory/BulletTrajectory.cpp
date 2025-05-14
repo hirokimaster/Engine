@@ -7,7 +7,8 @@
 
 void BulletTrajectory::Initialize()
 {
-
+	// object共通の初期化
+	BaseInstancingObject::Initialize("Player/plane.obj", "TempTexture/noise0.png", ColliderType::AABB);
 }
 
 void BulletTrajectory::Update()
