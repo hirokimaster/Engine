@@ -13,7 +13,7 @@
 #include "engine/Math/Vector3.h"
 #include "engine/3d/Model/ModelManager.h"
 #include <numbers>
-#include "application/GameObject/Obstacles/Laser.h"
+#include "application/GameObject/Obstacles/Laser/Laser.h"
 #include "application/GameObject/Obstacles/Wall/Wall.h"
 #include "engine/3d/BaseObject/BaseInstancingObject.h"
 

@@ -7,6 +7,7 @@
 #pragma once
 #include "application/GameObject/Bullet/PlayerBullet/PlayerBullet.h"
 #include "application/GameObject/Bullet/EnemyBullet/EnemyBullet.h"
+#include "application/GameObject/Bullet/BulletTrajectory/BulletTrajectory.h"
 
 class BulletObjectPool {
 public:
@@ -54,4 +55,6 @@ private:
 	std::vector<std::unique_ptr<IBullet>> bullets_; // 全ての弾
 	std::map<std::string, std::queue<IBullet*>> pool_; // 使用可能のやつを入れとく
 	static const uint32_t kPoolSize = 600; // poolのサイズ
+	std::unique_ptr<BulletTrajectory> trajectory_; // 弾の軌跡
+	
 };

@@ -13,6 +13,9 @@ void BulletObjectPool::Initialize()
 		Create("player");
 		//Create("enemy");
 	}
+
+	trajectory_ = std::make_unique<BulletTrajectory>();
+	trajectory_->Initialize();
 }
 
 void BulletObjectPool::Update()
@@ -23,6 +26,8 @@ void BulletObjectPool::Update()
 		if (bullet->GetIsActive() && !bullet->GetIsDead()) {
 			bullet->Update();
 		}
+
+		trajectory_->Update(bullet->GetWorldPosition());
 
 		// 弾が死んだらキューに戻す
 		if (bullet->GetIsDead()) {
