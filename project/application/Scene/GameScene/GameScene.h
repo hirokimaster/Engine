@@ -20,6 +20,7 @@
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "engine/3d/ObjectManager/ObjectManager.h"
 #include "application/PostEffect/EffectState/GaussianState.h"
+#include "application/GameObject/Obstacles/ObstaclesManager/ObstaclesManager.h"
 
 class GameScene : public IScene {
 public: // メンバ関数
@@ -82,5 +83,6 @@ private:
 	std::unique_ptr<EnemyManager> enemyManager_; // enemy
 	ParticleManager* particleManager_ = nullptr; // particle
 	ObjectManager* objectManager_; // objectManager
+	std::unique_ptr<ObstaclesManager> obstaclesManager_; // 障害物
 	float timer_ = 60.0f;
 };

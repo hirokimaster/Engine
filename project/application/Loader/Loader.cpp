@@ -181,20 +181,10 @@ void Loader::Record()
 
 void Loader::ObjectRegister()
 {
-	// レーザー
-	auto it = GetObjectDatas().find("laser");
+	// 道
+	auto it = GetObjectDatas().find("roads");
 	if (it != GetObjectDatas().end()) {
 		for (auto& objectData : it->second) {
-			std::unique_ptr<Laser> object = std::make_unique<Laser>();
-			object->Initialize();
-			object->SetPosition(objectData.translate);
-			object->SetScale(objectData.scale);
-		}
-	}
-	// 道
-	auto it2 = GetObjectDatas().find("roads");
-	if (it2 != GetObjectDatas().end()) {
-		for (auto& objectData : it2->second) {
 			std::unique_ptr<BaseInstancingObject> object = std::make_unique<BaseInstancingObject>();
 			object->Initialize("LevelEditorObj/roads.obj", "Stage/road.png");
 			object->SetPosition(objectData.translate);
@@ -203,9 +193,9 @@ void Loader::ObjectRegister()
 		}
 	}
 	// 地面
-	auto it3 = GetObjectDatas().find("grounds");
-	if (it3 != GetObjectDatas().end()) {
-		for (auto& objectData : it3->second) {
+	auto it2 = GetObjectDatas().find("grounds");
+	if (it2 != GetObjectDatas().end()) {
+		for (auto& objectData : it2->second) {
 			std::unique_ptr<BaseInstancingObject> object = std::make_unique<BaseInstancingObject>();
 			object->Initialize("LevelEditorObj/grounds.obj", "TempTexture/mount.jpg");
 			object->SetPosition(objectData.translate);
@@ -213,21 +203,10 @@ void Loader::ObjectRegister()
 			object->SetScale(objectData.scale);
 		}
 	}
-	// 壁
-	auto it4 = GetObjectDatas().find("wall");
-	if (it4 != GetObjectDatas().end()) {
-		for (auto& objectData : it4->second) {
-			std::unique_ptr<Wall> object = std::make_unique<Wall>();
-			object->Initialize();
-			object->SetPosition(objectData.translate);
-			object->SetScale(objectData.scale);
-		}
-	}
-
 	// 床
-	auto it5 = GetObjectDatas().find("floor");
-	if (it5 != GetObjectDatas().end()) {
-		for (auto& objectData : it5->second) {
+	auto it3 = GetObjectDatas().find("floor");
+	if (it3 != GetObjectDatas().end()) {
+		for (auto& objectData : it3->second) {
 			std::unique_ptr<BaseInstancingObject> object = std::make_unique<BaseInstancingObject>();
 			object->Initialize("LevelEditorObj/floor.obj", "Stage/floor.png");
 			object->SetPosition(objectData.translate);
@@ -237,9 +216,9 @@ void Loader::ObjectRegister()
 	}
 
 	// 山
-	auto it6 = GetObjectDatas().find("mount");
-	if (it6 != GetObjectDatas().end()) {
-		for (auto& objectData : it6->second) {
+	auto it4 = GetObjectDatas().find("mount");
+	if (it4 != GetObjectDatas().end()) {
+		for (auto& objectData : it4->second) {
 			std::unique_ptr<BaseInstancingObject> object = std::make_unique<BaseInstancingObject>();
 			object->Initialize("LevelEditorObj/part.obj", "TempTexture/mount.jpg");
 			object->SetPosition(objectData.translate);

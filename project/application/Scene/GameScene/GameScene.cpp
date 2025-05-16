@@ -55,6 +55,11 @@ void GameScene::Initialize()
 	enemyManager_->SetLoader(loader_.get());
 	enemyManager_->Initialize();
 
+	// 障害物
+	obstaclesManager_ = std::make_unique<ObstaclesManager>();
+	obstaclesManager_->SetLoader(loader_.get());
+	obstaclesManager_->Initialize();
+
 	// 弾
 	bulletObjectPool_ = std::make_unique<BulletObjectPool>();
 	bulletObjectPool_->Initialize();
@@ -100,6 +105,9 @@ void GameScene::Update()
 
 	// enemy
 	enemyManager_->Update();
+
+	// 障害物
+	obstaclesManager_->Update();
 
 	// camera
 	cameraManager_->Update();
@@ -154,7 +162,6 @@ void GameScene::Draw()
 	gameSprite_->Draw();
 
 	player_->DrawUI();
-
 }
 
 void GameScene::PostProcessDraw()
@@ -198,9 +205,10 @@ void GameScene::Collision()
 		collisionManager_->ColliderPush(enemy->GetCollider()); // enemycolliderをリストに追加
 	}
 
-	/*for (const auto& collider : objectManager_->GetCollider()) {
-		collisionManager_->ColliderPush(collider);
-	}*/
+	// 障害物
+	for (const auto& obstacles : obstaclesManager_->GetObstacles()) {
+		collisionManager_->ColliderPush(obstacles->GetCollider()); // 障害物のcolliderをリストに追加
+	}
 
 	collisionManager_->CheckAllCollision(); // 判定
 }

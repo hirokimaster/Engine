@@ -222,6 +222,7 @@ void Player::DrawUI()
 void Player::Rotate()
 {
 	Vector3 rotate = { 0, 0, 0 };
+	// 範囲
 	const float kRotateLimitZ = 0.7f;
 	const float kRotateLimitX = 0.15f;
 	const float kLerpFactor = 0.5f;
@@ -268,6 +269,7 @@ void Player::IncurDamage()
 		isHitEnemyFire_ = false;
 	}
 
+	// hpが0になったら死ぬ
 	if (hp_ <= 0) {
 		isDead_ = true;
 	}
@@ -328,6 +330,7 @@ void Player::AddAdjustmentVariables()
 
 void Player::ApplyAdjustmentVariables()
 {
+	// jsonから読み込んだ値を適用
 	AdjustmentVariables* variables = AdjustmentVariables::GetInstance();
 	const char* groupName = "Player";
 	moveSpeed_ = variables->GetValue<float>(groupName, "moveSpeed");

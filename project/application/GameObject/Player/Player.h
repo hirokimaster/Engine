@@ -14,7 +14,7 @@
 #include "engine/3d/BaseObject/BaseIndividualObject.h"
 #include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
 #include "engine/3d/PlaneProjectionShadow/PlaneProjectionShadow.h"
-#include "application/GameObject/Particle/EngineParticle.h"
+#include "application/GameObject/Particle/EngineParticle/EngineParticle.h"
 
 class LockOn;
 
