@@ -14,6 +14,7 @@
 #include "engine/3d/BaseObject/BaseIndividualObject.h"
 #include "application/GameObject/Bullet/BulletObjectPool/BulletObjectPool.h"
 #include "engine/3d/PlaneProjectionShadow/PlaneProjectionShadow.h"
+#include "application/GameObject/Particle/EngineParticle.h"
 
 class LockOn;
 
@@ -168,11 +169,7 @@ private:
 	float rotateSpeed_; // 回転速度
 	float rotateLerpFactor_; // Lerpの強さ
 	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタ借りる
-	ParticleManager* particleManager_ = nullptr;
-	GPUParticle* rightEngine_ = nullptr;
-	GPUParticle* leftEngine_ = nullptr;
-	Vector3 particleOffsetL_{ -0.3f,0.0f,-3.8f };
-	Vector3 particleOffsetR_{ 0.3f,0.0f,-3.8f };
 	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
+	std::unique_ptr<EngineParticle> engineParticle_; // エンジンのパーティクル
 	float gameStartTimer_ = 120.0f;
 };

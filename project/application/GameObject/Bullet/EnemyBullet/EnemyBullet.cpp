@@ -31,6 +31,7 @@ void EnemyBullet::Update()
 	// 時間で消滅
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
+		object_.lock()->isAlive = false;
 	}
 }
 

@@ -303,6 +303,7 @@
     <ClCompile Include="engine\3d\BaseObject\BaseIndividualObject.cpp" />
     <ClCompile Include="application\GameObject\Bullet\BulletTrajectory\BulletTrajectory.cpp" />
     <ClCompile Include="engine\Utility\Random\Random.cpp" />
+    <ClCompile Include="application\GameObject\Particle\EngineParticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application\AdjustmentVariables\AdjustmentVariables.h">
@@ -546,6 +547,7 @@
     <ClInclude Include="engine\3d\BaseObject\BaseInstancingObject.h" />
     <ClInclude Include="application\GameObject\Bullet\BulletTrajectory\BulletTrajectory.h" />
     <ClInclude Include="engine\Utility\Random\Random.h" />
+    <ClInclude Include="application\GameObject\Particle\EngineParticle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\ShaderFile\SkyBox.VS.hlsl">

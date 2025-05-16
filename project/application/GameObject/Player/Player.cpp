@@ -29,12 +29,8 @@ void Player::Initialize()
 	gameStartTimer_ = 120.0f;
 
 	// particle
-	TextureManager::Load("resources/Player/engine.png");
-	particleManager_ = ParticleManager::GetInstance();
-	rightEngine_ = particleManager_->GetParticle("engine_right", "Player/engine.png");
-	leftEngine_ = particleManager_->GetParticle("engine_left", "Player/engine.png");
-	rightEngine_->SetLifeTime(60000);
-	leftEngine_->SetLifeTime(60000);
+	engineParticle_ = std::make_unique<EngineParticle>();
+	engineParticle_->Initialize();
 
 	// UI
 	spriteAttack_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/RB.png"), { 1000.0f , 500.0f }));
@@ -90,16 +86,10 @@ void Player::Update()
 	shadow_->Update();
 
 	// particle
-	leftEngine_->SetParticleParam(particleManager_->GetParam("engine_left"));
-	leftEngine_->SetIsActive(true);
-	rightEngine_->SetParticleParam(particleManager_->GetParam("engine_right"));
-	rightEngine_->SetIsActive(true);
-	Matrix4x4 rotMat = MakeRotateMatrix(object_.lock()->GetWorldTransform().rotate);
-	Vector3 rotatedOffsetL = Transform(particleOffsetL_, rotMat);
-	leftEngine_->SetPosition(object_.lock()->GetWorldTransform().translate + rotatedOffsetL);
-	Vector3 rotatedOffsetR = Transform(particleOffsetR_, rotMat);
-	rightEngine_->SetPosition(object_.lock()->GetWorldTransform().translate + rotatedOffsetR);
-
+	if (auto obj = object_.lock()) {
+		engineParticle_->Update(obj->GetWorldTransform().rotate, obj->GetWorldTransform().translate);
+	}
+	
 	ApplyAdjustmentVariables();
 }
 
@@ -144,17 +134,17 @@ void Player::Move()
 		spriteMove_->SetPosition(Vector2((5.0f * move.x) + 240.0f, (5.0f * move.y) + 500.0f));
 	}
 
-
-
 }
 
 void Player::Attack()
 {
 	if (!isDead_) {
 
+		// ターゲットがいたらロックオン
 		if (!lockOn_->GetTarget().empty()) {
 			LockOnFire(GetWorldPosition());
 		}
+		// それ以外はノーマル
 		else {
 			NormalFire(GetWorldPosition());
 		}
@@ -219,8 +209,7 @@ void Player::OnCollision()
 
 	if (collider_->OnCollision()) {
 		isHitEnemyFire_ = true; // 敵の攻撃が当たった
-		rightEngine_->SetLifeTime(0);
-		leftEngine_->SetLifeTime(0);
+		engineParticle_->SetLifeTime(0.0f);
 	}
 }
 

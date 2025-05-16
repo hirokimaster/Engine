@@ -36,6 +36,7 @@ void FixedEnemy::Update()
 	if (isHit_ && !isExploded_) {
 		particle_ = particleManager_->GetParticle("explosion", "Player/smoke.png");
 		isExploded_ = true;
+		object_.lock()->isAlive = false;
 	}
 
 	// particleの位置
