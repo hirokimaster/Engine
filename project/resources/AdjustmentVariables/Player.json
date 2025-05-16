@@ -1,6 +1,6 @@
 {
     "Player": {
-        "bulletSpeed": 30.0,
+        "bulletSpeed": 50.0,
         "hp": 3,
         "moveMaxLimit": [
             30.0,

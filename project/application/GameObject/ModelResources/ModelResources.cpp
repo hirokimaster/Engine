@@ -28,4 +28,5 @@ void ModelResources::LoadModel()
 	ModelManager::GetInstance()->LoadObjModel("Stage/laser.obj");
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/roads.obj");
 	ModelManager::GetInstance()->LoadObjModel("LevelEditorObj/floor.obj");
+	ModelManager::GetInstance()->LoadObjModel("Player/ball.obj");
 }

@@ -25,9 +25,9 @@ void BulletObjectPool::Update()
 		// アクティブ状態で生きてる弾のみ更新
 		if (bullet->GetIsActive() && !bullet->GetIsDead()) {
 			bullet->Update();
-		}
 
-		trajectory_->Update(bullet->GetWorldPosition());
+			trajectory_->AddTrailPoint(bullet->GetWorldPosition());
+		}
 
 		// 弾が死んだらキューに戻す
 		if (bullet->GetIsDead()) {
@@ -40,6 +40,8 @@ void BulletObjectPool::Update()
 			}
 		}
 	}
+
+	trajectory_->Update();
 }
 
 IBullet* BulletObjectPool::GetBullet(const std::string& name)

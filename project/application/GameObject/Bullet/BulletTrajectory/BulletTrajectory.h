@@ -6,6 +6,7 @@
 
 #pragma once
 #include "engine/3d/BaseObject/BaseInstancingObject.h"
+#include "engine/Utility/Random/Random.h"
 
 class BulletTrajectory{
 public:
@@ -18,9 +19,23 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(const Vector3& bullletPosition);
+	void Update();
+
+	/// <summary>
+	/// poolから取り出す
+	/// </summary>
+	/// <param name="position"></param>
+	void AddTrailPoint(const Vector3& position);
+
+private:
+
+	/// <summary>
+	/// だんだん透明にする
+	/// </summary>
+	void Fade();
 
 private:
 	std::queue<std::weak_ptr<Object3dInstancing>> pool_;
-	const uint32_t kMaxTrailPoints = 10000;
+	std::vector<std::weak_ptr<Object3dInstancing>> activeTrails_;
+	const uint32_t kMaxTrailPoints = 1000;
 };
