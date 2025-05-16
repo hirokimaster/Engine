@@ -28,12 +28,6 @@ public:
 	virtual void Update() = 0;
 
 	/// <summary>
-	/// 描画
-	/// </summary>
-	/// <param name="camera"></param>
-	virtual void Draw(const Camera& camera) = 0;
-
-	/// <summary>
 	/// 攻撃
 	/// </summary>
 	virtual void Fire() = 0;

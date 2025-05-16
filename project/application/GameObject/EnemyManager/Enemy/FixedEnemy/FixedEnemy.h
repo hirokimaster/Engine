@@ -21,12 +21,6 @@ public:
 	/// </summary>
 	void Update()override;
 
-	/// <summary>
-	/// 描画
-	/// </summary>
-	/// <param name="camera"></param>
-	void Draw(const Camera& camera)override;
-
 #pragma region getter
 
 	Vector3 GetWorldPosition()const override;
@@ -76,7 +70,6 @@ private:
 	GPUParticle* particle_ = nullptr;
 	bool isHit_ = false; // 当たったか
 	bool isExploded_ = false; // 爆発してるか
-	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
 	// 攻撃間隔
 	const uint32_t kFireInterval_ = 120;
 	uint32_t fireTimer_ = 120; // 攻撃タイマー

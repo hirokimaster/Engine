@@ -66,10 +66,3 @@ void EnemyManager::Update()
         return false;
         });
 }
-
-void EnemyManager::Draw(const Camera& camera)
-{
-	for (auto& enemy : enemys_) {
-		enemy->Draw(camera);
-	}
-}

@@ -11,7 +11,7 @@ void BulletObjectPool::Initialize()
 	// 初期化時にあらかじめ最大の半分作っておく
 	for (uint32_t i = 0; i < kPoolSize / 2; ++i) {
 		Create("player");
-		//Create("enemy");
+		Create("enemy");
 	}
 
 	trajectory_ = std::make_unique<BulletTrajectory>();
@@ -36,7 +36,7 @@ void BulletObjectPool::Update()
 				Push("player", bullet.get());
 			}
 			else if (bullet->GetBulletType() == BulletType::Enemy) {
-				//Push("enemy", bullet.get());
+				Push("enemy", bullet.get());
 			}
 		}
 	}

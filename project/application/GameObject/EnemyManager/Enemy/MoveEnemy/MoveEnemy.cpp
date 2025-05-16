@@ -13,7 +13,6 @@ void MoveEnemy::Initialize()
 	BaseInstancingObject::Initialize("Enemy/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
 	object_.lock()->color = (Vector4(0.0f, 0.0f, 0.0f, 1.0f));
 	object_.lock()->worldTransform.scale = { 10.0f,10.0f,10.0f };
-	//object_->SetRotate({ 0.0f,std::numbers::pi_v<float>,0.0f });
 	
 	// 調整項目追加
 	AddAdjustmentVariables();
@@ -56,28 +55,6 @@ void MoveEnemy::Update()
 		particle_->SetIsActive(true);
 		particle_->SetPosition(object_.lock()->worldTransform.translate);
 	}
-
-	// 弾更新
-	for (const auto& bullet : bullets_) {
-		bullet->Update();
-	}
-
-	// デスフラグが立ったら要素を削除
-	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
-		if (bullet->GetIsDead()) {
-
-			return true;
-		}
-		return false;
-		});
-}
-
-void MoveEnemy::Draw(const Camera& camera)
-{
-	// 出撃するまで出さない
-	if (isSortie_ && !isHit_) {
-		camera;
-	}
 }
 
 void MoveEnemy::OnCollision()
@@ -102,13 +79,6 @@ void MoveEnemy::Fire()
 		// プールから取ってくる
 		//IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
 		// 取ってこれたかチェックする
-
-		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize();
-		bullet->SetPosition(GetWorldPosition());
-		bullet->SetVelocity(velocity);
-		bullet->SetIsActive(true);
-		bullets_.push_back(std::move(bullet));
 
 	}
 }

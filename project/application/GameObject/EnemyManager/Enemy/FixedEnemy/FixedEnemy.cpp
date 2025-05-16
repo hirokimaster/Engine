@@ -45,38 +45,16 @@ void FixedEnemy::Update()
 		particle_->SetPosition(object_.lock()->worldTransform.translate);
 	}
 
-	//// 発射間隔つける
-	//if (GetWorldPosition().z - player_->GetWorldPosition().z <= 5000.0f) {
-	//	// 発射タイマーをデクリメント
-	//	--fireTimer_;
-	//	if (fireTimer_ <= 0) {
-	//		// 弾を発射
-	//		Fire();
-	//		// 発射タイマーの初期化
-	//		fireTimer_ = kFireInterval_;
-	//	}
-	//}
-
-	// 弾更新
-	for (const auto& bullet : bullets_) {
-		bullet->Update();
-	}
-
-	// デスフラグが立ったら要素を削除
-	bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) {
-		if (bullet->GetIsDead()) {
-
-			return true;
+	// 発射間隔つける
+	if (GetWorldPosition().z - player_->GetWorldPosition().z <= 5000.0f) {
+		// 発射タイマーをデクリメント
+		--fireTimer_;
+		if (fireTimer_ <= 0) {
+			// 弾を発射
+			Fire();
+			// 発射タイマーの初期化
+			fireTimer_ = kFireInterval_;
 		}
-		return false;
-		});
-}
-
-void FixedEnemy::Draw(const Camera& camera)
-{
-	if (!isHit_) {
-		// 弾の描画
-		camera;
 	}
 
 }
@@ -93,16 +71,15 @@ void FixedEnemy::Fire()
 
 		// 弾を生成して初期化
 		// プールから取ってくる
-		//IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
+		IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
 		// 取ってこれたかチェックする
-
-		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->Initialize();
-		bullet->SetPosition(GetWorldPosition());
-		bullet->SetVelocity(velocity);
-		bullet->SetIsActive(true);
-		bullets_.push_back(std::move(bullet));
-
+		if (baseBullet) {
+			EnemyBullet* bullet = dynamic_cast<EnemyBullet*>(baseBullet);
+			bullet->Initialize();
+			bullet->SetPosition(GetWorldPosition());
+			bullet->SetVelocity(velocity);
+			bullet->SetIsActive(true);
+		}
 	}
 }
 

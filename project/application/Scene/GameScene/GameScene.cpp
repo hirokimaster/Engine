@@ -49,12 +49,6 @@ void GameScene::Initialize()
 	lockOn_->Initialize();
 	player_->SetLockOn(lockOn_.get());
 
-	// 敵
-	enemyManager_ = std::make_unique<EnemyManager>();
-	enemyManager_->SetPlayer(player_.get());
-	enemyManager_->SetLoader(loader_.get());
-	enemyManager_->Initialize();
-
 	// 障害物
 	obstaclesManager_ = std::make_unique<ObstaclesManager>();
 	obstaclesManager_->SetLoader(loader_.get());
@@ -64,8 +58,14 @@ void GameScene::Initialize()
 	bulletObjectPool_ = std::make_unique<BulletObjectPool>();
 	bulletObjectPool_->Initialize();
 	player_->SetBulletObjectPool(bulletObjectPool_.get());
-	enemyManager_->SetBulletObjectPool(bulletObjectPool_.get());
 
+	// 敵
+	enemyManager_ = std::make_unique<EnemyManager>();
+	enemyManager_->SetPlayer(player_.get());
+	enemyManager_->SetLoader(loader_.get());
+	enemyManager_->SetBulletObjectPool(bulletObjectPool_.get());
+	enemyManager_->Initialize();
+	
 	// collision
 	collisionManager_ = std::make_unique<CollisionManager>();
 
@@ -172,9 +172,6 @@ void GameScene::PostProcessDraw()
 
 	// player
 	player_->Draw(cameraManager_->GetCamera());
-
-	//enemy
-	enemyManager_->Draw(cameraManager_->GetCamera());
 
 	// objectManager
 	objectManager_->Draw(cameraManager_->GetCamera());

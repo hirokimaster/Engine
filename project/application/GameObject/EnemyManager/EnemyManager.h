@@ -23,12 +23,6 @@ public:
 	/// </summary>
 	void Update();
 
-	/// <summary>
-	/// 描画
-	/// </summary>
-	/// <param name="camera"></param>
-	void Draw(const Camera& camera);
-
 #pragma region getter
 
 	const std::list<std::unique_ptr<IEnemy>>& GetEnemys()const { return enemys_; }

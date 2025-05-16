@@ -29,12 +29,6 @@ public:
 	void Update()override;
 
 	/// <summary>
-	/// 描画
-	/// </summary>
-	/// <param name="camera"></param>
-	void Draw(const Camera& camera)override;
-
-	/// <summary>
 	/// 移動処理
 	/// </summary>
 	void Move();
@@ -124,5 +118,4 @@ private:
 	GPUParticle* particle_ = nullptr;
 	bool isHit_ = false;
 	bool isExploded_ = false;
-	std::list<std::unique_ptr<EnemyBullet>> bullets_; // 弾のリスト
 };
