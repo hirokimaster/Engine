@@ -12,6 +12,7 @@ void Player::Initialize()
 	// object共通の初期化
 	BaseIndividualObject::Initialize("Player/player.obj", "TempTexture/white.png", ColliderType::Sphere);
 	object_.lock()->SetPosition({ 0,40.0f,-1500.0f });
+	object_.lock()->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 	// 属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
@@ -88,6 +89,11 @@ void Player::Update()
 	// particle
 	if (auto obj = object_.lock()) {
 		engineParticle_->Update(obj->GetWorldTransform().rotate, obj->GetWorldTransform().translate);
+	}
+
+	//死んだら消す
+	if (isDead_) {
+		object_.lock()->SetColor({ 1.0f,1.0f,1.0f,0.0f });
 	}
 	
 	ApplyAdjustmentVariables();
