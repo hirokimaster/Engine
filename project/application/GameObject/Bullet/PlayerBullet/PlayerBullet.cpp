@@ -29,6 +29,10 @@ void PlayerBullet::Update()
 	// 時間で消滅
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
+	}
+
+	// 死んだら消す
+	if (isDead_) {
 		object_.lock()->isAlive = false;
 	}
 }

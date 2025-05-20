@@ -36,13 +36,17 @@ void FixedEnemy::Update()
 	if (isHit_ && !isExploded_) {
 		particle_ = particleManager_->GetParticle("explosion", "Player/smoke.png");
 		isExploded_ = true;
-		object_.lock()->isAlive = false;
 	}
 
 	// particleの位置
 	if (particle_) {
 		particle_->SetIsActive(true);
 		particle_->SetPosition(object_.lock()->worldTransform.translate);
+	}
+
+	// 当たったら消す
+	if (isHit_) {
+		object_.lock()->isAlive = false;
 	}
 
 	// 発射間隔つける
