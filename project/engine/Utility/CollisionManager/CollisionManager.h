@@ -8,6 +8,7 @@
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 #include "engine/Math/Mathfunction.h"
 #include <algorithm>
+#include <unordered_map>
 
 class CollisionManager {
 public:
@@ -38,12 +39,14 @@ private:
 	/// <summary>
 	/// 球同士の当たり判定
 	/// </summary>
-	/// <param name="v1"></param>
+	/// <param name="preV1"></param>
+	/// <param name="currV1"></param>
 	/// <param name="v1Radious"></param>
-	/// <param name="v2"></param>
+	/// <param name="preV2"></param>
+	/// <param name="currV2"></param>
 	/// <param name="v2Radious"></param>
 	/// <returns></returns>
-	bool CheckCollision(Vector3 v1, float v1Radious, Vector3 v2, float v2Radious);
+	bool CheckCollision(Vector3 preV1,Vector3 currV1, float v1Radious, Vector3 preV2,Vector3 currV2, float v2Radious);
 
 	/// <summary>
 	/// aabbと球の当たり判定
@@ -56,6 +59,6 @@ private:
 
 private:
 
-
+	std::unordered_map<Collider*, Vector3> prevPositions_;
 	std::list<Collider*> colliders_;
 };

@@ -22,6 +22,7 @@ void GameScene::Initialize()
 
 	// objectManager
 	objectManager_ = ObjectManager::GetInstance();
+	objectManager_->Initialize();
 
 	// loader
 	loader_ = std::make_unique<Loader>();
