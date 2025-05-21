@@ -65,9 +65,6 @@ void BulletTrajectory::Fade()
 			// だんだん大きくする
 			param->worldTransform.scale = param->worldTransform.scale + Vector3(0.1f, 0.1f, 0.1f);
 
-			// 少し上昇
-			param->worldTransform.translate.y += 0.01f;
-
 			if (param->color.w <= 0.0f) {
 				param->isAlive = false;
 				param->color.w = 0.0f;
