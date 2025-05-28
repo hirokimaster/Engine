@@ -29,15 +29,39 @@ void ObjectManager::Update()
 
 void ObjectManager::Draw(const Camera& camera)
 {
-    // インスタンシング
-    for (auto& obj : instancingObjects_) {
-        Object3dPlacer& object = *obj.second;
-        object.Draw(camera);
+  
+    drawQueue_.clear(); // 忘れずに前フレーム分をクリア
+
+    // インスタンシングオブジェクトを登録
+    for (auto& [key, placer] : instancingObjects_) {
+        drawQueue_.push_back({
+            placer->GetCategory(),
+            placer->GetPositionZ(),
+            placer.get()
+            });
     }
 
-    // 非インスタンシング
-    for (auto& obj : individualObjects_) {
-        obj->Draw(camera);
+    // 個別オブジェクトを登録
+    for (auto& placer : individualObjects_) {
+        drawQueue_.push_back({
+            placer->GetCategory(),
+            placer->GetPositionZ(),
+            placer.get()
+            });
+    }
+
+    // 描画カテゴリ、Z順でソート
+    std::sort(drawQueue_.begin(), drawQueue_.end(),
+        [](const DrawEntry& a, const DrawEntry& b) {
+            if (a.category != b.category) {
+                return static_cast<int>(a.category) < static_cast<int>(b.category);
+            }
+            return a.positionZ < b.positionZ;
+        });
+
+    // 描画
+    for (auto& entry : drawQueue_) {
+        entry.object->Draw(camera);
     }
 }
 
@@ -82,4 +106,6 @@ void ObjectManager::ClearObject()
 {
     instancingObjects_.clear();
     individualObjects_.clear();
+    drawQueue_.clear();
 }
+

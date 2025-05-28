@@ -80,6 +80,7 @@ void FixedEnemy::Fire()
 		if (baseBullet) {
 			EnemyBullet* bullet = dynamic_cast<EnemyBullet*>(baseBullet);
 			bullet->Initialize();
+			bullet->SetTarget(player_);
 			bullet->SetPosition(GetWorldPosition());
 			bullet->SetVelocity(velocity);
 			bullet->SetIsActive(true);

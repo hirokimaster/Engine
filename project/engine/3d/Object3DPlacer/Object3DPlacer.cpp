@@ -52,6 +52,8 @@ void Object3dPlacer::Update()
 		for (const auto& data : object3dInstancing_) {
 			// 越えたら抜ける
 			if (numInstance_ >= kMaxInstance_) break;
+
+			category_ = data->category;
 			
 			// 生きてなかったらスキップする
 			if (!data->isAlive) continue;

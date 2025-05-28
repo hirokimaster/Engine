@@ -7,6 +7,7 @@
 #pragma once
 #include "engine/3d/BaseObject/BaseInstancingObject.h"
 #include "engine/Utility/Random/Random.h"
+#include "application/GameObject/CameraManager/CameraManager.h"
 
 class BulletTrajectory{
 public:

@@ -10,6 +10,13 @@
 #include <map>
 #include "engine/3d/Object3dPlacer/Object3dPlacer.h"
 
+// drawの順番決め用
+struct DrawEntry {
+	DrawCategory category; // カテゴリ
+	float positionZ;
+	Object3dPlacer* object;	// objectのポインタ
+};
+
 class ObjectManager {
 public:
 
@@ -51,15 +58,15 @@ public:
 	std::shared_ptr<Object3dPlacer> CreateIndividualObject(const std::string& modelName, uint32_t texHandle);
 
 	/// <summary>
-	///  mapの中を空にする
+	///  コンテナの中を空にする
 	/// </summary>
 	void ClearObject();
-
 
 private:
 	// モデルとインスタンス
 	std::unordered_map<std::string, std::unique_ptr<Object3dPlacer>> instancingObjects_;
 	std::vector<std::shared_ptr<Object3dPlacer>> individualObjects_;
+	std::vector<DrawEntry> drawQueue_;  
 
 private:
 	ObjectManager() = default;

@@ -32,7 +32,7 @@ void MoveEnemy::Initialize()
 	// パーティクル
 	particleManager_ = ParticleManager::GetInstance();
 
-	bulletSpeed_ = 10.0f;
+	bulletSpeed_ = 20.0f;
 }
 
 void MoveEnemy::Update()
@@ -73,6 +73,7 @@ void MoveEnemy::OnCollision()
 
 void MoveEnemy::Fire()
 {
+	// playerがいなかったらそもそも撃つ対象がいない
 	if (player_) {
 		Vector3 playerWorldPos = player_->GetWorldPosition(); // 自キャラのワールド座標を取得
 		Vector3 enemyWorldPos = GetWorldPosition(); // 敵キャラのワールド座標を取得
@@ -82,9 +83,15 @@ void MoveEnemy::Fire()
 
 		// 弾を生成して初期化
 		// プールから取ってくる
-		//IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
+		IBullet* baseBullet = bulletObjectPool_->GetBullet("enemy");
 		// 取ってこれたかチェックする
-
+		if (baseBullet) {
+			EnemyBullet* bullet = dynamic_cast<EnemyBullet*>(baseBullet);
+			bullet->Initialize();
+			bullet->SetPosition(GetWorldPosition());
+			bullet->SetVelocity(velocity);
+			bullet->SetIsActive(true);
+		}
 	}
 }
 

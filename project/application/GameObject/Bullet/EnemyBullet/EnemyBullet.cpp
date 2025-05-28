@@ -22,6 +22,7 @@ void EnemyBullet::Initialize()
 
 void EnemyBullet::Update()
 {
+	Homing(); // 追尾
 	Move(); // 移動
 	// object共通の更新処理
 	BaseInstancingObject::Update();
@@ -41,7 +42,6 @@ void EnemyBullet::Update()
 
 void EnemyBullet::ResetDeathTimer()
 {
-	isMove_ = false;
 	deathTimer_ = kLifeTime_;
 }
 
@@ -54,6 +54,22 @@ void EnemyBullet::Move()
 void EnemyBullet::OnCollision()
 {
 	isDead_ = true;
+}
+
+void EnemyBullet::Homing()
+{
+	// targetがいたら
+	if (target_) {
+		Vector3 position = GetWorldPosition();
+		Vector3 targetPosition = target_->GetWorldPosition();
+		Vector3 toTarget = Normalize(targetPosition - position); // 差分を正規化
+
+		// 現在の方向とターゲット方向を補間する
+		const float strength = 0.05f; // 追尾の強さ
+		Vector3 direction = Normalize(Lerp(Normalize(velocity_), toTarget, strength)); // 方向を決める
+		const float speed = 30.0f; // 弾のスピード
+		velocity_ = speed * direction;
+	}
 }
 
 Vector3 EnemyBullet::GetWorldPosition() const

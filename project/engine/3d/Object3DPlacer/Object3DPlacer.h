@@ -11,11 +11,20 @@
 #include "engine/Graphics/Transform/WorldTransform.h"
 #include "engine/Graphics/Transform/InstanceWorldTransform.h"
 
+// カテゴリ
+enum class DrawCategory {
+	Background,
+	World,
+	Foreground,
+	UI
+};
+
 struct Object3dInstancing {
 	InstanceWorldTransform worldTransform;
 	Vector4 color;
 	uint32_t texHandel;
 	bool isAlive;
+	DrawCategory category = DrawCategory::World;
 };
 
 class Object3dPlacer {
@@ -70,6 +79,7 @@ public:
 	DirectionalLight SetLightingProperty(const DirectionalLight& directionalLight) { return *directionalLightData_ = directionalLight; }
 	void SetUVTransform(const UVTransform& uvTransform) { uvTransform_ = uvTransform; }
 	void SetObject3dInstancing(const std::shared_ptr<Object3dInstancing>& data) { object3dInstancing_.push_back(data); }
+	void SetCategory(const DrawCategory& category) { category_ = category; }
 
 #pragma endregion
 
@@ -78,6 +88,10 @@ public:
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
 	const std::vector<std::shared_ptr<Object3dInstancing>>& GetObject3dInstancing() { return object3dInstancing_; }
+
+	float GetPositionZ()const { return worldTransform_.translate.z; }
+
+	const DrawCategory& GetCategory()const { return category_; }
 	
 #pragma endregion
 
@@ -110,4 +124,5 @@ private:
 	static const uint32_t kMaxInstance_ = 1000;
 	std::vector<std::shared_ptr<Object3dInstancing>> object3dInstancing_;
 	bool isInstancing_;
+	DrawCategory category_ = DrawCategory::World;
 };

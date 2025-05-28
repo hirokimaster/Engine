@@ -9,6 +9,7 @@
 #include "application/GameObject/Bullet/IBullet.h"
 #include <random>
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
+#include "engine/Math/Mathfunction.h"
 
 class Player;
 
@@ -41,6 +42,11 @@ private:
 	/// </summary>
 	void OnCollision();
 
+	/// <summary>
+	/// 追尾処理
+	/// </summary>
+	void Homing();
+
 public:
 
 #pragma region getter
@@ -69,6 +75,8 @@ public:
 
 	void SetIsDead(bool isDead)override { isDead_ = isDead;}
 
+	void SetTarget(const Player* target) { target_ = target; }
+
 #pragma endregion
 
 private:
@@ -78,5 +86,5 @@ private:
 	int32_t deathTimer_ = kLifeTime_; // デスタイマー
 	BulletType type_;
 	bool isActive_ = false;
-	bool isMove_ = false;
+	const Player* target_ = nullptr; // ターゲット
 };

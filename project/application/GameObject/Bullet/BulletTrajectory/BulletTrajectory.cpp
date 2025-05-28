@@ -17,6 +17,7 @@ void BulletTrajectory::Initialize()
 
 		if (auto ptr = obj.lock()) {
 			ptr->isAlive = false;
+			ptr->category = DrawCategory::Foreground;
 			pool_.push(obj);
 		}
 	}
