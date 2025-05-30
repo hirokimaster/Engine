@@ -23,8 +23,8 @@ void MoveEnemy::Initialize()
 	phaseState_ = std::make_unique<EnemyStateSortie>();
 
 	// 当たり判定の属性設定
-	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);
-	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
+	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);	  // 自分の属性
+	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
 	collider_->SetRadious(8.0f);
 	
 	velocity_ = { 0.0f,0.0f,1.0f };

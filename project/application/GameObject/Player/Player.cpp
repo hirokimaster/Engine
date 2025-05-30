@@ -15,8 +15,8 @@ void Player::Initialize()
 	object_.lock()->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 	// 属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
-	collider_->SetCollisionMask(kCollisionAttributeEnemy); // 当たる対象
-	collider_->SetRadious(2.0f);
+	collider_->SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
+	collider_->SetRadious(3.0f);
 
 	// 調整項目
 	AddAdjustmentVariables();

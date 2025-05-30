@@ -12,7 +12,7 @@ void Wall::Initialize()
 	BaseInstancingObject::Initialize("Stage/wall.obj", "TempTexture/noise0.png", ColliderType::AABB);
 
 	// colliderの属性
-	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);
+	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
 }
 

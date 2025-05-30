@@ -14,11 +14,11 @@ void FixedEnemy::Initialize()
 	object_.lock()->color = {0.0f,0.0f,0.0f,1.0f};
 	// コライダーの属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);	  // 自分の属性
-	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
+	collider_->SetCollisionMask(kCollisionAttributePlayerBullet); // 当たる対象
 	collider_->SetRadious(8.0f); // コライダーのサイズ 
 	// パーティクル
 	particleManager_ = ParticleManager::GetInstance();
-	bulletSpeed_ = 10.0f;
+	bulletSpeed_ = 1.0f;
 }
 
 void FixedEnemy::Update()
@@ -79,11 +79,11 @@ void FixedEnemy::Fire()
 		// 取ってこれたかチェックする
 		if (baseBullet) {
 			EnemyBullet* bullet = dynamic_cast<EnemyBullet*>(baseBullet);
-			bullet->Initialize();
+			bullet->SetIsActive(true);
 			bullet->SetTarget(player_);
 			bullet->SetPosition(GetWorldPosition());
 			bullet->SetVelocity(velocity);
-			bullet->SetIsActive(true);
+
 		}
 	}
 }

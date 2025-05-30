@@ -14,10 +14,11 @@ void EnemyBullet::Initialize()
 	// collider設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
-	collider_->SetRadious(2.0f);
+	collider_->SetRadious(100.0f);
+	object_.lock()->worldTransform.scale = { 0.1f,0.1f,0.1f };
 	type_ = BulletType::Enemy;
 	isDead_ = false;
-	isActive_ = true;
+	isActive_ = false;
 }
 
 void EnemyBullet::Update()
@@ -38,6 +39,11 @@ void EnemyBullet::Update()
 	if (isDead_) {
 		object_.lock()->isAlive = false;
 	}
+
+	// 当たらずターゲットを越えたら消す
+	if (GetWorldPosition().z <= target_->GetWorldPosition().z) {
+		isDead_ = true;
+	}
 }
 
 void EnemyBullet::ResetDeathTimer()
@@ -47,13 +53,17 @@ void EnemyBullet::ResetDeathTimer()
 
 void EnemyBullet::Move()
 {
-	Vector3 move = object_.lock()->worldTransform.translate + velocity_;
+	//移動
+	Vector3 move{};
+	move = object_.lock()->worldTransform.translate + velocity_;
 	SetPosition(move);
 }
 
 void EnemyBullet::OnCollision()
 {
-	isDead_ = true;
+	if (collider_->OnCollision()) {
+		isDead_ = true;
+	}
 }
 
 void EnemyBullet::Homing()
@@ -65,9 +75,9 @@ void EnemyBullet::Homing()
 		Vector3 toTarget = Normalize(targetPosition - position); // 差分を正規化
 
 		// 現在の方向とターゲット方向を補間する
-		const float strength = 0.05f; // 追尾の強さ
+		const float strength = 0.5f; // 追尾の強さ
 		Vector3 direction = Normalize(Lerp(Normalize(velocity_), toTarget, strength)); // 方向を決める
-		const float speed = 30.0f; // 弾のスピード
+		const float speed = 50.0f; // 弾のスピード
 		velocity_ = speed * direction;
 	}
 }

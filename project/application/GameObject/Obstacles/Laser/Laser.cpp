@@ -14,7 +14,7 @@ void Laser::Initialize()
 	object_.lock()->color = { 10.0f,10.0f,10.0f,10.0f };
 	
 	// colliderの属性
-	collider_->SetCollosionAttribute(kCollisionAttributeEnemy);
+	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
 }
 
