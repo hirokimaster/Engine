@@ -30,8 +30,10 @@ void ParticleManager::Initialize()
 	ApplyParam("engine_left");
 	CreateParam("engine_right");
 	ApplyParam("engine_right");
-	CreateParam("laserParticle");
-	ApplyParam("laserParticle");
+	CreateParam("laser_side");
+	ApplyParam("laser_side");
+	CreateParam("laser_ver");
+	ApplyParam("laser_ver");
 }
 
 void ParticleManager::CreateParam(const char* particleName)

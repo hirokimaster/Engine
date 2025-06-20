@@ -7,6 +7,12 @@ void ObstaclesManager::Initialize()
 	if (it != loader_->GetObjectDatas().end()) {
 		for (auto& objectData : it->second) {
 			std::unique_ptr<Laser> object = std::make_unique<Laser>();
+			if (objectData.scale.x > objectData.scale.y) {
+				object->SetType(LaserType::Side);
+			}
+			else {
+				object->SetType(LaserType::Ver);
+			}
 			object->Initialize();
 			object->SetPosition(objectData.translate);
 			object->SetScale(objectData.scale);

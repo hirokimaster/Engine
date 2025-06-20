@@ -1,0 +1,60 @@
+{
+    "laser_ver": {
+        "count": 300,
+        "emit": 1,
+        "frequency": 0.10000000149011612,
+        "frequencyTime": 0.10000000149011612,
+        "radius": 1.0,
+        "rangeAlpha_max": 1.0,
+        "rangeAlpha_min": 1.0,
+        "rangeColor_max": [
+            5.0,
+            1.0,
+            0.0
+        ],
+        "rangeColor_min": [
+            1.0,
+            0.10000000149011612,
+            0.10000000149011612
+        ],
+        "rangeCurrentTime_max": 5.0,
+        "rangeCurrentTime_min": 0.0,
+        "rangeLifeTime_max": 1.0,
+        "rangeLifeTime_min": 0.0,
+        "rangeScale_max": [
+            1.0,
+            1.2000000476837158,
+            1.0
+        ],
+        "rangeScale_min": [
+            1.0,
+            0.800000011920929,
+            1.0
+        ],
+        "rangeTranslate_max": [
+            0.0,
+            45.0,
+            0.0
+        ],
+        "rangeTranslate_min": [
+            0.0,
+            -45.0,
+            0.0
+        ],
+        "rangeVelocity_max": [
+            0.1,
+            1.0,
+            0.0
+        ],
+        "rangeVelocity_min": [
+            -0.1,
+            -1.0,
+            0.0
+        ],
+        "translate": [
+            0.0,
+            0.0,
+            0.0
+        ]
+    }
+}
