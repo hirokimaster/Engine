@@ -9,21 +9,36 @@
 void Laser::Initialize()
 {
 	TextureManager::Load("resources/Stage/laser.png");
-	// object共通の初期化
-	BaseInstancingObject::Initialize("Stage/laser.obj", "Stage/laser.png", ColliderType::AABB);
-	object_.lock()->color = { 10.0f,10.0f,10.0f,10.0f };
 	
+	collider_ = std::make_unique<Collider>();
+	collider_->SetType(ColliderType::AABB);
 	// colliderの属性
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
+
+	// particleManagerから取ってくる
+	TextureManager::Load("resources/TempTexture/white.png");
+	particleManager_ = ParticleManager::GetInstance();
+	particle_ = particleManager_->GetParticle("laserParticle", "Stage/laser.png");
+	lifeTime_ = 60000.0f; // 60秒
+	particle_->SetLifeTime(lifeTime_);
+
+	worldTransform_.Initialize();
 }
 
 void Laser::Update()
 {
-	BaseInstancingObject::Update(); // object共通の更新処理
 	collider_->SetWorldPosition(GetWorldPosition());
-	collider_->SetScale(object_.lock()->worldTransform.scale);
+	collider_->SetScale(worldTransform_.scale);
 	OnCollision(); // 当たったら
+
+	// パーティクルの更新
+	particle_->SetParticleParam(particleManager_->GetParam("laserParticle"));
+	// アクティブにする
+	particle_->SetIsActive(true);
+	particle_->SetPosition(GetWorldPosition());
+
+	worldTransform_.UpdateMatrix();
 }
 
 void Laser::OnCollision()
@@ -43,9 +58,9 @@ Vector3 Laser::GetWorldPosition() const
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得（ワールド座標）
-	worldPos.x = object_.lock()->worldTransform.matWorld.m[3][0];
-	worldPos.y = object_.lock()->worldTransform.matWorld.m[3][1];
-	worldPos.z = object_.lock()->worldTransform.matWorld.m[3][2];
+	worldPos.x = worldTransform_.matWorld.m[3][0];
+	worldPos.y = worldTransform_.matWorld.m[3][1];
+	worldPos.z = worldTransform_.matWorld.m[3][2];
 
 	return worldPos;
 }

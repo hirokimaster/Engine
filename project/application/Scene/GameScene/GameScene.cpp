@@ -208,6 +208,10 @@ void GameScene::Collision()
 		collisionManager_->ColliderPush(obstacles->GetCollider()); // 障害物のcolliderをリストに追加
 	}
 
+	for (const auto& lasers : obstaclesManager_->GetLasers()) {
+		collisionManager_->ColliderPush(lasers->GetCollider()); // 障害物のcolliderをリストに追加
+	}
+
 	collisionManager_->CheckAllCollision(); // 判定
 }
 

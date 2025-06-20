@@ -30,6 +30,8 @@ void ParticleManager::Initialize()
 	ApplyParam("engine_left");
 	CreateParam("engine_right");
 	ApplyParam("engine_right");
+	CreateParam("laserParticle");
+	ApplyParam("laserParticle");
 }
 
 void ParticleManager::CreateParam(const char* particleName)
@@ -133,6 +135,7 @@ void ParticleManager::Push(GPUParticle* particle)
 
 void ParticleManager::Update()
 {
+	
 	for (auto& particle : particles_) {
 		if (particle->GetIsActive()) {
 			

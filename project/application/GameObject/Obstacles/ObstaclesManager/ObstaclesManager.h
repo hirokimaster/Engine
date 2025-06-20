@@ -21,6 +21,8 @@ public:
 
 	const std::list<std::unique_ptr<BaseInstancingObject>>& GetObstacles()const { return obstacles_; }
 
+	const std::list<std::unique_ptr<Laser>>& GetLasers()const { return lasers_; }
+
 #pragma endregion
 
 #pragma region setter
@@ -32,6 +34,8 @@ public:
 private:
 	// objectのリスト
 	std::list<std::unique_ptr<BaseInstancingObject>> obstacles_;
+	// laser
+	std::list<std::unique_ptr<Laser>> lasers_;
 	// loader
 	Loader* loader_ = nullptr;
 
