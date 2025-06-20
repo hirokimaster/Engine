@@ -177,11 +177,11 @@ void GameScene::PostProcessDraw()
 	// objectManager
 	objectManager_->Draw(cameraManager_->GetCamera());
 
-	// lockOn_(レティクル)
-	lockOn_->Draw();
-
 	// particle
 	particleManager_->Draw(cameraManager_->GetCamera());
+
+	// lockOn_(レティクル)
+	lockOn_->Draw();
 
 	postEffect_->GetPostProcess()->PostDraw();
 }
