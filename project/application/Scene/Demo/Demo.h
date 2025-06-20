@@ -53,6 +53,8 @@ public: // メンバ関数
 
 private:
 	Camera camera_;
+	ParticleManager* particleManager_ = nullptr; // particle
+	GPUParticle* rightEngine_ = nullptr;
 };
 
 

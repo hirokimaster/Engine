@@ -10,7 +10,7 @@ void ObstaclesManager::Initialize()
 			object->Initialize();
 			object->SetPosition(objectData.translate);
 			object->SetScale(objectData.scale);
-			obstacles_.push_back(std::move(object));
+			lasers_.push_back(std::move(object));
 		}
 	}
 
@@ -32,5 +32,9 @@ void ObstaclesManager::Update()
 	// 更新
 	for (auto& obj : obstacles_) {
 		obj->Update();
+	}
+
+	for (auto& laser : lasers_) {
+		laser->Update();
 	}
 }

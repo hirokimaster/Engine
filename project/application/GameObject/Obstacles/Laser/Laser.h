@@ -6,9 +6,12 @@
 
 
 #pragma once
-#include "engine/3d/BaseObject/BaseInstancingObject.h"
+#include "engine/Graphics/Effects/Particle/GPUParticle.h"
+#include "engine/Graphics/Effects/Particle/ParticleManager.h"
+#include "engine/Graphics/Transform/WorldTransform.h"
+#include "engine/Utility/CollisionManager/Collider/Collider.h"
 
-class Laser : public BaseInstancingObject {
+class Laser{
 public:
 	/// <summary>
 	/// 初期化
@@ -26,16 +29,16 @@ public:
 
 	Vector3 GetWorldPosition()const;
 
-	Collider* GetCollider() { return BaseInstancingObject::GetCollider(); }
+	Collider* GetCollider() { return collider_.get(); }
 
 
 #pragma endregion
 
 #pragma region setter
 
-	void SetPosition(const Vector3& position) { BaseInstancingObject::SetPosition(position); }
+	void SetPosition(const Vector3& position) { worldTransform_.translate = position; }
 
-	void SetScale(const Vector3& scale) { BaseInstancingObject::SetScale(scale); }
+	void SetScale(const Vector3& scale) { worldTransform_.scale = scale; }
 
 #pragma endregion
 
@@ -45,4 +48,9 @@ private:
 
 private:
 	bool isHit_ = false;
+	GPUParticle* particle_ = nullptr; // particle
+	ParticleManager* particleManager_ = nullptr; // particleManager	
+	float lifeTime_ = 0.0f; // 生存時間
+	std::unique_ptr<Collider> collider_; // collider
+	WorldTransform worldTransform_; // ワールド座標
 };
