@@ -10,11 +10,10 @@
 void EnemyBullet::Initialize()
 {
 	// object共通の初期化
-	BaseInstancingObject::Initialize("Player/cube.obj", "TempTexture/white.png", ColliderType::Sphere);
+	BaseInstancingObject::Initialize("Player/cube.obj", "TempTexture/white.png", ColliderType::AABB);
 	// collider設定
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
-	collider_->SetRadious(100.0f);
 	object_.lock()->worldTransform.scale = { 0.1f,0.1f,0.1f };
 	type_ = BulletType::Enemy;
 	isDead_ = false;
@@ -28,6 +27,7 @@ void EnemyBullet::Update()
 	// object共通の更新処理
 	BaseInstancingObject::Update();
 	collider_->SetWorldPosition(GetWorldPosition()); // colliderにワールド座標を送る
+	collider_->SetScale(object_.lock()->worldTransform.scale);
 	OnCollision(); // 当たったら
 
 	// 時間で消滅
