@@ -17,9 +17,14 @@ void Laser::Initialize()
 	collider_->SetCollisionMask(kCollisionAttributePlayer); // 当たる対象
 
 	// particleManagerから取ってくる
-	TextureManager::Load("resources/TempTexture/white.png");
 	particleManager_ = ParticleManager::GetInstance();
-	particle_ = particleManager_->GetParticle("laserParticle", "Stage/laser.png");
+	if (type_ == LaserType::Side) {
+		particle_ = particleManager_->GetParticle("laser_side", "Stage/laser.png");
+	}
+	else if (type_ == LaserType::Ver) {
+		particle_ = particleManager_->GetParticle("laser_ver", "Stage/laser.png");
+	}
+	
 	lifeTime_ = 60000.0f; // 60秒
 	particle_->SetLifeTime(lifeTime_);
 
@@ -33,7 +38,13 @@ void Laser::Update()
 	OnCollision(); // 当たったら
 
 	// パーティクルの更新
-	particle_->SetParticleParam(particleManager_->GetParam("laserParticle"));
+	if (type_ == LaserType::Side) {
+		particle_->SetParticleParam(particleManager_->GetParam("laser_side"));
+	}
+	else if (type_ == LaserType::Ver) {
+		particle_->SetParticleParam(particleManager_->GetParam("laser_ver"));
+	}
+	
 	// アクティブにする
 	particle_->SetIsActive(true);
 	particle_->SetPosition(GetWorldPosition());

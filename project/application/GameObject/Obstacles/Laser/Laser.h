@@ -11,6 +11,11 @@
 #include "engine/Graphics/Transform/WorldTransform.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
 
+enum class LaserType {
+	Side,
+	Ver
+};
+
 class Laser{
 public:
 	/// <summary>
@@ -31,7 +36,6 @@ public:
 
 	Collider* GetCollider() { return collider_.get(); }
 
-
 #pragma endregion
 
 #pragma region setter
@@ -39,6 +43,8 @@ public:
 	void SetPosition(const Vector3& position) { worldTransform_.translate = position; }
 
 	void SetScale(const Vector3& scale) { worldTransform_.scale = scale; }
+
+	void SetType(LaserType type) { type_ = type; }
 
 #pragma endregion
 
@@ -53,4 +59,5 @@ private:
 	float lifeTime_ = 0.0f; // 生存時間
 	std::unique_ptr<Collider> collider_; // collider
 	WorldTransform worldTransform_; // ワールド座標
+	LaserType type_; // laserのタイプ
 };

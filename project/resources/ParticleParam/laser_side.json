@@ -1,5 +1,5 @@
 {
-    "laserParticle": {
+    "laser_side": {
         "count": 300,
         "emit": 1,
         "frequency": 0.10000000149011612,
