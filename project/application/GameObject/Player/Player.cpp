@@ -47,7 +47,10 @@ void Player::Initialize()
 void Player::Update()
 {
 	--gameStartTimer_;
-	Move(); // 移動
+	//Move(); // 移動	
+	// Reticle追従処理
+	
+
 	Rotate(); // 回転
 
 	// 発射間隔
@@ -95,7 +98,17 @@ void Player::Update()
 	if (isDead_) {
 		object_.lock()->SetColor({ 1.0f,1.0f,1.0f,0.0f });
 	}
-	
+
+	Vector3 reticlePos = lockOn_->GetWorldPosition3DReticle();
+	Vector3 playerPos = GetWorldPosition(); // プレイヤーの現在位置
+
+	// 追従速度
+	const float followSpeed = 0.1f;
+
+	// 補間
+	Vector3 newPos = playerPos + followSpeed * (reticlePos - playerPos);
+	object_.lock()->SetPosition(newPos);
+
 	ApplyAdjustmentVariables();
 }
 
