@@ -165,7 +165,7 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 
 	// 範囲制限
 	worldTransform3DReticle_.translate.x = std::clamp(worldTransform3DReticle_.translate.x, -500.0f, 500.0f);
-	worldTransform3DReticle_.translate.y = std::clamp(worldTransform3DReticle_.translate.y, 0.0f, 500.0f);
+	worldTransform3DReticle_.translate.y = std::clamp(worldTransform3DReticle_.translate.y, 20.0f, 500.0f);
 
 	worldTransform3DReticle_.UpdateMatrix();
 
