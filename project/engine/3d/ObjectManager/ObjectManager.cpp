@@ -65,7 +65,7 @@ void ObjectManager::Draw(const Camera& camera)
     }
 }
 
-std::shared_ptr<Object3dInstancing> ObjectManager::CreateInstancingObject(const std::string& modelName, uint32_t texHandle)
+std::shared_ptr<Object3dInstancing> ObjectManager::CreateInstancingObject(const std::string& modelName, uint32_t texHandle, bool shadow)
 {
     // 指定したモデルでobjectのインスタンスがあるか調べる
     auto it = instancingObjects_.find(modelName);
@@ -75,6 +75,7 @@ std::shared_ptr<Object3dInstancing> ObjectManager::CreateInstancingObject(const 
         object->Initialize(true);
         object->SetModel(modelName);
         object->SetTexHandle(texHandle);
+        object->SetShadow(shadow);
         // 新しく追加したオブジェクトは追加しないように保持する
         it = instancingObjects_.emplace(modelName, std::move(object)).first;
     }

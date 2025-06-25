@@ -32,12 +32,6 @@ public:
 	void Update();
 
 	/// <summary>
-	/// 描画
-	/// </summary>
-	/// <param name="camera"></param>
-	void Draw(const Camera& camera);
-
-	/// <summary>
 	/// UIの描画
 	/// </summary>
 	/// <param name="camera"></param>

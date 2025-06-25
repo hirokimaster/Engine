@@ -20,10 +20,7 @@ public:
 	/// </summary>
 	void Update();
 
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw(const Camera& camera);
+	void SetOffset(const Vector3& offset) { offset_ = offset; }
 
 private:
 
@@ -31,6 +28,8 @@ private:
 	const WorldTransform* casterWorldTransform_ = nullptr;
 	// 平面投影行列
 	Matrix4x4 shadowMatrix_;
+	// オフセット 
+	Vector3 offset_{};
 
 };
 

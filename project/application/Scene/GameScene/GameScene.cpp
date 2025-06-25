@@ -97,6 +97,8 @@ void GameScene::Initialize()
 void GameScene::Update()
 {
 
+	objectManager_->Update();
+
 	// player
 	player_->Update();
 	lockOn_->UpdateReticle(cameraManager_->GetCamera(), player_->GetWorldPosition(), isGameStart_);
@@ -140,7 +142,6 @@ void GameScene::Update()
 		GameManager::GetInstance()->ChangeScene("CLEAR");
 	}
 
-	objectManager_->Update();
 
 	gameSprite_->Update();
 
@@ -171,8 +172,6 @@ void GameScene::PostProcessDraw()
 
 	skydome_->Draw(cameraManager_->GetCamera());
 
-	// player
-	player_->Draw(cameraManager_->GetCamera());
 
 	// objectManager
 	objectManager_->Draw(cameraManager_->GetCamera());

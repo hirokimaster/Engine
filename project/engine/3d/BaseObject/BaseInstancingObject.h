@@ -22,7 +22,7 @@ public:
 	/// <param name="modelName"></param>
 	/// <param name="textureName"></param>
 	/// <param name="type"></param>
-	virtual void Initialize(const std::string& modelName, const std::string& textureName, ColliderType type = ColliderType::None);
+	virtual void Initialize(const std::string& modelName, const std::string& textureName, ColliderType type = ColliderType::None, bool shadow = false);
 
 	/// <summary>
 	/// 共通処理更新

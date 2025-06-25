@@ -42,6 +42,7 @@ void Player::Initialize()
 	// 影
 	shadow_ = std::make_unique<PlaneProjectionShadow>();
 	shadow_->Initialize("Player/player.obj", &object_.lock()->GetWorldTransform());
+	shadow_->SetOffset({ 0.0f,0.0f,100.0f });
 }
 
 void Player::Update()
@@ -99,25 +100,17 @@ void Player::Update()
 		object_.lock()->SetColor({ 1.0f,1.0f,1.0f,0.0f });
 	}
 
-	Vector3 reticlePos = lockOn_->GetWorldPosition3DReticle();
-	Vector3 playerPos = GetWorldPosition(); // プレイヤーの現在位置
+	//Vector3 reticlePos = lockOn_->GetWorldPosition3DReticle();
+	//Vector3 playerPos = GetWorldPosition(); // プレイヤーの現在位置
 
-	// 追従速度
-	const float followSpeed = 0.1f;
+	//// 追従速度
+	//const float followSpeed = 0.1f;
 
-	// 補間
-	Vector3 newPos = playerPos + followSpeed * (reticlePos - playerPos);
-	object_.lock()->SetPosition(newPos);
+	//// 補間
+	//Vector3 newPos = playerPos + followSpeed * (reticlePos - playerPos);
+	//object_.lock()->SetPosition(newPos);
 
 	ApplyAdjustmentVariables();
-}
-
-void Player::Draw(const Camera& camera)
-{
-	if (!isDead_) {
-		// 影
-		shadow_->Draw(camera);
-	}
 }
 
 void Player::Move()

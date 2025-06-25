@@ -58,8 +58,10 @@ void Object3dPlacer::Update()
 			// 生きてなかったらスキップする
 			if (!data->isAlive) continue;
 
-			// ワールド行列を更新
-			data->worldTransform.UpdateMatrix();
+			if (!shadow_) {
+				// ワールド行列を更新
+				data->worldTransform.UpdateMatrix();
+			}
 
 			// instancingDataに書き込む
 			instancingData_[numInstance_].matWorld = data->worldTransform.matWorld;
