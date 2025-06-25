@@ -99,6 +99,8 @@ public:
 
 	void SetEventTrigger(const Vector3& trigger) { eventTrigger_ = trigger; }
 
+	void SetBulletObjectPool(BulletObjectPool* ptr) { bulletObjectPool_ = ptr; }
+
 #pragma endregion
 
 private:

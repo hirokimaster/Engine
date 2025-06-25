@@ -17,6 +17,7 @@ void EnemyManager::Initialize()
             enemy->SetPlayer(player_);
             enemy->SetPosition(objectData.controlPoint.front()); // 初期位置は最初の制御点
             enemy->SetEventNum(objectData.eventNum);
+            enemy->SetBulletObjectPool(bulletObjectPool_);
             // 移動ルートの制御点を設定
             for (const auto& point : objectData.controlPoint) {
                 enemy->SetMoveControlPoints(point);

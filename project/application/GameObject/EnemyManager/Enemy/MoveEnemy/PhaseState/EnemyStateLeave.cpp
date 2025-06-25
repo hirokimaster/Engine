@@ -9,11 +9,6 @@ EnemyStateLeave::~EnemyStateLeave()
 
 void EnemyStateLeave::Update(MoveEnemy* pEnemy)
 {
-	// 移動ベクトル
-	const Vector3 velocity = {
-		5.0f,0.0f,0.0f
-	};
-
-	pEnemy->SetVelocity(velocity);
-	pEnemy->Move();
+	// 死ぬ
+	pEnemy->SetIsDead(true);
 }
