@@ -611,6 +611,36 @@ Matrix4x4 MakeRotateMatrix(const Vector3& radian)
 	return result;
 }
 
+Matrix4x4 MakeViewMatrix(const Vector3& eye, const Vector3& target, const Vector3& up)
+{
+	Vector3 zaxis = Normalize(target - eye);         // カメラの前方向
+	Vector3 xaxis = Normalize(Cross(up, zaxis));     // カメラの右方向
+	Vector3 yaxis = Cross(zaxis, xaxis);             // カメラの上方向
+
+	Matrix4x4 view = {};
+	view.m[0][0] = xaxis.x;
+	view.m[1][0] = xaxis.y;
+	view.m[2][0] = xaxis.z;
+	view.m[3][0] = -Dot(xaxis, eye);
+
+	view.m[0][1] = yaxis.x;
+	view.m[1][1] = yaxis.y;
+	view.m[2][1] = yaxis.z;
+	view.m[3][1] = -Dot(yaxis, eye);
+
+	view.m[0][2] = zaxis.x;
+	view.m[1][2] = zaxis.y;
+	view.m[2][2] = zaxis.z;
+	view.m[3][2] = -Dot(zaxis, eye);
+
+	view.m[0][3] = 0.0f;
+	view.m[1][3] = 0.0f;
+	view.m[2][3] = 0.0f;
+	view.m[3][3] = 1.0f;
+
+	return view;
+}
+
 
 Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to)
 {

@@ -74,9 +74,6 @@ void LockOn::Update(const std::list<std::unique_ptr<IEnemy>>& enemies, const Cam
 		positionScreen_.clear();
 		sprite_.clear();
 	}
-
-	// 範囲制限
-	ReticleRangeLimit();
 }
 
 void LockOn::Draw()
@@ -124,22 +121,6 @@ void LockOn::Reticle(const Camera& camera)
 	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
 }
 
-void LockOn::ReticleRangeLimit()
-{
-	// reticleの範囲制限
-	Vector2 positionLockOn = spriteLockOnReticle_->GetPosition();
-	Vector2 positionReticle = sprite2DReticle_->GetPosition();
-	positionReticle.x = std::clamp(positionReticle.x, 590.0f, 710.0f);
-	positionReticle.y = std::clamp(positionReticle.y, 300.0f, 400.0f);
-
-	positionLockOn.x = std::clamp(positionLockOn.x, 25.0f, 1255.0f);
-	positionLockOn.y = std::clamp(positionLockOn.y, 25.0f, 695.0f);
-	screenPositionReticle_ = positionReticle;
-
-	sprite2DReticle_->SetPosition(positionReticle);
-	spriteLockOnReticle_->SetPosition(positionLockOn);
-}
-
 Vector3 LockOn::GetWorldPosition3DReticle() const
 {
 	// ワールド座標を入れる変数
@@ -165,12 +146,29 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 		spriteLockOnReticle_->SetPosition(spritePosition);
 	}
 
-	const float kDistanceObject = 100.0f;
-	Vector3 offset = { 0,0,1.0f };
-	offset = kDistanceObject * Normalize(offset);
-	worldTransform3DReticle_.translate = worldTransform3DReticle_.translate + offset;
-	// playerとの距離
+	// 入力取得
+	XINPUT_STATE joyState{};
+	const float moveSpeedXY = 2.0f;   // X/Y移動速度
+	const float moveSpeedZ = 30.0f;  // Z前進速度
+
+	// 入力によるXY移動
+	if (Input::GetInstance()->GetJoystickState(joyState)) {
+		float inputX = (float)joyState.Gamepad.sThumbLX / SHRT_MAX;
+		float inputY = (float)joyState.Gamepad.sThumbLY / SHRT_MAX;
+
+		worldTransform3DReticle_.translate.x += inputX * moveSpeedXY;
+		worldTransform3DReticle_.translate.y += inputY * moveSpeedXY;
+	}
+
+	// 常に前進（Z+方向）
+	worldTransform3DReticle_.translate.z += moveSpeedZ;
+
+	// 範囲制限
+	worldTransform3DReticle_.translate.x = std::clamp(worldTransform3DReticle_.translate.x, -500.0f, 500.0f);
+	worldTransform3DReticle_.translate.y = std::clamp(worldTransform3DReticle_.translate.y, 0.0f, 500.0f);
+
 	worldTransform3DReticle_.UpdateMatrix();
+
 	// レティクル
 	playerPosition_ = playerPosition;
 	Reticle(camera);
