@@ -47,7 +47,10 @@ void Player::Initialize()
 void Player::Update()
 {
 	--gameStartTimer_;
-	//Move(); // 移動
+	//Move(); // 移動	
+	// Reticle追従処理
+	
+
 	Rotate(); // 回転
 
 	// 発射間隔
@@ -96,7 +99,6 @@ void Player::Update()
 		object_.lock()->SetColor({ 1.0f,1.0f,1.0f,0.0f });
 	}
 
-	// Reticle追従処理
 	Vector3 reticlePos = lockOn_->GetWorldPosition3DReticle();
 	Vector3 playerPos = GetWorldPosition(); // プレイヤーの現在位置
 
