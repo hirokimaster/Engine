@@ -73,4 +73,5 @@ private:
 	// 攻撃間隔
 	const uint32_t kFireInterval_ = 120;
 	uint32_t fireTimer_ = 120; // 攻撃タイマー
+	std::unique_ptr<PlaneProjectionShadow<InstanceWorldTransform>> shadow_; // 影
 };

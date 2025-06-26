@@ -163,7 +163,7 @@ private:
 	float rotateSpeed_; // 回転速度
 	float rotateLerpFactor_; // Lerpの強さ
 	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタ借りる
-	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
+	std::unique_ptr<PlaneProjectionShadow<WorldTransform>> shadow_; // 影
 	std::unique_ptr<EngineParticle> engineParticle_; // エンジンのパーティクル
 	float gameStartTimer_ = 120.0f;
 };

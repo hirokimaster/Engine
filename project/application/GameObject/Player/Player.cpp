@@ -40,8 +40,9 @@ void Player::Initialize()
 	spriteMove_->SetScale({ 2.0f,2.0f });
 
 	// 影
-	shadow_ = std::make_unique<PlaneProjectionShadow>();
+	shadow_ = std::make_unique<PlaneProjectionShadow<WorldTransform>>();
 	shadow_->Initialize("Player/player.obj", &object_.lock()->GetWorldTransform());
+	shadow_->SetScale({ 2.0f,1.0f,2.0f });
 	shadow_->SetOffset({ 0.0f,-8.0f,80.0f });
 }
 

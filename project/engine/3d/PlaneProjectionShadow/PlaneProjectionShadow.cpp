@@ -6,23 +6,24 @@
 
 #include "PlaneProjectionShadow.h"
 
-void PlaneProjectionShadow::Initialize(const std::string& modelName, const WorldTransform* casterWorldTransform)
+template<typename T>
+void PlaneProjectionShadow<T>::Initialize(const std::string& modelName, const T* casterWorldTransform)
 {
-	// 共通処理初期化
-	TextureManager::Load("resources/TempTexture/uvChecker.png");
+    // 共通処理初期化
+    TextureManager::Load("resources/TempTexture/uvChecker.png");
     BaseInstancingObject::Initialize(modelName, "TempTexture/uvChecker.png", ColliderType::None, true);
 
-	// 平面投影行列
-	shadowMatrix_ = MakeIdentityMatrix();
-	shadowMatrix_.m[1][1] = 0.002f;
-	casterWorldTransform_ = casterWorldTransform;
-	// objectを真っ黒にする
-	object_.lock()->color = {0.0f,0.0f,0.0f,1.0f};
+    // 平面投影行列
+    shadowMatrix_ = MakeIdentityMatrix();
+    shadowMatrix_.m[1][1] = 0.002f;
+    casterWorldTransform_ = casterWorldTransform;
+    // objectを真っ黒にする
+    object_.lock()->color = { 0.0f,0.0f,0.0f,1.0f };
 }
 
-void PlaneProjectionShadow::Update()
+template<typename T>
+void PlaneProjectionShadow<T>::Update()
 {
-  
     auto obj = object_.lock();
     if (!obj || !casterWorldTransform_) return;
 
@@ -34,10 +35,7 @@ void PlaneProjectionShadow::Update()
     shadow.m[1][1] = 0.002f;
 
     // 拡大（XZ方向のみ）
-    Matrix4x4 scale = MakeScaleMatrix({ 3.0f, 1.0f, 3.0f });
-
-    // 平行移動
-    Matrix4x4 offset = MakeTranslateMatrix(offset_);
+    Matrix4x4 scale = MakeScaleMatrix({ scale_.x, scale_.y, scale_.z });
 
     // 計算順：スケーリングとオフセットは左から
     Matrix4x4 matWorld = scale * shadow * mat;
@@ -49,5 +47,17 @@ void PlaneProjectionShadow::Update()
 
     obj->worldTransform.matWorld = matWorld;
 
+    // ImGui UI表示
+    ImGui::Begin("offset");
+    ImGui::DragFloat3("off", &offset_.x, 0.1f, -1000.0f, 1000.0f);
+    ImGui::Text("x[%.2f], y[%.2f], z[%.2f]",
+        obj->worldTransform.matWorld.m[3][0],
+        obj->worldTransform.matWorld.m[3][1],
+        obj->worldTransform.matWorld.m[3][2]);
+    ImGui::End();
 }
+
+// 明示的インスタンス化
+template class PlaneProjectionShadow<WorldTransform>;
+template class PlaneProjectionShadow<InstanceWorldTransform>;
 

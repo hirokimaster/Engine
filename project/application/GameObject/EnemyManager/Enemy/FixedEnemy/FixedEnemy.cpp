@@ -19,6 +19,11 @@ void FixedEnemy::Initialize()
 	// パーティクル
 	particleManager_ = ParticleManager::GetInstance();
 	bulletSpeed_ = 1.0f;
+	// 影
+	shadow_ = std::make_unique<PlaneProjectionShadow<InstanceWorldTransform>>();
+	shadow_->Initialize("Enemy/cube.obj", &object_.lock()->worldTransform);
+	shadow_->SetScale({ 0.2f,0.2f,0.2f });
+	shadow_->SetOffset({ 0.0f,-25.0f,0.0f });
 }
 
 void FixedEnemy::Update()
@@ -61,6 +66,8 @@ void FixedEnemy::Update()
 		}
 	}
 
+	// 影
+	shadow_->Update();
 }
 
 void FixedEnemy::Fire()

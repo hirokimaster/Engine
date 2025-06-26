@@ -40,7 +40,7 @@ void ObstaclesManager::Update()
 		obj->Update();
 	}
 
-	for (auto& laser : lasers_) {
+	/*for (auto& laser : lasers_) {
 		laser->Update();
-	}
+	}*/
 }
