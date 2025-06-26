@@ -160,14 +160,9 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 		float inputX = (float)joyState.Gamepad.sThumbLX / SHRT_MAX;
 		float inputY = (float)joyState.Gamepad.sThumbLY / SHRT_MAX;
 
-		if (playerPosition_.z > 36000.0f) {
-			worldTransform3DReticle_.translate.x += inputX * moveSpeedXY * 4.0f;
-			worldTransform3DReticle_.translate.y += inputY * moveSpeedXY * 4.0f;
-		}
-		else {
-			worldTransform3DReticle_.translate.x += inputX * moveSpeedXY;
-			worldTransform3DReticle_.translate.y += inputY * moveSpeedXY;
-		}
+		worldTransform3DReticle_.translate.x += inputX * moveSpeedXY;
+		worldTransform3DReticle_.translate.y += inputY * moveSpeedXY;
+
 	}
 
 	// 常に前進（Z+方向）
