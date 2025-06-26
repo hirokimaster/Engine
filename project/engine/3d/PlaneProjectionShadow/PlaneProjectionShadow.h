@@ -24,6 +24,7 @@ public:
 
     void SetOffset(const Vector3& offset) { offset_ = offset; }
     void SetScale(const Vector3& scale) { scale_ = scale; }
+    void SetIsActive(bool flag) { object_.lock()->isAlive = flag; }
 
 private:
     // 投影元オブジェクトのワールド変換データ

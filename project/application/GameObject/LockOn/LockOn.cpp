@@ -15,11 +15,12 @@ void LockOn::Initialize()
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
-
+	worldTransform3DReticle_.translate = { 0,40.0f,-1400.0f };
 }
 
 void LockOn::Update(const std::list<std::unique_ptr<IEnemy>>& enemies, const Camera& camera)
 {
+
 	XINPUT_STATE joyState{};
 
 	// ロックオン状態なら
