@@ -14,8 +14,9 @@ EnemyStateSortie::~EnemyStateSortie()
 
 void EnemyStateSortie::Update(MoveEnemy* pEnemy)
 {
-	// イベントトリガーまで行ったら出す
-	if (player_->GetWorldPosition().z >= pEnemy->GetEventTrigger().z) {
+	// 距離
+	float diff = pEnemy->GetWorldPosition().z - player_->GetWorldPosition().z;
+	if (diff <= 5000.0f) {
 		isSortie_ = true;
 		pEnemy->SetIsSortie(isSortie_);
 	}
