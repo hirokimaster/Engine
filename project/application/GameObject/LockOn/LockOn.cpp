@@ -16,6 +16,7 @@ void LockOn::Initialize()
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
 	worldTransform3DReticle_.translate = { 0,40.0f,-1500.0f };
+	isLockOnMode_ = false;
 }
 
 void LockOn::Update(const std::list<std::unique_ptr<IEnemy>>& enemies, const Camera& camera)
@@ -116,10 +117,12 @@ void LockOn::Draw()
 void LockOn::Reticle(const Camera& camera)
 {
 	Vector3 positionReticle = GetWorldPosition3DReticle();
-
 	positionReticle = TransformPositionScreen(positionReticle, camera);
 
-	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+	// ここでレティクルのスクリーン座標を保存
+	screenPositionReticle_ = Vector2(positionReticle.x, positionReticle.y);
+
+	sprite2DReticle_->SetPosition(screenPositionReticle_);
 }
 
 Vector3 LockOn::GetWorldPosition3DReticle() const
@@ -158,8 +161,8 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 		float inputY = (float)joyState.Gamepad.sThumbLY / SHRT_MAX;
 
 		if (playerPosition_.z > 36000.0f) {
-			worldTransform3DReticle_.translate.x += inputX * moveSpeedXY * 2.0f;
-			worldTransform3DReticle_.translate.y += inputY * moveSpeedXY * 2.0f;
+			worldTransform3DReticle_.translate.x += inputX * moveSpeedXY * 4.0f;
+			worldTransform3DReticle_.translate.y += inputY * moveSpeedXY * 4.0f;
 		}
 		else {
 			worldTransform3DReticle_.translate.x += inputX * moveSpeedXY;

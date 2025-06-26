@@ -89,8 +89,6 @@ void Player::Update()
 	// 影
 	shadow_->Update();
 
-	
-
 	// ゲーム開始演出中または死亡時は本体,影を非表示
 	if (isDead_ || gameStartTimer_ > 40.0f) {
 		object_.lock()->SetColor({ 1.0f,1.0f,1.0f,0.0f });
@@ -161,10 +159,12 @@ void Player::FireBullet(const Vector3& position, const Vector3& velocity)
 	IBullet* baseBullet = bulletObjectPool_->GetBullet("player");
 	// 取り出せてたら値を設定する
 	if (baseBullet) {
+		Vector3 dir = { 0.0f,0.0f,5.0f };
+		Vector3 newPosition = position + dir;
 		PlayerBullet* bullet = dynamic_cast<PlayerBullet*>(baseBullet);
 		bullet->SetIsActive(true); // アクティブにする
 		bullet->SetLockOn(lockOn_);
-		bullet->SetPosition(position); // 位置
+		bullet->SetPosition(newPosition); // 位置
 		bullet->SetVelocity(velocity); // 速度
 	}
 }
