@@ -29,6 +29,7 @@ void Laser::Initialize()
 	particle_->SetLifeTime(lifeTime_);
 
 	worldTransform_.Initialize();
+	worldTransform_.scale.z = 5.0f;
 }
 
 void Laser::Update()
