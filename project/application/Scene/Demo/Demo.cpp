@@ -21,9 +21,11 @@ void Demo::Initialize()
 	particleManager_ = ParticleManager::GetInstance();
 	particleManager_->Initialize();
 
+	ModelManager::GetInstance()->LoadObjModel("Player/ball.obj");
 	// particleManagerから取ってくる
 	TextureManager::Load("resources/TempTexture/white.png");
-	rightEngine_ = particleManager_->GetParticle("laserParticle", "TempTexture/white.png");
+	rightEngine_ = particleManager_->GetParticle("explosion", "TempTexture/white.png");
+	rightEngine_->SetModel("Player/ball.obj");
 	rightEngine_->SetLifeTime(60000.0f);
 	
 }
@@ -33,7 +35,7 @@ void Demo::Update()
 	camera_.UpdateMatrix();
 
 	// パーティクルのパラメーターを設定
-	rightEngine_->SetParticleParam(particleManager_->GetParam("laserParticle"));
+	rightEngine_->SetParticleParam(particleManager_->GetParam("explosion"));
 	// アクティブにする
 	rightEngine_->SetIsActive(true);
 	

@@ -27,8 +27,8 @@ public:
 	void SetLifeTime(float time) { lifeTime_ = time; }
 
 	void SetIsActive(bool flag) {
-		leftEngine_->SetIsActive(false);
-		rightEngine_->SetIsActive(false);
+		leftEngine_->SetIsActive(flag);
+		rightEngine_->SetIsActive(flag);
 	}
 
 #pragma endregion
