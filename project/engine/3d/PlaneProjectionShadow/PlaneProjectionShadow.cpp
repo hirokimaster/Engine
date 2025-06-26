@@ -34,25 +34,20 @@ void PlaneProjectionShadow::Update()
     shadow.m[1][1] = 0.002f;
 
     // 拡大（XZ方向のみ）
-    Matrix4x4 scale = MakeScaleMatrix({ 5.0f, 1.0f, 5.0f });
+    Matrix4x4 scale = MakeScaleMatrix({ 3.0f, 1.0f, 3.0f });
 
     // 平行移動
     Matrix4x4 offset = MakeTranslateMatrix(offset_);
 
     // 計算順：スケーリングとオフセットは左から
     Matrix4x4 matWorld = scale * shadow * mat;
-    matWorld = offset * matWorld;
+
+    // 最後にoffset_を直接加算
+    matWorld.m[3][0] += offset_.x;
+    matWorld.m[3][1] += offset_.y;
+    matWorld.m[3][2] += offset_.z;
 
     obj->worldTransform.matWorld = matWorld;
 
-
-    // ImGui UI表示
-    ImGui::Begin("offset");
-    ImGui::DragFloat3("off", &offset_.x, 0.1f, -1000.0f, 1000.0f);
-    ImGui::Text("x[%.2f], y[%.2f], z[%.2f]",
-        obj->worldTransform.matWorld.m[3][0],
-        obj->worldTransform.matWorld.m[3][1],
-        obj->worldTransform.matWorld.m[3][2]);
-    ImGui::End();
 }
 
