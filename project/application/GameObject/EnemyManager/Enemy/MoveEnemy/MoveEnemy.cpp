@@ -31,7 +31,13 @@ void MoveEnemy::Initialize()
 	// パーティクル
 	particleManager_ = ParticleManager::GetInstance();
 
-	bulletSpeed_ = 20.0f;
+	bulletSpeed_ = 1.5f;
+
+	// 影
+	shadow_ = std::make_unique<PlaneProjectionShadow<InstanceWorldTransform>>();
+	shadow_->Initialize("Enemy/cube.obj", &object_.lock()->worldTransform);
+	shadow_->SetScale({ 0.2f,0.2f,0.2f });
+	shadow_->SetOffset({ 0.0f,-25.0f,0.0f });
 }
 
 void MoveEnemy::Update()
@@ -52,7 +58,11 @@ void MoveEnemy::Update()
 	// 当たったら消す
 	if (isHit_) {
 		object_.lock()->isAlive = false;
+		shadow_->SetIsActive(false);
 	}
+
+	// 更新
+	shadow_->Update();
 
 	// particleの位置
 	if (particle_) {

@@ -120,4 +120,5 @@ private:
 	GPUParticle* particle_ = nullptr;
 	bool isHit_ = false;
 	bool isExploded_ = false;
+	std::unique_ptr<PlaneProjectionShadow<InstanceWorldTransform>> shadow_; // 影
 };
