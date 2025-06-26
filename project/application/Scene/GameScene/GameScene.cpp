@@ -66,9 +66,6 @@ void GameScene::Initialize()
 	enemyManager_->SetLoader(loader_.get());
 	enemyManager_->SetBulletObjectPool(bulletObjectPool_.get());
 	enemyManager_->Initialize();
-	
-	// collision
-	collisionManager_ = std::make_unique<CollisionManager>();
 
 	// ゲームの状態
 	gameState_ = std::make_unique<GameStartState>();
@@ -92,6 +89,9 @@ void GameScene::Initialize()
 	gameSprite_->SetPlayer(player_.get());
 
 	timer_ = 60.0f;
+
+	// collision
+	collisionManager_ = std::make_unique<CollisionManager>();
 }
 
 void GameScene::Update()

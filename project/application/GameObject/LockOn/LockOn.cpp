@@ -15,7 +15,7 @@ void LockOn::Initialize()
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	worldTransform3DReticle_.Initialize();
-	worldTransform3DReticle_.translate = { 0,40.0f,-1400.0f };
+	worldTransform3DReticle_.translate = { 0,40.0f,-1500.0f };
 }
 
 void LockOn::Update(const std::list<std::unique_ptr<IEnemy>>& enemies, const Camera& camera)
@@ -157,8 +157,14 @@ void LockOn::UpdateReticle(const Camera& camera, const Vector3& playerPosition, 
 		float inputX = (float)joyState.Gamepad.sThumbLX / SHRT_MAX;
 		float inputY = (float)joyState.Gamepad.sThumbLY / SHRT_MAX;
 
-		worldTransform3DReticle_.translate.x += inputX * moveSpeedXY;
-		worldTransform3DReticle_.translate.y += inputY * moveSpeedXY;
+		if (playerPosition_.z > 36000.0f) {
+			worldTransform3DReticle_.translate.x += inputX * moveSpeedXY * 2.0f;
+			worldTransform3DReticle_.translate.y += inputY * moveSpeedXY * 2.0f;
+		}
+		else {
+			worldTransform3DReticle_.translate.x += inputX * moveSpeedXY;
+			worldTransform3DReticle_.translate.y += inputY * moveSpeedXY;
+		}
 	}
 
 	// 常に前進（Z+方向）

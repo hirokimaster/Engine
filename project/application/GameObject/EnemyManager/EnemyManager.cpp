@@ -15,24 +15,10 @@ void EnemyManager::Initialize()
             auto enemy = std::make_unique<MoveEnemy>();
             enemy->Initialize();
             enemy->SetPlayer(player_);
-            enemy->SetPosition(objectData.controlPoint.front()); // 初期位置は最初の制御点
+            enemy->SetPosition(objectData.translate);
+            enemy->SetScale(objectData.scale);
             enemy->SetEventNum(objectData.eventNum);
             enemy->SetBulletObjectPool(bulletObjectPool_);
-            // 移動ルートの制御点を設定
-            for (const auto& point : objectData.controlPoint) {
-                enemy->SetMoveControlPoints(point);
-            }
-
-            // イベントトリガー
-            auto eventIt = loader_->GetObjectDatas().find("EventTrigger");
-            if (eventIt != loader_->GetObjectDatas().end()) {
-                for (auto& event : eventIt->second) {
-                    if (objectData.eventNum == event.eventNum) {
-                        enemy->SetEventTrigger(event.translate);
-                    }
-                }
-            }
-
             enemys_.push_back(std::move(enemy));
         }
     }

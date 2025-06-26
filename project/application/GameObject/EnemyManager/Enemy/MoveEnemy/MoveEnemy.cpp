@@ -12,7 +12,6 @@ void MoveEnemy::Initialize()
 	// object共通の初期化
 	BaseInstancingObject::Initialize("Enemy/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
 	object_.lock()->color = (Vector4(0.0f, 0.0f, 0.0f, 1.0f));
-	object_.lock()->worldTransform.scale = { 10.0f,10.0f,10.0f };
 	
 	// 調整項目追加
 	AddAdjustmentVariables();
