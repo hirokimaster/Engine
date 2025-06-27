@@ -11,6 +11,7 @@ void LockOn::Initialize()
 	TextureManager::Load("resources/Player/reticle.png");
 	TextureManager::Load("resources/Player/lockOnReticle.png");
 	sprite2DReticle_.reset(Sprite::Create(TextureManager::GetTexHandle("Player/reticle.png"), reticlePosition_));
+	sprite2DReticle_->SetColor({ 1.0f,0.0f,0.0f,1.0f });
 	spriteLockOnReticle_.reset(Sprite::Create(TextureManager::GetTexHandle("Player/lockOnReticle.png"), { 640.0f,360.0f }));
 	spriteLockOnReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
 	sprite2DReticle_->SetAnchorPoint(Vector2(0.5f, 0.5f));
