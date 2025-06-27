@@ -97,7 +97,7 @@ void PostProcess::CreateBuffer()
 		bloom_->Map(0, nullptr, reinterpret_cast<void**>(&bloomData_));
 		bloomData_->stepWidth = 0.001f;
 		bloomData_->sigma = 0.005f;
-		bloomData_->lightStrength = 0.2f;
+		bloomData_->lightStrength = 0.1f;
 		bloomData_->bloomThreshold = 0.1f;
 	}
 	else if (type_ == PostEffectType::Vignette) {

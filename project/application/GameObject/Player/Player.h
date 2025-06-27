@@ -73,6 +73,8 @@ private: // クラス内でしか使わない
 	/// <param name="position"></param>
 	void NormalFire(const Vector3& position);
 
+	void MultiLockOnFire(const Vector3& position);
+
 	/// <summary>
 	/// 当たり判定
 	/// </summary>

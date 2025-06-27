@@ -15,6 +15,7 @@ void TitleSprite::Initialize()
 	// タイトルのスプライト
 	spriteTitle_.reset(Sprite::Create(TextureManager::GetTexHandle("Scene/title.png"), spriteTitlePosition_));
 	spriteTitle_->SetAnchorPoint({ 0.5f,0.5f });
+	spriteTitle_->SetColor({ 0.3f,0.3f,0.3f,1.0f });
 
 	// Aボタンのスプライト
 	spritePushA_.reset(Sprite::Create(TextureManager::GetTexHandle("UI/A.png"), spritePushAPosition_));

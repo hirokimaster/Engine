@@ -101,7 +101,7 @@ void Player::Update()
 			engineParticle_->Update(obj->GetWorldTransform().rotate, obj->GetWorldTransform().translate);
 		}
 	}
-	
+
 	Move();
 	ApplyAdjustmentVariables();
 }
@@ -143,7 +143,12 @@ void Player::Attack()
 
 		// ターゲットがいたらロックオン
 		if (!lockOn_->GetTarget().empty()) {
-			LockOnFire(GetWorldPosition());
+			if (lockOn_->GetIsLockOnMode()) {
+				MultiLockOnFire(GetWorldPosition());
+			}
+			else {
+				LockOnFire(GetWorldPosition());
+			}
 		}
 		// それ以外はノーマル
 		else {
@@ -205,6 +210,41 @@ void Player::NormalFire(const Vector3& position)
 
 	// 弾を発射
 	FireBullet(position, velocity); // 弾を発射
+}
+
+void Player::MultiLockOnFire(const Vector3& position)
+{
+	// 弾の速度
+	Vector3 velocity = { 0,0,bulletSpeed_ };
+	std::list<Vector3> lockOnVelocity;
+	// 自機から照準オブジェクトのベクトル
+	Vector3 WorldPos = GetWorldPosition();
+
+	if (!lockOn_->GetTarget().empty()) {
+		std::list<const IEnemy*> targets = lockOn_->GetTarget(); // コピーしておく
+		for (std::list<const IEnemy*>::iterator targetItr = targets.begin(); targetItr != targets.end(); ++targetItr) {
+			// ロックオン対象がいるかつ生きてたら対象に向かって弾を撃つ
+			if ((*targetItr) && !(*targetItr)->GetIsDead()) {
+				// レティクルのworld座標にターゲットのworld座標を入れる
+				Vector3 targetWorldPos = (*targetItr)->GetWorldPosition();
+				Vector3 diff = targetWorldPos - WorldPos;
+				diff = Normalize(diff);
+				velocity = Normalize(velocity);
+				velocity = Multiply(bulletSpeed_, diff);
+				IBullet* baseBullet = bulletObjectPool_->GetBullet("player");
+				if (baseBullet) {
+					Vector3 dir = { 0.0f,0.0f,5.0f };
+					Vector3 newPosition = position + dir;
+					PlayerBullet* bullet = dynamic_cast<PlayerBullet*>(baseBullet);
+					bullet->SetIsActive(true); // アクティブにする
+					bullet->SetLockOn(lockOn_);
+					bullet->SetPosition(newPosition); // 位置
+					bullet->SetVelocity(velocity); // 速度
+				}
+			}
+		}
+
+	}
 }
 
 void Player::OnCollision()

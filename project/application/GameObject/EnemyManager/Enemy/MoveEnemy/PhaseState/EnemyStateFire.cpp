@@ -21,7 +21,7 @@ void EnemyStateFire::Update(MoveEnemy* pEnemy)
 
 	// 移動playerのほうへ向かってくる
 	pEnemy->Move();
-	pEnemy->SetVelocity({ 0.0f,0.0f,-25.0f });
+	pEnemy->SetVelocity({ 0.0f,0.0f,0.0f });
 
 	// playerを越えたら消す
 	if (player_->GetWorldPosition().z >= pEnemy->GetWorldPosition().z) {
