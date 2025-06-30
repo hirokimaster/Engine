@@ -92,6 +92,7 @@ void Player::Update()
 	// ゲーム開始演出中または死亡時は本体,影を非表示
 	if (isDead_ || gameStartTimer_ > 40.0f) {
 		object_.lock()->SetColor({ 1.0f,1.0f,1.0f,0.0f });
+		engineParticle_->SetIsActive(false);
 	} else {
 		object_.lock()->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 		shadow_->SetIsActive(true);
@@ -252,7 +253,6 @@ void Player::OnCollision()
 
 	if (collider_->OnCollision()) {
 		isHitEnemyFire_ = true; // 敵の攻撃が当たった
-		engineParticle_->SetIsActive(false);
 	}
 }
 

@@ -30,6 +30,8 @@ void Laser::Initialize()
 
 	worldTransform_.Initialize();
 	worldTransform_.scale.z = 5.0f;
+	worldTransform_.scale.x = 1.2f;
+
 }
 
 void Laser::Update()
@@ -58,6 +60,7 @@ void Laser::OnCollision()
 	if (collider_->OnCollision()) {
 		// 当たった
 		isHit_ = true;
+		//particle_->SetIsActive(false);
 	}
 	else {
 		isHit_ = false;

@@ -14,6 +14,10 @@ ParticleManager* ParticleManager::GetInstance()
 
 void ParticleManager::Initialize()
 {
+	// 空にしておく
+	particles_.clear();
+	while (!pool_.empty()) pool_.pop();
+
 	ModelManager::GetInstance()->LoadObjModel("Player/plane.obj");
 	// パラメーター読み込み
 	ParticleEditor::GetInstance()->LoadFiles();

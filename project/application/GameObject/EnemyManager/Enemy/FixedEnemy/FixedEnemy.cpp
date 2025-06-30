@@ -45,8 +45,12 @@ void FixedEnemy::Update()
 
 	// particleの位置
 	if (particle_) {
-		particle_->SetIsActive(true);
-		particle_->SetPosition(object_.lock()->worldTransform.translate);
+		if (particle_->GetIsDead()) {
+			particle_ = nullptr;
+		} else {
+			particle_->SetIsActive(true);
+			particle_->SetPosition(object_.lock()->worldTransform.translate);
+		}
 	}
 
 	// 当たったら消す

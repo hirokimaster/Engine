@@ -36,8 +36,8 @@ void MoveEnemy::Initialize()
 	// 影
 	shadow_ = std::make_unique<PlaneProjectionShadow<InstanceWorldTransform>>();
 	shadow_->Initialize("Enemy/cube.obj", &object_.lock()->worldTransform);
-	shadow_->SetScale({ 0.2f,0.2f,0.2f });
-	shadow_->SetOffset({ 0.0f,-25.0f,0.0f });
+	shadow_->SetScale({ 1.0f,1.0f,1.0f });
+	shadow_->SetOffset({ 0.0f,0.0f,0.0f });
 }
 
 void MoveEnemy::Update()
@@ -66,8 +66,12 @@ void MoveEnemy::Update()
 
 	// particleの位置
 	if (particle_) {
-		particle_->SetIsActive(true);
-		particle_->SetPosition(object_.lock()->worldTransform.translate);
+		if (particle_->GetIsDead()) {
+			particle_ = nullptr;
+		} else {
+			particle_->SetIsActive(true);
+			particle_->SetPosition(object_.lock()->worldTransform.translate);
+		}
 	}
 }
 
