@@ -32,12 +32,6 @@ public:
 	void Update();
 
 	/// <summary>
-	/// 描画
-	/// </summary>
-	/// <param name="camera"></param>
-	void Draw(const Camera& camera);
-
-	/// <summary>
 	/// UIの描画
 	/// </summary>
 	/// <param name="camera"></param>
@@ -78,6 +72,8 @@ private: // クラス内でしか使わない
 	/// </summary>
 	/// <param name="position"></param>
 	void NormalFire(const Vector3& position);
+
+	void MultiLockOnFire(const Vector3& position);
 
 	/// <summary>
 	/// 当たり判定
@@ -169,7 +165,7 @@ private:
 	float rotateSpeed_; // 回転速度
 	float rotateLerpFactor_; // Lerpの強さ
 	BulletObjectPool* bulletObjectPool_ = nullptr; // ポインタ借りる
-	std::unique_ptr<PlaneProjectionShadow> shadow_; // 影
+	std::unique_ptr<PlaneProjectionShadow<WorldTransform>> shadow_; // 影
 	std::unique_ptr<EngineParticle> engineParticle_; // エンジンのパーティクル
 	float gameStartTimer_ = 120.0f;
 };

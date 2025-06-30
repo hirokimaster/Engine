@@ -34,10 +34,13 @@ public:
 
 	void SetOffset(const Vector3& offset) { offset_ = offset; }
 
+	void SetisExternalControl(bool flag) { isExternalControl_ = flag; }
+
 #pragma endregion
 
 private:
 	const WorldTransform* target_ = nullptr;
 	LockOn* lockOn_ = nullptr;
 	Vector3 offset_{};
+	bool isExternalControl_ = false;
 };

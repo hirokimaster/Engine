@@ -15,8 +15,9 @@ void GameStartState::Initialize()
 	// 調整項目適用
 	ApplyAdjustmentVariables();
 	// カメラに初期値を入れとく
-	cameraManager_->GetFollowCamera()->SetOffset(offsetStart_);
-	cameraManager_->SetCameraRotate(cameraRotateStart_);
+	cameraManager_->GetFollowCamera()->SetOffset(offsetEnd_);
+	cameraManager_->SetCameraRotate(cameraRotateEnd_);
+	cameraManager_->GetFollowCamera()->SetisExternalControl(false);
 }
 
 void GameStartState::Update()
@@ -26,7 +27,7 @@ void GameStartState::Update()
 		// カメラの位置を補間する
 		Vector3 currentOffset = Lerp(offsetStart_, offsetEnd_, rotateParam_);
 		// 回転の補間をする
-		Vector3 currentCameraRotate = Lerp(cameraRotateStart_, cameraRotateEnd_, rotateParam_);
+		Vector3 currentCameraRotate = Lerp(cameraRotateEnd_, cameraRotateEnd_, rotateParam_);
 		// 正規化
 		currentCameraRotate.y = NormalizeRotation(currentCameraRotate.y);
 		// カメラに適用
@@ -36,8 +37,9 @@ void GameStartState::Update()
 	}
 
 	// 補間が終わったら
-	if (rotateParam_ > 1.0f) {
+	if (rotateParam_ >= 1.0f) {
 		rotateParam_ = 1.0f;
+		cameraManager_->GetFollowCamera()->SetisExternalControl(false); // 制御をカメラに戻す
 	}
 }
 

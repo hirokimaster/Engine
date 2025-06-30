@@ -9,7 +9,7 @@
 void Wall::Initialize()
 {
 	// object共通の初期化
-	BaseInstancingObject::Initialize("Stage/wall.obj", "TempTexture/noise0.png", ColliderType::AABB);
+	BaseInstancingObject::Initialize("Stage/wall.obj", "Stage/block.png", ColliderType::AABB);
 
 	// colliderの属性
 	collider_->SetCollosionAttribute(kCollisionAttributeEnemyBullet);

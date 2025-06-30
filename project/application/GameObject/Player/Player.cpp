@@ -12,7 +12,8 @@ void Player::Initialize()
 	// object共通の初期化
 	BaseIndividualObject::Initialize("Player/player.obj", "TempTexture/white.png", ColliderType::Sphere);
 	object_.lock()->SetPosition({ 0,40.0f,-1500.0f });
-	object_.lock()->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	object_.lock()->SetColor({ 1.0f,1.0f,1.0f,0.0f });
+	object_.lock()->SetCategory(DrawCategory::Foreground);
 	// 属性設定
 	collider_->SetCollosionAttribute(kCollisionAttributePlayer); // 自分の属性
 	collider_->SetCollisionMask(kCollisionAttributeEnemyBullet); // 当たる対象
@@ -40,17 +41,16 @@ void Player::Initialize()
 	spriteMove_->SetScale({ 2.0f,2.0f });
 
 	// 影
-	shadow_ = std::make_unique<PlaneProjectionShadow>();
+	shadow_ = std::make_unique<PlaneProjectionShadow<WorldTransform>>();
 	shadow_->Initialize("Player/player.obj", &object_.lock()->GetWorldTransform());
+	shadow_->SetScale({ 2.0f,1.0f,2.0f });
+	shadow_->SetOffset({ 0.0f,-8.0f,80.0f });
+	shadow_->SetIsActive(false);
 }
 
 void Player::Update()
 {
 	--gameStartTimer_;
-	//Move(); // 移動	
-	// Reticle追従処理
-	
-
 	Rotate(); // 回転
 
 	// 発射間隔
@@ -89,70 +89,53 @@ void Player::Update()
 	// 影
 	shadow_->Update();
 
-	// particle
-	if (auto obj = object_.lock()) {
-		engineParticle_->Update(obj->GetWorldTransform().rotate, obj->GetWorldTransform().translate);
-	}
-
-	//死んだら消す
-	if (isDead_) {
+	// ゲーム開始演出中または死亡時は本体,影を非表示
+	if (isDead_ || gameStartTimer_ > 40.0f) {
 		object_.lock()->SetColor({ 1.0f,1.0f,1.0f,0.0f });
+		engineParticle_->SetIsActive(false);
+	} else {
+		object_.lock()->SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		shadow_->SetIsActive(true);
+		object_.lock()->SetCategory(DrawCategory::Background);
+		// particle
+		if (auto obj = object_.lock()) {
+			engineParticle_->Update(obj->GetWorldTransform().rotate, obj->GetWorldTransform().translate);
+		}
 	}
 
-	Vector3 reticlePos = lockOn_->GetWorldPosition3DReticle();
-	Vector3 playerPos = GetWorldPosition(); // プレイヤーの現在位置
-
-	// 追従速度
-	const float followSpeed = 0.1f;
-
-	// 補間
-	Vector3 newPos = playerPos + followSpeed * (reticlePos - playerPos);
-	object_.lock()->SetPosition(newPos);
-
+	Move();
 	ApplyAdjustmentVariables();
-}
-
-void Player::Draw(const Camera& camera)
-{
-	if (!isDead_) {
-		// 影
-		shadow_->Draw(camera);
-	}
 }
 
 void Player::Move()
 {
-	XINPUT_STATE joyState{};
-	Vector3 move{};
+    XINPUT_STATE joyState{};
+    Vector3 spriteMove{};
 
-	if (!isDead_) {
+    if (!isDead_) {
 
-		if (gameStartTimer_ <= 0.0f) {
-			// ジョイスティック状態取得
-			if (Input::GetInstance()->GetJoystickState(joyState)) {
-				move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 2.0f;
-				move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 2.0f;
-			}
+
+        if (gameStartTimer_ <= 0.0f) {
+  
+            // ジョイスティック状態取得
+            if (Input::GetInstance()->GetJoystickState(joyState)) {
+                spriteMove.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * 2.0f;
+                spriteMove.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * 2.0f;
+            }
+
 			gameStartTimer_ = 0.0f;
-		}
-		
+        }
 
-		Vector3 position = object_.lock()->GetWorldTransform().translate + move;
+		Vector3 reticlePos = lockOn_->GetWorldPosition3DReticle();
+		Vector3 playerPos = GetWorldPosition(); // プレイヤーの現在位置
+		// 追従速度
+		const float followSpeed = 0.1f;
+		// 補間
+		Vector3 newPos = playerPos + followSpeed * (reticlePos - playerPos);
+		object_.lock()->SetPosition(newPos);
 
-		if (GetWorldPosition().z >= 36500.0f) {
-			// x軸の移動範囲を制限 [-500.0f, 280.0f]
-			position.x = std::clamp(position.x, -500.0f, 280.0f);
-			position.y = std::clamp(position.y, 8.0f, 1000.0f);
-		}
-		else{
-			position.y = std::clamp(position.y, 8.0f, 85.0f);
-		}
-		
-		position.z += moveSpeed_;
-		object_.lock()->SetPosition(position);
-		spriteMove_->SetPosition(Vector2((5.0f * move.x) + 240.0f, (5.0f * move.y) + 500.0f));
-	}
-
+        spriteMove_->SetPosition(Vector2((5.0f * spriteMove.x) + 240.0f, (5.0f * spriteMove.y) + 500.0f));
+    }
 }
 
 void Player::Attack()
@@ -161,7 +144,12 @@ void Player::Attack()
 
 		// ターゲットがいたらロックオン
 		if (!lockOn_->GetTarget().empty()) {
-			LockOnFire(GetWorldPosition());
+			if (lockOn_->GetIsLockOnMode()) {
+				MultiLockOnFire(GetWorldPosition());
+			}
+			else {
+				LockOnFire(GetWorldPosition());
+			}
 		}
 		// それ以外はノーマル
 		else {
@@ -177,10 +165,12 @@ void Player::FireBullet(const Vector3& position, const Vector3& velocity)
 	IBullet* baseBullet = bulletObjectPool_->GetBullet("player");
 	// 取り出せてたら値を設定する
 	if (baseBullet) {
+		Vector3 dir = { 0.0f,0.0f,5.0f };
+		Vector3 newPosition = position + dir;
 		PlayerBullet* bullet = dynamic_cast<PlayerBullet*>(baseBullet);
 		bullet->SetIsActive(true); // アクティブにする
 		bullet->SetLockOn(lockOn_);
-		bullet->SetPosition(position); // 位置
+		bullet->SetPosition(newPosition); // 位置
 		bullet->SetVelocity(velocity); // 速度
 	}
 }
@@ -223,12 +213,46 @@ void Player::NormalFire(const Vector3& position)
 	FireBullet(position, velocity); // 弾を発射
 }
 
+void Player::MultiLockOnFire(const Vector3& position)
+{
+	// 弾の速度
+	Vector3 velocity = { 0,0,bulletSpeed_ };
+	std::list<Vector3> lockOnVelocity;
+	// 自機から照準オブジェクトのベクトル
+	Vector3 WorldPos = GetWorldPosition();
+
+	if (!lockOn_->GetTarget().empty()) {
+		std::list<const IEnemy*> targets = lockOn_->GetTarget(); // コピーしておく
+		for (std::list<const IEnemy*>::iterator targetItr = targets.begin(); targetItr != targets.end(); ++targetItr) {
+			// ロックオン対象がいるかつ生きてたら対象に向かって弾を撃つ
+			if ((*targetItr) && !(*targetItr)->GetIsDead()) {
+				// レティクルのworld座標にターゲットのworld座標を入れる
+				Vector3 targetWorldPos = (*targetItr)->GetWorldPosition();
+				Vector3 diff = targetWorldPos - WorldPos;
+				diff = Normalize(diff);
+				velocity = Normalize(velocity);
+				velocity = Multiply(bulletSpeed_, diff);
+				IBullet* baseBullet = bulletObjectPool_->GetBullet("player");
+				if (baseBullet) {
+					Vector3 dir = { 0.0f,0.0f,5.0f };
+					Vector3 newPosition = position + dir;
+					PlayerBullet* bullet = dynamic_cast<PlayerBullet*>(baseBullet);
+					bullet->SetIsActive(true); // アクティブにする
+					bullet->SetLockOn(lockOn_);
+					bullet->SetPosition(newPosition); // 位置
+					bullet->SetVelocity(velocity); // 速度
+				}
+			}
+		}
+
+	}
+}
+
 void Player::OnCollision()
 {
 
 	if (collider_->OnCollision()) {
 		isHitEnemyFire_ = true; // 敵の攻撃が当たった
-		engineParticle_->SetLifeTime(0.0f);
 	}
 }
 

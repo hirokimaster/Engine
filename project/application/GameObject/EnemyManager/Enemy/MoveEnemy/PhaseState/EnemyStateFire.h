@@ -26,6 +26,6 @@ public:
 
 private:
 
-	uint32_t fireTimer_ = 120; // 攻撃タイマー
+	uint32_t fireTimer_ = 90; // 攻撃タイマー
 
 };

@@ -15,8 +15,8 @@ void Skydome::Initialize()
 	object_->SetModel("skydome/skydome.obj");
 	Vector3 scale{ 100000.0f,100000.0f,100000.0f };
 	object_->SetScale(scale);
-	object_->SetTexHandle(TextureManager::GetTexHandle("skydome/sky2.png"));
-	material_.color = { 1.0f,1.0f,1.0f,1.0f };
+	object_->SetTexHandle(TextureManager::GetTexHandle("TempTexture/white.png"));
+	material_.color = { 0.1f,0.1f,0.1f,1.0f };
 	material_.enableLighting = false;
 	object_->SetMaterialProperty(material_);
 	uvTransform_ = {

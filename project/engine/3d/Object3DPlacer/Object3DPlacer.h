@@ -74,6 +74,7 @@ public:
 	void SetScale(const Vector3& scale) { worldTransform_.scale = scale; }
 	void SetParent(const WorldTransform* parent) { worldTransform_.parent = parent; }
 	void SetMatWorld(const Matrix4x4& mat) { worldTransform_.matWorld = mat; worldTransform_.TransferMatrix(); }
+	void SetShadow(bool shadow) { shadow_ = shadow; }
 	Material SetMaterialProperty(const Material& materialdata) { return *materialData_ = materialdata; }
 	// directionalLightの設定
 	DirectionalLight SetLightingProperty(const DirectionalLight& directionalLight) { return *directionalLightData_ = directionalLight; }
@@ -125,4 +126,5 @@ private:
 	std::vector<std::shared_ptr<Object3dInstancing>> object3dInstancing_;
 	bool isInstancing_;
 	DrawCategory category_ = DrawCategory::World;
+	bool shadow_ = false;
 };

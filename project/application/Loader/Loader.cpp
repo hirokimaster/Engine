@@ -135,8 +135,9 @@ void Loader::Record()
 	TextureManager::Load("resources/Stage/floor.png");
 	TextureManager::Load("resources/TempTexture/mount.jpg");
 	TextureManager::Load("resources/TempTexture/uvChecker.png");
+	TextureManager::Load("resources/Stage/block.png");
 
-	levelData_ = Load("level2");
+	levelData_ = Load("level3");
 
 	// jsonファイルから読み込んだ情報を保存する
 	for (auto& objectData : levelData_->objects) {
@@ -186,7 +187,7 @@ void Loader::ObjectRegister()
 	if (it != GetObjectDatas().end()) {
 		for (auto& objectData : it->second) {
 			std::unique_ptr<BaseInstancingObject> object = std::make_unique<BaseInstancingObject>();
-			object->Initialize("LevelEditorObj/roads.obj", "Stage/road.png");
+			object->Initialize("LevelEditorObj/roads.obj", "Stage/block.png");
 			object->SetPosition(objectData.translate);
 			object->SetRotate(objectData.rotate);
 			object->SetScale(objectData.scale);
@@ -208,7 +209,7 @@ void Loader::ObjectRegister()
 	if (it3 != GetObjectDatas().end()) {
 		for (auto& objectData : it3->second) {
 			std::unique_ptr<BaseInstancingObject> object = std::make_unique<BaseInstancingObject>();
-			object->Initialize("LevelEditorObj/floor.obj", "Stage/floor.png");
+			object->Initialize("LevelEditorObj/floor.obj", "Stage/block.png");
 			object->SetPosition(objectData.translate);
 			object->SetRotate(objectData.rotate);
 			object->SetScale(objectData.scale);

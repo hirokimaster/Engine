@@ -97,8 +97,8 @@ void PostProcess::CreateBuffer()
 		bloom_->Map(0, nullptr, reinterpret_cast<void**>(&bloomData_));
 		bloomData_->stepWidth = 0.001f;
 		bloomData_->sigma = 0.005f;
-		bloomData_->lightStrength = 10.0f;
-		bloomData_->bloomThreshold = 0.5f;
+		bloomData_->lightStrength = 0.1f;
+		bloomData_->bloomThreshold = 0.1f;
 	}
 	else if (type_ == PostEffectType::Vignette) {
 		vignette_ = CreateResource::CreateBufferResource(sizeof(VignetteParam));
@@ -168,6 +168,7 @@ void PostProcess::CreatePipeLine()
 	else if (type_ == PostEffectType::Random) {
 		pipeline_ = GraphicsPipeline::GetInstance()->GetPSO().Random;
 	}
+
 }
 
 void PostProcess::SetConstantBuffer()

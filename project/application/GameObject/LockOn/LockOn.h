@@ -88,10 +88,6 @@ private:
 	/// <param name="playerPosition"></param>
 	void Reticle(const Camera& camera);
 
-	/// <summary>
-	/// レティクルの範囲制限
-	/// </summary>
-	void ReticleRangeLimit();
 
 public:
 

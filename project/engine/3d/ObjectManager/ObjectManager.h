@@ -47,7 +47,7 @@ public:
 	/// <param name="modelName"></param>
 	/// <param name="texHandle"></param>
 	/// <returns></returns>
-	std::shared_ptr<Object3dInstancing> CreateInstancingObject(const std::string& modelName, uint32_t texHandle);
+	std::shared_ptr<Object3dInstancing> CreateInstancingObject(const std::string& modelName, uint32_t texHandle, bool shadow = false);
 
 	/// <summary>
 	/// インスタンスが1個のみのObject

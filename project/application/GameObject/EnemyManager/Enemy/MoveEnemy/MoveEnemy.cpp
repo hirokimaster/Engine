@@ -12,7 +12,6 @@ void MoveEnemy::Initialize()
 	// object共通の初期化
 	BaseInstancingObject::Initialize("Enemy/enemy.obj", "TempTexture/noise0.png", ColliderType::Sphere);
 	object_.lock()->color = (Vector4(0.0f, 0.0f, 0.0f, 1.0f));
-	object_.lock()->worldTransform.scale = { 10.0f,10.0f,10.0f };
 	
 	// 調整項目追加
 	AddAdjustmentVariables();
@@ -32,7 +31,13 @@ void MoveEnemy::Initialize()
 	// パーティクル
 	particleManager_ = ParticleManager::GetInstance();
 
-	bulletSpeed_ = 20.0f;
+	bulletSpeed_ = 1.5f;
+
+	// 影
+	shadow_ = std::make_unique<PlaneProjectionShadow<InstanceWorldTransform>>();
+	shadow_->Initialize("Enemy/cube.obj", &object_.lock()->worldTransform);
+	shadow_->SetScale({ 1.0f,1.0f,1.0f });
+	shadow_->SetOffset({ 0.0f,0.0f,0.0f });
 }
 
 void MoveEnemy::Update()
@@ -53,12 +58,20 @@ void MoveEnemy::Update()
 	// 当たったら消す
 	if (isHit_) {
 		object_.lock()->isAlive = false;
+		shadow_->SetIsActive(false);
 	}
+
+	// 更新
+	shadow_->Update();
 
 	// particleの位置
 	if (particle_) {
-		particle_->SetIsActive(true);
-		particle_->SetPosition(object_.lock()->worldTransform.translate);
+		if (particle_->GetIsDead()) {
+			particle_ = nullptr;
+		} else {
+			particle_->SetIsActive(true);
+			particle_->SetPosition(object_.lock()->worldTransform.translate);
+		}
 	}
 }
 

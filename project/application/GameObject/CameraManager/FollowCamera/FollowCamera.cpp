@@ -13,6 +13,11 @@ void FollowCamera::Initialize()
 
 void FollowCamera::Update(Camera& camera)
 {
+    if (isExternalControl_) {
+        // 外部制御中は何もしない
+        return;
+    }
+
     if (target_ && lockOn_) {
         // プレイヤー（自機）のワールド座標
         Vector3 playerPos = target_->translate;
@@ -26,7 +31,7 @@ void FollowCamera::Update(Camera& camera)
         Vector3 idealLookAt = 0.5f * (playerPos + reticlePos);
 
         // 現在位置から理想位置へLerpで追従
-        float followSpeed = 0.5f;
+        const float followSpeed = 0.5f;
         camera.translate = camera.translate + followSpeed * (idealCameraPos - camera.translate);
         camera.rotate = camera.rotate + followSpeed * (target_->rotate - camera.rotate);
 
@@ -34,14 +39,16 @@ void FollowCamera::Update(Camera& camera)
         camera.matView = MakeViewMatrix(camera.translate, idealLookAt, Vector3(0, 1, 0));
 
         camera.UpdateMatrix();
-    } else if (target_) {
-        // lockOn_が無い場合は従来通り
+    }
+    else if (target_) {
+        // lockOn_が無い場合
         camera.translate = target_->translate + offset_;
         float cameraRotateZ = target_->rotate.z;
         cameraRotateZ = std::clamp(cameraRotateZ, -0.2f, 0.2f);
         camera.rotate.z = cameraRotateZ;
         camera.UpdateMatrix();
-    } else {
+    }
+    else {
         camera.UpdateMatrix();
     }
 }

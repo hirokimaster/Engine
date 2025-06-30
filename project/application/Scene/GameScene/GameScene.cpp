@@ -66,9 +66,6 @@ void GameScene::Initialize()
 	enemyManager_->SetLoader(loader_.get());
 	enemyManager_->SetBulletObjectPool(bulletObjectPool_.get());
 	enemyManager_->Initialize();
-	
-	// collision
-	collisionManager_ = std::make_unique<CollisionManager>();
 
 	// ゲームの状態
 	gameState_ = std::make_unique<GameStartState>();
@@ -92,10 +89,15 @@ void GameScene::Initialize()
 	gameSprite_->SetPlayer(player_.get());
 
 	timer_ = 60.0f;
+
+	// collision
+	collisionManager_ = std::make_unique<CollisionManager>();
 }
 
 void GameScene::Update()
 {
+
+	objectManager_->Update();
 
 	// player
 	player_->Update();
@@ -140,7 +142,6 @@ void GameScene::Update()
 		GameManager::GetInstance()->ChangeScene("CLEAR");
 	}
 
-	objectManager_->Update();
 
 	gameSprite_->Update();
 
@@ -171,8 +172,6 @@ void GameScene::PostProcessDraw()
 
 	skydome_->Draw(cameraManager_->GetCamera());
 
-	// player
-	player_->Draw(cameraManager_->GetCamera());
 
 	// objectManager
 	objectManager_->Draw(cameraManager_->GetCamera());
