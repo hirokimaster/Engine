@@ -12,7 +12,6 @@
 #include "engine/3d/Model/ModelManager.h"
 #include "engine/Graphics/Pipeline/GraphicsPipeline.h"
 #include "engine/Graphics/Pipeline/ComputePipeline.h"
-#include "ParticleEditor.h"
 #include "engine/Graphics/Camera/Camera.h"
 
 static const uint32_t kMaxInstance_ = 1024;

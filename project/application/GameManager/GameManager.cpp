@@ -27,6 +27,7 @@ void GameManager::Update() {
 		// 調整項目のファイル読み込み
 		AdjustmentVariables::GetInstance()->LoadFiles();
 		ObjectManager::GetInstance()->Initialize();
+		ParticleEditor::GetInstance()->LoadFiles();
 
 		scene_->Initialize();
 

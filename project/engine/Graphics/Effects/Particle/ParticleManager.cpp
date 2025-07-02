@@ -5,6 +5,7 @@
 */
 
 #include "ParticleManager.h"
+#include <filesystem> // 追加
 
 ParticleManager* ParticleManager::GetInstance()
 {
@@ -21,23 +22,23 @@ void ParticleManager::Initialize()
 	ModelManager::GetInstance()->LoadObjModel("Player/plane.obj");
 	// パラメーター読み込み
 	ParticleEditor::GetInstance()->LoadFiles();
+
 	// あらかじめインスタンスを作っておく
 	for (uint32_t i = 0; i < kPoolSize; ++i) {
 		Create();
 	}
 
-	CreateParam("bulletTrajectory");
-	ApplyParam("bulletTrajectory");
-	CreateParam("explosion");
-	ApplyParam("explosion");
-    CreateParam("engine_left");
-	ApplyParam("engine_left");
-	CreateParam("engine_right");
-	ApplyParam("engine_right");
-	CreateParam("laser_side");
-	ApplyParam("laser_side");
-	CreateParam("laser_ver");
-	ApplyParam("laser_ver");
+	// ParticleParamディレクトリ内の全jsonファイルを自動で読み込む
+	std::filesystem::path dir("resources/ParticleParam/");
+	if (std::filesystem::exists(dir)) {
+		for (const auto& entry : std::filesystem::directory_iterator(dir)) {
+			if (entry.is_regular_file() && entry.path().extension() == ".json") {
+				std::string name = entry.path().stem().string();
+				CreateParam(name.c_str());
+				ApplyParam(name.c_str());
+			}
+		}
+	}
 }
 
 void ParticleManager::CreateParam(const char* particleName)

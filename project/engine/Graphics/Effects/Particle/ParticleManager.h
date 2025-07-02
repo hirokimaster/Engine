@@ -6,8 +6,6 @@
 
 #pragma once
 #include "engine/Graphics/Effects/Particle/ParticleEditor.h"
-#include "engine/Graphics/Effects/Particle/GPUParticle.h"
-#include "engine/Graphics/TextureManager/TextureManager.h"
 
 using std::string;
 using std::map;

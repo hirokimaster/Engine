@@ -15,6 +15,9 @@
 #include "engine/Utility/ImGuiManager/ImGuiManager.h"
 #include "externals/Json/json.hpp"
 #include <Windows.h>
+#include "engine/Graphics/Effects/Particle/GPUParticle.h"
+#include "engine/Graphics/TextureManager/TextureManager.h"
+#include <memory>
 
 using std::variant;
 using std::map;
@@ -54,6 +57,11 @@ public:
 	/// </summary>
 	void LoadFiles();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw(const Camera& camera);
+
 private:
 	/// <summary>
     /// ファイルに書き出し
@@ -66,6 +74,16 @@ private:
 	/// </summary>
 	/// <param name="groupName"></param>
 	void LoadFile(const string& particleName);
+
+	/// <summary>
+	/// 変換
+	/// </summary>
+	/// <param name="particle"></param>
+	/// <returns></returns>
+	EmitterSphere ConvertParticleToEmitterSphere(const Particle& particle);
+
+	// プレビュー用のparticle
+	std::unique_ptr<GPUParticle> previewParticle_;
 
 public:
 

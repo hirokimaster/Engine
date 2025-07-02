@@ -6,7 +6,6 @@
 
 
 #pragma once
-#include "engine/Graphics/Effects/Particle/GPUParticle.h"
 #include "engine/Graphics/Effects/Particle/ParticleManager.h"
 #include "engine/Graphics/Transform/WorldTransform.h"
 #include "engine/Utility/CollisionManager/Collider/Collider.h"
