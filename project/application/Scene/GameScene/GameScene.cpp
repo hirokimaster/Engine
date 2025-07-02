@@ -226,5 +226,6 @@ void GameScene::LoadTextureFile()
 	TextureManager::Load("resources/UI/yes.png");
 	TextureManager::Load("resources/UI/no.png");
 	TextureManager::Load("resources/UI/continue.png");
+	TextureManager::Load("resources/UI/select.png");
 }
 
