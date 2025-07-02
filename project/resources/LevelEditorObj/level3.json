@@ -376,50 +376,6 @@
         },
         {
             "type": "MESH",
-            "name": "壁.006",
-            "transform": {
-                "translation": [
-                    0.0,
-                    6300.0,
-                    80.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    85.0,
-                    10.0,
-                    20.0
-                ]
-            },
-            "file_name": "wall"
-        },
-        {
-            "type": "MESH",
-            "name": "壁.013",
-            "transform": {
-                "translation": [
-                    0.0,
-                    6700.0,
-                    20.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    85.0,
-                    10.0,
-                    20.0
-                ]
-            },
-            "file_name": "wall"
-        },
-        {
-            "type": "MESH",
             "name": "レーザー.005",
             "transform": {
                 "translation": [
@@ -8844,6 +8800,50 @@
                 ]
             },
             "file_name": "moveEnemy"
+        },
+        {
+            "type": "MESH",
+            "name": "壁.015",
+            "transform": {
+                "translation": [
+                    140.0,
+                    20000.0,
+                    50.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    140.0,
+                    1.0,
+                    50.0
+                ]
+            },
+            "file_name": "wall"
+        },
+        {
+            "type": "MESH",
+            "name": "壁.014",
+            "transform": {
+                "translation": [
+                    -140.0,
+                    16000.0,
+                    50.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    140.0,
+                    1.0,
+                    50.0
+                ]
+            },
+            "file_name": "wall"
         }
     ]
 }
