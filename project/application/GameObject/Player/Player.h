@@ -105,6 +105,11 @@ private: // クラス内でしか使わない
 	/// </summary>
 	void ApplyAdjustmentVariables();
 
+	/// <summary>
+	/// 死んだときのパーティクル
+	/// </summary>
+	void DeadParticle();
+
 public:
 
 #pragma region getter
@@ -168,4 +173,7 @@ private:
 	std::unique_ptr<PlaneProjectionShadow<WorldTransform>> shadow_; // 影
 	std::unique_ptr<EngineParticle> engineParticle_; // エンジンのパーティクル
 	float gameStartTimer_ = 120.0f;
+	ParticleManager* particleManager_ = nullptr;
+	GPUParticle* deadParticle_ = nullptr;
+	bool isExploded_ = false; // 爆発してるか
 };

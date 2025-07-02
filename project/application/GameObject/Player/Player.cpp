@@ -46,6 +46,8 @@ void Player::Initialize()
 	shadow_->SetScale({ 2.0f,1.0f,2.0f });
 	shadow_->SetOffset({ 0.0f,-8.0f,80.0f });
 	shadow_->SetIsActive(false);
+	// パーティクルマネージャ
+	particleManager_ = ParticleManager::GetInstance();
 }
 
 void Player::Update()
@@ -91,20 +93,20 @@ void Player::Update()
 
 	// ゲーム開始演出中または死亡時は本体,影を非表示
 	if (isDead_ || gameStartTimer_ > 40.0f) {
-		object_.lock()->SetColor({ 1.0f,1.0f,1.0f,0.0f });
+		object_.lock()->SetColor({ 0.0f,0.0f,0.0f,0.0f });
 		engineParticle_->SetIsActive(false);
 	} else {
 		object_.lock()->SetColor({ 1.0f,1.0f,1.0f,1.0f });
 		shadow_->SetIsActive(true);
-		object_.lock()->SetCategory(DrawCategory::Background);
 		// particle
 		if (auto obj = object_.lock()) {
 			engineParticle_->Update(obj->GetWorldTransform().rotate, obj->GetWorldTransform().translate);
 		}
 	}
 
-	Move();
-	ApplyAdjustmentVariables();
+	Move(); // 移動
+	ApplyAdjustmentVariables(); // 調整項目
+	DeadParticle(); // 死んだときのパーティクル
 }
 
 void Player::Move()
@@ -385,5 +387,26 @@ void Player::ApplyAdjustmentVariables()
 	moveMaxLimit_ = variables->GetValue<Vector3>(groupName, "moveMaxLimit");
 	rotateSpeed_ = variables->GetValue<float>(groupName, "rotateSpeed");
 	rotateLerpFactor_ = variables->GetValue<float>(groupName, "rotateLerpFactor");
+}
+
+void Player::DeadParticle()
+{
+	// 死んでまだ爆発していないなら
+	if (isDead_ && !isExploded_) {
+		deadParticle_ = particleManager_->GetParticle("explosion", "Player/smoke.png");
+		isExploded_ = true;
+	}
+
+	// particleの位置
+	if (deadParticle_) {
+		if (deadParticle_->GetIsDead()) {
+			deadParticle_ = nullptr;
+		}
+		else {
+			deadParticle_->SetIsActive(true);
+			deadParticle_->SetPosition(object_.lock()->GetWorldTransform().translate);
+		}
+	}
+
 }
 
