@@ -56,6 +56,11 @@ private:
 	/// </summary>
 	void Continue();
 
+	/// <summary>
+	/// 選択
+	/// </summary>
+	void ContinueSelect();
+
 private:
 	std::unique_ptr<Sprite> spriteYes_;
 	Vector2 spriteYesPosition_{};
@@ -67,4 +72,9 @@ private:
 	uint32_t selectNo_ = 0;
 	GameScene* gameScene_ = nullptr; // ゲームシーンのポインタ
 	Player* player_ = nullptr; // playerのポインタ
+	std::unique_ptr<Sprite> spriteSelect_;
+	Vector2 spriteSelectPosition_{};
+	bool isTransitionTitle_ = false; // タイトルに行くかどうか
+	std::unique_ptr<ISceneTransition> transition_; // 遷移
 };
+

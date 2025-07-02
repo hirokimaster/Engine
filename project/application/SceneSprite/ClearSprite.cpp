@@ -25,11 +25,13 @@ void ClearSprite::Update()
 	++animationTimer_; // Aボタン用
 
 	// spriteClearのアニメーション用のやつ
-	const float scaleSpeed = 0.8f;
-	const float scaleRange = 0.05f;
+	const float scaleSpeed = 2.5f;
+	const float scaleRange = 0.1f;
+	static float scaleTimer = 0.0f;
 	// アニメーションする
-	scaleTimer_ += scaleSpeed * 1.0f / 60.0f;
-	float scaleValue = 1.0f + scaleRange * std::sin(scaleTimer_);
+	scaleTimer += scaleSpeed * 1.0f / 60.0f;
+	float scaleValue = 1.0f + scaleRange * sin(scaleTimer);
+
 	spriteClear_->SetScale({ scaleValue,scaleValue });
 }
 

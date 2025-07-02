@@ -53,6 +53,11 @@ void TitleScene::Initialize()
 
 	// particle
 	particleManager_ = ParticleManager::GetInstance();
+	particleManager_->Initialize();
+
+	// particle
+	engineParticle_ = std::make_unique<EngineParticle>();
+	engineParticle_->Initialize();
 }
 
 void TitleScene::Update()
@@ -73,11 +78,20 @@ void TitleScene::Update()
 
 	objectPlayer_->Update();
 
+	// particle
+	if (objectPlayer_) {
+		engineParticle_->Update(objectPlayer_->GetWorldTransform().rotate, objectPlayer_->GetWorldTransform().translate);
+	}
+
+
 	// カメラ
 	cameraManager_->Update();
 	
 	// 天球
 	skydome_->Update();
+
+	// パーティクルマネージャ更新
+	particleManager_->Update();
 }
 
 void TitleScene::Draw()
@@ -94,6 +108,8 @@ void TitleScene::PostProcessDraw()
 	objectPlayer_->Draw(cameraManager_->GetCamera());
 
 	titleSprite_->Draw();
+
+	particleManager_->Draw(cameraManager_->GetCamera());
 
 	postEffect_->GetPostProcess()->PostDraw();
 }

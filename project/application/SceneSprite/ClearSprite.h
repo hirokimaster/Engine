@@ -38,7 +38,6 @@ private:
 
 private:
 	uint32_t animationTimer_ = 0;
-	float scaleTimer_ = 0.0f; // claerSpriteのアニメーション用のタイマー
 	std::unique_ptr<Sprite> spriteClear_ = nullptr;
 	Vector2 spriteClearPosition_{};
 	std::unique_ptr<Sprite> spritePushA_ = nullptr; // pushAのsprite
