@@ -14,6 +14,7 @@
 #include "application/GameManager/GameManager.h"
 #include <application/PostEffect/PostEffect.h>
 #include "application/GameObject/CameraManager/CameraManager.h"
+#include <application/GameObject/Particle/EngineParticle/EngineParticle.h>
 
 class TitleScene : public IScene {
 public:
@@ -65,4 +66,5 @@ private:
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 	// particle
 	ParticleManager* particleManager_ = nullptr;
+	std::unique_ptr<EngineParticle> engineParticle_; // エンジンのパーティクル
 };
