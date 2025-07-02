@@ -486,50 +486,6 @@
         },
         {
             "type": "MESH",
-            "name": "壁.014",
-            "transform": {
-                "translation": [
-                    -140.0,
-                    16000.0,
-                    50.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    140.0,
-                    10.0,
-                    50.0
-                ]
-            },
-            "file_name": "wall"
-        },
-        {
-            "type": "MESH",
-            "name": "壁.015",
-            "transform": {
-                "translation": [
-                    140.0,
-                    20000.0,
-                    50.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    140.0,
-                    10.0,
-                    50.0
-                ]
-            },
-            "file_name": "wall"
-        },
-        {
-            "type": "MESH",
             "name": "道.001",
             "transform": {
                 "translation": [
